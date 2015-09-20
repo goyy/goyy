@@ -408,6 +408,7 @@ func (me *htmlServeMux) buildTagInfo(content, attr string, tags []tagInfo) []tag
 			srcEnd = strings.IndexStart(newstmt, tagAttrEnd, srcBegin+len(srcBeginPre))
 			newstmt = strings.Overlay(newstmt, "", srcBegin, srcEnd+len(tagAttrEnd))
 		}
+		newstmt = strings.Replace(newstmt, tagStaticApis, Conf.Static.Apis, -1)
 		newstmt = strings.Replace(newstmt, tagStaticAssets, Conf.Static.Assets, -1)
 		newstmt = strings.Replace(newstmt, tagStaticConsumers, Conf.Static.Consumers, -1)
 		newstmt = strings.Replace(newstmt, tagStaticOperations, Conf.Static.Operations, -1)

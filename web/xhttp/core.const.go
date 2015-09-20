@@ -36,6 +36,7 @@ const (
 	tagAttrPre          = ` go:`
 	tagAttrPost         = `="`
 	tagAttrEnd          = `"`
+	tagStaticApis       = `{{apis}}`
 	tagStaticAssets     = `{{assets}}`
 	tagStaticConsumers  = `{{consumers}}`
 	tagStaticOperations = `{{operations}}`
