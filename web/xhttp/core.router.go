@@ -59,7 +59,7 @@ func (me *router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		if a, aok := v[requestURI]; aok {
 			c := me.newContext(w, r)
-			//c.Next()
+			c.Next()
 			a(c)
 		} else {
 			logger.Errorf("No match for router:%s:%s", r.Method, r.RequestURI)

@@ -14,6 +14,12 @@ type engine struct {
 
 // ServeHTTP makes the router implement the http.Handler interface.
 func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	defer func() {
+		if err := recover(); err != nil {
+			w.WriteHeader(500)
+			w.Write([]byte(default500Body))
+		}
+	}()
 	if sec.ServeHTTP(w, r) { // secureServeMux
 		return
 	}
