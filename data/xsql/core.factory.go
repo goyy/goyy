@@ -6,10 +6,10 @@ package xsql
 
 import (
 	"database/sql"
+	"gopkg.in/goyy/goyy.v0/comm/env"
 	"gopkg.in/goyy/goyy.v0/data/dialect"
 	"gopkg.in/goyy/goyy.v0/data/dml"
 	"gopkg.in/goyy/goyy.v0/data/dql"
-	"gopkg.in/goyy/goyy.v0/comm/env"
 )
 
 // New Factory
@@ -21,6 +21,8 @@ func New(dialect dialect.Interface, name string) (f Factory, err error) {
 	f = &factory{
 		driverName:     db.DriverName,
 		dataSourceName: db.DataSourceName,
+		maxIdleConns:   db.MaxIdleConns,
+		maxOpenConns:   db.MaxOpenConns,
 		dialect:        dialect,
 	}
 	return
@@ -28,6 +30,7 @@ func New(dialect dialect.Interface, name string) (f Factory, err error) {
 
 type factory struct {
 	driverName, dataSourceName string
+	maxIdleConns, maxOpenConns int
 	dialect                    dialect.Interface
 }
 
@@ -37,6 +40,8 @@ func (me *factory) Session() (Session, error) {
 	if err != nil {
 		return nil, err
 	}
+	db.SetMaxIdleConns(me.maxIdleConns)
+	db.SetMaxOpenConns(me.maxOpenConns)
 	return &session{
 		db:      db,
 		dialect: me.dialect,
