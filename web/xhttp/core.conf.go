@@ -15,6 +15,7 @@ var Conf = &conf{
 	Actives: []string{profile.DEV},
 	Static: &staticOptions{
 		Dir:        "static",
+		Apis:       "/api",
 		Assets:     "/static",
 		Consumers:  "/static",
 		Operations: "/static",
@@ -64,6 +65,7 @@ type sessionOptions struct {
 
 type staticOptions struct {
 	Dir        string // Static resource directory
+	Apis       string // APIs URL
 	Assets     string // Static resource URL
 	Consumers  string // Consumer uploaded static resource URL
 	Operations string // Operations uploaded static resource URL
