@@ -165,8 +165,8 @@ func (me *htmlServeMux) parseFile(w http.ResponseWriter, r *http.Request, conten
 	if me.isSec(content) {
 		content = me.parseSecUserFile(w, r, content)
 		content = me.parseSecLoginFile(w, r, content)
-		content = me.parseSecHasRoleFile(w, r, content)
-		content = me.parseSecHasAnyRoleFile(w, r, content)
+		content = me.parseSecIsPermissionFile(w, r, content)
+		content = me.parseSecIsAnyPermissionFile(w, r, content)
 	}
 	return content
 }
@@ -251,9 +251,9 @@ func (me *htmlServeMux) parseSecUserFile(w http.ResponseWriter, r *http.Request,
 	return content
 }
 
-func (me *htmlServeMux) parseSecHasRoleFile(w http.ResponseWriter, r *http.Request, content string) string {
+func (me *htmlServeMux) parseSecIsPermissionFile(w http.ResponseWriter, r *http.Request, content string) string {
 	directives := make([]directiveInfo, 0)
-	directives = me.buildDirectiveInfo(content, directiveSecHasRoleBegin, directiveSecEnd, directives)
+	directives = me.buildDirectiveInfo(content, directiveSecIsPermissionBegin, directiveSecEnd, directives)
 	for i := len(directives) - 1; i >= 0; i-- {
 		if strings.IsNotBlank(directives[i].argValue) {
 			isLogin := false
@@ -276,9 +276,9 @@ func (me *htmlServeMux) parseSecHasRoleFile(w http.ResponseWriter, r *http.Reque
 	return content
 }
 
-func (me *htmlServeMux) parseSecHasAnyRoleFile(w http.ResponseWriter, r *http.Request, content string) string {
+func (me *htmlServeMux) parseSecIsAnyPermissionFile(w http.ResponseWriter, r *http.Request, content string) string {
 	directives := make([]directiveInfo, 0)
-	directives = me.buildDirectiveInfo(content, directiveSecHasAnyRoleBegin, directiveSecEnd, directives)
+	directives = me.buildDirectiveInfo(content, directiveSecIsAnyPermissionBegin, directiveSecEnd, directives)
 	for i := len(directives) - 1; i >= 0; i-- {
 		if strings.IsNotBlank(directives[i].argValue) {
 			isLogin := false
@@ -344,12 +344,12 @@ func (me *htmlServeMux) buildDirectiveInfo(content, directiveBegin, directiveEnd
 		case directiveSecUserBegin:
 			directive = "sec"
 			argKey = "user"
-		case directiveSecHasRoleBegin:
+		case directiveSecIsPermissionBegin:
 			directive = "sec"
-			argKey = "hasRole"
-		case directiveSecHasAnyRoleBegin:
+			argKey = "isPermission"
+		case directiveSecIsAnyPermissionBegin:
 			directive = "sec"
-			argKey = "hasAnyRole"
+			argKey = "isAnyPermission"
 		}
 		ii := directiveInfo{
 			statement: statement,

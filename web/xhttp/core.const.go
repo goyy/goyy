@@ -15,16 +15,16 @@ const (
 	default405Body      = "405 method not allowed"
 	default500Body      = "500 server internal error"
 
-	directiveArgEnd             = `"-->`
-	directiveIncludeBegin       = `<!--#include file="`
-	directiveIncludeEnd         = `<!--#endinclude-->`
-	directiveIfBegin            = `<!--#if expr="`
-	directiveIfEnd              = `<!--#endif-->`
-	directiveSecLoginBegin      = `<!--#sec login="`
-	directiveSecUserBegin       = `<!--#sec user="`
-	directiveSecHasRoleBegin    = `<!--#sec hasRole="`
-	directiveSecHasAnyRoleBegin = `<!--#sec hasAnyRole="`
-	directiveSecEnd             = `<!--#endsec-->`
+	directiveArgEnd                  = `"-->`
+	directiveIncludeBegin            = `<!--#include file="`
+	directiveIncludeEnd              = `<!--#endinclude-->`
+	directiveIfBegin                 = `<!--#if expr="`
+	directiveIfEnd                   = `<!--#endif-->`
+	directiveSecLoginBegin           = `<!--#sec login="`
+	directiveSecUserBegin            = `<!--#sec user="`
+	directiveSecIsPermissionBegin    = `<!--#sec isPermission="`
+	directiveSecIsAnyPermissionBegin = `<!--#sec isAnyPermission="`
+	directiveSecEnd                  = `<!--#endsec-->`
 
 	tagBeginPre         = `<`
 	tagEndPre           = `>`
