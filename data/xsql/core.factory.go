@@ -14,16 +14,23 @@ import (
 
 // New Factory
 func New(dialect dialect.Interface, name string) (f Factory, err error) {
-	db, err := env.Database(name)
+	dbconf, err := env.Database(name)
 	if err != nil {
 		return
 	}
+	db, err := sql.Open(dbconf.DriverName, dbconf.DataSourceName)
+	if err != nil {
+		return nil, err
+	}
+	db.SetMaxIdleConns(dbconf.MaxIdleConns)
+	db.SetMaxOpenConns(dbconf.MaxOpenConns)
 	f = &factory{
-		driverName:     db.DriverName,
-		dataSourceName: db.DataSourceName,
-		maxIdleConns:   db.MaxIdleConns,
-		maxOpenConns:   db.MaxOpenConns,
+		driverName:     dbconf.DriverName,
+		dataSourceName: dbconf.DataSourceName,
+		maxIdleConns:   dbconf.MaxIdleConns,
+		maxOpenConns:   dbconf.MaxOpenConns,
 		dialect:        dialect,
+		db:             db,
 	}
 	return
 }
@@ -32,18 +39,13 @@ type factory struct {
 	driverName, dataSourceName string
 	maxIdleConns, maxOpenConns int
 	dialect                    dialect.Interface
+	db                         *sql.DB
 }
 
 // New Session
 func (me *factory) Session() (Session, error) {
-	db, err := sql.Open(me.driverName, me.dataSourceName)
-	if err != nil {
-		return nil, err
-	}
-	db.SetMaxIdleConns(me.maxIdleConns)
-	db.SetMaxOpenConns(me.maxOpenConns)
 	return &session{
-		db:      db,
+		db:      me.db,
 		dialect: me.dialect,
 		dml:     dml.New(me.dialect),
 		dql:     dql.New(me.dialect),

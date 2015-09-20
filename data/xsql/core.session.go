@@ -147,7 +147,7 @@ func (me *session) Begin() (Tx, error) {
 
 // Close Session
 func (me *session) Close() error {
-	return me.db.Close()
+	return nil
 }
 
 // Get Database Type
