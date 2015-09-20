@@ -6,18 +6,24 @@
 			<database name="env">
 				<driverName>mysql</driverName>
 				<dataSourceName>root:root@/env_development?charset=utf8</dataSourceName>
+				<maxIdleConns>10</maxIdleConns>
+				<maxOpenConns>100</maxOpenConns>
 			</database>
 		</environment>
 		<environment id="test">
 			<database name="env">
 				<driverName>mysql</driverName>
 				<dataSourceName>env:env@/env_test?charset=utf8</dataSourceName>
+				<maxIdleConns>10</maxIdleConns>
+				<maxOpenConns>100</maxOpenConns>
 			</database>
 		</environment>
 		<environment id="production">
 			<database name="env">
 				<driverName>mysql</driverName>
 				<dataSourceName>env:env@tcp(localhost:3306)/env_production?charset=utf8</dataSourceName>
+				<maxIdleConns>10</maxIdleConns>
+				<maxOpenConns>100</maxOpenConns>
 			</database>
 		</environment>
 	</environments>

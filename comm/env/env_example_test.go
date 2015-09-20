@@ -13,10 +13,14 @@ func ExampleDatabase() {
 	db, _ := env.Database("env")
 	fmt.Println(db.DriverName)
 	fmt.Println(db.DataSourceName)
+	fmt.Println(db.MaxIdleConns)
+	fmt.Println(db.MaxOpenConns)
 
 	// Output:
 	// mysql
 	// root:root@/env_development?charset=utf8
+	// 10
+	// 100
 }
 
 func ExampleMail() {

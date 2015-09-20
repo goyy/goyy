@@ -23,6 +23,8 @@ type xDatabase struct {
 	Name           string `xml:"name,attr"`
 	DriverName     string `xml:"driverName"`
 	DataSourceName string `xml:"dataSourceName"`
+	MaxIdleConns   int    `xml:"maxIdleConns"`
+	MaxOpenConns   int    `xml:"maxOpenConns"`
 }
 
 type xMail struct {

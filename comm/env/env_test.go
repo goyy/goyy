@@ -13,10 +13,12 @@ func TestDatabase(t *testing.T) {
 	in := "env"
 	out1 := "mysql"
 	out2 := "root:root@/env_development?charset=utf8"
+	out3 := 10
+	out4 := 100
 	db, _ := env.Database(in)
-	if db.DriverName != out1 || db.DataSourceName != out2 {
-		format := "env.Database(%s) = %s, %s, _; want %s, %s, _"
-		t.Errorf(format, in, db.DriverName, db.DataSourceName, out1, out2)
+	if db.DriverName != out1 || db.DataSourceName != out2 || db.MaxIdleConns != out3 || db.MaxOpenConns != out4 {
+		format := "env.Database(%s) = %s, %s, %v, %v; want %s, %s, %v, %v"
+		t.Errorf(format, in, db.DriverName, db.DataSourceName, db.MaxIdleConns, db.MaxOpenConns, out1, out2, out3, out4)
 	}
 }
 
