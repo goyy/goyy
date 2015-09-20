@@ -1,0 +1,46 @@
+// Copyright 2014 The goyy Authors.  All rights reserved.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file.
+
+package xsql
+
+import (
+	"database/sql"
+	"gopkg.in/goyy/goyy.v0/data/dialect"
+	"gopkg.in/goyy/goyy.v0/data/dml"
+	"gopkg.in/goyy/goyy.v0/data/dql"
+	"gopkg.in/goyy/goyy.v0/comm/env"
+)
+
+// New Factory
+func New(dialect dialect.Interface, name string) (f Factory, err error) {
+	db, err := env.Database(name)
+	if err != nil {
+		return
+	}
+	f = &factory{
+		driverName:     db.DriverName,
+		dataSourceName: db.DataSourceName,
+		dialect:        dialect,
+	}
+	return
+}
+
+type factory struct {
+	driverName, dataSourceName string
+	dialect                    dialect.Interface
+}
+
+// New Session
+func (me *factory) Session() (Session, error) {
+	db, err := sql.Open(me.driverName, me.dataSourceName)
+	if err != nil {
+		return nil, err
+	}
+	return &session{
+		db:      db,
+		dialect: me.dialect,
+		dml:     dml.New(me.dialect),
+		dql:     dql.New(me.dialect),
+	}, nil
+}

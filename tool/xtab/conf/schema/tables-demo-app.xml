@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
+<configuration>
+	<tables>
+		<table id="product" name="PRODUCT" extends="base" comment="product table">
+			<column id="title"       name="TITLE"       domain="memo"   comment="product title"/>
+			<column id="description" name="DESCRIPTION" domain="remark" comment="product description"/>
+			<column id="price"       name="PRICE"       domain="float"  comment="product price"/>
+		</table>
+		<table id="order" name="ORDER" extends="base" comment="order table">
+			<column extends="name"/>
+			<column extends="email"/>
+			<column extends="address"/>
+		</table>
+		<table id="order_product" name="ORDER_PRODUCT" extends="base" comment="order product">
+			<column id="order_id"   name="ORDER_ID"   domain="id"    comment="product title"/>
+			<column id="product_id" name="PRODUCT_ID" domain="id"    comment="product description"/>
+			<column id="quantity"   name="QUANTITY"   domain="int"   comment="product quantity"/>
+			<column id="unit_price" name="UNIT_PRICE" domain="float" comment="product unit price"/>
+		</table>
+	</tables>
+</configuration>

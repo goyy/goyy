@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE env PUBLIC "-//GOYY//DTD ENV 1.0//EN" "http://goyy.org/dtd/env-1.0.dtd">
+<configuration>
+	<environments default="development">
+		<environment id="development">
+			<mail name="env">
+				<secret>0ae36a2eha9p1e16</secret>
+				<protocol>POP3</protocol>
+				<username>username@example.com</username>
+				<password>password</password>
+				<host>mail.example.com</host>
+				<port>110</port>
+			</mail>
+		</environment>
+		<environment id="test">
+			<mail name="env">
+				<secret>0ae36a2eha9p1e16</secret>
+				<protocol>POP3</protocol>
+				<username>username@example.com</username>
+				<password>password</password>
+				<host>mail.example.com</host>
+				<port>110</port>
+			</mail>
+		</environment>
+		<environment id="production">
+			<mail name="env">
+				<secret>0ae36a2eha9p1e16</secret>
+				<protocol>POP3</protocol>
+				<username>username@example.com</username>
+				<password>password</password>
+				<host>mail.example.com</host>
+				<port>110</port>
+			</mail>
+		</environment>
+	</environments>
+</configuration>

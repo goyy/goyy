@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
+<configuration>
+	<tables>
+		<table id="user" name="USER" extends="base" comment="user table">
+			<column extends="name" index="true"/>
+			<column extends="passwd"/>
+		</table>
+		<table id="role" name="ROLE" extends="base" comment="role table">
+			<column extends="name"/>
+		</table>
+		<table id="user_role" name="USER_ROLE" extends="pk" comment="user role associated table">
+			<column id="user_id" name="USER_ID" domain="id" comment="user table identifies"/>
+			<column id="role_id" name="ROLE_ID" domain="id" comment="role table identifies"/>
+		</table>
+	</tables>
+</configuration>

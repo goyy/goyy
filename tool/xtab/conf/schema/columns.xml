@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
+<configuration>
+	<columns>
+		<column id="id"           name="ID"           domain="id"     comment="primary key"/>
+		<column id="code"         name="CODE"         domain="code"   comment="code"/>
+		<column id="name"         name="NAME"         domain="name"   comment="name"/>
+		<column id="fullname"     name="FULLNAME"     domain="memo"   comment="fullname"/>
+		<column id="genre"        name="GENRE"        domain="code"   comment="genre"/>
+		<column id="memo"         name="MEMO"         domain="memo"   comment="memo"/>
+		<column id="descr"        name="DESCR"        domain="descr"  comment="description"/>
+		<column id="remark"       name="REMARK"       domain="remark" comment="remark"/>
+		<column id="time"         name="TIME"         domain="time"   comment="time"/>
+		<column id="passwd"       name="PASSWD"       domain="name"   comment="password"/>
+		<column id="email"        name="EMAIL"        domain="name"   comment="email"/>
+		<column id="mobile"       name="MOBILE"       domain="code"   comment="mobile"/>
+		<column id="tel"          name="TEL"          domain="code"   comment="telephone"/>
+		<column id="receiver"     name="RECEIVER"     domain="code"   comment="receiver"/>
+		<column id="address"      name="ADDRESS"      domain="memo"   comment="address"/>
+		<column id="postcode"     name="POSTCODE"     domain="code"   comment="postcode"/>
+		<column id="city"         name="CITY"         domain="id"     comment="city"/>
+		<column id="ordinal"      name="ORDINAL"      domain="code"   comment="ordinal"/>
+		<column id="usable"       name="USABLE"       domain="code"   comment="usable"/>
+		<column id="mkey"         name="MKEY"         domain="name"   comment="map key"/>
+		<column id="mval"         name="MVAL"         domain="name"   comment="map value"/>
+		<column id="params"       name="PARAMS"       domain="name"   comment="params"/>
+		<column id="filters"      name="FILTERS"      domain="name"   comment="filters"/>
+		<column id="begin_time"   name="BEGIN_TIME"   domain="long"   comment="begin time"/>
+		<column id="end_time"     name="END_TIME"     domain="long"   comment="end time"/>
+		<column id="area_id"      name="AREA_ID"      domain="id"     comment="the identity of the area table"/>
+		<column id="org_id"       name="ORG_ID"       domain="id"     comment="the identity of the org table"/>
+		<column id="user_id"      name="USER_ID"      domain="id"     comment="the identity of the user table"/>
+		<column id="role_id"      name="ROLE_ID"      domain="id"     comment="the identity of the role table"/>
+		<column id="menu_id"      name="MENU_ID"      domain="id"     comment="the identity of the menu table"/>
+		<column id="parent_id"    name="PARENT_ID"    domain="id"     comment="the identity of the parent table"/>
+		<column id="parent_ids"   name="PARENT_IDS"   domain="memo"   comment="all the identity of the parent table"/>
+		<column id="parent_names" name="PARENT_NAMES" domain="memo"   comment="all the name of the parent table"/>
+		<column id="creater"      name="CREATER"      domain="code"   comment="created user"/>
+		<column id="created"      name="CREATED"      domain="time"   comment="created time"/>
+		<column id="modifier"     name="MODIFIER"     domain="code"   comment="modified user"/>
+		<column id="modified"     name="MODIFIED"     domain="time"   comment="modified time"/>
+		<column id="version"      name="VERSION"      domain="int"    comment="optimistic locking" default="0"/>
+		<column id="deletion"     name="DELETION"     domain="bool"   comment="logic delete flag"  default="0"/>
+		<column id="artifical"    name="ARTIFICAL"    domain="bool"   comment="artificial data"    default="0"/>
+		<column id="history"      name="HISTORY"      domain="bool"   comment="history data"       default="0"/>
+	</columns>
+</configuration>

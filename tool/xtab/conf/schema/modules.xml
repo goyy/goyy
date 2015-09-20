@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
+<configuration>
+	<modules>
+		<module id="sys" name="SYS" prefix="sys" project="demo" generate="true" comment="System tables"/>
+		<module id="app" name="APP" prefix="app" project="demo" generate="true" comment="Application business tables"/>
+	</modules>
+</configuration>

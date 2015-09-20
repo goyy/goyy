@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE env PUBLIC "-//GOYY//DTD ENV 1.0//EN" "http://goyy.org/dtd/env-1.0.dtd">
+<configuration>
+	<environments default="test">
+		<environment id="development">
+			<database name="db">
+				<driverName>mymysql</driverName>
+				<dataSourceName>db_development/root/root</dataSourceName>
+			</database>
+		</environment>
+		<environment id="test">
+			<database name="db">
+				<driverName>oci8</driverName>
+				<dataSourceName>ynd_site_dev_01/(h^h$sqOZ@dev</dataSourceName>
+			</database>
+		</environment>
+		<environment id="production">
+			<database name="db">
+				<driverName>mymysql</driverName>
+				<dataSourceName>tcp:localhost:3306*db_production/db/db</dataSourceName>
+			</database>
+		</environment>
+	</environments>
+</configuration>
