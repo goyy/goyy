@@ -2,10 +2,10 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package secure
+package main
 
-var passwdKey = "goyy2015"
+import (
+	"gopkg.in/goyy/goyy.v0/comm/log"
+)
 
-func SetPasswdKey(key string) {
-	passwdKey = key
-}
+var logger = log.New("[xtab]")

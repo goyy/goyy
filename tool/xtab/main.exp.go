@@ -5,15 +5,14 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 )
 
 func main() {
-	fmt.Println("=======start=======")
+	logger.Println("Exporting sql : start")
 	expSQL()
-	fmt.Println("=======end=======")
+	logger.Println("Exporting sql : end")
 }
 
 func expSQL() {
