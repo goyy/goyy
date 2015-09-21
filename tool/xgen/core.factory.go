@@ -264,14 +264,26 @@ func (me factory) Write() error {
 	}
 	if me.HasGenController {
 		if strings.IsBlank(me.Client) {
-			if err := me.writeControllerHtmlXgen(); err != nil {
-				return err
-			}
-			if err := me.writeControllerHtmlMain(); err != nil {
-				return err
-			}
-			if err := me.writeControllerHtmlReg(); err != nil {
-				return err
+			if strings.IsBlank(me.Apipath) {
+				if err := me.writeControllerHtmlXgen(); err != nil {
+					return err
+				}
+				if err := me.writeControllerHtmlMain(); err != nil {
+					return err
+				}
+				if err := me.writeControllerHtmlReg(); err != nil {
+					return err
+				}
+			} else {
+				if err := me.writeControllerJsonXgen(); err != nil {
+					return err
+				}
+				if err := me.writeControllerJsonMain(); err != nil {
+					return err
+				}
+				if err := me.writeControllerJsonReg(); err != nil {
+					return err
+				}
 			}
 		} else {
 			if err := me.writeControllerJsonXgen(); err != nil {
