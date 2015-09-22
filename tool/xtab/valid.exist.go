@@ -121,7 +121,7 @@ func (me *valids) IsExistDomains() bool {
 		<domain id="remark" name="REMARK" types="string" length="4000"/>
 		<domain id="int"    name="INT"    types="int"/>
 		<domain id="long"   name="LONG"   types="long"/>
-		<domain id="float"  name="FLOAT"  types="float"  length="11" precision="2"/>
+		<domain id="float"  name="FLOAT"  types="float"  length="11" precision="3"/>
 		<domain id="bool"   name="BOOL"   types="bool"/>
 		<domain id="time"   name="TIME"   types="time"/>
 		<domain id="text"   name="TEXT"   types="text"/>
