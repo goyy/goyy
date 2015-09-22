@@ -21,7 +21,7 @@ var Conf = &conf{
 		Operations: "/static",
 	},
 	Templates: &templateOptions{
-		Directory:  "templates",
+		Dir:        "templates",
 		Extensions: []string{"tmpl"},
 		Funcs:      []template.FuncMap{},
 		Delims: templateDelims{
@@ -80,7 +80,7 @@ type secureOptions struct {
 // Options is a struct for specifying configuration options for the html render
 type templateOptions struct {
 	// Directory to load templates. Default is "templates"
-	Directory string
+	Dir string
 	// Extensions to parse template files from. Defaults to ["tmpl"]
 	Extensions []string
 	// Funcs is a slice of FuncMaps to apply to the template upon compilation.

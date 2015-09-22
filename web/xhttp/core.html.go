@@ -54,7 +54,7 @@ var hsm = &htmlServeMux{}
 
 func (me *htmlServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool {
 	if me.isHtml(r.URL.Path) {
-		filename := Conf.Templates.Directory + r.URL.Path
+		filename := Conf.Templates.Dir + r.URL.Path
 		if files.IsExist(filename) {
 			if me.isUseBrowserCache(w, r, filename) {
 				return true
@@ -329,7 +329,7 @@ func (me *htmlServeMux) buildDirectiveInfo(content, directiveBegin, directiveEnd
 		pos = end
 		argValue := strings.Slice(content, begin+len(directiveBegin), center)
 		if directiveBegin == directiveIncludeBegin {
-			argValue = Conf.Templates.Directory + argValue
+			argValue = Conf.Templates.Dir + argValue
 			if !files.IsExist(argValue) {
 				continue
 			}
@@ -476,7 +476,7 @@ func (me *htmlServeMux) buildTagTextInfo(content, attr string, tags []tagTextInf
 		newstmt := statement
 		dstVal := strings.Slice(content, dstBegin+len(dstBeginPre), dstEnd)
 		if strings.IsNotBlank(dstVal) {
-			filename := Conf.Templates.Directory + dstVal
+			filename := Conf.Templates.Dir + dstVal
 			if files.IsExist(filename) {
 				if c, err := files.Read(filename); err == nil {
 					title := strings.Slice(content, srcBegin+len(tagBeginPre), srcEnd)

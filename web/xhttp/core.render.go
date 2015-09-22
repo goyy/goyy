@@ -95,7 +95,7 @@ func (me *renderer) writeHeader(w http.ResponseWriter, status int, contentType s
 }
 
 func (me *renderer) compile(options *templateOptions) error {
-	dir := options.Directory
+	dir := options.Dir
 	me.t = template.New(dir)
 	me.t.Delims(options.Delims.Left, options.Delims.Right)
 	// parse an initial template in case we don't have any
