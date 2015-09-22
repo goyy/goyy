@@ -113,6 +113,7 @@ func (me *valids) IsExistDomains() bool {
 <configuration>
 	<domains>
 		<domain id="id"     name="ID"     types="string" length="50"/>
+		<domain id="flag"   name="flag"   types="string" length="5"/>
 		<domain id="code"   name="CODE"   types="string" length="100"/>
 		<domain id="name"   name="NAME"   types="string" length="255"/>
 		<domain id="memo"   name="MEMO"   types="string" length="1000"/>
@@ -145,18 +146,22 @@ func (me *valids) IsExistColumns() bool {
 		<column id="memo"         name="MEMO"         domain="memo"   comment="memo"/>
 		<column id="descr"        name="DESCR"        domain="descr"  comment="description"/>
 		<column id="remark"       name="REMARK"       domain="remark" comment="remark"/>
-		<column id="time"         name="TIME"         domain="time"   comment="time"/>
+		<column id="timed"        name="TIME"         domain="time"   comment="time"/>
 		<column id="passwd"       name="PASSWD"       domain="name"   comment="password"/>
 		<column id="email"        name="EMAIL"        domain="name"   comment="email"/>
 		<column id="mobile"       name="MOBILE"       domain="code"   comment="mobile"/>
 		<column id="tel"          name="TEL"          domain="code"   comment="telephone"/>
+		<column id="sex"          name="SEX"          domain="flag"   comment="sex"/>
 		<column id="receiver"     name="RECEIVER"     domain="code"   comment="receiver"/>
 		<column id="address"      name="ADDRESS"      domain="memo"   comment="address"/>
 		<column id="zipcode"      name="ZIPCODE"      domain="code"   comment="zipcode"/>
 		<column id="city"         name="CITY"         domain="id"     comment="city"/>
 		<column id="ordinal"      name="ORDINAL"      domain="code"   comment="ordinal"/>
-		<column id="usable"       name="USABLE"       domain="code"   comment="usable"/>
-		<column id="mkey"         name="MKEY"         domain="name"   comment="map key"/>
+		<column id="usable"       name="USABLE"       domain="flag"   comment="usable"/>
+		<column id="status"       name="STATUS"       domain="flag"   comment="status"/>
+		<column id="mark"         name="MARK"         domain="flag"   comment="mark"/>
+		<column id="source"       name="SOURCE"       domain="flag"   comment="source"/>
+		<column id="mkey"         name="MKEY"         domain="flag"   comment="map key"/>
 		<column id="mval"         name="MVAL"         domain="name"   comment="map value"/>
 		<column id="params"       name="PARAMS"       domain="name"   comment="params"/>
 		<column id="filters"      name="FILTERS"      domain="name"   comment="filters"/>
