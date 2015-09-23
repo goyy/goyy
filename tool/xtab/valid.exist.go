@@ -113,7 +113,7 @@ func (me *valids) IsExistDomains() bool {
 <configuration>
 	<domains>
 		<domain id="id"     name="ID"     types="string" length="50"/>
-		<domain id="flag"   name="flag"   types="string" length="5"/>
+		<domain id="flag"   name="flag"   types="string" length="10"/>
 		<domain id="code"   name="CODE"   types="string" length="100"/>
 		<domain id="name"   name="NAME"   types="string" length="255"/>
 		<domain id="memo"   name="MEMO"   types="string" length="1000"/>
