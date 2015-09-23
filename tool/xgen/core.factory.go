@@ -19,6 +19,7 @@ import (
 
 // factory is a file generation factory.
 type factory struct {
+	Project          string
 	PackageName      string
 	Epath            string
 	Htmpath          string
@@ -102,6 +103,9 @@ func (me *factory) Init(path string) error {
 		}
 
 		e := entity{Project: project, Relationship: relationship}
+		if strings.IsBlank(me.Project) {
+			me.Project = project
+		}
 
 		// get the name of the entity
 		for _, spec := range tdecl.Specs {
@@ -343,16 +347,19 @@ func (me factory) writeBy(typ, content string) error {
 	// get the destination file
 	dir, file := filepath.Split(me.Epath)
 	if typ == "main.dto" || typ == "xgen.controller.client" || typ == "main.controller.client" {
-		dir = me.Client + "/internal/" + me.PackageName
+		dir = me.Client + "/internal/" + me.Project + "/" + me.PackageName
 	}
 	if typ == "main.api" {
 		dir = "../../api/" + me.PackageName
 	}
 	if typ == "reg.controller.client" {
+		dir = me.Client + "/internal/" + me.Project
+	}
+	if typ == "reg.pro.controller.client" {
 		dir = me.Client + "/internal"
 	}
 	if typ == "reg.controller.json" {
-		dir = "../../register"
+		dir = "../../"
 	}
 	if typ == "reg.controller.html" {
 		dir = ".."
@@ -423,7 +430,11 @@ func (me factory) writeControllerClientMain() error {
 }
 
 func (me factory) writeControllerClientReg() error {
-	return me.writeBy("reg.controller.client", tmplControllerClientReg)
+	err := me.writeBy("reg.controller.client", tmplControllerClientReg)
+	if err != nil {
+		return err
+	}
+	return me.writeBy("reg.pro.controller.client", tmplControllerClientRegPro)
 }
 
 func (me factory) writeSqlMain() error {
@@ -507,11 +518,14 @@ func (me factory) genFileName(typ, name string) string {
 	if typ == "main.const" {
 		return "main.const.go"
 	}
-	if typ == "main.api" || typ == "reg.controller.json" {
+	if typ == "main.api" {
 		return me.PackageName + ".go"
 	}
-	if typ == "reg.controller.html" || typ == "reg.controller.client" {
+	if typ == "reg.controller.html" || typ == "reg.controller.client" || typ == "reg.controller.json" {
 		return "register." + me.PackageName + ".go"
+	}
+	if typ == "reg.pro.controller.client" {
+		return "register." + me.Project + ".go"
 	}
 	if strings.HasPrefix(name, typMain) {
 		name = strings.After(name, typMain)
