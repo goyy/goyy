@@ -140,6 +140,7 @@ func (me *valids) IsExistColumns() bool {
 		<column id="id"           name="ID"           domain="id"     comment="primary key"/>
 		<column id="code"         name="CODE"         domain="code"   comment="code"/>
 		<column id="name"         name="NAME"         domain="name"   comment="name"/>
+		<column id="nickname"     name="NICKNAME"     domain="code"   comment="nickname"/>
 		<column id="fullname"     name="FULLNAME"     domain="memo"   comment="fullname"/>
 		<column id="genre"        name="GENRE"        domain="code"   comment="genre"/>
 		<column id="content"      name="CONTENT"      domain="descr"  comment="content"/>
@@ -151,12 +152,16 @@ func (me *valids) IsExistColumns() bool {
 		<column id="email"        name="EMAIL"        domain="name"   comment="email"/>
 		<column id="mobile"       name="MOBILE"       domain="code"   comment="mobile"/>
 		<column id="tel"          name="TEL"          domain="code"   comment="telephone"/>
+		<column id="contact"      name="CONTACT"      domain="name"   comment="contact"/>
 		<column id="sex"          name="SEX"          domain="flag"   comment="sex"/>
 		<column id="receiver"     name="RECEIVER"     domain="code"   comment="receiver"/>
 		<column id="address"      name="ADDRESS"      domain="memo"   comment="address"/>
 		<column id="zipcode"      name="ZIPCODE"      domain="code"   comment="zipcode"/>
+		<column id="intro"        name="INTRODUCTION" domain="remark" comment="introduction"/>
+		<column id="weight"       name="WEIGHT"       domain="int"    comment="weight"/>
 		<column id="city"         name="CITY"         domain="id"     comment="city"/>
 		<column id="ordinal"      name="ORDINAL"      domain="code"   comment="ordinal"/>
+		<column id="img"          name="IMAGES"       domain="name"   comment="images"/>
 		<column id="usable"       name="USABLE"       domain="flag"   comment="usable"/>
 		<column id="status"       name="STATUS"       domain="flag"   comment="status"/>
 		<column id="mark"         name="MARK"         domain="flag"   comment="mark"/>
