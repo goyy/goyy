@@ -5,12 +5,18 @@
 package times
 
 import (
+	"strconv"
 	"time"
 )
 
-// Now returns the current local time.
+// Now returns the current local time of unix.
 func Now() int64 {
 	return time.Now().Unix()
+}
+
+// Now returns the current local time of unix.
+func NowStr() string {
+	return strconv.FormatInt(Now(), 10)
 }
 
 // Unix returns the local Time corresponding to the given Unix time,

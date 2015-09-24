@@ -7,7 +7,7 @@ package controller
 import (
 	"gopkg.in/goyy/goyy.v0/data/result"
 	"gopkg.in/goyy/goyy.v0/util/webs"
-	"gopkg.in/goyy/goyy.v0/web/secure"
+	"gopkg.in/goyy/goyy.v0/web/session"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
@@ -17,9 +17,9 @@ import (
 
 func (me *ClientController) Result(c xhttp.Context, r result.Http) map[string]interface{} {
 	params := webs.ToParams(c.Params())
-	p := secure.Principal{}
-	if secure.IsLogin(c) {
-		v, err := secure.GetPrincipal(c)
+	p := session.Principal{}
+	if c.Session().IsLogin() {
+		v, err := c.Session().Principal()
 		if err != nil {
 			logger.Error(err.Error())
 		} else {

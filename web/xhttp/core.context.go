@@ -8,11 +8,12 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/web/session"
 	"net/http"
 	"net/url"
 )
 
-func newContext(w http.ResponseWriter, s Session, r *http.Request, vs url.Values, hs Handlers) Context {
+func newContext(w http.ResponseWriter, s session.Interface, r *http.Request, vs url.Values, hs Handlers) Context {
 	c := &context{}
 	c.request = r
 	c.session = s
@@ -25,7 +26,7 @@ func newContext(w http.ResponseWriter, s Session, r *http.Request, vs url.Values
 
 type context struct {
 	request    *http.Request
-	session    Session
+	session    session.Interface
 	response   http.ResponseWriter
 	params     url.Values
 	attributes map[string]interface{}
@@ -37,7 +38,7 @@ func (me *context) Request() *http.Request {
 	return me.request
 }
 
-func (me *context) Session() Session {
+func (me *context) Session() session.Interface {
 	return me.session
 }
 

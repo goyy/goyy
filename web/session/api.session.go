@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package xhttp
+package session
 
 // Options stores configuration for a session or session store.
 //
@@ -18,8 +18,8 @@ type Options struct {
 	HttpOnly bool
 }
 
-// Session stores the values and optional configuration for a session.
-type Session interface {
+// Interface stores the values and optional configuration for a session.
+type Interface interface {
 	// Get returns the session value associated to the given key.
 	Get(key string) (string, error)
 	// Set sets the session value associated to the given key.
@@ -38,4 +38,12 @@ type Session interface {
 	Flashes(vars ...string) []string
 	// Options sets confuguration for a session.
 	Options(*Options)
+	// To determine whether it has been logged in
+	IsLogin() bool
+	// Get principal from session
+	Principal() (Principal, error)
+	// Set principal to session
+	SetPrincipal(value Principal) error
+	// Set principal to session
+	ResetPrincipal() error
 }

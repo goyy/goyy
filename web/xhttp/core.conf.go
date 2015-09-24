@@ -7,6 +7,7 @@ package xhttp
 import (
 	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
+	"gopkg.in/goyy/goyy.v0/web/session"
 	"html/template"
 )
 
@@ -32,7 +33,7 @@ var Conf = &conf{
 	},
 	Session: &sessionOptions{
 		Addr: ":6379",
-		Options: &Options{
+		Options: &session.Options{
 			Path:     "",
 			Domain:   "",
 			MaxAge:   30 * 60,
@@ -59,7 +60,7 @@ type conf struct {
 }
 
 type sessionOptions struct {
-	*Options
+	*session.Options
 	Addr string
 }
 

@@ -12,6 +12,8 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/repository"
 	"gopkg.in/goyy/goyy.v0/data/result"
 	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/util/times"
+	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
 type Manager struct {
@@ -132,7 +134,7 @@ func (me *Manager) SelectPageBySift(content entity.Interfaces, pageable domain.P
 	return me.Repository.SelectPageBySift(pageable, content, sifts...)
 }
 
-func (me *Manager) Save(e entity.Interface) error {
+func (me *Manager) Save(c xhttp.Context, e entity.Interface) error {
 	if me.Pre == nil {
 		me.Pre = me.defaultPre
 	}
@@ -142,8 +144,22 @@ func (me *Manager) Save(e entity.Interface) error {
 		return err
 	}
 	if strings.IsBlank(e.Get(e.Table().Primary().Name()).(string)) {
+		if c.Session().IsLogin() {
+			if p, err := c.Session().Principal(); err == nil {
+				e.SetString(creater, p.Id)
+				e.SetString(created, times.NowStr())
+				e.SetString(modifier, p.Id)
+				e.SetString(modified, times.NowStr())
+			}
+		}
 		_, err = me.Repository.Insert(e)
 	} else {
+		if c.Session().IsLogin() {
+			if p, err := c.Session().Principal(); err == nil {
+				e.SetString(modifier, p.Id)
+				e.SetString(modified, times.NowStr())
+			}
+		}
 		_, err = me.Repository.Update(e)
 	}
 	if err != nil {
@@ -158,7 +174,7 @@ func (me *Manager) Save(e entity.Interface) error {
 	return nil
 }
 
-func (me *Manager) Disable(e entity.Interface) (int64, error) {
+func (me *Manager) Disable(c xhttp.Context, e entity.Interface) (int64, error) {
 	if me.Pre == nil {
 		me.Pre = me.defaultPre
 	}
@@ -169,6 +185,12 @@ func (me *Manager) Disable(e entity.Interface) (int64, error) {
 	tx, err := me.Repository.Begin()
 	if err != nil {
 		return 0, err
+	}
+	if c.Session().IsLogin() {
+		if p, err := c.Session().Principal(); err == nil {
+			e.SetString(modifier, p.Id)
+			e.SetString(modified, times.NowStr())
+		}
 	}
 	r, err := me.Repository.Disable(e)
 	if err != nil {

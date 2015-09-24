@@ -115,9 +115,11 @@ func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request
 			if me.isSec(content) {
 				var lastLoginTimeUnix int64
 				s := newSession4Redis(w, r)
-				if v, err := s.Get(principalLoginTime); err == nil && strings.IsNotBlank(v) {
-					if i, err := strconv.Atoi(v); err == nil {
-						lastLoginTimeUnix = int64(i)
+				if p, err := s.Principal(); err == nil {
+					if strings.IsNotBlank(p.LoginTime) {
+						if i, err := strconv.Atoi(p.LoginTime); err == nil {
+							lastLoginTimeUnix = int64(i)
+						}
 					}
 				}
 				if browserModTimeUnix < lastLoginTimeUnix {
@@ -220,8 +222,10 @@ func (me *htmlServeMux) parseSecLoginFile(w http.ResponseWriter, r *http.Request
 	for i := len(directives) - 1; i >= 0; i-- {
 		isLogin := false
 		s := newSession4Redis(w, r)
-		if v, err := s.Get(principalId); err == nil && strings.IsNotBlank(v) {
-			isLogin = true
+		if p, err := s.Principal(); err == nil {
+			if strings.IsNotBlank(p.Id) {
+				isLogin = true
+			}
 		}
 		if directives[i].argValue == "true" && !isLogin {
 			content = strings.Replace(content, directives[i].statement, "", -1)
@@ -239,12 +243,12 @@ func (me *htmlServeMux) parseSecUserFile(w http.ResponseWriter, r *http.Request,
 	for i := len(directives) - 1; i >= 0; i-- {
 		if directives[i].argValue == "name" {
 			s := newSession4Redis(w, r)
-			v, err := s.Get(principalLoginName)
+			p, err := s.Principal()
 			if err != nil {
 				logger.Error(err.Error())
 				break
 			}
-			content = strings.Replace(content, directives[i].statement, v, -1)
+			content = strings.Replace(content, directives[i].statement, p.LoginName, -1)
 			break
 		}
 	}
@@ -257,13 +261,13 @@ func (me *htmlServeMux) parseSecIsPermissionFile(w http.ResponseWriter, r *http.
 	for i := len(directives) - 1; i >= 0; i-- {
 		if strings.IsNotBlank(directives[i].argValue) {
 			isLogin := false
-			s := newSession4Redis(w, r)
-			if v, err := s.Get(principalId); err == nil && strings.IsNotBlank(v) {
-				isLogin = true
-			}
 			isContains := false
-			if v, err := s.Get(principalPermissions); err == nil {
-				if strings.Contains(v, directives[i].argValue) {
+			s := newSession4Redis(w, r)
+			if p, err := s.Principal(); err == nil {
+				if strings.IsNotBlank(p.Id) {
+					isLogin = true
+				}
+				if strings.Contains(p.Permissions, directives[i].argValue) {
 					isContains = true
 				}
 			}
@@ -282,14 +286,14 @@ func (me *htmlServeMux) parseSecIsAnyPermissionFile(w http.ResponseWriter, r *ht
 	for i := len(directives) - 1; i >= 0; i-- {
 		if strings.IsNotBlank(directives[i].argValue) {
 			isLogin := false
-			s := newSession4Redis(w, r)
-			if v, err := s.Get(principalId); err == nil && strings.IsNotBlank(v) {
-				isLogin = true
-			}
 			isContains := false
-			if v, err := s.Get(principalPermissions); err == nil {
+			s := newSession4Redis(w, r)
+			if p, err := s.Principal(); err == nil {
+				if strings.IsNotBlank(p.Id) {
+					isLogin = true
+				}
 				avs := strings.Split(directives[i].argValue, ",")
-				if strings.ContainsSliceAny(v, avs) {
+				if strings.ContainsSliceAny(p.Permissions, avs) {
 					isContains = true
 				}
 			}

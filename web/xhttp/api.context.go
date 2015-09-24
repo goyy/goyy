@@ -6,13 +6,14 @@ package xhttp
 
 import (
 	"gopkg.in/goyy/goyy.v0/data/entity"
+	"gopkg.in/goyy/goyy.v0/web/session"
 	"net/http"
 	"net/url"
 )
 
 type Context interface {
 	Request() *http.Request
-	Session() Session
+	Session() session.Interface
 	ResponseWriter() http.ResponseWriter
 	Params() url.Values
 
