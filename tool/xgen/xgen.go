@@ -11,7 +11,7 @@ import (
 
 func main() {
 	epath := flag.String("entity", "", "entity file path")
-	client := flag.String("client", "", "client project path")
+	clidir := flag.String("clidir", "", "client project path")
 	htmpath := flag.String("htmpath", "", "import path for html project")
 	clipath := flag.String("clipath", "", "import path for client project")
 	apipath := flag.String("apipath", "", "import path for api project")
@@ -26,7 +26,7 @@ func main() {
 	hasConst := flag.Bool("const", false, "is generated const")
 	flag.Parse()
 	f := factory{
-		Client:           *client,
+		Clidir:           *clidir,
 		Htmpath:          *htmpath,
 		Clipath:          *clipath,
 		Apipath:          *apipath,

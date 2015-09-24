@@ -23,9 +23,9 @@ type factory struct {
 	PackageName      string
 	Epath            string
 	Htmpath          string
+	Clidir           string
 	Clipath          string
 	Apipath          string
-	Client           string
 	HasGenService    bool
 	HasGenController bool
 	HasGenDto        bool
@@ -267,7 +267,7 @@ func (me factory) Write() error {
 		}
 	}
 	if me.HasGenController {
-		if strings.IsBlank(me.Client) {
+		if strings.IsBlank(me.Clidir) {
 			if strings.IsBlank(me.Apipath) {
 				if err := me.writeControllerHtmlXgen(); err != nil {
 					return err
@@ -347,16 +347,16 @@ func (me factory) writeBy(typ, content string) error {
 	// get the destination file
 	dir, file := filepath.Split(me.Epath)
 	if typ == "main.dto" || typ == "xgen.controller.client" || typ == "main.controller.client" {
-		dir = me.Client + "/internal/" + me.Project + "/" + me.PackageName
+		dir = me.Clidir + "/internal/" + me.Project + "/" + me.PackageName
 	}
 	if typ == "main.api" {
 		dir = "../../api/" + me.PackageName
 	}
 	if typ == "reg.controller.client" {
-		dir = me.Client + "/internal/" + me.Project
+		dir = me.Clidir + "/internal/" + me.Project
 	}
 	if typ == "reg.pro.controller.client" {
-		dir = me.Client + "/internal"
+		dir = me.Clidir + "/internal"
 	}
 	if typ == "reg.controller.json" {
 		dir = "../../"
