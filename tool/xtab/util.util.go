@@ -18,6 +18,23 @@ func (me *utils) Pad(in string) string {
 	return strings.PadEnd(in, 30)
 }
 
+func (me *utils) Etype(in string) string {
+	switch in {
+	case "int":
+		return "entity.Int"
+	case "long":
+		return "entity.Int64"
+	case "float":
+		return "entity.Float64"
+	case "bool":
+		return "entity.Bool"
+	case "time":
+		return "entity.Time"
+	default:
+		return "entity.String"
+	}
+}
+
 func (me *utils) Case(in string) (out string) {
 	if conf.Settings.Statement.Case == lower {
 		out = strings.ToLower(in)

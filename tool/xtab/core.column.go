@@ -32,6 +32,7 @@ type column struct {
 	comment  string
 	defaults string
 	nullable string
+	field    string
 }
 
 func (me *column) Id() string { // column.id: this -> parent
@@ -77,6 +78,22 @@ func (me *column) Types() (types string) { // column.types: this.domain -> paren
 		types = me.domain.Types()
 		if types == "" && me.parent != nil {
 			types = me.parent.Types()
+		}
+	}
+	return
+}
+
+func (me *column) Etype() (etype string) { // column.etype: this.domain -> parent.domain
+	if me.domain == nil {
+		if me.parent == nil {
+			etype = "entity.String"
+		} else {
+			etype = me.parent.Etype()
+		}
+	} else {
+		etype = me.domain.Etype()
+		if etype == "" && me.parent != nil {
+			etype = me.parent.Etype()
 		}
 	}
 	return
@@ -186,4 +203,15 @@ func (me *column) Nullable() string { // column.nullable: this -> parent -> doma
 
 func (me *column) SetNullable(value string) {
 	me.nullable = value
+}
+
+func (me *column) Field() string { // column.field: this -> parent
+	if strings.TrimSpace(me.field) == "" && me.parent != nil {
+		return me.parent.Field()
+	}
+	return me.field
+}
+
+func (me *column) SetField(value string) {
+	me.field = value
 }

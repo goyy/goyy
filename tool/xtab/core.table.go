@@ -13,24 +13,64 @@ type xTables struct {
 }
 
 type xTable struct {
-	Id       string     `xml:"id,attr"`
-	Name     string     `xml:"name,attr"`
-	Prefix   string     `xml:"prefix,attr"`
-	Extends  string     `xml:"extends,attr"`
-	Generate string     `xml:"generate,attr"`
-	Comment  string     `xml:"comment,attr"`
-	Columns  []*xColumn `xml:"column"`
+	Id           string     `xml:"id,attr"`
+	Name         string     `xml:"name,attr"`
+	Prefix       string     `xml:"prefix,attr"`
+	Extends      string     `xml:"extends,attr"`
+	Generate     string     `xml:"generate,attr"`
+	Comment      string     `xml:"comment,attr"`
+	Relationship string     `xml:"relationship,attr"`
+	Columns      []*xColumn `xml:"column"`
 }
 
 type table struct {
-	module   *module
-	id       string
-	name     string
-	prefix   string
-	parent   *table
-	generate string
-	comment  string
-	columns  []*column
+	module          *module
+	id              string
+	name            string
+	prefix          string
+	parent          *table
+	generate        string
+	comment         string
+	relationship    string
+	fieldMaxLen     int
+	columnMaxLen    int
+	typeMaxLen      int
+	allFieldMaxLen  int
+	allColumnMaxLen int
+	allTypeMaxLen   int
+	columns         []*column
+}
+
+func (me *table) Module() *module { // table.module: this
+	return me.module
+}
+
+func (me *table) Parent() *table { // table.parent: this
+	return me.parent
+}
+
+func (me *table) FieldMaxLen() int { // table.fieldMaxLen: this
+	return me.fieldMaxLen
+}
+
+func (me *table) ColumnMaxLen() int { // table.columnMaxLen: this
+	return me.columnMaxLen
+}
+
+func (me *table) TypeMaxLen() int { // table.typeMaxLen: this
+	return me.typeMaxLen
+}
+
+func (me *table) AllFieldMaxLen() int { // table.allFieldMaxLen: this
+	return me.allFieldMaxLen
+}
+
+func (me *table) AllColumnMaxLen() int { // table.allColumnMaxLen: this
+	return me.allColumnMaxLen
+}
+
+func (me *table) AllTypeMaxLen() int { // table.allTypeMaxLen: this
+	return me.allTypeMaxLen
 }
 
 func (me *table) Id() string { // table.id: this
@@ -87,6 +127,14 @@ func (me *table) Comment() string { // table.comment: this -> parent
 
 func (me *table) SetComment(value string) {
 	me.comment = value
+}
+
+func (me *table) Relationship() string { // table.relationship: this
+	return me.relationship
+}
+
+func (me *table) SetRelationship(value string) {
+	me.relationship = value
 }
 
 func (me *table) Columns() []*column { // table.columns: this + parent

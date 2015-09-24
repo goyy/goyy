@@ -19,6 +19,11 @@ type xModule struct {
 	Project  string `xml:"project,attr"`
 	Generate string `xml:"generate,attr"`
 	Comment  string `xml:"comment,attr"`
+	Rootdir  string `xml:"rootdir,attr"`
+	Clidir   string `xml:"clidir,attr"`
+	Clipath  string `xml:"clipath,attr"`
+	Apidir   string `xml:"apidir,attr"`
+	Apipath  string `xml:"apipath,attr"`
 }
 
 type module struct {
@@ -28,6 +33,11 @@ type module struct {
 	project  *project
 	generate string
 	comment  string
+	rootdir  string
+	clidir   string
+	clipath  string
+	apidir   string
+	apipath  string
 }
 
 func (me *module) Id() string { // module.id: this
@@ -74,4 +84,59 @@ func (me *module) Comment() string { // module.comment: this
 
 func (me *module) SetComment(value string) {
 	me.comment = value
+}
+
+func (me *module) Rootdir() string { // module.rootdir: this -> project
+	if strings.TrimSpace(me.rootdir) == "" && me.project != nil {
+		return me.project.Rootdir()
+	}
+	return me.rootdir
+}
+
+func (me *module) SetRootdir(value string) {
+	me.rootdir = value
+}
+
+func (me *module) Clidir() string { // module.clidir: this -> project
+	if strings.TrimSpace(me.clidir) == "" && me.project != nil {
+		return me.project.Clidir()
+	}
+	return me.clidir
+}
+
+func (me *module) SetClidir(value string) {
+	me.clidir = value
+}
+
+func (me *module) Clipath() string { // module.clipath: this -> project
+	if strings.TrimSpace(me.clipath) == "" && me.project != nil {
+		return me.project.Clipath()
+	}
+	return me.clipath
+}
+
+func (me *module) SetClipath(value string) {
+	me.clipath = value
+}
+
+func (me *module) Apidir() string { // module.apidir: this -> project
+	if strings.TrimSpace(me.apidir) == "" && me.project != nil {
+		return me.project.Apidir()
+	}
+	return me.apidir
+}
+
+func (me *module) SetApidir(value string) {
+	me.apidir = value
+}
+
+func (me *module) Apipath() string { // module.apipath: this -> project
+	if strings.TrimSpace(me.apipath) == "" && me.project != nil {
+		return me.project.Apipath()
+	}
+	return me.apipath
+}
+
+func (me *module) SetApipath(value string) {
+	me.apipath = value
 }

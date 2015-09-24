@@ -6,8 +6,8 @@ package main
 
 import (
 	"gopkg.in/goyy/goyy.v0/comm/env"
+	"gopkg.in/goyy/goyy.v0/util/strings"
 	"log"
-	"strings"
 )
 
 var conf *configuration = &configuration{}
@@ -51,7 +51,18 @@ func (me *inits) Projects() {
 			log.Fatal(err)
 		}
 		d := &database{xp.Database, db.DriverName, db.DataSourceName}
-		p := &project{id: xp.Id, name: xp.Name, database: d, generate: xp.Generate, comment: xp.Comment}
+		p := &project{
+			id:       xp.Id,
+			name:     xp.Name,
+			database: d,
+			generate: xp.Generate,
+			comment:  xp.Comment,
+			rootdir:  xp.Rootdir,
+			clidir:   xp.Clidir,
+			clipath:  xp.Clipath,
+			apidir:   xp.Apidir,
+			apipath:  xp.Apipath,
+		}
 		conf.projects = append(conf.projects, p)
 	}
 }
@@ -65,7 +76,19 @@ func (me *inits) Modules() {
 				p = cp
 			}
 		}
-		m := &module{id: xm.Id, name: xm.Name, prefix: xm.Prefix, project: p, generate: xm.Generate, comment: xm.Comment}
+		m := &module{
+			id:       xm.Id,
+			name:     xm.Name,
+			prefix:   xm.Prefix,
+			project:  p,
+			generate: xm.Generate,
+			comment:  xm.Comment,
+			rootdir:  xm.Rootdir,
+			clidir:   xm.Clidir,
+			clipath:  xm.Clipath,
+			apidir:   xm.Apidir,
+			apipath:  xm.Apipath,
+		}
 		conf.modules = append(conf.modules, m)
 	}
 }
@@ -73,7 +96,17 @@ func (me *inits) Modules() {
 func (me *inits) Domains() {
 	xconf := util.DecodeXML(xdomains)
 	for _, xd := range xconf.Domains.Domain {
-		d := &domain{id: xd.Id, name: xd.Name, types: xd.Types, length: xd.Length, precision: xd.Precision, comment: xd.Comment, defaults: xd.Defaults, nullable: xd.Nullable}
+		d := &domain{
+			id:        xd.Id,
+			name:      xd.Name,
+			types:     xd.Types,
+			length:    xd.Length,
+			precision: xd.Precision,
+			comment:   xd.Comment,
+			defaults:  xd.Defaults,
+			nullable:  xd.Nullable,
+			etype:     util.Etype(xd.Types),
+		}
 		conf.domains = append(conf.domains, d)
 	}
 }
@@ -87,7 +120,16 @@ func (me *inits) Columns() {
 				d = cd
 			}
 		}
-		c := &column{id: xc.Id, name: xc.Name, domain: d, index: xc.Index, comment: xc.Comment, defaults: xc.Defaults, nullable: xc.Nullable}
+		c := &column{
+			id:       xc.Id,
+			name:     xc.Name,
+			field:    strings.ToLowerFirst(strings.Camel(xc.Id)),
+			domain:   d,
+			index:    xc.Index,
+			comment:  xc.Comment,
+			defaults: xc.Defaults,
+			nullable: xc.Nullable,
+		}
 		conf.columns = append(conf.columns, c)
 	}
 }
@@ -97,7 +139,13 @@ func (me *inits) Tables() {
 	m := &module{project: &project{}}
 	for _, xt := range xconf.Tables.Table {
 		if strings.TrimSpace(xt.Extends) == "" {
-			t := &table{module: m, id: xt.Id, name: xt.Name, comment: xt.Comment}
+			t := &table{
+				module:       m,
+				id:           xt.Id,
+				name:         xt.Name,
+				comment:      xt.Comment,
+				relationship: xt.Relationship,
+			}
 			for _, xc := range xt.Columns {
 				var ec *column
 				if strings.TrimSpace(xc.Extends) != "" {
@@ -115,7 +163,17 @@ func (me *inits) Tables() {
 						}
 					}
 				}
-				c := &column{parent: ec, id: xc.Id, name: xc.Name, domain: d, index: xc.Index, comment: xc.Comment, defaults: xc.Defaults, nullable: xc.Nullable}
+				c := &column{
+					parent:   ec,
+					id:       xc.Id,
+					name:     xc.Name,
+					field:    strings.ToLowerFirst(strings.Camel(xc.Id)),
+					domain:   d,
+					index:    xc.Index,
+					comment:  xc.Comment,
+					defaults: xc.Defaults,
+					nullable: xc.Nullable,
+				}
 				t.columns = append(t.columns, c)
 			}
 			conf.parent = append(conf.parent, t)
@@ -127,7 +185,14 @@ func (me *inits) Tables() {
 func (me *inits) ChildTables(xconf *xConfiguration, parent *table, filename string) {
 	for _, xt := range xconf.Tables.Table {
 		if strings.TrimSpace(xt.Extends) == parent.Id() {
-			t := &table{module: parent.module, id: xt.Id, name: xt.Name, parent: parent, comment: xt.Comment}
+			t := &table{
+				module:       parent.module,
+				id:           xt.Id,
+				name:         xt.Name,
+				parent:       parent,
+				comment:      xt.Comment,
+				relationship: xt.Relationship,
+			}
 			for _, xc := range xt.Columns {
 				var ec *column
 				if strings.TrimSpace(xc.Extends) != "" {
@@ -145,7 +210,17 @@ func (me *inits) ChildTables(xconf *xConfiguration, parent *table, filename stri
 						}
 					}
 				}
-				c := &column{parent: ec, id: xc.Id, name: xc.Name, domain: d, index: xc.Index, comment: xc.Comment, defaults: xc.Defaults, nullable: xc.Nullable}
+				c := &column{
+					parent:   ec,
+					id:       xc.Id,
+					name:     xc.Name,
+					field:    strings.ToLowerFirst(strings.Camel(xc.Id)),
+					domain:   d,
+					index:    xc.Index,
+					comment:  xc.Comment,
+					defaults: xc.Defaults,
+					nullable: xc.Nullable,
+				}
 				t.columns = append(t.columns, c)
 			}
 			conf.parent = append(conf.parent, t)
@@ -167,7 +242,30 @@ func (me *inits) ProjectTables() {
 					}
 				}
 			}
-			t := &table{module: m, parent: p, id: xt.Id, name: xt.Name, prefix: xt.Prefix, generate: xt.Generate, comment: xt.Comment}
+			t := &table{
+				module:       m,
+				parent:       p,
+				id:           xt.Id,
+				name:         xt.Name,
+				prefix:       xt.Prefix,
+				generate:     xt.Generate,
+				comment:      xt.Comment,
+				relationship: xt.Relationship,
+			}
+			switch xt.Extends {
+			case "pk":
+				t.allColumnMaxLen = 2
+				t.allFieldMaxLen = 2
+				t.allTypeMaxLen = 6
+			case "sys":
+				t.allColumnMaxLen = 9
+				t.allFieldMaxLen = 9
+				t.allTypeMaxLen = 6
+			case "tree":
+				t.allColumnMaxLen = 12
+				t.allFieldMaxLen = 11
+				t.allTypeMaxLen = 6
+			}
 			for _, xc := range xt.Columns {
 				var ec *column
 				if strings.TrimSpace(xc.Extends) != "" {
@@ -185,8 +283,36 @@ func (me *inits) ProjectTables() {
 						}
 					}
 				}
-				c := &column{parent: ec, id: xc.Id, name: xc.Name, domain: d, index: xc.Index, comment: xc.Comment, defaults: xc.Defaults, nullable: xc.Nullable}
+				c := &column{
+					parent:   ec,
+					id:       xc.Id,
+					name:     xc.Name,
+					field:    strings.ToLowerFirst(strings.Camel(xc.Id)),
+					domain:   d,
+					index:    xc.Index,
+					comment:  xc.Comment,
+					defaults: xc.Defaults,
+					nullable: xc.Nullable,
+				}
 				t.columns = append(t.columns, c)
+				if t.fieldMaxLen < len(c.field) {
+					t.fieldMaxLen = len(c.field)
+				}
+				if t.allFieldMaxLen < len(c.field) {
+					t.allFieldMaxLen = len(c.field)
+				}
+				if t.columnMaxLen < len(c.id) {
+					t.columnMaxLen = len(c.id)
+				}
+				if t.allColumnMaxLen < len(c.id) {
+					t.allColumnMaxLen = len(c.id)
+				}
+				if t.typeMaxLen < len(c.Etype()) {
+					t.typeMaxLen = len(c.Etype())
+				}
+				if t.allTypeMaxLen < len(c.Etype()) {
+					t.allTypeMaxLen = len(c.Etype())
+				}
 			}
 			conf.tables = append(conf.tables, t)
 		}

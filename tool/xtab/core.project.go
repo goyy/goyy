@@ -19,6 +19,11 @@ type xProject struct {
 	Database string `xml:"database,attr"`
 	Generate string `xml:"generate,attr"`
 	Comment  string `xml:"comment,attr"`
+	Rootdir  string `xml:"rootdir,attr"`
+	Clidir   string `xml:"clidir,attr"`
+	Clipath  string `xml:"clipath,attr"`
+	Apidir   string `xml:"apidir,attr"`
+	Apipath  string `xml:"apipath,attr"`
 }
 
 type project struct {
@@ -28,6 +33,11 @@ type project struct {
 	database *database
 	generate string
 	comment  string
+	rootdir  string
+	clidir   string
+	clipath  string
+	apidir   string
+	apipath  string
 }
 
 func (me *project) Id() string {
@@ -71,4 +81,44 @@ func (me *project) Comment() string {
 
 func (me *project) SetComment(value string) {
 	me.comment = value
+}
+
+func (me *project) Rootdir() string {
+	return me.rootdir
+}
+
+func (me *project) SetRootdir(value string) {
+	me.rootdir = value
+}
+
+func (me *project) Clidir() string {
+	return me.clidir
+}
+
+func (me *project) SetClidir(value string) {
+	me.clidir = value
+}
+
+func (me *project) Clipath() string {
+	return me.clipath
+}
+
+func (me *project) SetClipath(value string) {
+	me.clipath = value
+}
+
+func (me *project) Apidir() string {
+	return me.apidir
+}
+
+func (me *project) SetApidir(value string) {
+	me.apidir = value
+}
+
+func (me *project) Apipath() string {
+	return me.apipath
+}
+
+func (me *project) SetApipath(value string) {
+	me.apipath = value
 }

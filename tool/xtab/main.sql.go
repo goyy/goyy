@@ -9,12 +9,6 @@ import (
 	"os"
 )
 
-func main() {
-	logger.Println("Exporting sql : start")
-	expSQL()
-	logger.Println("Exporting sql : end")
-}
-
 func expSQL() {
 	for _, p := range conf.projects {
 		var dialect dialects

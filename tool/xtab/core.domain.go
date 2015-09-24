@@ -32,6 +32,7 @@ type domain struct {
 	comment   string
 	defaults  string
 	nullable  string
+	etype     string
 }
 
 func (me *domain) Id() string {
@@ -99,4 +100,15 @@ func (me *domain) Nullable() string {
 
 func (me *domain) SetNullable(value string) {
 	me.nullable = value
+}
+
+func (me *domain) Etype() string {
+	if strings.TrimSpace(me.etype) == "" {
+		return "entity.String"
+	}
+	return me.etype
+}
+
+func (me *domain) SetEtype(value string) {
+	me.etype = value
 }
