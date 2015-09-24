@@ -13,14 +13,15 @@ type xTables struct {
 }
 
 type xTable struct {
-	Id           string     `xml:"id,attr"`
-	Name         string     `xml:"name,attr"`
-	Prefix       string     `xml:"prefix,attr"`
-	Extends      string     `xml:"extends,attr"`
-	Generate     string     `xml:"generate,attr"`
-	Comment      string     `xml:"comment,attr"`
-	Relationship string     `xml:"relationship,attr"`
-	Columns      []*xColumn `xml:"column"`
+	Id       string     `xml:"id,attr"`
+	Name     string     `xml:"name,attr"`
+	Prefix   string     `xml:"prefix,attr"`
+	Extends  string     `xml:"extends,attr"`
+	Generate string     `xml:"generate,attr"`
+	Comment  string     `xml:"comment,attr"`
+	Master   string     `xml:"master,attr"`
+	Slave    string     `xml:"slave,attr"`
+	Columns  []*xColumn `xml:"column"`
 }
 
 type table struct {
@@ -31,7 +32,8 @@ type table struct {
 	parent          *table
 	generate        string
 	comment         string
-	relationship    string
+	master          string
+	slave           string
 	fieldMaxLen     int
 	columnMaxLen    int
 	typeMaxLen      int
@@ -144,12 +146,20 @@ func (me *table) SetComment(value string) {
 	me.comment = value
 }
 
-func (me *table) Relationship() string { // table.relationship: this
-	return me.relationship
+func (me *table) Master() string { // table.master: this
+	return me.master
 }
 
-func (me *table) SetRelationship(value string) {
-	me.relationship = value
+func (me *table) SetMaster(value string) {
+	me.master = value
+}
+
+func (me *table) Slave() string { // table.slave: this
+	return me.slave
+}
+
+func (me *table) SetSlave(value string) {
+	me.slave = value
 }
 
 func (me *table) Columns() []*column { // table.columns: this + parent

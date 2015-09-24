@@ -140,11 +140,12 @@ func (me *inits) Tables() {
 	for _, xt := range xconf.Tables.Table {
 		if strings.TrimSpace(xt.Extends) == "" {
 			t := &table{
-				module:       m,
-				id:           xt.Id,
-				name:         xt.Name,
-				comment:      xt.Comment,
-				relationship: xt.Relationship,
+				module:  m,
+				id:      xt.Id,
+				name:    xt.Name,
+				comment: xt.Comment,
+				master:  xt.Master,
+				slave:   xt.Slave,
 			}
 			for _, xc := range xt.Columns {
 				var ec *column
@@ -186,12 +187,13 @@ func (me *inits) ChildTables(xconf *xConfiguration, parent *table, filename stri
 	for _, xt := range xconf.Tables.Table {
 		if strings.TrimSpace(xt.Extends) == parent.Id() {
 			t := &table{
-				module:       parent.module,
-				id:           xt.Id,
-				name:         xt.Name,
-				parent:       parent,
-				comment:      xt.Comment,
-				relationship: xt.Relationship,
+				module:  parent.module,
+				id:      xt.Id,
+				name:    xt.Name,
+				parent:  parent,
+				comment: xt.Comment,
+				master:  xt.Master,
+				slave:   xt.Slave,
 			}
 			for _, xc := range xt.Columns {
 				var ec *column
@@ -243,14 +245,15 @@ func (me *inits) ProjectTables() {
 				}
 			}
 			t := &table{
-				module:       m,
-				parent:       p,
-				id:           xt.Id,
-				name:         xt.Name,
-				prefix:       xt.Prefix,
-				generate:     xt.Generate,
-				comment:      xt.Comment,
-				relationship: xt.Relationship,
+				module:   m,
+				parent:   p,
+				id:       xt.Id,
+				name:     xt.Name,
+				prefix:   xt.Prefix,
+				generate: xt.Generate,
+				comment:  xt.Comment,
+				master:   xt.Master,
+				slave:    xt.Slave,
 			}
 			switch t.Super() {
 			case "pk":

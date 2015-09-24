@@ -19,6 +19,10 @@ func genEntity() {
 			if t.module.project.Id() == p.Id() && t.module.project.generate == "true" && t.module.generate == "true" && t.generate == "true" {
 				dir := t.module.rootdir + "/internal/" + t.id + "/"
 				dstfile := filepath.Join(dir, "main.domain.go")
+				if strings.IsNotBlank(t.master) {
+					dir = t.module.rootdir + "/internal/" + t.master + "/"
+					dstfile = filepath.Join(dir, "main.domain."+t.slave+".go")
+				}
 				if files.IsExist(dstfile) {
 					continue
 				} else {
