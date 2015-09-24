@@ -4,7 +4,7 @@
 
 package main
 
-var tmplEntity = `package {{.Module.Id}}
+var tmplEntity = `package {{.Id}}
 {{$ := .}}
 import (
 	"gopkg.in/goyy/goyy.v0/data/entity"
@@ -14,10 +14,10 @@ import (
 //go:generate xgen -entity=$GOFILE -scaffold -clidir={{.Module.Clidir}} -clipath={{.Module.Clipath}} -apipath={{.Module.Apipath}}
 
 // {{.Name}}实体结构.
-// @entity(project:"sys"{{if eq "slave" .Relationship}} relationship:"slave"{{end}})
+// @entity(project:"{{.Module.Id}}"{{if eq "slave" .Relationship}} relationship:"slave"{{end}})
 type Entity struct {
-	{{if eq .Parent.Id "pk"}}entity.Pk{{end}}{{if eq .Parent.Id "sys"}}entity.Sys{{end}}{{if eq .Parent.Id "tree"}}entity.Tree{{end}}
-	table     schema.Table  ` + "`" + `orm:"table={{.Module.Prefix}}_{{.Id}}&comment={{.Name}}"` + "`" + `{{range $column := .Columns}}{{if not (extends $column.Id $.Parent.Id)}}
-	{{padname $column.Field $.AllFieldMaxLen}} {{padname $column.Etype $.AllTypeMaxLen}} ` + "`" + `orm:"column={{$column.Id}}"` + "`" + `{{end}}{{end}}
+	{{if eq .Super "pk"}}entity.Pk{{end}}{{if eq .Super "sys"}}entity.Sys{{end}}{{if eq .Super "tree"}}entity.Tree{{end}}
+	{{padname "table" $.FieldMaxLen}} {{padname "schema.Table" $.TypeMaxLen}} ` + "`" + `orm:"table={{.Module.Prefix}}_{{.Id}}&comment={{.Name}}"` + "`" + `{{range $column := .Columns}}{{if not (supercol $column.Id $.Super)}}
+	{{padname $column.Field $.FieldMaxLen}} {{padname $column.Etype $.TypeMaxLen}} ` + "`" + `orm:"column={{$column.Id}}"` + "`" + `{{end}}{{end}}
 }
 `

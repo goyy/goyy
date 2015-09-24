@@ -18,6 +18,31 @@ func (me *utils) Pad(in string) string {
 	return strings.PadEnd(in, 30)
 }
 
+func (me *utils) IsSuperCol(column, extends string) bool {
+	if extends == "pk" && column == "id" {
+		return true
+	}
+	if extends == "sys" {
+		switch column {
+		case "id":
+			return true
+		case "memo", "creates", "creater", "created", "modifier", "modified", "version", "deletion", "artifical", "history":
+			return true
+		}
+	}
+	if extends == "tree" {
+		switch column {
+		case "id":
+			return true
+		case "memo", "creates", "creater", "created", "modifier", "modified", "version", "deletion", "artifical", "history":
+			return true
+		case "code", "name", "fullname", "genre", "ordinal", "parent_id", "parent_ids", "parent_codes", "parent_names", "leaf", "grade":
+			return true
+		}
+	}
+	return false
+}
+
 func (me *utils) Etype(in string) string {
 	switch in {
 	case "int":

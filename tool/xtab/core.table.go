@@ -5,7 +5,7 @@
 package main
 
 import (
-	"strings"
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 type xTables struct {
@@ -71,6 +71,21 @@ func (me *table) AllColumnMaxLen() int { // table.allColumnMaxLen: this
 
 func (me *table) AllTypeMaxLen() int { // table.allTypeMaxLen: this
 	return me.allTypeMaxLen
+}
+
+func (me *table) Super() string { // table.super: this -> parent
+	if me.parent != nil {
+		super := me.parent.id
+		if strings.IsNotBlank(super) {
+			switch super {
+			case "pk", "sys", "tree":
+				return super
+			default:
+				return me.parent.Super()
+			}
+		}
+	}
+	return ""
 }
 
 func (me *table) Id() string { // table.id: this

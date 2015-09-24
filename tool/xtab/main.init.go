@@ -123,13 +123,13 @@ func (me *inits) Columns() {
 		c := &column{
 			id:       xc.Id,
 			name:     xc.Name,
-			field:    strings.ToLowerFirst(strings.Camel(xc.Id)),
 			domain:   d,
 			index:    xc.Index,
 			comment:  xc.Comment,
 			defaults: xc.Defaults,
 			nullable: xc.Nullable,
 		}
+		c.field = strings.ToLowerFirst(strings.Camel(c.Id()))
 		conf.columns = append(conf.columns, c)
 	}
 }
@@ -167,13 +167,13 @@ func (me *inits) Tables() {
 					parent:   ec,
 					id:       xc.Id,
 					name:     xc.Name,
-					field:    strings.ToLowerFirst(strings.Camel(xc.Id)),
 					domain:   d,
 					index:    xc.Index,
 					comment:  xc.Comment,
 					defaults: xc.Defaults,
 					nullable: xc.Nullable,
 				}
+				c.field = strings.ToLowerFirst(strings.Camel(c.Id()))
 				t.columns = append(t.columns, c)
 			}
 			conf.parent = append(conf.parent, t)
@@ -214,13 +214,13 @@ func (me *inits) ChildTables(xconf *xConfiguration, parent *table, filename stri
 					parent:   ec,
 					id:       xc.Id,
 					name:     xc.Name,
-					field:    strings.ToLowerFirst(strings.Camel(xc.Id)),
 					domain:   d,
 					index:    xc.Index,
 					comment:  xc.Comment,
 					defaults: xc.Defaults,
 					nullable: xc.Nullable,
 				}
+				c.field = strings.ToLowerFirst(strings.Camel(c.Id()))
 				t.columns = append(t.columns, c)
 			}
 			conf.parent = append(conf.parent, t)
@@ -252,20 +252,27 @@ func (me *inits) ProjectTables() {
 				comment:      xt.Comment,
 				relationship: xt.Relationship,
 			}
-			switch xt.Extends {
+			switch t.Super() {
 			case "pk":
-				t.allColumnMaxLen = 2
-				t.allFieldMaxLen = 2
-				t.allTypeMaxLen = 6
+				t.allColumnMaxLen = 5
+				t.allFieldMaxLen = 5
+				t.allTypeMaxLen = 13
 			case "sys":
 				t.allColumnMaxLen = 9
 				t.allFieldMaxLen = 9
-				t.allTypeMaxLen = 6
+				t.allTypeMaxLen = 13
 			case "tree":
 				t.allColumnMaxLen = 12
 				t.allFieldMaxLen = 11
-				t.allTypeMaxLen = 6
+				t.allTypeMaxLen = 13
+			default:
+				t.allColumnMaxLen = 5
+				t.allFieldMaxLen = 5
+				t.allTypeMaxLen = 12
 			}
+			t.columnMaxLen = 5
+			t.fieldMaxLen = 5
+			t.typeMaxLen = 12
 			for _, xc := range xt.Columns {
 				var ec *column
 				if strings.TrimSpace(xc.Extends) != "" {
@@ -287,25 +294,30 @@ func (me *inits) ProjectTables() {
 					parent:   ec,
 					id:       xc.Id,
 					name:     xc.Name,
-					field:    strings.ToLowerFirst(strings.Camel(xc.Id)),
 					domain:   d,
 					index:    xc.Index,
 					comment:  xc.Comment,
 					defaults: xc.Defaults,
 					nullable: xc.Nullable,
 				}
+				c.field = strings.ToLowerFirst(strings.Camel(c.Id()))
 				t.columns = append(t.columns, c)
+			}
+			for _, c := range t.Columns() {
+				if util.IsSuperCol(c.Id(), t.Super()) {
+					continue
+				}
 				if t.fieldMaxLen < len(c.field) {
 					t.fieldMaxLen = len(c.field)
 				}
 				if t.allFieldMaxLen < len(c.field) {
 					t.allFieldMaxLen = len(c.field)
 				}
-				if t.columnMaxLen < len(c.id) {
-					t.columnMaxLen = len(c.id)
+				if t.columnMaxLen < len(c.Id()) {
+					t.columnMaxLen = len(c.Id())
 				}
-				if t.allColumnMaxLen < len(c.id) {
-					t.allColumnMaxLen = len(c.id)
+				if t.allColumnMaxLen < len(c.Id()) {
+					t.allColumnMaxLen = len(c.Id())
 				}
 				if t.typeMaxLen < len(c.Etype()) {
 					t.typeMaxLen = len(c.Etype())
