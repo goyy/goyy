@@ -28,6 +28,7 @@ func TestNewSift(t *testing.T) {
 		{"sMemoLL", "8", "Memo", "%8", "LL", "ST", true},
 		{"sMemoLR", "8", "Memo", "8%", "LR", "ST", true},
 		{"sCreatedLIT2", "2014-04-03", "Created", "1396454400", "LI", "T2", true},
+		{"sCreatedLTT2", "2014-04-03", "Created", "1396540800", "LT", "T2", true},
 		{"sCreatedLIT5", "2014-04-03 13:31:45", "Created", "1396503105", "LI", "T5", true},
 		{"sCreatedLIT4", "2014-04-03 13:31", "Created", "1396503060", "LI", "T4", true},
 	}
