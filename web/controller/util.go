@@ -10,15 +10,17 @@ import (
 )
 
 const (
-	pIndex   = "index"
-	pShow    = "show"
-	pView    = "view"
-	pAdd     = "add"
-	pEdit    = "edit"
-	pSave    = "save"
-	pDisable = "disable"
-	pTree    = "tree"
-	pBox     = "box"
+	pIndex    = "index"
+	pShow     = "show"
+	pView     = "view"
+	pAdd      = "add"
+	pEdit     = "edit"
+	pSave     = "save"
+	pSaved    = "saved"
+	pDisable  = "disable"
+	pDisabled = "disabled"
+	pTree     = "tree"
+	pBox      = "box"
 
 	vList = "list"
 	vForm = "form"
@@ -97,8 +99,16 @@ func PathSave(project, module string) string {
 	return PathBy(project, module, pSave)
 }
 
+func PathSaved(project, module string) string {
+	return PathBy(project, module, pSaved)
+}
+
 func PathDisable(project, module string) string {
 	return PathBy(project, module, pDisable)
+}
+
+func PathDisabled(project, module string) string {
+	return PathBy(project, module, pDisabled)
 }
 
 func PathTree(project, module string) string {
@@ -148,8 +158,16 @@ func ApiSave(project, module string) string {
 	return ApiBy(project, module, pSave)
 }
 
+func ApiSaved(project, module string) string {
+	return ApiBy(project, module, pSaved)
+}
+
 func ApiDisable(project, module string) string {
 	return ApiBy(project, module, pDisable)
+}
+
+func ApiDisabled(project, module string) string {
+	return ApiBy(project, module, pDisabled)
 }
 
 func ApiTree(project, module string) string {

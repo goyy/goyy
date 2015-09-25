@@ -82,8 +82,34 @@ func (me *JSONController) Save(c xhttp.Context) {
 	}
 }
 
+func (me *JSONController) Saved(c xhttp.Context) {
+	r, err := me.baseController.Saved(c, me.Mgr, me.PreSaved, me.PostSaved)
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+	err = c.Text(xhttp.StatusOK, r.JSON())
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+}
+
 func (me *JSONController) Disable(c xhttp.Context) {
 	r, err := me.baseController.Disable(c, me.Mgr, me.PreDisable, me.PostDisable)
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+	err = c.Text(xhttp.StatusOK, r.JSON())
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+}
+
+func (me *JSONController) Disabled(c xhttp.Context) {
+	r, err := me.baseController.Disabled(c, me.Mgr, me.PreDisabled, me.PostDisabled)
 	if err != nil {
 		me.Error(c, err)
 		return

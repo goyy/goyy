@@ -61,6 +61,35 @@ func (me *baseTreeController) Save(c xhttp.Context, mgr service.Service, pre fun
 	return me.baseController.Save(c, mgr, pre, post)
 }
 
+func (me *baseTreeController) Saved(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r *result.Entity) error) (out *result.Entity, err error) {
+	sId := c.Param(siftIdTR)
+	eId := c.Param(entityId)
+	eParentId := c.Param(entityParentId)
+	if strings.IsBlank(eParentId) && strings.IsBlank(eId) && strings.IsNotBlank(sId) {
+		eParentId = sId
+	}
+	if strings.IsBlank(eParentId) {
+		eParentId = defaultTreeRoot
+	}
+	p := mgr.NewEntity()
+	p.SetString(entityId, eParentId)
+	if err = mgr.Get(p); err != nil {
+		return
+	} else {
+		c.Params().Set(entityParentId, eParentId)
+		if eParentId == defaultTreeRoot {
+			c.Params().Set(entityFullname, c.Param(entityName))
+			c.Params().Set(entityParentIds, eParentId)
+			c.Params().Set(entityParentNames, p.Get(colName).(string))
+		} else {
+			c.Params().Set(entityFullname, p.Get(colFullname).(string)+" - "+c.Param(entityName))
+			c.Params().Set(entityParentIds, p.Get(colParentIds).(string)+","+eParentId)
+			c.Params().Set(entityParentNames, p.Get(colParentNames).(string)+","+p.Get(colName).(string))
+		}
+	}
+	return me.baseController.Saved(c, mgr, pre, post)
+}
+
 func (me *baseTreeController) Disable(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r *result.Page) error) (out *result.Page, err error) {
 	if ts, err := me.Breadcrumb(c, mgr); err == nil {
 		c.SetAttribute(defaultParents, ts)

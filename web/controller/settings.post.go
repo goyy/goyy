@@ -10,10 +10,12 @@ import (
 )
 
 type post struct {
-	PostIndex   func(c xhttp.Context, r *result.Page) error
-	PostShow    func(c xhttp.Context, r *result.Entity) error
-	PostAdd     func(c xhttp.Context, r *result.Entity) error
-	PostEdit    func(c xhttp.Context, r *result.Entity) error
-	PostSave    func(c xhttp.Context, r *result.Page) error
-	PostDisable func(c xhttp.Context, r *result.Page) error
+	PostIndex    func(c xhttp.Context, r *result.Page) error
+	PostShow     func(c xhttp.Context, r *result.Entity) error
+	PostAdd      func(c xhttp.Context, r *result.Entity) error
+	PostEdit     func(c xhttp.Context, r *result.Entity) error
+	PostSave     func(c xhttp.Context, r *result.Page) error
+	PostSaved    func(c xhttp.Context, r *result.Entity) error
+	PostDisable  func(c xhttp.Context, r *result.Page) error
+	PostDisabled func(c xhttp.Context, r *result.Entity) error
 }

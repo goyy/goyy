@@ -12,7 +12,7 @@ import (
 )
 
 type ClientController struct {
-	pre
+	prefn
 	postfn
 	Settings
 	DTO  func() interface{}
