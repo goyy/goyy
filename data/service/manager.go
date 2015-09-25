@@ -144,7 +144,7 @@ func (me *Manager) Save(c xhttp.Context, e entity.Interface) error {
 		return err
 	}
 	if strings.IsBlank(e.Get(e.Table().Primary().Name()).(string)) {
-		if c.Session().IsLogin() {
+		if c != nil && c.Session().IsLogin() {
 			if p, err := c.Session().Principal(); err == nil {
 				e.SetString(creater, p.Id)
 				e.SetString(created, times.NowStr())
@@ -154,7 +154,7 @@ func (me *Manager) Save(c xhttp.Context, e entity.Interface) error {
 		}
 		_, err = me.Repository.Insert(e)
 	} else {
-		if c.Session().IsLogin() {
+		if c != nil && c.Session().IsLogin() {
 			if p, err := c.Session().Principal(); err == nil {
 				e.SetString(modifier, p.Id)
 				e.SetString(modified, times.NowStr())
@@ -186,7 +186,7 @@ func (me *Manager) Disable(c xhttp.Context, e entity.Interface) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-	if c.Session().IsLogin() {
+	if c != nil && c.Session().IsLogin() {
 		if p, err := c.Session().Principal(); err == nil {
 			e.SetString(modifier, p.Id)
 			e.SetString(modified, times.NowStr())
