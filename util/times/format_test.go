@@ -6,12 +6,28 @@ package times_test
 
 import (
 	"gopkg.in/goyy/goyy.v0/util/times"
+	"strconv"
 	"testing"
 	"time"
 )
 
 var in = time.Date(2014, 4, 3, 13, 31, 45, 1234454, time.Local)
 var i int64 = in.Unix()
+var s string = strconv.FormatInt(i, 10)
+
+func TestFormat(t *testing.T) {
+	expected := "2014-04-03 13:31:45"
+	if out := times.Format(in, times.YYMDHMS); out != expected {
+		t.Errorf(`times.Format(%v, %s) = %v, want %v`, in, times.YYMDHMS, out, expected)
+	}
+}
+
+func TestGmt(t *testing.T) {
+	expected := "Thu, 03 Apr 2014 13:31:45 GMT"
+	if out := times.Gmt(in); out != expected {
+		t.Errorf(`times.Gmt(%v) = %v, want %v`, in, out, expected)
+	}
+}
 
 func TestYymd(t *testing.T) {
 	expected := "2014-04-03"
@@ -31,6 +47,20 @@ func TestYymdhm(t *testing.T) {
 	expected := "2014-04-03 13:31"
 	if out := times.Yymdhm(in); out != expected {
 		t.Errorf(`times.Yymdhm(%v) = %v, want %v`, in, out, expected)
+	}
+}
+
+func TestUformat(t *testing.T) {
+	expected := "2014-04-03 13:31:45"
+	if out := times.Uformat(i, times.YYMDHMS); out != expected {
+		t.Errorf(`times.Uformat(%v, %s) = %v, want %v`, i, times.YYMDHMS, out, expected)
+	}
+}
+
+func TestUgmt(t *testing.T) {
+	expected := "Thu, 03 Apr 2014 13:31:45 GMT"
+	if out := times.Ugmt(i); out != expected {
+		t.Errorf(`times.Ugmt(%v) = %v, want %v`, i, out, expected)
 	}
 }
 
