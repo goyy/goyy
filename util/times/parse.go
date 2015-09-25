@@ -58,6 +58,19 @@ func ParseYYMD(value string) (int64, error) {
 	return ParseUnix(YYMD, value)
 }
 
+// ParseYYMDAddDay parses a formatted string and returns the time unix value of next day it represents.
+// The layout is "2006-01-02"
+func ParseYYMDAddDay(value string) (int64, error) {
+	if strings.IsBlank(value) {
+		return Default, nil
+	}
+	if t, err := time.Parse(YYMD, value); err == nil {
+		return t.Add(time.Hour * 24).Unix(), nil
+	} else {
+		return 0, err
+	}
+}
+
 // ParseGMT parses a formatted string and returns the time unix value it represents.
 // The layout is "2006-01-02 15:04:05"
 func ParseYYMDHMS(value string) (int64, error) {

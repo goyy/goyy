@@ -11,4 +11,12 @@ const (
 	YYMDHMS = "2006-01-02 15:04:05"
 	YYMDHM  = "2006-01-02 15:04"
 	GMT     = "Mon, 02 Jan 2006 15:04:05 GMT"
+
+	Nanosecond  Duration = 1
+	Microsecond          = 1000 * Nanosecond
+	Millisecond          = 1000 * Microsecond
+	Second               = 1000 * Millisecond
+	Minute               = 60 * Second
+	Hour                 = 60 * Minute
+	Day                  = 24 * Hour
 )
