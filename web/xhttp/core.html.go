@@ -70,6 +70,13 @@ func (me *htmlServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool {
 	return false
 }
 
+func (me *htmlServeMux) replaceAssets(content string) string {
+	content = strings.Replace(content, tagStaticApis, Conf.Static.Apis, -1)
+	content = strings.Replace(content, tagStaticAssets, Conf.Static.Assets, -1)
+	content = strings.Replace(content, tagStaticConsumers, Conf.Static.Consumers, -1)
+	return strings.Replace(content, tagStaticOperations, Conf.Static.Operations, -1)
+}
+
 func (me *htmlServeMux) isHtml(path string) bool {
 	if strings.HasSuffix(path, ".html") {
 		return true
@@ -159,6 +166,7 @@ func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request
 
 func (me *htmlServeMux) parseFile(w http.ResponseWriter, r *http.Request, content string) string {
 	content = me.parseIncludeFile(content)
+	content = me.replaceAssets(content)
 	content = me.parseIfFile(content)
 	content = me.parseTagAttrFile(content, tagAttrHref)
 	content = me.parseTagAttrFile(content, tagAttrSrc)
@@ -412,10 +420,6 @@ func (me *htmlServeMux) buildTagInfo(content, attr string, tags []tagInfo) []tag
 			srcEnd = strings.IndexStart(newstmt, tagAttrEnd, srcBegin+len(srcBeginPre))
 			newstmt = strings.Overlay(newstmt, "", srcBegin, srcEnd+len(tagAttrEnd))
 		}
-		newstmt = strings.Replace(newstmt, tagStaticApis, Conf.Static.Apis, -1)
-		newstmt = strings.Replace(newstmt, tagStaticAssets, Conf.Static.Assets, -1)
-		newstmt = strings.Replace(newstmt, tagStaticConsumers, Conf.Static.Consumers, -1)
-		newstmt = strings.Replace(newstmt, tagStaticOperations, Conf.Static.Operations, -1)
 		newstmt = strings.Replace(newstmt, dstBeginPre, srcBeginPre, -1)
 
 		ti := tagInfo{
