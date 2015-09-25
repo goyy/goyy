@@ -6,6 +6,7 @@ package domain
 
 import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/util/times"
 	"gopkg.in/goyy/goyy.v0/util/webs"
 	"net/http"
 	"net/url"
@@ -24,6 +25,10 @@ type Sift interface {
 	// Returns the operator of query conditional filtering.
 	// @return
 	Operator() string
+
+	// Returns the type of query conditional filtering.
+	// @return
+	Type() string
 }
 
 // NewSift returns the Sift from name, value.
@@ -88,7 +93,7 @@ func NewSift(name, value string, prefix ...string) (Sift, bool) {
 		s.typ = ot_st
 	}
 	s.key = strings.Left(k, len(k)-size)
-	s.value = convertValue(s.operator, value)
+	s.value = convertValue(s.operator, s.typ, value)
 	return s, true
 }
 
@@ -111,7 +116,7 @@ func NewSiftsReq(req *http.Request, prefix ...string) ([]Sift, error) {
 	return NewSifts(values, prefix...)
 }
 
-func convertValue(operator, value string) string {
+func convertValue(operator, typ, value string) string {
 	switch operator {
 	case op_lk:
 		return "%" + value + "%"
@@ -119,6 +124,20 @@ func convertValue(operator, value string) string {
 		return "%" + value
 	case op_lr:
 		return value + "%"
+	}
+	switch typ {
+	case ot_t2:
+		if v, err := times.ParseYymd(value); err == nil {
+			return v
+		}
+	case ot_t5:
+		if v, err := times.ParseYymdhms(value); err == nil {
+			return v
+		}
+	case ot_t4:
+		if v, err := times.ParseYymdhm(value); err == nil {
+			return v
+		}
 	}
 	return value
 }
