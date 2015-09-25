@@ -147,19 +147,19 @@ func (me *Manager) Save(c xhttp.Context, e entity.Interface) error {
 		if c != nil && c.Session().IsLogin() {
 			if p, err := c.Session().Principal(); err == nil {
 				e.SetString(creater, p.Id)
-				e.SetString(created, times.NowStr())
 				e.SetString(modifier, p.Id)
-				e.SetString(modified, times.NowStr())
 			}
 		}
+		e.SetString(created, times.NowStr())
+		e.SetString(modified, times.NowStr())
 		_, err = me.Repository.Insert(e)
 	} else {
 		if c != nil && c.Session().IsLogin() {
 			if p, err := c.Session().Principal(); err == nil {
 				e.SetString(modifier, p.Id)
-				e.SetString(modified, times.NowStr())
 			}
 		}
+		e.SetString(modified, times.NowStr())
 		_, err = me.Repository.Update(e)
 	}
 	if err != nil {
