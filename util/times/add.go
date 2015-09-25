@@ -21,10 +21,16 @@ func Add(layout, t string, d Duration) (string, error) {
 	}
 }
 
-// Add returns the time t+d.
+// Add returns the time t+d of unix string.
 // The layout is "Mon, 02 Jan 2006 15:04:05 GMT"
 func AddGmt(t string, d Duration) (string, error) {
 	return Add(GMT, t, d)
+}
+
+// Add returns the time t+d of unix string.
+// The layout is "2006-01-02"
+func AddYymd(t string, d Duration) (string, error) {
+	return Add(YYMD, t, d)
 }
 
 // Add returns the time t+d.
