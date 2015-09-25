@@ -11,9 +11,17 @@ import (
 	"os"
 )
 
+var conf = "./conf"
+
+// Set the root directory of the configuration file.
+// Default value is "./conf".
+func SetConf(path string) {
+	conf = path
+}
+
 // Get the database link parameters based on the environment profiles.
 func Database(name string) (database xDatabase, err error) {
-	xEnv, perr := parse("./conf/env/db.xml")
+	xEnv, perr := parse(conf + "/env/db.xml")
 	if perr != nil {
 		err = perr
 		return
@@ -31,7 +39,7 @@ func Database(name string) (database xDatabase, err error) {
 
 // Get the mail server parameters based on the environment profiles.
 func Mail(name string) (mail xMail, err error) {
-	xEnv, perr := parse("./conf/env/mail.xml")
+	xEnv, perr := parse(conf + "/env/mail.xml")
 	if perr != nil {
 		err = perr
 		return
