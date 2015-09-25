@@ -127,8 +127,14 @@ func convertValue(operator, typ, value string) string {
 	}
 	switch typ {
 	case ot_t2:
-		if v, err := times.ParseYymd(value); err == nil {
-			return v
+		if operator == "LT" || operator == "LE" {
+			if v, err := times.AddYymd(value, times.Day); err == nil {
+				return v
+			}
+		} else {
+			if v, err := times.ParseYymd(value); err == nil {
+				return v
+			}
 		}
 	case ot_t5:
 		if v, err := times.ParseYymdhms(value); err == nil {
