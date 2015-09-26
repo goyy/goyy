@@ -128,20 +128,22 @@ func convertValue(operator, typ, value string) string {
 	switch typ {
 	case ot_t2:
 		if operator == "LT" || operator == "LE" {
-			if v, err := times.AddYymd(value, times.Day); err == nil {
-				return v
+			if val, err := times.AddYYMD(value, times.Day); err == nil {
+				if v, err := times.ParseUnixYymd(val); err == nil {
+					return v
+				}
 			}
 		} else {
-			if v, err := times.ParseYymd(value); err == nil {
+			if v, err := times.ParseUnixYymd(value); err == nil {
 				return v
 			}
 		}
 	case ot_t5:
-		if v, err := times.ParseYymdhms(value); err == nil {
+		if v, err := times.ParseUnixYymdhms(value); err == nil {
 			return v
 		}
 	case ot_t4:
-		if v, err := times.ParseYymdhm(value); err == nil {
+		if v, err := times.ParseUnixYymdhm(value); err == nil {
 			return v
 		}
 	}

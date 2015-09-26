@@ -28,12 +28,12 @@ type html struct {
 ////////////////////////////////////////////////////////////
 
 var funcMapText = ttmpl.FuncMap{
-	"yymd":     times.Yymd,
-	"yymdhms":  times.Yymdhms,
-	"yymdhm":   times.Yymdhm,
-	"uyymd":    times.Uyymd,
-	"uyymdhms": times.Uyymdhms,
-	"uyymdhm":  times.Uyymdhm,
+	"yymd":     times.FormatYYMD,
+	"yymdhms":  times.FormatYYMDHMS,
+	"yymdhm":   times.FormatYYMDHM,
+	"uyymd":    times.FormatUnixYYMD,
+	"uyymdhms": times.FormatUnixYYMDHMS,
+	"uyymdhm":  times.FormatUnixYYMDHM,
 
 	"blank":     strings.IsBlank,
 	"notblank":  strings.IsNotBlank,
@@ -55,12 +55,12 @@ var funcMapText = ttmpl.FuncMap{
 }
 
 var funcMapHtml = htmpl.FuncMap{
-	"yymd":     times.Yymd,
-	"yymdhms":  times.Yymdhms,
-	"yymdhm":   times.Yymdhm,
-	"uyymd":    times.Uyymd,
-	"uyymdhms": times.Uyymdhms,
-	"uyymdhm":  times.Uyymdhm,
+	"yymd":     times.FormatYYMD,
+	"yymdhms":  times.FormatYYMDHMS,
+	"yymdhm":   times.FormatYYMDHM,
+	"uyymd":    times.FormatUnixYYMD,
+	"uyymdhms": times.FormatUnixYYMDHMS,
+	"uyymdhm":  times.FormatUnixYYMDHM,
 
 	"blank":     strings.IsBlank,
 	"notblank":  strings.IsNotBlank,

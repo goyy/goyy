@@ -136,7 +136,7 @@ func (me *session) SetPrincipal(value Principal) error {
 	if err := me.Set(principalLoginName, value.LoginName); err != nil {
 		return err
 	}
-	if err := me.Set(principalLoginTime, strconv.FormatInt(times.Now(), 10)); err != nil {
+	if err := me.Set(principalLoginTime, strconv.FormatInt(times.NowUnix(), 10)); err != nil {
 		return err
 	}
 	if err := me.Set(principalPermissions, value.Permissions); err != nil {

@@ -55,7 +55,7 @@ func (me *Time) SetString(layout, value string) error {
 }
 
 func (me *Time) String() string {
-	return times.Yymdhms(me.value)
+	return times.FormatYYMDHMS(me.value)
 }
 
 func (me *Time) Name() string {

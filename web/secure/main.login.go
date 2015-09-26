@@ -32,7 +32,7 @@ func Login(c xhttp.Context, loginName, passwd string) error {
 			Id:          u.Id(),
 			Name:        u.Name(),
 			LoginName:   u.LoginName(),
-			LoginTime:   times.NowStr(),
+			LoginTime:   times.NowUnixStr(),
 			Permissions: ps,
 		}
 		return c.Session().SetPrincipal(p)

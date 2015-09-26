@@ -150,8 +150,8 @@ func (me *Manager) Save(c xhttp.Context, e entity.Interface) error {
 				e.SetString(modifier, p.Id)
 			}
 		}
-		e.SetString(created, times.NowStr())
-		e.SetString(modified, times.NowStr())
+		e.SetString(created, times.NowUnixStr())
+		e.SetString(modified, times.NowUnixStr())
 		_, err = me.Repository.Insert(e)
 	} else {
 		if c != nil && c.Session().IsLogin() {
@@ -159,7 +159,7 @@ func (me *Manager) Save(c xhttp.Context, e entity.Interface) error {
 				e.SetString(modifier, p.Id)
 			}
 		}
-		e.SetString(modified, times.NowStr())
+		e.SetString(modified, times.NowUnixStr())
 		_, err = me.Repository.Update(e)
 	}
 	if err != nil {
@@ -189,7 +189,7 @@ func (me *Manager) Disable(c xhttp.Context, e entity.Interface) (int64, error) {
 	if c != nil && c.Session().IsLogin() {
 		if p, err := c.Session().Principal(); err == nil {
 			e.SetString(modifier, p.Id)
-			e.SetString(modified, times.NowStr())
+			e.SetString(modified, times.NowUnixStr())
 		}
 	}
 	r, err := me.Repository.Disable(e)

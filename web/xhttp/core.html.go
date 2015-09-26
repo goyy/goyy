@@ -104,13 +104,13 @@ func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request
 		// Browser save file last modified time
 		browserModTime := r.Header.Get("If-Modified-Since")
 		if strings.IsNotBlank(browserModTime) {
-			if v, err := times.ParseGMT(browserModTime); err == nil {
+			if v, err := times.ParseUnixGMT(browserModTime); err == nil {
 				browserModTimeUnix = v
 			}
 		}
 		if browserModTimeUnix < fileModTimeUnix {
 			// Actual file last modified time
-			fileModTime := times.Ugmt(fileModTimeUnix)
+			fileModTime := times.FormatUnixGMT(fileModTimeUnix)
 			// Tell the browser not to use cache
 			w.Header().Set("last-modified", fileModTime)
 			return false
@@ -131,7 +131,7 @@ func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request
 				}
 				if browserModTimeUnix < lastLoginTimeUnix {
 					// Actual last login time
-					lastLoginTime := times.Ugmt(lastLoginTimeUnix)
+					lastLoginTime := times.FormatUnixGMT(lastLoginTimeUnix)
 					// Tell the browser not to use cache
 					w.Header().Set("last-modified", lastLoginTime)
 					return false
@@ -150,7 +150,7 @@ func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request
 				}
 				if browserModTimeUnix < includeFileModTimeUnix {
 					// The actual last modification time of the include file
-					includeFileModTime := times.Ugmt(includeFileModTimeUnix)
+					includeFileModTime := times.FormatUnixGMT(includeFileModTimeUnix)
 					// Tell the browser not to use cache
 					w.Header().Set("last-modified", includeFileModTime)
 					return false
