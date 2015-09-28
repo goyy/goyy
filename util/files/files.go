@@ -6,6 +6,7 @@
 package files
 
 import (
+	"github.com/satori/go.uuid"
 	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"io"
@@ -93,7 +94,7 @@ func Remove(name string) error {
 // Returns the <a href="http://en.wikipedia.org/wiki/Filename_extension">file
 // extension</a> for the given file name, or the empty string if the file has
 // no extension.  The result does not include the '{@code .}'.
-func GetExtension(fileName string) string {
+func Extension(fileName string) string {
 	fname := strings.Replace(fileName, "\\", "/", -1)
 	ext := strings.AfterLast(fname, ".")
 	first := strings.Left(ext, 1)
@@ -140,7 +141,14 @@ func Upload(w http.ResponseWriter, r *http.Request, field, dir string) (out stri
 		logger.Error(err.Error())
 		return
 	}
-	err = ioutil.WriteFile(handler.Filename, data, 0700)
+	if !IsExist(dir) {
+		if err = MkdirAll(dir, 0644); err != nil {
+			logger.Error(err.Error())
+			return
+		}
+	}
+	filename := newId() + "." + Extension(handler.Filename)
+	err = ioutil.WriteFile(dir+"/"+filename, data, 0700)
 	if err != nil {
 		logger.Error(err.Error())
 		return
@@ -183,8 +191,9 @@ func Uploads(w http.ResponseWriter, r *http.Request, field, dir string) (out []s
 				return
 			}
 		}
+		filename := newId() + "." + Extension(files[i].Filename)
 		//create destination file making sure the path is writeable.
-		dst, derr := os.Create(dir + files[i].Filename)
+		dst, derr := os.Create(dir + "/" + filename)
 		defer dst.Close()
 		if err != nil {
 			err = derr
@@ -198,4 +207,10 @@ func Uploads(w http.ResponseWriter, r *http.Request, field, dir string) (out []s
 		}
 	}
 	return
+}
+
+// newId returns the id string.
+func newId() string {
+	id := uuid.NewV1()
+	return strings.Replace(id.String(), "-", "", -1)
 }
