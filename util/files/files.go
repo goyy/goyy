@@ -153,7 +153,7 @@ func Upload(w http.ResponseWriter, r *http.Request, field, dir string) (out stri
 		logger.Error(err.Error())
 		return
 	}
-	out = handler.Filename
+	out = filename
 	return
 }
 
@@ -205,6 +205,7 @@ func Uploads(w http.ResponseWriter, r *http.Request, field, dir string) (out []s
 			logger.Error(err.Error())
 			return
 		}
+		out = append(out, filename)
 	}
 	return
 }
