@@ -6,7 +6,6 @@ package log
 
 import (
 	"fmt"
-	"gopkg.in/goyy/goyy.v0/util/files"
 	"os"
 	"time"
 )
@@ -36,7 +35,7 @@ func (me *Logging) getDailyFileName() string {
 
 func (me *Logging) setDailyFileLogger() {
 	me.dailyfilename = me.getDailyFileName()
-	if files.IsExist(me.dailyfilename) {
+	if me.isExist(me.dailyfilename) {
 		f, _ := os.OpenFile(me.dailyfilename, os.O_APPEND|os.O_RDWR, 0666)
 		me.dailyfile = NewLogger(f)
 	} else {
@@ -49,6 +48,16 @@ func (me *Logging) setDailyFileLogger() {
 		me.dailyfile.SetLayouts(me.layouts)
 	}
 	me.dailyfile.SetPrefix(me.prefix)
+}
+
+// Reports whether the specified file exists.
+// Returns true if the file exists, false if it does not exist.
+func (me *Logging) isExist(filename string) bool {
+	_, err := os.Stat(filename)
+	if err == nil {
+		return true
+	}
+	return os.IsExist(err)
 }
 
 func (me *Logging) resetDailyFileLogger() {
