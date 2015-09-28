@@ -6,8 +6,11 @@
 package files
 
 import (
+	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/strings"
+	"io"
 	"io/ioutil"
+	"net/http"
 	"os"
 )
 
@@ -117,4 +120,82 @@ func Size(file string) (int64, error) {
 		return 0, e
 	}
 	return f.Size(), nil
+}
+
+// file upload
+func Upload(w http.ResponseWriter, r *http.Request, field, dir string) (out string, err error) {
+	if r.Method != "POST" {
+		err = errors.New("status method tot allowed")
+		logger.Error(err.Error())
+		return
+	}
+	file, handler, err := r.FormFile(field)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer file.Close()
+	data, err := ioutil.ReadAll(file)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	err = ioutil.WriteFile(handler.Filename, data, 0700)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	out = handler.Filename
+	return
+}
+
+// multipart file upload
+func Uploads(w http.ResponseWriter, r *http.Request, field, dir string) (out []string, err error) {
+	if r.Method != "POST" {
+		err = errors.New("status method tot allowed")
+		logger.Error(err.Error())
+		return
+	}
+	//parse the multipart form in the request
+	err = r.ParseMultipartForm(100000)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+
+	//get a ref to the parsed multipart form
+	m := r.MultipartForm
+
+	//get the *fileheaders
+	files := m.File[field]
+	for i, _ := range files {
+		//for each fileheader, get a handle to the actual file
+		file, ferr := files[i].Open()
+		defer file.Close()
+		if err != nil {
+			err = ferr
+			logger.Error(err.Error())
+			return
+		}
+		if !IsExist(dir) {
+			if err = MkdirAll(dir, 0644); err != nil {
+				logger.Error(err.Error())
+				return
+			}
+		}
+		//create destination file making sure the path is writeable.
+		dst, derr := os.Create(dir + files[i].Filename)
+		defer dst.Close()
+		if err != nil {
+			err = derr
+			logger.Error(err.Error())
+			return
+		}
+		//copy the uploaded file to the destination file
+		if _, err = io.Copy(dst, file); err != nil {
+			logger.Error(err.Error())
+			return
+		}
+	}
+	return
 }
