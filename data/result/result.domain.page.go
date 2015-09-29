@@ -31,20 +31,23 @@ func (me *Page) JSON() string {
 	b.WriteString(`"memo":"` + jsons.Format(me.Memo) + `",`)
 	b.WriteString(`"tag":"` + jsons.Format(me.Tag) + `",`)
 	b.WriteString(`"data":{`)
-	b.WriteString(`"pageNo":` + strconv.Itoa(me.Data.PageNo()) + `,`)
-	b.WriteString(`"pageSize":` + strconv.Itoa(me.Data.PageSize()) + `,`)
-	b.WriteString(`"totalElements":` + strconv.Itoa(me.Data.TotalElements()) + `,`)
-	b.WriteString(`"function":"` + me.Data.Function() + `",`)
-	b.WriteString(`"length":` + strconv.Itoa(me.Data.Length()) + `,`)
-	b.WriteString(`"slider":` + strconv.Itoa(me.Data.Slider()) + `,`)
-	b.WriteString(`"slice":[`)
-	for i := 0; i < me.Data.Content().Len(); i++ {
-		if i > 0 {
-			b.WriteString(",")
+	if me.Data != nil {
+		b.WriteString(`"pageNo":` + strconv.Itoa(me.Data.PageNo()) + `,`)
+		b.WriteString(`"pageSize":` + strconv.Itoa(me.Data.PageSize()) + `,`)
+		b.WriteString(`"totalElements":` + strconv.Itoa(me.Data.TotalElements()) + `,`)
+		b.WriteString(`"function":"` + me.Data.Function() + `",`)
+		b.WriteString(`"length":` + strconv.Itoa(me.Data.Length()) + `,`)
+		b.WriteString(`"slider":` + strconv.Itoa(me.Data.Slider()) + `,`)
+		b.WriteString(`"slice":[`)
+		for i := 0; i < me.Data.Content().Len(); i++ {
+			if i > 0 {
+				b.WriteString(",")
+			}
+			b.WriteString(entity.FormatJSON(me.Data.Content().Index(i)))
 		}
-		b.WriteString(entity.FormatJSON(me.Data.Content().Index(i)))
+		b.WriteString("]")
 	}
-	b.WriteString("]}}")
+	b.WriteString("}}")
 	return b.String()
 }
 

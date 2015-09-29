@@ -30,11 +30,13 @@ func (me *Entities) JSON() string {
 	b.WriteString(`"memo":"` + jsons.Format(me.Memo) + `",`)
 	b.WriteString(`"tag":"` + jsons.Format(me.Tag) + `",`)
 	b.WriteString(`"data":[`)
-	for i := 0; i < me.Data.Len(); i++ {
-		if i > 0 {
-			b.WriteString(",")
+	if me.Data != nil {
+		for i := 0; i < me.Data.Len(); i++ {
+			if i > 0 {
+				b.WriteString(",")
+			}
+			b.WriteString(entity.FormatJSON(me.Data.Index(i)))
 		}
-		b.WriteString(entity.FormatJSON(me.Data.Index(i)))
 	}
 	b.WriteString("]}")
 	return b.String()
