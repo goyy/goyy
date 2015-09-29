@@ -43,30 +43,50 @@ func Params(req *http.Request, prefix ...string) (map[string]string, error) {
 // field's query parameters and the POST or PUT form data.
 func Values(req *http.Request) (values url.Values, err error) {
 	if req.Method == "GET" {
-		values = req.Form
-	} else {
 		err := req.ParseForm()
 		if err != nil {
 			return nil, err
 		}
-		values = req.PostForm
-	}
-	if values == nil {
-		values = url.Values{}
-	}
-	u, err := url.Parse(req.RequestURI)
-	if err != nil {
-		return nil, err
-	}
-	if strings.IsNotBlank(u.RawQuery) {
-		vs, err := url.ParseQuery(u.RawQuery)
+		values = req.Form
+	} else {
+		if strings.Contains(req.Header.Get("Content-Type"), "multipart/form-data") {
+			err := req.ParseMultipartForm(32 << 20)
+			if err != nil {
+				return nil, err
+			}
+			if values == nil {
+				values = url.Values{}
+			}
+			m := req.MultipartForm
+			if m != nil {
+				for k, v := range m.Value {
+					values[k] = v
+				}
+			}
+		} else {
+			err := req.ParseForm()
+			if err != nil {
+				return nil, err
+			}
+			values = req.PostForm
+		}
+		if values == nil {
+			values = url.Values{}
+		}
+		u, err := url.Parse(req.RequestURI)
 		if err != nil {
 			return nil, err
 		}
-		for k, v := range vs {
-			for _, s := range v {
-				if strings.IsNotBlank(s) {
-					values.Add(k, s)
+		if strings.IsNotBlank(u.RawQuery) {
+			vs, err := url.ParseQuery(u.RawQuery)
+			if err != nil {
+				return nil, err
+			}
+			for k, v := range vs {
+				for _, s := range v {
+					if strings.IsNotBlank(s) {
+						values.Add(k, s)
+					}
 				}
 			}
 		}
