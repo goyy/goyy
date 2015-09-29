@@ -51,6 +51,8 @@ func (me *Client) QueuePost() {
 func (me *Client) onError(err error) {
 	if me.OnError != nil {
 		me.OnError(err)
+	} else {
+		panic(err.Error())
 	}
 }
 
@@ -69,6 +71,10 @@ func (me *Client) do(method string) {
 	if err != nil {
 		logger.Debug(err.Error())
 		me.onError(err)
+		return
+	}
+	if resp.StatusCode >= 400 {
+		me.onError(errors.New(resp.Status))
 		return
 	}
 	defer resp.Body.Close()
