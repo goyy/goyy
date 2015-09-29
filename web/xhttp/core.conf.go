@@ -21,6 +21,10 @@ var Conf = &conf{
 		Consumers:  "/static",
 		Operations: "/static",
 	},
+	Upload: &uploadOptions{
+		Dir:     "/assets/upload",
+		MaxSize: 5242880,
+	},
 	Templates: &templateOptions{
 		Dir:        "templates",
 		Extensions: []string{"tmpl"},
@@ -55,6 +59,7 @@ type conf struct {
 	Actives   []string         // Active profile
 	Session   *sessionOptions  // the session TCP network address
 	Static    *staticOptions   // Static resource options
+	Upload    *uploadOptions   // Upload options
 	Templates *templateOptions // template options
 	Secures   *secureOptions
 }
@@ -70,6 +75,11 @@ type staticOptions struct {
 	Assets     string // Static resource URL
 	Consumers  string // Consumer uploaded static resource URL
 	Operations string // Operations uploaded static resource URL
+}
+
+type uploadOptions struct {
+	Dir     string // Upload directory
+	MaxSize int    // Max upload size
 }
 
 type secureOptions struct {
