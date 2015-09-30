@@ -6,13 +6,12 @@ package xsql
 
 import (
 	"database/sql"
-	"github.com/satori/go.uuid"
 	"gopkg.in/goyy/goyy.v0/data/dialect"
 	"gopkg.in/goyy/goyy.v0/data/dml"
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/dql"
 	"gopkg.in/goyy/goyy.v0/data/entity"
-	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/util/uuids"
 	"time"
 )
 
@@ -88,7 +87,7 @@ func (me *session) SelectPage(content entity.Interfaces, pageable domain.Pageabl
 func (me *session) Insert(e entity.Interface) (int64, error) {
 	pk := e.Table().Primary().Name()
 	if t, ok := e.Column(pk); ok {
-		e.SetString(t.Name(), newId())
+		e.SetString(t.Name(), uuids.New())
 	}
 	dml, args := me.dml.Insert(e)
 	res, err := me.Exec(dml, args...)
@@ -153,10 +152,4 @@ func (me *session) Close() error {
 // Get Database Type
 func (me *session) DBType() string {
 	return me.dialect.Type()
-}
-
-// newId returns the id string.
-func newId() string {
-	id := uuid.NewV1()
-	return strings.Replace(id.String(), "-", "", -1)
 }

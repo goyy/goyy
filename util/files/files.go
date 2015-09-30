@@ -6,9 +6,9 @@
 package files
 
 import (
-	"github.com/satori/go.uuid"
 	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/util/uuids"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -147,13 +147,14 @@ func Upload(w http.ResponseWriter, r *http.Request, field, dir string) (out stri
 			return
 		}
 	}
-	filename := newId() + "." + Extension(handler.Filename)
-	err = ioutil.WriteFile(dir+"/"+filename, data, 0700)
+	filename := uuids.New() + "." + Extension(handler.Filename)
+	filepath := dir + "/" + filename
+	err = ioutil.WriteFile(filepath, data, 0700)
 	if err != nil {
 		logger.Error(err.Error())
 		return
 	}
-	out = filename
+	out = filepath
 	return
 }
 
@@ -191,9 +192,10 @@ func Uploads(w http.ResponseWriter, r *http.Request, field, dir string) (out []s
 				return
 			}
 		}
-		filename := newId() + "." + Extension(files[i].Filename)
+		filename := uuids.New() + "." + Extension(files[i].Filename)
+		filepath := dir + "/" + filename
 		//create destination file making sure the path is writeable.
-		dst, derr := os.Create(dir + "/" + filename)
+		dst, derr := os.Create(filepath)
 		defer dst.Close()
 		if err != nil {
 			err = derr
@@ -205,13 +207,7 @@ func Uploads(w http.ResponseWriter, r *http.Request, field, dir string) (out []s
 			logger.Error(err.Error())
 			return
 		}
-		out = append(out, filename)
+		out = append(out, filepath)
 	}
 	return
-}
-
-// newId returns the id string.
-func newId() string {
-	id := uuid.NewV1()
-	return strings.Replace(id.String(), "-", "", -1)
 }
