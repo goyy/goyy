@@ -15,15 +15,19 @@ var Conf = &conf{
 	Addr:    ":9090",
 	Actives: []string{profile.DEV},
 	Static: &staticOptions{
+		Enable:     false,
 		Dir:        "static",
 		Apis:       "/api",
 		Assets:     "/static",
-		Consumers:  "/static",
-		Operations: "/static",
+		Consumers:  "/assets",
+		Operations: "/assets",
 	},
 	Upload: &uploadOptions{
 		Dir:     "/assets/upload",
 		MaxSize: 5242880,
+	},
+	Html: &htmlOptions{
+		Enable: false,
 	},
 	Templates: &templateOptions{
 		Dir:        "templates",
@@ -59,6 +63,7 @@ type conf struct {
 	Actives   []string         // Active profile
 	Session   *sessionOptions  // the session TCP network address
 	Static    *staticOptions   // Static resource options
+	Html      *htmlOptions     // Html resource options
 	Upload    *uploadOptions   // Upload options
 	Templates *templateOptions // template options
 	Secures   *secureOptions
@@ -70,11 +75,16 @@ type sessionOptions struct {
 }
 
 type staticOptions struct {
+	Enable     bool   // Whether service is enabled
 	Dir        string // Static resource directory
 	Apis       string // APIs URL
 	Assets     string // Static resource URL
 	Consumers  string // Consumer uploaded static resource URL
 	Operations string // Operations uploaded static resource URL
+}
+
+type htmlOptions struct {
+	Enable bool // Whether service is enabled
 }
 
 type uploadOptions struct {

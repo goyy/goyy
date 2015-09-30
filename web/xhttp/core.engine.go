@@ -23,11 +23,28 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if sec.ServeHTTP(w, r) { // secureServeMux
 		return
 	}
-	if ssm.ServeHTTP(w, r) { // staticServeMux
-		return
+	if Conf.Static.Enable {
+		if ssm == nil {
+			ssm = &staticServeMux{
+				static: http.StripPrefix(Conf.Static.Assets, http.FileServer(http.Dir(Conf.Static.Dir))),
+			}
+		}
+		if ssm.ServeHTTP(w, r) { // staticServeMux
+			return
+		}
+		if usm == nil {
+			usm = &uploadServeMux{
+				static: http.StripPrefix(Conf.Static.Consumers, http.FileServer(http.Dir(Conf.Upload.Dir))),
+			}
+		}
+		if usm.ServeHTTP(w, r) { // uploadServeMux
+			return
+		}
 	}
-	if hsm.ServeHTTP(w, r) { // htmlServeMux
-		return
+	if Conf.Html.Enable {
+		if hsm.ServeHTTP(w, r) { // htmlServeMux
+			return
+		}
 	}
 	me.Router.ServeHTTP(w, r)
 }

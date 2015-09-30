@@ -9,13 +9,13 @@ import (
 	"net/http"
 )
 
-type staticServeMux struct {
+type uploadServeMux struct {
 	static http.Handler
 }
 
-var ssm *staticServeMux
+var usm *uploadServeMux
 
-func (me *staticServeMux) ServeHTTP(w http.ResponseWriter, req *http.Request) bool {
+func (me *uploadServeMux) ServeHTTP(w http.ResponseWriter, req *http.Request) bool {
 	if me.isStatic(req.URL.Path) {
 		me.static.ServeHTTP(w, req)
 		return true
@@ -23,8 +23,8 @@ func (me *staticServeMux) ServeHTTP(w http.ResponseWriter, req *http.Request) bo
 	return false
 }
 
-func (me *staticServeMux) isStatic(path string) bool {
-	if strings.HasPrefix(path, Conf.Static.Assets+"/") {
+func (me *uploadServeMux) isStatic(path string) bool {
+	if strings.HasPrefix(path, Conf.Static.Consumers+"/") {
 		return true
 	}
 	return false
