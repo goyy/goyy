@@ -51,7 +51,7 @@ func (me *context) Params() url.Values {
 }
 
 func (me *context) Param(key string) string {
-	return me.params.Get(key)
+	return strings.JoinIgnoreBlank(me.params[key], ",")
 }
 
 func (me *context) Bind(out entity.Interface) error {
