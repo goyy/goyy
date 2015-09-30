@@ -10,6 +10,8 @@ type Http struct {
 	Code    string            `json:"code"`    // view message code
 	Message string            `json:"message"` // view message content
 	State   string            `json:"state"`   // view display state
+	Memo    string            `json:"memo"`
+	Tag     string            `json:"tag"`
 	Params  map[string]string `json:"params"`
 	Data    interface{}       `json:"data"`
 }

@@ -124,7 +124,7 @@ func Size(file string) (int64, error) {
 }
 
 // file upload
-func Upload(w http.ResponseWriter, r *http.Request, field, dir string) (out string, err error) {
+func Upload(w http.ResponseWriter, r *http.Request, field, confdir, filedir string) (out string, err error) {
 	if r.Method != "POST" {
 		err = errors.New("status method tot allowed")
 		logger.Error(err.Error())
@@ -141,6 +141,7 @@ func Upload(w http.ResponseWriter, r *http.Request, field, dir string) (out stri
 		logger.Error(err.Error())
 		return
 	}
+	dir := parseDirLR(confdir) + parseDirRight(filedir)
 	if !IsExist(dir) {
 		if err = MkdirAll(dir, 0644); err != nil {
 			logger.Error(err.Error())
@@ -148,18 +149,18 @@ func Upload(w http.ResponseWriter, r *http.Request, field, dir string) (out stri
 		}
 	}
 	filename := uuids.New() + "." + Extension(handler.Filename)
-	filepath := dir + "/" + filename
+	filepath := dir + filename
 	err = ioutil.WriteFile(filepath, data, 0700)
 	if err != nil {
 		logger.Error(err.Error())
 		return
 	}
-	out = filepath
+	out = parseDirLR(filedir) + filename
 	return
 }
 
 // multipart file upload
-func Uploads(w http.ResponseWriter, r *http.Request, field, dir string) (out []string, err error) {
+func Uploads(w http.ResponseWriter, r *http.Request, field, confdir, filedir string) (out []string, err error) {
 	if r.Method != "POST" {
 		err = errors.New("status method tot allowed")
 		logger.Error(err.Error())
@@ -175,6 +176,7 @@ func Uploads(w http.ResponseWriter, r *http.Request, field, dir string) (out []s
 	//get a ref to the parsed multipart form
 	m := r.MultipartForm
 
+	dir := parseDirLR(confdir) + parseDirRight(filedir)
 	//get the *fileheaders
 	files := m.File[field]
 	for i, _ := range files {
@@ -193,7 +195,7 @@ func Uploads(w http.ResponseWriter, r *http.Request, field, dir string) (out []s
 			}
 		}
 		filename := uuids.New() + "." + Extension(files[i].Filename)
-		filepath := dir + "/" + filename
+		filepath := dir + filename
 		//create destination file making sure the path is writeable.
 		dst, derr := os.Create(filepath)
 		defer dst.Close()
@@ -207,7 +209,40 @@ func Uploads(w http.ResponseWriter, r *http.Request, field, dir string) (out []s
 			logger.Error(err.Error())
 			return
 		}
-		out = append(out, filepath)
+		out = append(out, parseDirLR(filedir)+filename)
 	}
 	return
+}
+
+func parseDirLeft(dir string) string {
+	dir = strings.Replace(dir, "\\", "/", -1)
+	if strings.Left(dir, 1) != "/" {
+		dir = "/" + dir
+	}
+	if strings.Right(dir, 1) == "/" {
+		dir = dir[:len(dir)-1]
+	}
+	return dir
+}
+
+func parseDirRight(dir string) string {
+	dir = strings.Replace(dir, "\\", "/", -1)
+	if strings.Left(dir, 1) == "/" {
+		dir = dir[1:]
+	}
+	if strings.Right(dir, 1) != "/" {
+		dir = dir + "/"
+	}
+	return dir
+}
+
+func parseDirLR(dir string) string {
+	dir = strings.Replace(dir, "\\", "/", -1)
+	if strings.Left(dir, 1) != "/" {
+		dir = "/" + dir
+	}
+	if strings.Right(dir, 1) != "/" {
+		dir = dir + "/"
+	}
+	return dir
 }

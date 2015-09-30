@@ -32,12 +32,13 @@ func (me *Controller) Result(c xhttp.Context, r result.Http) map[string]interfac
 		"Module":      me.Module,
 		"Title":       me.Title,
 		"Sifts":       me.Sifts,
-		"Tag":         me.Tag,
 		"Success":     r.Success,
 		"Token":       r.Token,
 		"Code":        r.Code,
 		"Message":     r.Message,
 		"State":       r.State,
+		"Memo":        r.Memo,
+		"Tag":         r.Tag,
 		"Params":      params,
 		"Attributes":  c.Attributes(),
 		"Data":        r.Data,
@@ -46,13 +47,15 @@ func (me *Controller) Result(c xhttp.Context, r result.Http) map[string]interfac
 	}
 }
 
-func (me *Controller) result(c xhttp.Context, success bool, code, msg, token string, state string, data interface{}) map[string]interface{} {
+func (me *Controller) result(c xhttp.Context, success bool, code, msg, token, state, memo, tag string, data interface{}) map[string]interface{} {
 	r := result.Http{}
 	r.Success = success
 	r.Code = code
 	r.Message = msg
 	r.Token = token
 	r.State = state
+	r.Memo = memo
+	r.Tag = tag
 	r.Data = data
 	return me.Result(c, r)
 }
@@ -62,27 +65,31 @@ func (me *Controller) result(c xhttp.Context, success bool, code, msg, token str
 // ----------------------------------------------------------
 
 func (me *Controller) Success(c xhttp.Context, state string, data interface{}) map[string]interface{} {
-	return me.result(c, true, "0", "", "", state, data)
+	return me.result(c, true, "0", "", "", state, "", "", data)
 }
 
 func (me *Controller) SuccessMsg(c xhttp.Context, msg, state string, data interface{}) map[string]interface{} {
-	return me.result(c, true, "0", msg, "", state, data)
+	return me.result(c, true, "0", msg, "", state, "", "", data)
 }
 
 func (me *Controller) SuccessStatus(c xhttp.Context, code, state string, data interface{}) map[string]interface{} {
-	return me.result(c, true, code, "", "", state, data)
+	return me.result(c, true, code, "", "", state, "", "", data)
 }
 
 func (me *Controller) SuccessToken(c xhttp.Context, token, state string, data interface{}) map[string]interface{} {
-	return me.result(c, true, "0", "", token, state, data)
+	return me.result(c, true, "0", "", token, state, "", "", data)
 }
 
 func (me *Controller) SuccessStatusMsg(c xhttp.Context, code, msg, state string, data interface{}) map[string]interface{} {
-	return me.result(c, true, code, msg, "", state, data)
+	return me.result(c, true, code, msg, "", state, "", "", data)
 }
 
 func (me *Controller) SuccessStatusMsgToken(c xhttp.Context, code, msg, token, state string, data interface{}) map[string]interface{} {
-	return me.result(c, true, code, msg, token, state, data)
+	return me.result(c, true, code, msg, token, state, "", "", data)
+}
+
+func (me *Controller) SuccessResult(c xhttp.Context, state string, r *result.Result) map[string]interface{} {
+	return me.result(c, true, r.Code, r.Message, r.Token, state, r.Memo, r.Tag, r.Data)
 }
 
 // ----------------------------------------------------------
@@ -90,25 +97,29 @@ func (me *Controller) SuccessStatusMsgToken(c xhttp.Context, code, msg, token, s
 // ----------------------------------------------------------
 
 func (me *Controller) Fault(c xhttp.Context, state string, data interface{}) map[string]interface{} {
-	return me.result(c, false, "0", "", "", state, data)
+	return me.result(c, false, "0", "", "", state, "", "", data)
 }
 
 func (me *Controller) FaultMsg(c xhttp.Context, msg, state string, data interface{}) map[string]interface{} {
-	return me.result(c, false, "0", msg, "", state, data)
+	return me.result(c, false, "0", msg, "", state, "", "", data)
 }
 
 func (me *Controller) FaultStatus(c xhttp.Context, code, state string, data interface{}) map[string]interface{} {
-	return me.result(c, false, code, "", "", state, data)
+	return me.result(c, false, code, "", "", state, "", "", data)
 }
 
 func (me *Controller) FaultToken(c xhttp.Context, token, state string, data interface{}) map[string]interface{} {
-	return me.result(c, false, "0", "", token, state, data)
+	return me.result(c, false, "0", "", token, state, "", "", data)
 }
 
 func (me *Controller) FaultStatusMsg(c xhttp.Context, code, msg, state string, data interface{}) map[string]interface{} {
-	return me.result(c, false, code, msg, "", state, data)
+	return me.result(c, false, code, msg, "", state, "", "", data)
 }
 
 func (me *Controller) FaultStatusMsgToken(c xhttp.Context, code, msg, token, state string, data interface{}) map[string]interface{} {
-	return me.result(c, false, code, msg, token, state, data)
+	return me.result(c, false, code, msg, token, state, "", "", data)
+}
+
+func (me *Controller) FaultResult(c xhttp.Context, state string, r *result.Result) map[string]interface{} {
+	return me.result(c, false, r.Code, r.Message, r.Token, state, r.Memo, r.Tag, r.Data)
 }

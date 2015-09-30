@@ -9,5 +9,4 @@ type Settings struct {
 	Module  string
 	Title   string
 	Sifts   string
-	Tag     string
 }

@@ -15,6 +15,7 @@ import (
 
 type Entities struct {
 	Success bool              `json:"success"`
+	Token   string            `json:"token"`
 	Code    string            `json:"code"`
 	Message string            `json:"message"`
 	Memo    string            `json:"memo"`
@@ -25,6 +26,7 @@ type Entities struct {
 func (me *Entities) JSON() string {
 	var b bytes.Buffer
 	b.WriteString(`{"success":` + strconv.FormatBool(me.Success) + ",")
+	b.WriteString(`"token":"` + jsons.Format(me.Token) + `",`)
 	b.WriteString(`"code":"` + jsons.Format(me.Code) + `",`)
 	b.WriteString(`"message":"` + jsons.Format(me.Message) + `",`)
 	b.WriteString(`"memo":"` + jsons.Format(me.Memo) + `",`)

@@ -75,7 +75,7 @@ func (me *ClientController) Index(c xhttp.Context) {
 					return
 				}
 			}
-			err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.Success(c, templates.EnIndex, r.Data))
+			err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.SuccessResult(c, templates.EnIndex, r))
 			if err != nil {
 				me.Error(c, err)
 				return
@@ -114,7 +114,7 @@ func (me *ClientController) Show(c xhttp.Context) {
 					return
 				}
 			}
-			err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.Success(c, templates.EnShow, r.Data))
+			err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.SuccessResult(c, templates.EnShow, r))
 			if err != nil {
 				me.Error(c, err)
 				return
@@ -153,7 +153,7 @@ func (me *ClientController) Add(c xhttp.Context) {
 					return
 				}
 			}
-			err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.Success(c, templates.EnAdd, r.Data))
+			err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.SuccessResult(c, templates.EnAdd, r))
 			if err != nil {
 				me.Error(c, err)
 				return
@@ -192,7 +192,7 @@ func (me *ClientController) Edit(c xhttp.Context) {
 					return
 				}
 			}
-			err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.Success(c, templates.EnEdit, r.Data))
+			err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.SuccessResult(c, templates.EnEdit, r))
 			if err != nil {
 				me.Error(c, err)
 				return
@@ -231,7 +231,8 @@ func (me *ClientController) Save(c xhttp.Context) {
 					return
 				}
 			}
-			err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.SuccessMsg(c, i18N.Message("msg.save"), templates.EnIndex, r.Data))
+			r.Message = i18N.Message("msg.save")
+			err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.SuccessResult(c, templates.EnIndex, r))
 			if err != nil {
 				me.Error(c, err)
 				return
@@ -270,7 +271,8 @@ func (me *ClientController) Disable(c xhttp.Context) {
 					return
 				}
 			}
-			err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.SuccessMsg(c, i18N.Message("msg.disable"), templates.EnIndex, r.Data))
+			r.Message = i18N.Message("msg.disable")
+			err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.SuccessResult(c, templates.EnIndex, r))
 			if err != nil {
 				me.Error(c, err)
 				return
