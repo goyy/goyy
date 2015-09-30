@@ -27,7 +27,7 @@ var Conf = &conf{
 	},
 	Templates: &templateOptions{
 		Dir:        "templates",
-		Extensions: []string{"tmpl"},
+		Extensions: []string{"html"},
 		Funcs:      []template.FuncMap{},
 		Delims: templateDelims{
 			Left:  "{{",
