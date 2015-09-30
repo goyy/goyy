@@ -16,6 +16,7 @@ import (
 
 type Page struct {
 	Success bool        `json:"success"`
+	Id      string      `json:"id"`
 	Token   string      `json:"token"`
 	Code    string      `json:"code"`
 	Message string      `json:"message"`
@@ -27,6 +28,7 @@ type Page struct {
 func (me *Page) JSON() string {
 	var b bytes.Buffer
 	b.WriteString(`{"success":` + strconv.FormatBool(me.Success) + ",")
+	b.WriteString(`"id":"` + jsons.Format(me.Id) + `",`)
 	b.WriteString(`"token":"` + jsons.Format(me.Token) + `",`)
 	b.WriteString(`"code":"` + jsons.Format(me.Code) + `",`)
 	b.WriteString(`"message":"` + jsons.Format(me.Message) + `",`)

@@ -122,6 +122,11 @@ func (me *baseController) Save(c xhttp.Context, mgr service.Service, pre func(c 
 	}
 	// Page query
 	out, err = me.Page(c, mgr)
+	// Save after setting Id
+	pk := e.Table().Primary().Name()
+	if _, ok := e.Column(pk); ok {
+		out.Id = e.Get(pk).(string)
+	}
 	if err != nil {
 		return
 	}
