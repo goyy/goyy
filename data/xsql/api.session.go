@@ -17,6 +17,7 @@ type Session interface {
 	SelectOne(out entity.Interface, sifts ...domain.Sift) error
 	SelectList(out entity.Interfaces, sifts ...domain.Sift) error
 	SelectPage(content entity.Interfaces, pageable domain.Pageable, sifts ...domain.Sift) (domain.Page, error)
+	SelectCount(e entity.Interface, sifts ...domain.Sift) (int, error)
 
 	Insert(e entity.Interface) (int64, error)
 	Update(e entity.Interface) (int64, error)

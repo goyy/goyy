@@ -83,6 +83,16 @@ func (me *session) SelectPage(content entity.Interfaces, pageable domain.Pageabl
 	return page, nil
 }
 
+// Select count(*) SQL
+func (me *session) SelectCount(e entity.Interface, sifts ...domain.Sift) (int, error) {
+	dql, args, err := me.dql.SelectCountBySift(e, sifts...)
+	if err != nil {
+		logger.Debug(err.Error())
+		return 0, err
+	}
+	return me.Query(dql, args...).Int()
+}
+
 // Insert SQL
 func (me *session) Insert(e entity.Interface) (int64, error) {
 	pk := e.Table().Primary().Name()
