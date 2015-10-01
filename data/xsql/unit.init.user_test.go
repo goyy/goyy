@@ -26,9 +26,9 @@ type User struct {
 	org      entity.String `orm:"column=org"`
 	area     entity.String `orm:"column=area"`
 	creater  entity.String `orm:"column=creater&creater=true"`
-	created  entity.Time   `orm:"column=created&created=true"`
+	created  entity.Int64  `orm:"column=created&created=true"`
 	modifier entity.String `orm:"column=modifier&modifier=true"`
-	modified entity.Time   `orm:"column=modified&modified=true"`
+	modified entity.Int64  `orm:"column=modified&modified=true"`
 	version  entity.Int    `orm:"column=version&version=true"`
 	deletion entity.Int    `orm:"column=deletion&deletion=true"`
 }

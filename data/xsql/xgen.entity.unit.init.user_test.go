@@ -5,7 +5,6 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
 	"gopkg.in/goyy/goyy.v0/util/strings"
-	"time"
 )
 
 var (
@@ -131,11 +130,11 @@ func (me *User) SetCreater(v string) {
 	me.creater.SetValue(v)
 }
 
-func (me *User) Created() time.Time {
+func (me *User) Created() int64 {
 	return me.created.Value()
 }
 
-func (me *User) SetCreated(v time.Time) {
+func (me *User) SetCreated(v int64) {
 	me.created.SetValue(v)
 }
 
@@ -147,11 +146,11 @@ func (me *User) SetModifier(v string) {
 	me.modifier.SetValue(v)
 }
 
-func (me *User) Modified() time.Time {
+func (me *User) Modified() int64 {
 	return me.modified.Value()
 }
 
-func (me *User) SetModified(v time.Time) {
+func (me *User) SetModified(v int64) {
 	me.modified.SetValue(v)
 }
 
@@ -173,7 +172,6 @@ func (me *User) SetDeletion(v int) {
 
 func (me *User) init() {
 	me.table = USER
-
 	me.id.SetColumn(USER_ID)
 	me.code.SetColumn(USER_CODE)
 	me.name.SetColumn(USER_NAME)
@@ -191,8 +189,6 @@ func (me *User) init() {
 	me.modified.SetColumn(USER_MODIFIED)
 	me.version.SetColumn(USER_VERSION)
 	me.deletion.SetColumn(USER_DELETION)
-
-
 	me.id.SetField(entity.DefaultField())
 	me.code.SetField(entity.DefaultField())
 	me.name.SetField(entity.DefaultField())
@@ -252,9 +248,8 @@ func (me *User) Get(column string) interface{} {
 		return me.version.Value()
 	case USER_DELETION.Name():
 		return me.deletion.Value()
-	default:
-		return nil
 	}
+	return nil
 }
 
 func (me *User) GetPtr(column string) interface{} {
@@ -293,17 +288,16 @@ func (me *User) GetPtr(column string) interface{} {
 		return me.version.ValuePtr()
 	case USER_DELETION.Name():
 		return me.deletion.ValuePtr()
-	default:
-		return nil
 	}
+	return nil
 }
 
 func (me *User) Table() schema.Table {
 	return me.table
 }
 
-func (me *User) Type(name string) (entity.Type, bool) {
-	switch name {
+func (me *User) Type(column string) (entity.Type, bool) {
+	switch column {
 	case USER_ID.Name():
 		return &me.id, true
 	case USER_CODE.Name():
@@ -382,138 +376,26 @@ func (me *User) Column(field string) (schema.Column, bool) {
 	return nil, false
 }
 
-func (me *User) Columns(filter int) []schema.Column {
-	switch filter {
-	case entity.ColAll:
-		return []schema.Column{
-			USER_ID,
-			USER_CODE,
-			USER_NAME,
-			USER_PASSWORD,
-			USER_MEMO,
-			USER_GENRE,
-			USER_STATUS,
-			USER_ROLES,
-			USER_POSTS,
-			USER_ORG,
-			USER_AREA,
-			USER_CREATER,
-			USER_CREATED,
-			USER_MODIFIER,
-			USER_MODIFIED,
-			USER_VERSION,
-			USER_DELETION,
-		}
-	case entity.ColUpdateable:
-		cols := make([]schema.Column, 0)
-		if me.id.HasUpdate() {
-			cols = append(cols, USER_ID)
-		}
-		if me.code.HasUpdate() {
-			cols = append(cols, USER_CODE)
-		}
-		if me.name.HasUpdate() {
-			cols = append(cols, USER_NAME)
-		}
-		if me.password.HasUpdate() {
-			cols = append(cols, USER_PASSWORD)
-		}
-		if me.memo.HasUpdate() {
-			cols = append(cols, USER_MEMO)
-		}
-		if me.genre.HasUpdate() {
-			cols = append(cols, USER_GENRE)
-		}
-		if me.status.HasUpdate() {
-			cols = append(cols, USER_STATUS)
-		}
-		if me.roles.HasUpdate() {
-			cols = append(cols, USER_ROLES)
-		}
-		if me.posts.HasUpdate() {
-			cols = append(cols, USER_POSTS)
-		}
-		if me.org.HasUpdate() {
-			cols = append(cols, USER_ORG)
-		}
-		if me.area.HasUpdate() {
-			cols = append(cols, USER_AREA)
-		}
-		if me.creater.HasUpdate() {
-			cols = append(cols, USER_CREATER)
-		}
-		if me.created.HasUpdate() {
-			cols = append(cols, USER_CREATED)
-		}
-		if me.modifier.HasUpdate() {
-			cols = append(cols, USER_MODIFIER)
-		}
-		if me.modified.HasUpdate() {
-			cols = append(cols, USER_MODIFIED)
-		}
-		if me.version.HasUpdate() {
-			cols = append(cols, USER_VERSION)
-		}
-		if me.deletion.HasUpdate() {
-			cols = append(cols, USER_DELETION)
-		}
-		return cols
-	case entity.ColInsertable:
-		cols := make([]schema.Column, 0)
-		if me.id.HasInsert() {
-			cols = append(cols, USER_ID)
-		}
-		if me.code.HasInsert() {
-			cols = append(cols, USER_CODE)
-		}
-		if me.name.HasInsert() {
-			cols = append(cols, USER_NAME)
-		}
-		if me.password.HasInsert() {
-			cols = append(cols, USER_PASSWORD)
-		}
-		if me.memo.HasInsert() {
-			cols = append(cols, USER_MEMO)
-		}
-		if me.genre.HasInsert() {
-			cols = append(cols, USER_GENRE)
-		}
-		if me.status.HasInsert() {
-			cols = append(cols, USER_STATUS)
-		}
-		if me.roles.HasInsert() {
-			cols = append(cols, USER_ROLES)
-		}
-		if me.posts.HasInsert() {
-			cols = append(cols, USER_POSTS)
-		}
-		if me.org.HasInsert() {
-			cols = append(cols, USER_ORG)
-		}
-		if me.area.HasInsert() {
-			cols = append(cols, USER_AREA)
-		}
-		if me.creater.HasInsert() {
-			cols = append(cols, USER_CREATER)
-		}
-		if me.created.HasInsert() {
-			cols = append(cols, USER_CREATED)
-		}
-		if me.modifier.HasInsert() {
-			cols = append(cols, USER_MODIFIER)
-		}
-		if me.modified.HasInsert() {
-			cols = append(cols, USER_MODIFIED)
-		}
-		if me.version.HasInsert() {
-			cols = append(cols, USER_VERSION)
-		}
-		if me.deletion.HasInsert() {
-			cols = append(cols, USER_DELETION)
-		}
-		return cols
+func (me *User) Columns() []schema.Column {
+	return []schema.Column{
+		USER_ID,
+		USER_CODE,
+		USER_NAME,
+		USER_PASSWORD,
+		USER_MEMO,
+		USER_GENRE,
+		USER_STATUS,
+		USER_ROLES,
+		USER_POSTS,
+		USER_ORG,
+		USER_AREA,
+		USER_CREATER,
+		USER_CREATED,
+		USER_MODIFIER,
+		USER_MODIFIED,
+		USER_VERSION,
+		USER_DELETION,
 	}
-	return nil
 }
 
 func (me *User) Names() []string {

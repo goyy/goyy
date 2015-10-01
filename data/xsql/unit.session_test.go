@@ -31,9 +31,9 @@ func buildUser(i string) entity.Interface {
 	user.SetOrg(i)
 	user.SetArea(i)
 	user.SetCreater(i)
-	user.SetCreated(created)
+	user.SetCreated(created.Unix())
 	user.SetModifier(i)
-	user.SetModified(time.Now())
+	user.SetModified(times.NowUnix())
 	user.SetVersion(0)
 	user.SetDeletion(0)
 	return user
@@ -104,7 +104,7 @@ func TestSessionSelectOne(t *testing.T) {
 func TestSessionSelectList(t *testing.T) {
 	s1, _ := domain.NewSift("sNameGT", "11")
 	s2, _ := domain.NewSift("sNameOA", "asc")
-	users := NewUsers(20)
+	users := NewUserEntities(20)
 	err := session.SelectList(users, s1, s2)
 	if err != nil {
 		t.Error(err.Error())
@@ -124,7 +124,7 @@ func TestSessionSelectPage(t *testing.T) {
 	sVersionEQ, _ := domain.NewSift("sVersionEQ", "0")
 	sIdOA, _ := domain.NewSift("sIdOA", "asc")
 	pageable := domain.NewPageable(2, 10)
-	content := NewUsers(30)
+	content := NewUserEntities(30)
 	out, err := session.SelectPage(content, pageable, sVersionEQ, sIdOA)
 	if err != nil {
 		t.Error(err.Error())
@@ -160,7 +160,7 @@ func TestSessionQueryRows(t *testing.T) {
 	} else {
 		dql = "select * from users where id like :1"
 	}
-	users := NewUsers(30)
+	users := NewUserEntities(30)
 	err := session.Query(dql, "demo-i-2%").Rows(users)
 	if err != nil {
 		t.Error(err.Error())
@@ -245,9 +245,9 @@ func TestSessionQueryTime(t *testing.T) {
 		t.Error(err.Error())
 		return
 	}
-	expected := times.Yymdhms(created)
-	if times.Yymdhms(out) != expected {
-		t.Errorf(`query.Time():"%v", want:"%v"`, times.Yymdhms(out), expected)
+	expected := times.FormatYYMDHMS(created)
+	if times.FormatYYMDHMS(out) != expected {
+		t.Errorf(`query.Time():"%v", want:"%v"`, times.FormatYYMDHMS(out), expected)
 	}
 }
 
@@ -259,7 +259,7 @@ func TestSessionQueryPage(t *testing.T) {
 		dql = "select * from users where version = :1 order by id"
 	}
 	pageable := domain.NewPageable(2, 10)
-	content := NewUsers(30)
+	content := NewUserEntities(30)
 	out, err := session.Query(dql, 0).Page(content, pageable)
 	if err != nil {
 		t.Error(err.Error())
