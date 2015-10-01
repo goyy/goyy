@@ -55,13 +55,10 @@ func (me *User) SetEmail(v string) {
 
 func (me *User) init() {
 	me.table = USER
-
 	me.id.SetColumn(USER_ID)
 	me.name.SetColumn(USER_NAME)
 	me.passwd.SetColumn(USER_PASSWD)
 	me.email.SetColumn(USER_EMAIL)
-
-
 	me.id.SetField(entity.DefaultField())
 	me.name.SetField(entity.DefaultField())
 	me.passwd.SetField(entity.DefaultField())
@@ -82,9 +79,8 @@ func (me *User) Get(column string) interface{} {
 		return me.passwd.Value()
 	case USER_EMAIL.Name():
 		return me.email.Value()
-	default:
-		return nil
 	}
+	return nil
 }
 
 func (me *User) GetPtr(column string) interface{} {
@@ -97,17 +93,16 @@ func (me *User) GetPtr(column string) interface{} {
 		return me.passwd.ValuePtr()
 	case USER_EMAIL.Name():
 		return me.email.ValuePtr()
-	default:
-		return nil
 	}
+	return nil
 }
 
 func (me *User) Table() schema.Table {
 	return me.table
 }
 
-func (me *User) Type(name string) (entity.Type, bool) {
-	switch name {
+func (me *User) Type(column string) (entity.Type, bool) {
+	switch column {
 	case USER_ID.Name():
 		return &me.id, true
 	case USER_NAME.Name():
@@ -134,47 +129,13 @@ func (me *User) Column(field string) (schema.Column, bool) {
 	return nil, false
 }
 
-func (me *User) Columns(filter int) []schema.Column {
-	switch filter {
-	case entity.ColAll:
-		return []schema.Column{
-			USER_ID,
-			USER_NAME,
-			USER_PASSWD,
-			USER_EMAIL,
-		}
-	case entity.ColUpdateable:
-		cols := make([]schema.Column, 0)
-		if me.id.HasUpdate() {
-			cols = append(cols, USER_ID)
-		}
-		if me.name.HasUpdate() {
-			cols = append(cols, USER_NAME)
-		}
-		if me.passwd.HasUpdate() {
-			cols = append(cols, USER_PASSWD)
-		}
-		if me.email.HasUpdate() {
-			cols = append(cols, USER_EMAIL)
-		}
-		return cols
-	case entity.ColInsertable:
-		cols := make([]schema.Column, 0)
-		if me.id.HasInsert() {
-			cols = append(cols, USER_ID)
-		}
-		if me.name.HasInsert() {
-			cols = append(cols, USER_NAME)
-		}
-		if me.passwd.HasInsert() {
-			cols = append(cols, USER_PASSWD)
-		}
-		if me.email.HasInsert() {
-			cols = append(cols, USER_EMAIL)
-		}
-		return cols
+func (me *User) Columns() []schema.Column {
+	return []schema.Column{
+		USER_ID,
+		USER_NAME,
+		USER_PASSWD,
+		USER_EMAIL,
 	}
-	return nil
 }
 
 func (me *User) Names() []string {
