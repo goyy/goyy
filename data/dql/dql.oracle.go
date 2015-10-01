@@ -30,26 +30,16 @@ func (me *oracle) SelectPage(dql string, pageable domain.Pageable) string {
 }
 
 func (me *oracle) SelectListBySift(e entity.Interface, sifts ...domain.Sift) (dql string, args []interface{}, err error) {
-	op := map[string]string{
-		"EQ": " = ",
-		"NE": " <> ",
-		"GT": " > ",
-		"LT": " < ",
-		"GE": " >= ",
-		"LE": " <= ",
-		"LI": " like ",
-		"LK": " like ",
-		"LL": " like ",
-		"LR": " like ",
-		"BE": " between ",
-		"IN": " in ",
-		"NU": " is null ",
-		"NN": " is not null ",
-		"OA": " asc ",
-		"OD": " desc ",
-	}
+	return me.selectBySift(e, "select * from ", sifts...)
+}
+
+func (me *oracle) SelectCountBySift(e entity.Interface, sifts ...domain.Sift) (dql string, args []interface{}, err error) {
+	return me.selectBySift(e, "select count(*) from ", sifts...)
+}
+
+func (me *oracle) selectBySift(e entity.Interface, begin string, sifts ...domain.Sift) (dql string, args []interface{}, err error) {
 	args = make([]interface{}, 0)
-	w := bytes.NewBuffer([]byte("select * from "))
+	w := bytes.NewBuffer([]byte(begin))
 	w.WriteString(e.Table().Name() + " ")
 	var o bytes.Buffer
 	i := 0

@@ -14,6 +14,7 @@ type Interface interface {
 	SelectOne(e entity.Interface) (dql string, arg interface{})
 	SelectPage(dql string, pageable domain.Pageable) string
 	SelectListBySift(e entity.Interface, sifts ...domain.Sift) (dql string, args []interface{}, err error)
+	SelectCountBySift(e entity.Interface, sifts ...domain.Sift) (dql string, args []interface{}, err error)
 }
 
 func New(i dialect.Interface) Interface {
