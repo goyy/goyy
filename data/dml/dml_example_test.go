@@ -18,5 +18,5 @@ func ExampleType() {
 	v, _ := d.Insert(user)
 	fmt.Println(v)
 
-	// Output:insert into sys_user (id,name) values (?,?)
+	// Output:insert into sys_user (id,name,passwd,email) values (?,?,?,?)
 }

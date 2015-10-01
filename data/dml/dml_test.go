@@ -11,7 +11,7 @@ import (
 )
 
 func TestType(t *testing.T) {
-	expected := "insert into sys_user (id,name) values (?,?)"
+	expected := "insert into sys_user (id,name,passwd,email) values (?,?,?,?)"
 	user := NewUser()
 	user.SetId("1")
 	user.SetName("admin")
