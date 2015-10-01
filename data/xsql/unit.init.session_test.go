@@ -15,7 +15,7 @@ var factory xsql.Factory
 var session xsql.Session
 
 func init() {
-	factory, err := xsql.New(&dialect.Oracle{}, "db")
+	factory, err := xsql.New(&dialect.MySQL{}, "db")
 	if err != nil {
 		panic(err)
 	}
