@@ -5,7 +5,6 @@
 package xhttp
 
 import (
-	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/web/session"
@@ -55,13 +54,14 @@ func (me *context) Param(key string) string {
 }
 
 func (me *context) Bind(out entity.Interface) error {
-	sifts, err := domain.NewSifts(me.params, defaultEntityPrefix)
-	if err != nil {
-		logger.Error(err.Error())
-		return err
-	}
-	for _, sift := range sifts {
-		out.SetString(sift.Key(), sift.Value())
+	for k, v := range me.params {
+		value := strings.JoinIgnoreBlank(v, ",")
+		// value isNotBlank -> exec SetString(k, value)
+		// value isBlank -> exec SetString(k, value)
+		if err := out.SetString(k, value); err != nil {
+			logger.Error(err.Error())
+			return err
+		}
 	}
 	return nil
 }
