@@ -326,8 +326,18 @@ func (me factory) Write() error {
 		}
 	}
 	if me.HasGenLog {
-		if err := me.writeLogMain(); err != nil {
+		if err := me.writeLogJsonXgen(); err != nil {
 			return err
+		}
+		if strings.IsNotBlank(me.Clidir) {
+			if err := me.writeLogClientXgen(); err != nil {
+				return err
+			}
+		}
+		if strings.IsNotBlank(me.Apipath) {
+			if err := me.writeLogApiXgen(); err != nil {
+				return err
+			}
 		}
 	}
 	if me.HasGenUtil {
@@ -346,10 +356,10 @@ func (me factory) Write() error {
 func (me factory) writeBy(typ, content string) error {
 	// get the destination file
 	dir, file := filepath.Split(me.Epath)
-	if typ == "main.dto" || typ == "xgen.controller.client" || typ == "main.controller.client" {
+	if typ == "main.dto" || typ == "xgen.controller.client" || typ == "main.controller.client" || typ == "xgen.log.client" {
 		dir = me.Clidir + "/internal/" + me.Project + "/" + me.PackageName
 	}
-	if typ == "main.api" {
+	if typ == "main.api" || typ == "xgen.log.api" {
 		dir = "../../api/" + me.PackageName
 	}
 	if typ == "reg.controller.client" {
@@ -390,7 +400,7 @@ func (me factory) writeEntitiesXgen() error {
 }
 
 func (me factory) writeServiceXgen() error {
-	return me.writeBy("xgen.service", tmplService)
+	return me.writeBy("xgen.service", tmplServiceXgen)
 }
 
 func (me factory) writeServiceMain() error {
@@ -441,8 +451,16 @@ func (me factory) writeSqlMain() error {
 	return me.writeBy("main.sql", tmplSqlMain)
 }
 
-func (me factory) writeLogMain() error {
-	return me.writeBy("main.log", tmplLogMain)
+func (me factory) writeLogJsonXgen() error {
+	return me.writeBy("xgen.log.json", tmplLogXgen)
+}
+
+func (me factory) writeLogApiXgen() error {
+	return me.writeBy("xgen.log.api", tmplLogXgen)
+}
+
+func (me factory) writeLogClientXgen() error {
+	return me.writeBy("xgen.log.client", tmplLogXgen)
 }
 
 func (me factory) writeUtilMain() error {
@@ -509,8 +527,8 @@ func (me factory) printerType(e ast.Expr) string {
 }
 
 func (me factory) genFileName(typ, name string) string {
-	if typ == "main.log" {
-		return "main.log.go"
+	if typ == "xgen.log.json" || typ == "xgen.log.client" || typ == "xgen.log.api" {
+		return "xgen.log.go"
 	}
 	if typ == "main.util" {
 		return "main.util.go"
@@ -519,7 +537,7 @@ func (me factory) genFileName(typ, name string) string {
 		return "main.const.go"
 	}
 	if typ == "main.api" {
-		return me.PackageName + ".go"
+		return "main." + me.PackageName + ".go"
 	}
 	if typ == "reg.controller.html" || typ == "reg.controller.client" || typ == "reg.controller.json" {
 		return "register." + me.PackageName + ".go"
