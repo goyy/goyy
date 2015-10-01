@@ -10,7 +10,7 @@ import (
 )
 
 func TestEntityJSON(t *testing.T) {
-	json := `{"success":true,"code":"1","message":"ok","memo":"","tag":"","data":{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0}}`
+	json := `{"success":true,"token":"","code":"1","message":"ok","memo":"","tag":"","data":{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0}}`
 	u := NewUser()
 	u.SetId("1")
 	u.SetName("admin")

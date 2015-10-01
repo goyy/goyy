@@ -10,7 +10,7 @@ import (
 )
 
 func TestEntitiesJSON(t *testing.T) {
-	expected := `{"success":true,"code":"1","message":"ok","memo":"","tag":"","data":[{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0},{"id":"2","name":"sa","passwd":"3df69ku7h","age":20,"email":"sa@gmail.com","version":0}]}`
+	expected := `{"success":true,"token":"","code":"1","message":"ok","memo":"","tag":"","data":[{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0},{"id":"2","name":"sa","passwd":"3df69ku7h","age":20,"email":"sa@gmail.com","version":0}]}`
 	u1 := NewUser()
 	u1.SetId("1")
 	u1.SetName("admin")
@@ -23,7 +23,7 @@ func TestEntitiesJSON(t *testing.T) {
 	u2.SetPasswd("3df69ku7h")
 	u2.SetAge(20)
 	u2.SetEmail("sa@gmail.com")
-	users := NewUsers(2)
+	users := NewUserEntities(2)
 	users.Append(u1)
 	users.Append(u2)
 	r := result.Entities{
@@ -39,7 +39,7 @@ func TestEntitiesJSON(t *testing.T) {
 
 func TestEntitiesParseJSON(t *testing.T) {
 	json := `{"success":true,"code":"1","message":"ok","memo":"","tag":"","data":[{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0},{"id":"2","name":"sa","passwd":"3df69ku7h","age":20,"email":"sa@gmail.com","version":0}]}`
-	users := NewUsers(2)
+	users := NewUserEntities(2)
 	r := result.Entities{Data: users}
 	if err := r.ParseJSON(json); err != nil {
 		t.Errorf(`ParseJSON->error:"%v"`, err.Error())

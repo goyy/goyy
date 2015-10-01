@@ -5,48 +5,48 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/entity"
 )
 
-func NewUsers(v int) *Users {
-	entities := &Users{}
+func NewUserEntities(v int) *UserEntities {
+	entities := &UserEntities{}
 	entities.Make(v)
 	return entities
 }
 
-type Users struct {
+type UserEntities struct {
 	datas []*User
 }
 
-func (me *Users) Make(cap int) {
+func (me *UserEntities) Make(cap int) {
 	me.datas = make([]*User, 0, cap)
 }
 
-func (me *Users) New() entity.Interface {
+func (me *UserEntities) New() entity.Interface {
 	return NewUser()
 }
 
-func (me *Users) Append(v entity.Interface) {
+func (me *UserEntities) Append(v entity.Interface) {
 	me.datas = append(me.datas, v.(*User))
 }
 
-func (me *Users) Len() int {
+func (me *UserEntities) Len() int {
 	return len(me.datas)
 }
 
-func (me *Users) Cap() int {
+func (me *UserEntities) Cap() int {
 	return cap(me.datas)
 }
 
-func (me *Users) Index(v int) entity.Interface {
+func (me *UserEntities) Index(v int) entity.Interface {
 	return me.datas[v]
 }
 
-func (me *Users) Slice() interface{} {
+func (me *UserEntities) Slice() interface{} {
 	return me.datas
 }
 
-func (me *Users) Value(v int) *User {
+func (me *UserEntities) Value(v int) *User {
 	return me.datas[v]
 }
 
-func (me *Users) Values() []*User {
+func (me *UserEntities) Values() []*User {
 	return me.datas
 }

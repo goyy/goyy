@@ -11,7 +11,7 @@ import (
 )
 
 func TestPageJSON(t *testing.T) {
-	expected := `{"success":true,"code":"1","message":"ok","memo":"","tag":"","data":{"pageNo":1,"pageSize":10,"totalElements":2,"function":"page","length":8,"slider":1,"slice":[{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0},{"id":"2","name":"sa","passwd":"3df69ku7h","age":20,"email":"sa@gmail.com","version":0}]}}`
+	expected := `{"success":true,"id":"","token":"","code":"1","message":"ok","memo":"","tag":"","data":{"pageNo":1,"pageSize":10,"totalElements":2,"function":"page","length":8,"slider":1,"slice":[{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0},{"id":"2","name":"sa","passwd":"3df69ku7h","age":20,"email":"sa@gmail.com","version":0}]}}`
 	u1 := NewUser()
 	u1.SetId("1")
 	u1.SetName("admin")
@@ -24,7 +24,7 @@ func TestPageJSON(t *testing.T) {
 	u2.SetPasswd("3df69ku7h")
 	u2.SetAge(20)
 	u2.SetEmail("sa@gmail.com")
-	users := NewUsers(2)
+	users := NewUserEntities(2)
 	users.Append(u1)
 	users.Append(u2)
 	pageable := domain.NewPageable(1, 10)
@@ -42,7 +42,7 @@ func TestPageJSON(t *testing.T) {
 
 func TestPageParseJSON(t *testing.T) {
 	json := `{"success":true,"code":"1","message":"ok","memo":"","tag":"","data":{"pageNo":1,"pageSize":10,"totalElements":2,"function":"page","length":8,"slider":1,"slice":[{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0},{"id":"2","name":"sa","passwd":"3df69ku7h","age":20,"email":"sa@gmail.com","version":0}]}}`
-	users := NewUsers(2)
+	users := NewUserEntities(2)
 	pageable := domain.NewPageable(1, 10)
 	page := domain.NewPage(pageable, users, 2)
 	r := result.Page{Data: page}
