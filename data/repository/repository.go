@@ -195,6 +195,18 @@ func (me *Repository) SelectPageBySift(pageable domain.Pageable, content entity.
 	return session.SelectPage(content, pageable, sifts...)
 }
 
+// select count(*) from...
+// Return value of int type.
+func (me *Repository) SelectCountBySift(e entity.Interface, sifts ...domain.Sift) (int, error) {
+	session, err := me.factory.Session()
+	if err != nil {
+		logger.Debug(err)
+		return 0, err
+	}
+	defer session.Close()
+	return session.SelectCount(e, sifts...)
+}
+
 // Exec executes a prepared statement with the given arguments and
 // returns a Result summarizing the effect of the statement.
 func (me *Repository) Exec(query string, args ...interface{}) (sql.Result, error) {
