@@ -13,14 +13,16 @@ func expSQL() {
 	for _, p := range conf.projects {
 		var dialect dialects
 		switch p.database.driverName {
-		case mysql:
+		case "mymysql", "mysql":
 			dialect = &mysqls{conf.Settings.Statement.Seperator, conf.Settings.Statement.Case}
-		case oracle:
+		case "oracle":
 			dialect = &oracles{conf.Settings.Statement.Seperator, conf.Settings.Statement.Case}
-		case postgres:
+		case "postgres":
 			dialect = &postgresql{conf.Settings.Statement.Seperator, conf.Settings.Statement.Case}
-		case sqlserver:
+		case "sqlserver":
 			dialect = &sqlservers{conf.Settings.Statement.Seperator, conf.Settings.Statement.Case}
+		case "sqlite", "sqlite3":
+			dialect = &sqlite{conf.Settings.Statement.Seperator, conf.Settings.Statement.Case}
 		default:
 			dialect = &mysqls{conf.Settings.Statement.Seperator, conf.Settings.Statement.Case}
 		}
