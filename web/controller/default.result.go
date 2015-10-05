@@ -27,7 +27,6 @@ func (me *Controller) Result(c xhttp.Context, r result.Http) map[string]interfac
 		}
 	}
 	return map[string]interface{}{
-		"Ctx":         "",
 		"Project":     me.Project,
 		"Module":      me.Module,
 		"Title":       me.Title,
