@@ -15,14 +15,30 @@ import (
 type htmlServeMux struct{}
 
 type directiveInfo struct {
-	statement string // <!--#include file="/footer.html"-->content<!--#endinclude"-->
-	directive string // include
-	argKey    string // file
-	argValue  string // /footer.html
-	begin     int    // postion:<!--#include file="
-	center    int    // postion:"-->
-	end       int    // postion:<!--#endinclude"-->
+	statement  string // <!--#include file="/footer.html" param="home"-->content<!--#endinclude"-->
+	directive  string // include
+	argKey     string // file
+	argValue   string // /footer.html
+	paramKey   string // param
+	paramValue string // home
+	content    string // content
+	begin      int    // postion:<!--#include file="
+	center     int    // postion:"-->
+	end        int    // postion:<!--#endinclude"-->
 }
+
+/*
+type directiveInfo struct {
+	statement string // {{if param `home`}}cur{{end}}
+	directive string // if
+	argKey    string // param
+	argValue  string // home
+	content   string // cur
+	begin     int    // postion:{{if
+	center    int    // postion:}}
+	end       int    // postion:{{end}}
+}
+*/
 
 type tagInfo struct {
 	statement string // <link rel="shortcut icon" href="/favicon.ico" go:href="{{assets}}/favicon.ico">
@@ -45,6 +61,7 @@ type tagTextInfo struct {
 	tagEnd    int    // postion:</
 	srcBegin  int    // postion:>
 	srcEnd    int    // postion:</
+	srcVal    string // login
 	dstBegin  int    // postion: go:title="
 	dstEnd    int    // postion:"
 	dstVal    string // /title.html
@@ -140,7 +157,7 @@ func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request
 			if me.isInclude(content) {
 				var includeFileModTimeUnix int64
 				directives := make([]directiveInfo, 0)
-				directives = me.buildDirectiveInfo(content, directiveIncludeBegin, directiveIncludeEnd, directives)
+				directives = me.buildDirectiveInfo(content, directiveIncludeBegin, directiveArgEnd, directiveIncludeEnd, directives)
 				for _, v := range directives {
 					if val, err := files.ModTime(v.argValue); err == nil {
 						if includeFileModTimeUnix < val {
@@ -183,13 +200,24 @@ func (me *htmlServeMux) parseFile(w http.ResponseWriter, r *http.Request, conten
 
 func (me *htmlServeMux) parseIncludeFile(content string) string {
 	directives := make([]directiveInfo, 0)
-	directives = me.buildDirectiveInfo(content, directiveIncludeBegin, directiveIncludeEnd, directives)
+	directives = me.buildDirectiveInfo(content, directiveIncludeBegin, directiveArgEnd, directiveIncludeEnd, directives)
 	for i := len(directives) - 1; i >= 0; i-- {
 		v, err := files.Read(directives[i].argValue)
 		if err != nil {
 			logger.Error(err.Error())
 			continue
 		}
+
+		ifparams := make([]directiveInfo, 0)
+		ifparams = me.buildDirectiveInfo(v, tplBegin, tplArgEnd, tplEnd, ifparams)
+		for p := len(ifparams) - 1; p >= 0; p-- {
+			if directives[i].paramValue == ifparams[p].argValue {
+				v = strings.Replace(v, ifparams[p].statement, ifparams[p].content, -1)
+			} else {
+				v = strings.Replace(v, ifparams[p].statement, "", -1)
+			}
+		}
+
 		content = strings.Replace(content, directives[i].statement, v, -1)
 	}
 	return content
@@ -197,7 +225,7 @@ func (me *htmlServeMux) parseIncludeFile(content string) string {
 
 func (me *htmlServeMux) parseIfFile(content string) string {
 	directives := make([]directiveInfo, 0)
-	directives = me.buildDirectiveInfo(content, directiveIfBegin, directiveIfEnd, directives)
+	directives = me.buildDirectiveInfo(content, directiveIfBegin, directiveArgEnd, directiveIfEnd, directives)
 	for i := len(directives) - 1; i >= 0; i-- {
 		if directives[i].argValue == "false" {
 			content = strings.Replace(content, directives[i].statement, "", -1)
@@ -226,7 +254,7 @@ func (me *htmlServeMux) parseTagTextFile(content, attr string) string {
 
 func (me *htmlServeMux) parseSecLoginFile(w http.ResponseWriter, r *http.Request, content string) string {
 	directives := make([]directiveInfo, 0)
-	directives = me.buildDirectiveInfo(content, directiveSecLoginBegin, directiveSecEnd, directives)
+	directives = me.buildDirectiveInfo(content, directiveSecLoginBegin, directiveArgEnd, directiveSecEnd, directives)
 	for i := len(directives) - 1; i >= 0; i-- {
 		isLogin := false
 		s := newSession4Redis(w, r)
@@ -247,7 +275,7 @@ func (me *htmlServeMux) parseSecLoginFile(w http.ResponseWriter, r *http.Request
 
 func (me *htmlServeMux) parseSecUserFile(w http.ResponseWriter, r *http.Request, content string) string {
 	directives := make([]directiveInfo, 0)
-	directives = me.buildDirectiveInfo(content, directiveSecUserBegin, directiveSecEnd, directives)
+	directives = me.buildDirectiveInfo(content, directiveSecUserBegin, directiveArgEnd, directiveSecEnd, directives)
 	for i := len(directives) - 1; i >= 0; i-- {
 		if directives[i].argValue == "name" {
 			s := newSession4Redis(w, r)
@@ -265,7 +293,7 @@ func (me *htmlServeMux) parseSecUserFile(w http.ResponseWriter, r *http.Request,
 
 func (me *htmlServeMux) parseSecIsPermissionFile(w http.ResponseWriter, r *http.Request, content string) string {
 	directives := make([]directiveInfo, 0)
-	directives = me.buildDirectiveInfo(content, directiveSecIsPermissionBegin, directiveSecEnd, directives)
+	directives = me.buildDirectiveInfo(content, directiveSecIsPermissionBegin, directiveArgEnd, directiveSecEnd, directives)
 	for i := len(directives) - 1; i >= 0; i-- {
 		if strings.IsNotBlank(directives[i].argValue) {
 			isLogin := false
@@ -290,7 +318,7 @@ func (me *htmlServeMux) parseSecIsPermissionFile(w http.ResponseWriter, r *http.
 
 func (me *htmlServeMux) parseSecIsAnyPermissionFile(w http.ResponseWriter, r *http.Request, content string) string {
 	directives := make([]directiveInfo, 0)
-	directives = me.buildDirectiveInfo(content, directiveSecIsAnyPermissionBegin, directiveSecEnd, directives)
+	directives = me.buildDirectiveInfo(content, directiveSecIsAnyPermissionBegin, directiveArgEnd, directiveSecEnd, directives)
 	for i := len(directives) - 1; i >= 0; i-- {
 		if strings.IsNotBlank(directives[i].argValue) {
 			isLogin := false
@@ -314,7 +342,7 @@ func (me *htmlServeMux) parseSecIsAnyPermissionFile(w http.ResponseWriter, r *ht
 	return content
 }
 
-func (me *htmlServeMux) buildDirectiveInfo(content, directiveBegin, directiveEnd string, directives []directiveInfo) []directiveInfo {
+func (me *htmlServeMux) buildDirectiveInfo(content, directiveBegin, argEnd, directiveEnd string, directives []directiveInfo) []directiveInfo {
 	pos := 0
 	for {
 		begin := strings.IndexStart(content, directiveBegin, pos)
@@ -324,7 +352,7 @@ func (me *htmlServeMux) buildDirectiveInfo(content, directiveBegin, directiveEnd
 			}
 			break
 		}
-		center := strings.IndexStart(content, directiveArgEnd, begin)
+		center := strings.IndexStart(content, argEnd, begin)
 		if center == -1 {
 			if pos == 0 {
 				return directives
@@ -338,9 +366,16 @@ func (me *htmlServeMux) buildDirectiveInfo(content, directiveBegin, directiveEnd
 			}
 			break
 		}
+		contents := strings.Slice(content, center+len(argEnd), end)
 		pos = end
+		paramKey := "param"
+		paramValue := ""
 		argValue := strings.Slice(content, begin+len(directiveBegin), center)
 		if directiveBegin == directiveIncludeBegin {
+			if strings.Contains(argValue, directiveIncludeParamBegin) {
+				paramValue = strings.After(argValue, directiveIncludeParamBegin)
+				argValue = strings.Before(argValue, directiveIncludeParamBegin)
+			}
 			argValue = Conf.Templates.Dir + argValue
 			if !files.IsExist(argValue) {
 				continue
@@ -350,7 +385,7 @@ func (me *htmlServeMux) buildDirectiveInfo(content, directiveBegin, directiveEnd
 		directive := "include"
 		argKey := "file"
 		switch directiveBegin {
-		case directiveIfEnd:
+		case directiveIfBegin:
 			directive = "if"
 			argKey = "expr"
 		case directiveSecUserBegin:
@@ -364,13 +399,16 @@ func (me *htmlServeMux) buildDirectiveInfo(content, directiveBegin, directiveEnd
 			argKey = "isAnyPermission"
 		}
 		ii := directiveInfo{
-			statement: statement,
-			directive: directive,
-			argKey:    argKey,
-			argValue:  argValue,
-			begin:     begin,
-			center:    center,
-			end:       end,
+			statement:  statement,
+			directive:  directive,
+			argKey:     argKey,
+			argValue:   argValue,
+			content:    contents,
+			paramKey:   paramKey,
+			paramValue: paramValue,
+			begin:      begin,
+			center:     center,
+			end:        end,
 		}
 		directives = append(directives, ii)
 	}
@@ -479,6 +517,7 @@ func (me *htmlServeMux) buildTagTextInfo(content, attr string, tags []tagTextInf
 			break
 		}
 		srcEnd := tagEnd
+		srcVal := strings.Slice(content, srcBegin+len(tagEndPre), srcEnd)
 		pos = tagEnd
 		statement := strings.Slice(content, tagBegin, tagEnd+len(tagTextEndPre))
 		newstmt := statement
@@ -503,6 +542,7 @@ func (me *htmlServeMux) buildTagTextInfo(content, attr string, tags []tagTextInf
 			tagEnd:    tagEnd,
 			srcBegin:  srcBegin,
 			srcEnd:    srcEnd,
+			srcVal:    srcVal,
 			dstBegin:  dstBegin,
 			dstEnd:    dstEnd,
 			dstVal:    dstVal,
