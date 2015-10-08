@@ -134,6 +134,14 @@ func (me *Manager) SelectPageBySift(content entity.Interfaces, pageable domain.P
 	return me.Repository.SelectPageBySift(pageable, content, sifts...)
 }
 
+func (me *Manager) SelectCountBySift(e entity.Interface, sifts ...domain.Sift) (int, error) {
+	if me.Pre == nil {
+		me.Pre = me.defaultPre
+	}
+	me.Pre()
+	return me.Repository.SelectCountBySift(e, sifts...)
+}
+
 func (me *Manager) Save(c xhttp.Context, e entity.Interface) error {
 	if me.Pre == nil {
 		me.Pre = me.defaultPre
