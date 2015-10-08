@@ -27,6 +27,11 @@ func New(d dialect.Interface, name string) *Repository {
 	return &Repository{factory: f}
 }
 
+// Get Dialect
+func (me *Repository) Dialect() dialect.Interface {
+	return me.factory.Dialect()
+}
+
 // Insert entity data into database.
 func (me *Repository) Insert(e entity.Interface) (int64, error) {
 	session, err := me.factory.Session()
