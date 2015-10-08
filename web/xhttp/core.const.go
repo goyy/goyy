@@ -17,6 +17,7 @@ const (
 
 	directiveArgEnd                  = `"-->`
 	directiveIncludeBegin            = `<!--#include file="`
+	directiveIncludeParamBegin       = `" param="`
 	directiveIncludeEnd              = `<!--#endinclude-->`
 	directiveIfBegin                 = `<!--#if expr="`
 	directiveIfEnd                   = `<!--#endif-->`
@@ -25,6 +26,10 @@ const (
 	directiveSecIsPermissionBegin    = `<!--#sec isPermission="`
 	directiveSecIsAnyPermissionBegin = `<!--#sec isAnyPermission="`
 	directiveSecEnd                  = `<!--#endsec-->`
+
+	tplBegin  = "{{if param `"
+	tplArgEnd = "`}}"
+	tplEnd    = "{{end}}"
 
 	tagBeginPre         = `<`
 	tagEndPre           = `>`
