@@ -9,11 +9,10 @@ import (
 )
 
 const (
-	defaultEntityPrefix = ""
-	defaultStatus       = 200
-	default404Body      = "404 page not found"
-	default405Body      = "405 method not allowed"
-	default500Body      = "500 server internal error"
+	defaultStatus  = 200
+	default404Body = "404 page not found"
+	default405Body = "405 method not allowed"
+	default500Body = "500 server internal error"
 
 	directiveArgEnd                  = `"-->`
 	directiveIncludeBegin            = `<!--#include file="`
