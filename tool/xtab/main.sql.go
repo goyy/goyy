@@ -15,7 +15,7 @@ func expSQL() {
 		switch p.database.driverName {
 		case "mymysql", "mysql":
 			dialect = &mysqls{conf.Settings.Statement.Seperator, conf.Settings.Statement.Case}
-		case "oracle":
+		case "oci8", "oracle":
 			dialect = &oracles{conf.Settings.Statement.Seperator, conf.Settings.Statement.Case}
 		case "postgres":
 			dialect = &postgresql{conf.Settings.Statement.Seperator, conf.Settings.Statement.Case}
