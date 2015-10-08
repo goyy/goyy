@@ -6,24 +6,24 @@ package entity
 
 type String struct {
 	base
-	value string
+	value []byte
 }
 
 func (me *String) Value() string {
-	return me.value
+	return string(me.value)
 }
 
-func (me *String) ValuePtr() *string {
+func (me *String) ValuePtr() *[]byte {
 	return &me.value
 }
 
 func (me *String) SetValue(v string) {
-	me.value = v
+	me.value = []byte(v)
 	me.field.SetModified(true)
 }
 
 func (me *String) SetDefault(v string) error {
-	me.value = v
+	me.value = []byte(v)
 	return nil
 }
 
@@ -37,7 +37,7 @@ func (me *String) SetString(v string) error {
 }
 
 func (me *String) String() string {
-	return me.value
+	return string(me.value)
 }
 
 func (me *String) Name() string {
