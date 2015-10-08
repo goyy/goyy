@@ -42,6 +42,11 @@ type factory struct {
 	db                         *sql.DB
 }
 
+// Get Dialect
+func (me *factory) Dialect() dialect.Interface {
+	return me.dialect
+}
+
 // New Session
 func (me *factory) Session() (Session, error) {
 	return &session{

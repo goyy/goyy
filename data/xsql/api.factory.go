@@ -4,6 +4,11 @@
 
 package xsql
 
+import (
+	"gopkg.in/goyy/goyy.v0/data/dialect"
+)
+
 type Factory interface {
 	Session() (Session, error)
+	Dialect() dialect.Interface
 }
