@@ -71,7 +71,7 @@ func (me *oracle) selectBySift(e entity.Interface, begin string, sifts ...domain
 			if v.Operator() == "NU" || v.Operator() == "NN" {
 				w.WriteString(key + op[v.Operator()])
 			} else {
-				w.WriteString(key + op[v.Operator()] + ":" + strconv.Itoa(i+1) + " ")
+				w.WriteString(key + op[v.Operator()] + ":" + strconv.Itoa(i) + " ")
 				if typ, ok := e.Type(key); ok {
 					val, err := toValue(v.Value(), typ.Name())
 					if err != nil {
