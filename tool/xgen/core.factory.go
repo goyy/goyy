@@ -311,7 +311,7 @@ func (me factory) Write() error {
 		}
 	}
 	if me.HasGenDto {
-		if err := me.writeDtoMain(); err != nil {
+		if err := me.writeDtoXgen(); err != nil {
 			return err
 		}
 	}
@@ -356,7 +356,7 @@ func (me factory) Write() error {
 func (me factory) writeBy(typ, content string) error {
 	// get the destination file
 	dir, file := filepath.Split(me.Epath)
-	if typ == "main.dto" || typ == "xgen.controller.client" || typ == "main.controller.client" || typ == "xgen.log.client" {
+	if typ == "xgen.dto" || typ == "xgen.controller.client" || typ == "main.controller.client" || typ == "xgen.log.client" {
 		dir = me.Clidir + "/internal/" + me.Project + "/" + me.PackageName
 	}
 	if typ == "main.api" || typ == "xgen.log.api" {
@@ -471,8 +471,8 @@ func (me factory) writeConstMain() error {
 	return me.writeBy("main.const", tmplConstMain)
 }
 
-func (me factory) writeDtoMain() error {
-	return me.writeBy("main.dto", tmplDtoMain)
+func (me factory) writeDtoXgen() error {
+	return me.writeBy("xgen.dto", tmplDtoXgen)
 }
 
 func (me factory) writeApiMain() error {
