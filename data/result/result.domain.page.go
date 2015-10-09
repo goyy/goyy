@@ -38,6 +38,7 @@ func (me *Page) JSON() string {
 	if me.Data != nil {
 		b.WriteString(`"pageNo":` + strconv.Itoa(me.Data.PageNo()) + `,`)
 		b.WriteString(`"pageSize":` + strconv.Itoa(me.Data.PageSize()) + `,`)
+		b.WriteString(`"totalPages":` + strconv.Itoa(me.Data.TotalPages()) + `,`)
 		b.WriteString(`"totalElements":` + strconv.Itoa(me.Data.TotalElements()) + `,`)
 		b.WriteString(`"function":"` + me.Data.Function() + `",`)
 		b.WriteString(`"length":` + strconv.Itoa(me.Data.Length()) + `,`)
