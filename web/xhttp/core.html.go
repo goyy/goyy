@@ -150,7 +150,7 @@ func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request
 					// Actual last login time
 					lastLoginTime := times.FormatUnixGMT(lastLoginTimeUnix)
 					// Tell the browser not to use cache
-					w.Header().Set("last-modified", lastLoginTime)
+					w.Header().Set("Last-Modified", lastLoginTime)
 					return false
 				}
 			}

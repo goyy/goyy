@@ -11,8 +11,9 @@ import (
 const (
 	defaultStatus  = 200
 	default404Body = "404 page not found"
+	default403Body = "403 Forbidden"
 	default405Body = "405 method not allowed"
-	default500Body = "500 server internal error"
+	default500Body = "500 Internal Server Error"
 
 	directiveArgEnd                  = `"-->`
 	directiveIncludeBegin            = `<!--#include file="`
