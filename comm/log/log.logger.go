@@ -11,5 +11,5 @@ import (
 var console *Logger = NewLogger(os.Stderr)
 
 func init() {
-	console.SetLayouts(Lstd)
+	console.SetLayouts(LstdFlags | Lpriority)
 }

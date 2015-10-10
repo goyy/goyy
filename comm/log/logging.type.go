@@ -19,7 +19,7 @@ func New(prefix string) *Logging {
 	return &Logging{
 		prefix:   prefix,
 		priority: Perror,
-		layouts:  Lstd,
+		layouts:  LstdFlags | Lpriority,
 		outputs:  Ostd,
 	}
 }
