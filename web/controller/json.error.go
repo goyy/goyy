@@ -12,5 +12,5 @@ import (
 func (me *JSONController) Error(c xhttp.Context, err error) {
 	go errorSave(c.Request(), err)
 	logger.Error(err.Error())
-	c.JSON(xhttp.StatusBadRequest, result.Http{Message: err.Error()})
+	c.JSON(xhttp.StatusInternalServerError, result.Http{Message: err.Error()})
 }
