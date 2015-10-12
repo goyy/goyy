@@ -17,6 +17,7 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	defer func() {
 		if err := recover(); err != nil {
 			w.WriteHeader(500)
+			logger.Error(err)
 			w.Write([]byte(default500Body))
 		}
 	}()
