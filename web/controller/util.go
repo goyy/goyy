@@ -128,9 +128,9 @@ func ApiBy(project, module, name string) string {
 		module = strings.Replace(module, ".", "/", -1)
 	}
 	if strings.IsBlank(name) {
-		return fmt.Sprintf("/api/%s/%s", project, module)
+		return fmt.Sprintf("/apis/%s/%s", project, module)
 	} else {
-		return fmt.Sprintf("/api/%s/%s/%s", project, module, name)
+		return fmt.Sprintf("/apis/%s/%s/%s", project, module, name)
 	}
 }
 
