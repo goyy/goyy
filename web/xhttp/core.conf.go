@@ -41,16 +41,6 @@ var Conf = &conf{
 	Html: &htmlOptions{
 		Enable: false,
 	},
-	Template: &templateOptions{
-		Dir:        "templates",
-		Extensions: []string{"html"},
-		Funcs:      []template.FuncMap{},
-		Delims: templateDelims{
-			Left:  "{{",
-			Right: "}}",
-		},
-		Reloaded: true,
-	},
 	Session: &sessionOptions{
 		Enable: true,
 		Addr:   ":6379",
@@ -70,26 +60,31 @@ var Conf = &conf{
 			{"/**", "anon"},
 		},
 	},
+	Template: &templateOptions{
+		Enable:     true,
+		Dir:        "templates",
+		Extensions: []string{"html"},
+		Funcs:      []template.FuncMap{},
+		Delims: templateDelims{
+			Left:  "{{",
+			Right: "}}",
+		},
+		Reloaded: true,
+	},
 }
 
 type conf struct {
 	Addr      string           // the TCP network address
 	Actives   []string         // Active profile
-	Session   *sessionOptions  // the session TCP network address
 	Api       *apiOptions      // Api options
-	Upload    *uploadOptions   // Upload options
 	Asset     *staticOptions   // Static resource options
 	Developer *staticOptions   // Developer static resource options
 	Operation *staticOptions   // Operation static resource options
+	Upload    *uploadOptions   // Upload options
 	Html      *htmlOptions     // Html resource options
+	Session   *sessionOptions  // the session TCP network address
+	Secure    *secureOptions   // url secure options
 	Template  *templateOptions // template options
-	Secure    *secureOptions
-}
-
-type sessionOptions struct {
-	Enable bool // Whether service is enabled
-	*session.Options
-	Addr string
 }
 
 type apiOptions struct {
@@ -113,6 +108,12 @@ type htmlOptions struct {
 	Enable bool // Whether service is enabled
 }
 
+type sessionOptions struct {
+	Enable bool // Whether service is enabled
+	*session.Options
+	Addr string
+}
+
 type secureOptions struct {
 	Enable     bool // Whether service is enabled
 	LoginUrl   string
@@ -122,6 +123,8 @@ type secureOptions struct {
 
 // Options is a struct for specifying configuration options for the html render
 type templateOptions struct {
+	// Whether service is enabled
+	Enable bool
 	// Directory to load templates. Default is "templates"
 	Dir string
 	// Extensions to parse template files from. Defaults to ["tmpl"]

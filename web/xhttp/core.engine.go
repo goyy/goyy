@@ -74,5 +74,7 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	me.Router.ServeHTTP(w, r)
+	if Conf.Template.Enable {
+		me.Router.ServeHTTP(w, r)
+	}
 }
