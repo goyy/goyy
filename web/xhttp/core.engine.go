@@ -21,29 +21,56 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte(default500Body))
 		}
 	}()
-	if sec.ServeHTTP(w, r) { // secureServeMux
-		return
-	}
-	if Conf.Static.Enable {
-		if ssm == nil {
-			ssm = &staticServeMux{
-				static: http.StripPrefix(Conf.Static.Assets, http.FileServer(http.Dir(Conf.Static.Dir))),
+	if Conf.Asset.Enable { // assetServeMux
+		if asts == nil {
+			asts = &staticServeMux{
+				urlPrefix: Conf.Asset.URL,
+				static:    http.StripPrefix(Conf.Asset.URL, http.FileServer(http.Dir(Conf.Asset.Dir))),
 			}
 		}
-		if ssm.ServeHTTP(w, r) { // staticServeMux
+		if asts.ServeHTTP(w, r) {
 			return
 		}
-		if usm == nil {
-			usm = &uploadServeMux{
-				static: http.StripPrefix(Conf.Static.Consumers, http.FileServer(http.Dir(Conf.Upload.Dir))),
+	}
+	if Conf.Developer.Enable { // developerServeMux
+		if devs == nil {
+			devs = &staticServeMux{
+				urlPrefix: Conf.Developer.URL,
+				static:    http.StripPrefix(Conf.Developer.URL, http.FileServer(http.Dir(Conf.Developer.Dir))),
 			}
 		}
-		if usm.ServeHTTP(w, r) { // uploadServeMux
+		if devs.ServeHTTP(w, r) {
+			return
+		}
+	}
+	if Conf.Operation.Enable { // operationServeMux
+		if oprs == nil {
+			oprs = &staticServeMux{
+				urlPrefix: Conf.Operation.URL,
+				static:    http.StripPrefix(Conf.Operation.URL, http.FileServer(http.Dir(Conf.Operation.Dir))),
+			}
+		}
+		if oprs.ServeHTTP(w, r) {
+			return
+		}
+	}
+	if Conf.Upload.Enable { // uploadServeMux
+		if upls == nil {
+			upls = &uploadServeMux{
+				static: http.StripPrefix(Conf.Upload.URL, http.FileServer(http.Dir(Conf.Upload.Dir))),
+			}
+		}
+		if upls.ServeHTTP(w, r) {
 			return
 		}
 	}
 	if Conf.Html.Enable {
 		if hsm.ServeHTTP(w, r) { // htmlServeMux
+			return
+		}
+	}
+	if Conf.Secure.Enable { // secureServeMux
+		if sec.ServeHTTP(w, r) {
 			return
 		}
 	}

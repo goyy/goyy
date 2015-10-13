@@ -14,22 +14,34 @@ import (
 var Conf = &conf{
 	Addr:    ":9090",
 	Actives: []string{profile.DEV},
-	Static: &staticOptions{
-		Enable:     false,
-		Dir:        "static",
-		Apis:       "/api",
-		Assets:     "/static",
-		Consumers:  "/assets",
-		Operations: "/assets",
+	Api: &apiOptions{
+		URL: "/apis",
+	},
+	Asset: &staticOptions{
+		Enable: false,
+		Dir:    "static",
+		URL:    "/assets",
+	},
+	Developer: &staticOptions{
+		Enable: false,
+		Dir:    "/assets/devs",
+		URL:    "/devs",
+	},
+	Operation: &staticOptions{
+		Enable: false,
+		Dir:    "/assets/oprs",
+		URL:    "/oprs",
 	},
 	Upload: &uploadOptions{
-		Dir:     "/assets/upload",
+		Enable:  false,
+		Dir:     "/assets/upls",
+		URL:     "/upls",
 		MaxSize: 5242880,
 	},
 	Html: &htmlOptions{
 		Enable: false,
 	},
-	Templates: &templateOptions{
+	Template: &templateOptions{
 		Dir:        "templates",
 		Extensions: []string{"html"},
 		Funcs:      []template.FuncMap{},
@@ -40,7 +52,8 @@ var Conf = &conf{
 		Reloaded: true,
 	},
 	Session: &sessionOptions{
-		Addr: ":6379",
+		Enable: true,
+		Addr:   ":6379",
 		Options: &session.Options{
 			Path:     "",
 			Domain:   "",
@@ -49,7 +62,8 @@ var Conf = &conf{
 			HttpOnly: true,
 		},
 	},
-	Secures: &secureOptions{
+	Secure: &secureOptions{
+		Enable:     true,
 		LoginUrl:   "/login",
 		SuccessUrl: "/",
 		Filters: []xtype.Map{
@@ -62,37 +76,45 @@ type conf struct {
 	Addr      string           // the TCP network address
 	Actives   []string         // Active profile
 	Session   *sessionOptions  // the session TCP network address
-	Static    *staticOptions   // Static resource options
-	Html      *htmlOptions     // Html resource options
+	Api       *apiOptions      // Api options
 	Upload    *uploadOptions   // Upload options
-	Templates *templateOptions // template options
-	Secures   *secureOptions
+	Asset     *staticOptions   // Static resource options
+	Developer *staticOptions   // Developer static resource options
+	Operation *staticOptions   // Operation static resource options
+	Html      *htmlOptions     // Html resource options
+	Template  *templateOptions // template options
+	Secure    *secureOptions
 }
 
 type sessionOptions struct {
+	Enable bool // Whether service is enabled
 	*session.Options
 	Addr string
 }
 
+type apiOptions struct {
+	URL string // APIs URL prefix
+}
+
 type staticOptions struct {
-	Enable     bool   // Whether service is enabled
-	Dir        string // Static resource directory
-	Apis       string // APIs URL
-	Assets     string // Static resource URL
-	Consumers  string // Consumer uploaded static resource URL
-	Operations string // Operations uploaded static resource URL
+	Enable bool   // Whether service is enabled
+	Dir    string // Static resource directory
+	URL    string // Static resource URL prefix
+}
+
+type uploadOptions struct {
+	Enable  bool   // Whether service is enabled
+	Dir     string // Upload directory
+	URL     string // Upload URL prefix
+	MaxSize int    // Max upload size
 }
 
 type htmlOptions struct {
 	Enable bool // Whether service is enabled
 }
 
-type uploadOptions struct {
-	Dir     string // Upload directory
-	MaxSize int    // Max upload size
-}
-
 type secureOptions struct {
+	Enable     bool // Whether service is enabled
 	LoginUrl   string
 	SuccessUrl string
 	Filters    []xtype.Map

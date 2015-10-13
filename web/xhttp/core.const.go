@@ -43,8 +43,9 @@ const (
 	tagAttrEnd          = `"`
 	tagStaticApis       = `{{apis}}`
 	tagStaticAssets     = `{{assets}}`
-	tagStaticConsumers  = `{{consumers}}`
+	tagStaticDevelopers = `{{developers}}`
 	tagStaticOperations = `{{operations}}`
+	tagStaticUploads    = `{{uploads}}`
 
 	noWritten = -1
 

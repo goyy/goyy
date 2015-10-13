@@ -9,11 +9,14 @@ import (
 	"net/http"
 )
 
-type staticServeMux struct {
-	static http.Handler
-}
+var asts *staticServeMux
+var devs *staticServeMux
+var oprs *staticServeMux
 
-var ssm *staticServeMux
+type staticServeMux struct {
+	urlPrefix string
+	static    http.Handler
+}
 
 func (me *staticServeMux) ServeHTTP(w http.ResponseWriter, req *http.Request) bool {
 	if me.isStatic(req.URL.Path) {
@@ -24,7 +27,7 @@ func (me *staticServeMux) ServeHTTP(w http.ResponseWriter, req *http.Request) bo
 }
 
 func (me *staticServeMux) isStatic(path string) bool {
-	if strings.HasPrefix(path, Conf.Static.Assets+"/") {
+	if strings.HasPrefix(path, me.urlPrefix+"/") {
 		return true
 	}
 	return false

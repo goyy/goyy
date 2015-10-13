@@ -71,7 +71,7 @@ var hsm = &htmlServeMux{}
 
 func (me *htmlServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool {
 	if me.isHtml(r.URL.Path) {
-		filename := Conf.Templates.Dir + r.URL.Path
+		filename := Conf.Template.Dir + r.URL.Path
 		if files.IsExist(filename) {
 			if me.isUseBrowserCache(w, r, filename) {
 				return true
@@ -88,10 +88,11 @@ func (me *htmlServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool {
 }
 
 func (me *htmlServeMux) replaceAssets(content string) string {
-	content = strings.Replace(content, tagStaticApis, Conf.Static.Apis, -1)
-	content = strings.Replace(content, tagStaticAssets, Conf.Static.Assets, -1)
-	content = strings.Replace(content, tagStaticConsumers, Conf.Static.Consumers, -1)
-	return strings.Replace(content, tagStaticOperations, Conf.Static.Operations, -1)
+	content = strings.Replace(content, tagStaticApis, Conf.Api.URL, -1)
+	content = strings.Replace(content, tagStaticAssets, Conf.Asset.URL, -1)
+	content = strings.Replace(content, tagStaticDevelopers, Conf.Developer.URL, -1)
+	content = strings.Replace(content, tagStaticOperations, Conf.Operation.URL, -1)
+	return strings.Replace(content, tagStaticUploads, Conf.Upload.URL, -1)
 }
 
 func (me *htmlServeMux) isHtml(path string) bool {
@@ -376,7 +377,7 @@ func (me *htmlServeMux) buildDirectiveInfo(content, directiveBegin, argEnd, dire
 				paramValue = strings.After(argValue, directiveIncludeParamBegin)
 				argValue = strings.Before(argValue, directiveIncludeParamBegin)
 			}
-			argValue = Conf.Templates.Dir + argValue
+			argValue = Conf.Template.Dir + argValue
 			if !files.IsExist(argValue) {
 				continue
 			}
@@ -523,7 +524,7 @@ func (me *htmlServeMux) buildTagTextInfo(content, attr string, tags []tagTextInf
 		newstmt := statement
 		dstVal := strings.Slice(content, dstBegin+len(dstBeginPre), dstEnd)
 		if strings.IsNotBlank(dstVal) {
-			filename := Conf.Templates.Dir + dstVal
+			filename := Conf.Template.Dir + dstVal
 			if files.IsExist(filename) {
 				if c, err := files.Read(filename); err == nil {
 					title := strings.Slice(content, srcBegin+len(tagBeginPre), srcEnd)

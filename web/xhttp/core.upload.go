@@ -9,11 +9,11 @@ import (
 	"net/http"
 )
 
+var upls *uploadServeMux
+
 type uploadServeMux struct {
 	static http.Handler
 }
-
-var usm *uploadServeMux
 
 func (me *uploadServeMux) ServeHTTP(w http.ResponseWriter, req *http.Request) bool {
 	if me.isStatic(req.URL.Path) {
@@ -24,7 +24,7 @@ func (me *uploadServeMux) ServeHTTP(w http.ResponseWriter, req *http.Request) bo
 }
 
 func (me *uploadServeMux) isStatic(path string) bool {
-	if strings.HasPrefix(path, Conf.Static.Consumers+"/") {
+	if strings.HasPrefix(path, Conf.Upload.URL+"/") {
 		return true
 	}
 	return false

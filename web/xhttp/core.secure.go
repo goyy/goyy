@@ -31,7 +31,7 @@ func (me *secureServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool
 		if me.isRedirectLogin(path) {
 			loginUrl := me.loginUrl
 			if strings.IsBlank(loginUrl) {
-				loginUrl = Conf.Secures.LoginUrl
+				loginUrl = Conf.Secure.LoginUrl
 			}
 			// After login support to redirect to the URL before
 			if url, err := aes.EncryptHex(r.URL.String(), aes.DefaultKey); err == nil {
@@ -49,7 +49,7 @@ func (me *secureServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool
 }
 
 func (me *secureServeMux) isRedirectLogin(path string) bool {
-	for _, v := range Conf.Secures.Filters {
+	for _, v := range Conf.Secure.Filters {
 		str := strings.Replace(v.Key, ".", `\.`, -1)
 		str = strings.Replace(str, "**", ".*", -1)
 		reg := regexp.MustCompile(str)

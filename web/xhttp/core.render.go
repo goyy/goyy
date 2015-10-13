@@ -28,8 +28,8 @@ type renderer struct {
 }
 
 func (me *renderer) HTML(w http.ResponseWriter, status int, name string, v interface{}) error {
-	if Conf.Templates.Reloaded || me.t == nil {
-		err := me.compile(Conf.Templates)
+	if Conf.Template.Reloaded || me.t == nil {
+		err := me.compile(Conf.Template)
 		if err != nil {
 			return err
 		}
