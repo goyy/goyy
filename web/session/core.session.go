@@ -7,6 +7,7 @@ package session
 import (
 	"github.com/satori/go.uuid"
 	"gopkg.in/goyy/goyy.v0/data/cache"
+	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
 	"net/http"
@@ -93,6 +94,9 @@ func (me *session) Options(options *Options) {
 }
 
 func (me *session) IsLogin() bool {
+	if !me.exists(principalId) {
+		return false
+	}
 	if id, err := me.Get(principalId); err == nil {
 		if strings.IsNotBlank(id) {
 			return true
@@ -103,6 +107,9 @@ func (me *session) IsLogin() bool {
 
 func (me *session) Principal() (Principal, error) {
 	p := Principal{}
+	if !me.exists(principalId) {
+		return p, errors.New("Not logged in")
+	}
 	id, err := me.Get(principalId)
 	if err != nil {
 		return p, err
