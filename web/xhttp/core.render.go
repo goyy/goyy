@@ -46,6 +46,7 @@ func (me *renderer) JSON(w http.ResponseWriter, status int, v interface{}) error
 func (me *renderer) JSONP(w http.ResponseWriter, status int, callback string, v interface{}) error {
 	result, err := json.Marshal(v)
 	if err != nil {
+		logger.Error(err.Error())
 		return err
 	}
 
@@ -110,6 +111,7 @@ func (me *renderer) compile(options *templateOptions) error {
 	filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		r, err := filepath.Rel(dir, path)
 		if err != nil {
+			logger.Error(err.Error())
 			return err
 		} else {
 			r = strings.Replace(r, "\\", "/", -1)
@@ -121,7 +123,8 @@ func (me *renderer) compile(options *templateOptions) error {
 			if ext == extension {
 				buf, err := ioutil.ReadFile(path)
 				if err != nil {
-					panic(err)
+					logger.Error(err.Error())
+					return err
 				}
 
 				name := (r[0 : len(r)-len(ext)-1])
