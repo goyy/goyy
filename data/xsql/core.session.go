@@ -146,6 +146,7 @@ func (me *session) Exec(dml string, args ...interface{}) (sql.Result, error) {
 	if err != nil {
 		panic(err)
 	}
+	defer stmt.Close()
 	return stmt.Exec(args...)
 }
 
