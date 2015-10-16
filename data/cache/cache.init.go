@@ -19,13 +19,13 @@ func Init(conf Conf) {
 			Dial: func() (redis.Conn, error) {
 				conn, err := redis.Dial("tcp", conf.Address)
 				if err != nil {
-					logging.Error(err.Error())
+					logger.Error(err.Error())
 					return nil, err
 				}
 				if strings.IsNotBlank(conf.Password) {
 					if _, err := conn.Do("AUTH", conf.Password); err != nil {
 						conn.Close()
-						logging.Error(err.Error())
+						logger.Error(err.Error())
 						return nil, err
 					}
 				}
@@ -34,7 +34,7 @@ func Init(conf Conf) {
 			TestOnBorrow: func(conn redis.Conn, t time.Time) error {
 				_, err := conn.Do("PING")
 				if err != nil {
-					logging.Error(err.Error())
+					logger.Error(err.Error())
 				}
 				return err
 			},

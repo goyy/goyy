@@ -11,4 +11,4 @@ import (
 
 var pool *redis.Pool
 
-var logging = log.New("[cache]")
+var logger = log.New("[cache]")

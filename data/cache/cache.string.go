@@ -10,12 +10,16 @@ import (
 
 func Set(key, value string) error {
 	err := send("SET", key, value)
-	logging.Debugf("Set %v %v %v", key, value, err)
+	if err != nil {
+		logger.Error(err.Error())
+	}
 	return err
 }
 
 func Get(key string) (string, error) {
 	v, err := redis.String(do("GET", key))
-	logging.Debugf("Get %v %v", key, err)
+	if err != nil {
+		logger.Error(err.Error())
+	}
 	return v, err
 }

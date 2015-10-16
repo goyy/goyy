@@ -12,23 +12,25 @@ import (
 func SSet(key string, value interface{}) error {
 	b, err := json.Marshal(value)
 	if err != nil {
-		logging.Debugf("1:SSet %v %v %v", key, value, err)
+		logger.Error(err.Error())
 		return err
-	} else {
-		logging.Debugf("2:SSet %v %v", key, value)
 	}
 	err = send("SET", key, b)
-	logging.Debugf("3:SSet %v %v %v", key, value, err)
+	if err != nil {
+		logger.Error(err.Error())
+	}
 	return err
 }
 
 func SGet(key string, out interface{}) error {
 	v, err := redis.Bytes(do("GET", key))
-	logging.Debugf("1:SGet %v %v", key, err)
 	if err != nil {
+		logger.Error(err.Error())
 		return err
 	}
 	err = json.Unmarshal(v, out)
-	logging.Debugf("2:SGet %v %v %v", key, v, err)
+	if err != nil {
+		logger.Error(err.Error())
+	}
 	return err
 }
