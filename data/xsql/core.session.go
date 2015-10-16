@@ -144,10 +144,15 @@ func (me *session) Exec(dml string, args ...interface{}) (sql.Result, error) {
 	}
 	stmt, err := me.db.Prepare(dml)
 	if err != nil {
-		panic(err)
+		logger.Error(err.Error())
+		return nil, err
 	}
 	defer stmt.Close()
-	return stmt.Exec(args...)
+	s, err := stmt.Exec(args...)
+	if err != nil {
+		logger.Error(err.Error())
+	}
+	return s, err
 }
 
 // Begin Transaction

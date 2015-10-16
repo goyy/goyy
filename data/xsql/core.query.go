@@ -30,16 +30,19 @@ func (me *query) Rows(out entity.Interfaces) error {
 	}
 	stmt, err := me.db.Prepare(me.dql)
 	if err != nil {
+		logger.Error(err.Error())
 		return err
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query(me.args...)
 	if err != nil {
+		logger.Error(err.Error())
 		return err
 	}
 	defer rows.Close()
 	cols, err := rows.Columns()
 	if err != nil {
+		logger.Error(err.Error())
 		return err
 	}
 	for rows.Next() {
@@ -61,6 +64,7 @@ func (me *query) Rows(out entity.Interfaces) error {
 		}
 		err = rows.Scan(containers...)
 		if err != nil {
+			logger.Error(err.Error())
 			return err
 		}
 		out.Append(ei)
@@ -76,16 +80,19 @@ func (me *query) Row(out entity.Interface) error {
 	}
 	stmt, err := me.db.Prepare(me.dql)
 	if err != nil {
+		logger.Error(err.Error())
 		return err
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query(me.args...)
 	if err != nil {
+		logger.Error(err.Error())
 		return err
 	}
 	defer rows.Close()
 	cols, err := rows.Columns()
 	if err != nil {
+		logger.Error(err.Error())
 		return err
 	}
 	for rows.Next() {
@@ -105,6 +112,9 @@ func (me *query) Row(out entity.Interface) error {
 			}
 		}
 		err = rows.Scan(containers...)
+		if err != nil {
+			logger.Error(err.Error())
+		}
 		return err
 	}
 	return nil
@@ -152,11 +162,13 @@ func (me *query) val(out interface{}) error {
 	}
 	stmt, err := me.db.Prepare(me.dql)
 	if err != nil {
+		logger.Error(err.Error())
 		return err
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query(me.args...)
 	if err != nil {
+		logger.Error(err.Error())
 		return err
 	}
 	defer rows.Close()
@@ -164,6 +176,7 @@ func (me *query) val(out interface{}) error {
 		return sql.ErrNoRows
 	}
 	if err = rows.Scan(out); err != nil {
+		logger.Error(err.Error())
 		return err
 	}
 	return nil
