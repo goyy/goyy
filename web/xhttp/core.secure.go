@@ -26,8 +26,7 @@ var sec = &secureServeMux{}
 func (me *secureServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool {
 	path := r.URL.Path
 	s := newSession4Redis(w, r)
-	p, err := s.Principal()
-	if err != nil || strings.IsBlank(p.Id) {
+	if !s.IsLogin() {
 		if me.isRedirectLogin(path) {
 			loginUrl := me.loginUrl
 			if strings.IsBlank(loginUrl) {
