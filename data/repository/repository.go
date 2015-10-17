@@ -117,7 +117,7 @@ func (me *Repository) SelectList(out entity.Interfaces, dql string, args ...inte
 }
 
 // Paging query record.
-func (me *Repository) SelectPage(pageable domain.Pageable, content entity.Interfaces, dql string, args ...interface{}) (domain.Page, error) {
+func (me *Repository) SelectPage(content entity.Interfaces, pageable domain.Pageable, dql string, args ...interface{}) (domain.Page, error) {
 	session, err := me.factory.Session()
 	if err != nil {
 		logger.Debug(err)
@@ -190,7 +190,7 @@ func (me *Repository) SelectListBySift(out entity.Interfaces, sifts ...domain.Si
 }
 
 // Paging query records by sifts.
-func (me *Repository) SelectPageBySift(pageable domain.Pageable, content entity.Interfaces, sifts ...domain.Sift) (domain.Page, error) {
+func (me *Repository) SelectPageBySift(content entity.Interfaces, pageable domain.Pageable, sifts ...domain.Sift) (domain.Page, error) {
 	session, err := me.factory.Session()
 	if err != nil {
 		logger.Debug(err)

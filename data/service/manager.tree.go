@@ -211,7 +211,7 @@ func (me *TreeManager) getLeaf(id string) string {
 	}
 	sDeletionEQ, _ := domain.NewSift(defaultDeletionSearch, defaultDeletionEnable)
 	sParentIdEQ, _ := domain.NewSift(defaultParentIdSearch, id)
-	if count, err := me.SelectCountBySift(me.NewEntity(), sDeletionEQ, sParentIdEQ); err == nil {
+	if count, err := me.SelectCountBySift(sDeletionEQ, sParentIdEQ); err == nil {
 		if count > 0 {
 			return leafNo
 		}

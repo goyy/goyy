@@ -77,7 +77,7 @@ func (me *Manager) SelectPage(content entity.Interfaces, pageable domain.Pageabl
 	if me.Pre != nil {
 		me.Pre()
 	}
-	return me.Repository().SelectPage(pageable, content, dql, args...)
+	return me.Repository().SelectPage(content, pageable, dql, args...)
 }
 
 func (me *Manager) SelectInt(dql string, args ...interface{}) (int, error) {
@@ -121,14 +121,14 @@ func (me *Manager) SelectPageBySift(content entity.Interfaces, pageable domain.P
 	if me.Pre != nil {
 		me.Pre()
 	}
-	return me.Repository().SelectPageBySift(pageable, content, sifts...)
+	return me.Repository().SelectPageBySift(content, pageable, sifts...)
 }
 
-func (me *Manager) SelectCountBySift(e entity.Interface, sifts ...domain.Sift) (int, error) {
+func (me *Manager) SelectCountBySift(sifts ...domain.Sift) (int, error) {
 	if me.Pre != nil {
 		me.Pre()
 	}
-	return me.Repository().SelectCountBySift(e, sifts...)
+	return me.Repository().SelectCountBySift(me.NewEntity(), sifts...)
 }
 
 func (me *Manager) Save(c xhttp.Context, e entity.Interface) error {
