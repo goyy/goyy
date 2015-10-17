@@ -67,6 +67,10 @@ func (me *Controller) Success(c xhttp.Context, state string, data interface{}) m
 	return me.result(c, true, "0", "", "", state, "", "", data)
 }
 
+func (me *Controller) SuccessMessage(c xhttp.Context, msg, state string) map[string]interface{} {
+	return me.result(c, true, "0", msg, "", state, "", "", nil)
+}
+
 func (me *Controller) SuccessMsg(c xhttp.Context, msg, state string, data interface{}) map[string]interface{} {
 	return me.result(c, true, "0", msg, "", state, "", "", data)
 }
@@ -97,6 +101,10 @@ func (me *Controller) SuccessResult(c xhttp.Context, state string, r *result.Res
 
 func (me *Controller) Fault(c xhttp.Context, state string, data interface{}) map[string]interface{} {
 	return me.result(c, false, "0", "", "", state, "", "", data)
+}
+
+func (me *Controller) FaultMessage(c xhttp.Context, msg, state string) map[string]interface{} {
+	return me.result(c, false, "0", msg, "", state, "", "", nil)
 }
 
 func (me *Controller) FaultMsg(c xhttp.Context, msg, state string, data interface{}) map[string]interface{} {
