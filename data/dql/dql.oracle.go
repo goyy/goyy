@@ -10,6 +10,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/strings"
+	"sort"
 	"strconv"
 )
 
@@ -43,7 +44,8 @@ func (me *oracle) selectBySift(e entity.Interface, begin string, sifts ...domain
 	w.WriteString(e.Table().Name() + " ")
 	var o bytes.Buffer
 	i := 0
-	y := 0
+	omap := make(map[string]domain.Sift)
+	okeys := make([]string, 0)
 	for _, v := range sifts {
 		if strings.IsBlank(v.Value()) {
 			continue
@@ -56,12 +58,8 @@ func (me *oracle) selectBySift(e entity.Interface, begin string, sifts ...domain
 			continue
 		}
 		if v.Operator() == "OA" || v.Operator() == "OD" {
-			if y == 0 {
-				o.WriteString("order by " + key + op[v.Operator()])
-			} else {
-				o.WriteString("," + key + op[v.Operator()])
-			}
-			y++
+			okeys = append(okeys, v.Value())
+			omap[v.Value()] = v
 		} else {
 			if i == 0 {
 				w.WriteString("where ")
@@ -81,6 +79,27 @@ func (me *oracle) selectBySift(e entity.Interface, begin string, sifts ...domain
 				}
 			}
 			i++
+		}
+	}
+	// Order By : The first order of the field is determined by the sift.value size
+	y := 0
+	if len(okeys) > 0 {
+		sort.Strings(okeys)
+		for _, k := range okeys {
+			v := omap[k]
+			field := strings.ToLowerFirst(v.Key())
+			var key string
+			if column, ok := e.Column(field); ok {
+				key = column.Name()
+			} else {
+				continue
+			}
+			if y == 0 {
+				o.WriteString("order by " + key + op[v.Operator()])
+			} else {
+				o.WriteString(", " + key + op[v.Operator()])
+			}
+			y++
 		}
 	}
 	if y == 0 {
