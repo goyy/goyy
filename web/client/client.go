@@ -49,10 +49,9 @@ func (me *Client) QueuePost() {
 }
 
 func (me *Client) onError(err error) {
+	logger.Error(err.Error())
 	if me.OnError != nil {
 		me.OnError(err)
-	} else {
-		panic(err.Error())
 	}
 }
 
