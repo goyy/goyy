@@ -65,13 +65,23 @@ func (me *router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			logger.Errorf("No match for router:%s:%s", r.Method, r.RequestURI)
 			c := me.newContext(w, r)
 			c.Next()
-			serveError(c, 404, []byte(default404Body))
+			if strings.IsNotBlank(Conf.Err.Err404) {
+				http.Redirect(w, r, Conf.Err.Err404, http.StatusFound)
+				return
+			} else {
+				serveError(c, 404, []byte(default404Body))
+			}
 		}
 	} else {
 		logger.Error("No match for router:", r.Method)
 		c := me.newContext(w, r)
 		c.Next()
-		serveError(c, 404, []byte(default404Body))
+		if strings.IsNotBlank(Conf.Err.Err404) {
+			http.Redirect(w, r, Conf.Err.Err404, http.StatusFound)
+			return
+		} else {
+			serveError(c, 404, []byte(default404Body))
+		}
 	}
 }
 

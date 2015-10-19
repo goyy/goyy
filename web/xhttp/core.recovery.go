@@ -7,7 +7,9 @@ package xhttp
 import (
 	"bytes"
 	"fmt"
+	"gopkg.in/goyy/goyy.v0/util/strings"
 	"io/ioutil"
+	"net/http"
 	"runtime"
 )
 
@@ -26,6 +28,13 @@ func Recovery() Handler {
 				stack := stack(3)
 				logger.Printf("Panic recovery -> %s\n%s\n", err, stack)
 				c.AbortWithStatus(500)
+				if strings.IsNotBlank(Conf.Err.Err500) {
+					http.Redirect(c.ResponseWriter(), c.Request(), Conf.Err.Err500, http.StatusFound)
+					return
+				} else {
+					c.ResponseWriter().WriteHeader(500)
+					c.ResponseWriter().Write([]byte(default500Body))
+				}
 			}
 		}()
 		c.Next()

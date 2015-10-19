@@ -14,6 +14,11 @@ import (
 var Conf = &conf{
 	Addr:    ":9090",
 	Actives: []string{profile.DEV},
+	Err: &errOptions{
+		Err403: "",
+		Err404: "",
+		Err500: "",
+	},
 	Api: &apiOptions{
 		URL: "/apis",
 	},
@@ -76,6 +81,7 @@ var Conf = &conf{
 type conf struct {
 	Addr      string           // the TCP network address
 	Actives   []string         // Active profile
+	Err       *errOptions      // Error options
 	Api       *apiOptions      // Api options
 	Asset     *staticOptions   // Static resource options
 	Developer *staticOptions   // Developer static resource options
@@ -85,6 +91,12 @@ type conf struct {
 	Session   *sessionOptions  // the session TCP network address
 	Secure    *secureOptions   // url secure options
 	Template  *templateOptions // template options
+}
+
+type errOptions struct {
+	Err403 string // 403 URL prefix
+	Err404 string // 404 URL prefix
+	Err500 string // 500 URL prefix
 }
 
 type apiOptions struct {
