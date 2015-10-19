@@ -143,14 +143,14 @@ func Upload(w http.ResponseWriter, r *http.Request, field, confdir, filedir stri
 	}
 	dir := parseDirLR(confdir) + parseDirRight(filedir)
 	if !IsExist(dir) {
-		if err = MkdirAll(dir, 0644); err != nil {
+		if err = MkdirAll(dir, 0751); err != nil {
 			logger.Error(err.Error())
 			return
 		}
 	}
 	filename := uuids.New() + "." + Extension(handler.Filename)
 	filepath := dir + filename
-	err = ioutil.WriteFile(filepath, data, 0700)
+	err = ioutil.WriteFile(filepath, data, 0644)
 	if err != nil {
 		logger.Error(err.Error())
 		return
