@@ -189,7 +189,7 @@ func Uploads(w http.ResponseWriter, r *http.Request, field, confdir, filedir str
 			return
 		}
 		if !IsExist(dir) {
-			if err = MkdirAll(dir, 0644); err != nil {
+			if err = MkdirAll(dir, 0751); err != nil {
 				logger.Error(err.Error())
 				return
 			}

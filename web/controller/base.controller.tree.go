@@ -52,10 +52,12 @@ func (me *baseTreeController) Save(c xhttp.Context, mgr service.Service, pre fun
 			c.Params().Set(entityFullname, c.Param(entityName))
 			c.Params().Set(entityParentIds, eParentId)
 			c.Params().Set(entityParentNames, p.Get(colName).(string))
+			c.Params().Set(entityParentCodes, p.Get(colCode).(string))
 		} else {
 			c.Params().Set(entityFullname, p.Get(colFullname).(string)+" - "+c.Param(entityName))
 			c.Params().Set(entityParentIds, p.Get(colParentIds).(string)+","+eParentId)
 			c.Params().Set(entityParentNames, p.Get(colParentNames).(string)+","+p.Get(colName).(string))
+			c.Params().Set(entityParentCodes, p.Get(colParentCodes).(string)+","+p.Get(colCode).(string))
 		}
 	}
 	return me.baseController.Save(c, mgr, pre, post)
@@ -81,10 +83,12 @@ func (me *baseTreeController) Saved(c xhttp.Context, mgr service.Service, pre fu
 			c.Params().Set(entityFullname, c.Param(entityName))
 			c.Params().Set(entityParentIds, eParentId)
 			c.Params().Set(entityParentNames, p.Get(colName).(string))
+			c.Params().Set(entityParentCodes, p.Get(colCode).(string))
 		} else {
 			c.Params().Set(entityFullname, p.Get(colFullname).(string)+" - "+c.Param(entityName))
 			c.Params().Set(entityParentIds, p.Get(colParentIds).(string)+","+eParentId)
 			c.Params().Set(entityParentNames, p.Get(colParentNames).(string)+","+p.Get(colName).(string))
+			c.Params().Set(entityParentCodes, p.Get(colParentCodes).(string)+","+p.Get(colCode).(string))
 		}
 	}
 	return me.baseController.Saved(c, mgr, pre, post)

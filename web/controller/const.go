@@ -20,13 +20,16 @@ const (
 	entityParentId    = "parentId"
 	entityParentIds   = "parentIds"
 	entityParentNames = "parentNames"
+	entityParentCodes = "parentCodes"
 
 	colId          = "id"
+	colCode        = "code"
 	colName        = "name"
 	colFullname    = "fullname"
 	colParentId    = "parent_id"
 	colParentIds   = "parent_ids"
 	colParentNames = "parent_names"
+	colParentCodes = "parent_codes"
 
 	defaultTreeRoot = "root"
 	defaultParents  = "Parents"
