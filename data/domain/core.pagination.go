@@ -10,9 +10,9 @@ import (
 
 // Abstract interface for pagination information.
 type pagination struct {
-	length   int    // Page display length
-	slider   int    // Front page shows the length
-	function string // Click the name of the page set js function call, the default is page
+	length int    // Page display length
+	slider int    // Front page shows the length
+	pageFn string // Click the name of the page set js function call, the default is page
 }
 
 // Returns the display length of page to be returned.
@@ -52,20 +52,20 @@ func (me *pagination) SetSlider(slider int) {
 }
 
 // Click the name of the page to get js function calls
-func (me *pagination) Function() string {
-	if strings.IsBlank(me.function) {
-		return defaultPageFunction
+func (me *pagination) PageFn() string {
+	if strings.IsBlank(me.pageFn) {
+		return defaultPageFn
 	} else {
-		return me.function
+		return me.pageFn
 	}
 }
 
 // Click the name of the page set js function call, the default is page,
 // use a page has multiple tabs when objects
-func (me *pagination) SetFunction(function string) {
-	if strings.IsBlank(function) {
-		me.function = defaultPageFunction
+func (me *pagination) SetPageFn(pageFn string) {
+	if strings.IsBlank(pageFn) {
+		me.pageFn = defaultPageFn
 	} else {
-		me.function = function
+		me.pageFn = pageFn
 	}
 }

@@ -14,7 +14,7 @@ const (
 	defaultRePageNo     = "sRePageNoTR"
 	defaultPageLength   = 8
 	defaultPageSlider   = 1
-	defaultPageFunction = "page"
+	defaultPageFn       = "page"
 	defaultSiftPrefix   = "s"
 
 	op_eq = "EQ" // equal( = )

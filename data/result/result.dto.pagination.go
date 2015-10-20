@@ -12,8 +12,8 @@ const (
 type Pagination struct {
 	PageNo        int         `json:"pageNo"`
 	PageSize      int         `json:"pageSize"`
+	PageFn        string      `json:"pageFn"`
 	TotalElements int         `json:"totalElements"`
-	Function      string      `json:"function"`
 	Length        int         `json:"length"`
 	Slider        int         `json:"slider"`
 	Slice         interface{} `json:"slice"`

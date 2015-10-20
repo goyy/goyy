@@ -8,15 +8,15 @@ package domain
 type Pagination interface {
 	Length() int
 	Slider() int
-	Function() string
+	PageFn() string
 }
 
 // NewPagination returns the Pagination from length, slider, function.
-func NewPagination(length, slider int, function string) Pagination {
+func NewPagination(length, slider int, pageFn string) Pagination {
 	p := &pagination{}
 	p.SetLength(length)
 	p.SetSlider(slider)
-	p.SetFunction(function)
+	p.SetPageFn(pageFn)
 	return p
 }
 
@@ -24,7 +24,7 @@ func NewPagination(length, slider int, function string) Pagination {
 // slider defaults to 1
 // function defaults to page
 func NewPaginationLength(length int) Pagination {
-	return NewPagination(length, defaultPageSlider, defaultPageFunction)
+	return NewPagination(length, defaultPageSlider, defaultPageFn)
 }
 
 // NewPaginationDefault returns the default Pagination.

@@ -133,5 +133,5 @@ func (me *page) SetPageable(pageable Pageable) {
 func (me *page) SetPagination(pagination Pagination) {
 	me.SetLength(pagination.Length())
 	me.SetSlider(pagination.Slider())
-	me.SetFunction(pagination.Function())
+	me.SetPageFn(pagination.PageFn())
 }
