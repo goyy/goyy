@@ -46,7 +46,7 @@ func (me *mysql) selectBySift(e entity.Interface, begin string, sifts ...domain.
 	omap := make(map[string]domain.Sift)
 	okeys := make([]string, 0)
 	for _, v := range sifts {
-		if strings.IsBlank(v.Value()) {
+		if v == nil || strings.IsBlank(v.Value()) {
 			continue
 		}
 		field := strings.ToLowerFirst(v.Key())
