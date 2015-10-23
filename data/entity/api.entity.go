@@ -18,6 +18,7 @@ type Interface interface {
 	Columns() []schema.Column
 	Names() []string
 	SetString(field, value string) error
+	Validate() error
 }
 
 type Interfaces interface {

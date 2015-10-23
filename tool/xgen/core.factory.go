@@ -19,24 +19,25 @@ import (
 
 // factory is a file generation factory.
 type factory struct {
-	Project          string
-	PackageName      string
-	Epath            string
-	Htmpath          string
-	Clidir           string
-	Clipath          string
-	Apipath          string
-	HasGenService    bool
-	HasGenController bool
-	HasGenDto        bool
-	HasGenApi        bool
-	HasGenSql        bool
-	HasGenLog        bool
-	HasGenUtil       bool
-	HasGenConst      bool
-	IsTimeField      bool
-	IsExtend         bool
-	Entities         []entity
+	Project           string
+	PackageName       string
+	Epath             string
+	Htmpath           string
+	Clidir            string
+	Clipath           string
+	Apipath           string
+	HasGenService     bool
+	HasGenController  bool
+	HasGenDto         bool
+	HasGenApi         bool
+	HasGenSql         bool
+	HasGenLog         bool
+	HasGenUtil        bool
+	HasGenConst       bool
+	IsTimeField       bool
+	IsValidationField bool
+	IsExtend          bool
+	Entities          []entity
 }
 
 // Init initializes an File from a path.
@@ -198,6 +199,17 @@ func (me *factory) Init(path string) error {
 						err,
 					)
 				}
+				// validation init
+				items = tagItemValue(f.Tag.Value, "validation")
+				if err := col.InitValidation(items); err != nil {
+					return fmt.Errorf(
+						"Unable to parse tag '%s' from entity '%s' in '%s': %v",
+						items,
+						e.Name,
+						path,
+						err,
+					)
+				}
 				e.Fields = append(e.Fields, col)
 				if col.IsPrimary {
 					e.PrimaryKeys = append(e.PrimaryKeys, col)
@@ -228,6 +240,7 @@ func (me *factory) Init(path string) error {
 	}
 
 	me.isTimeField()
+	me.isValidationField()
 	me.isExtend()
 
 	return nil
@@ -238,6 +251,16 @@ func (me *factory) isTimeField() {
 		for _, f := range e.Fields {
 			if f.Type == "time.Time" {
 				me.IsTimeField = true
+			}
+		}
+	}
+}
+
+func (me *factory) isValidationField() {
+	for _, e := range me.Entities {
+		for _, f := range e.Fields {
+			if len(f.Validations) > 0 {
+				me.IsValidationField = true
 			}
 		}
 	}

@@ -118,3 +118,7 @@ func (me *Permission) SetString(field, value string) error {
 	}
 	return nil
 }
+
+func (me *Permission) Validate() error {
+	return nil
+}

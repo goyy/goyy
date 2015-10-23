@@ -135,6 +135,9 @@ func (me *Manager) Save(c xhttp.Context, e entity.Interface) error {
 	if me.Pre != nil {
 		me.Pre()
 	}
+	if err := e.Validate(); err != nil {
+		return err
+	}
 	tx, err := me.Repository().Begin()
 	if err != nil {
 		return err

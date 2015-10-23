@@ -9,7 +9,8 @@ package {{.PackageName}}
 
 import (
 	"gopkg.in/goyy/goyy.v0/data/entity"
-	"gopkg.in/goyy/goyy.v0/data/schema"
+	"gopkg.in/goyy/goyy.v0/data/schema"{{if .IsValidationField}}
+	"gopkg.in/goyy/goyy.v0/data/validate"{{end}}
 	"gopkg.in/goyy/goyy.v0/util/strings"{{if .IsTimeField}}
 	"time"{{end}}
 ){{range $e := .Entities}}
@@ -368,5 +369,63 @@ func (me *{{$e.Name}}) SetString(field, value string) error {
 	return me.Sys.SetString(field, value){{else if eq $e.Extend "tree"}}
 	return me.Tree.SetString(field, value){{else}}
 	return nil{{end}}
+}
+
+func (me *{{$e.Name}}) Validate() error {{"{"}}{{range $f := $e.Fields}}{{range $v := $f.Validations}}{{if eq $v.Name "required"}}
+	if err := validate.Required(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "min"}}
+	if err := validate.Min(me.{{$f.Name}}.String(), {{$v.Value}}); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "max"}}
+	if err := validate.Max(me.{{$f.Name}}.String(), {{$v.Value}}); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "range"}}
+	if err := validate.Range(me.{{$f.Name}}.String(), {{$v.Value}}); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "minlen"}}
+	if err := validate.Minlen(me.{{$f.Name}}.String(), {{$v.Value}}); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "maxlen"}}
+	if err := validate.Maxlen(me.{{$f.Name}}.String(), {{$v.Value}}); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "rangelen"}}
+	if err := validate.Rangelen(me.{{$f.Name}}.String(), {{$v.Value}}); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "email"}}
+	if err := validate.Email(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "url"}}
+	if err := validate.URL(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "ip"}}
+	if err := validate.IP(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "mobile"}}
+	if err := validate.Mobile(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "tel"}}
+	if err := validate.Tel(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "phone"}}
+	if err := validate.Phone(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "zipcode"}}
+	if err := validate.Zipcode(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "float"}}
+	if err := validate.Float(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "integer"}}
+	if err := validate.Integer(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "alphanumeric"}}
+	if err := validate.Alphanumeric(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "alphabetic"}}
+	if err := validate.Alphabetic(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{end}}{{end}}
+	return nil
 }{{end}}
 `

@@ -10,7 +10,7 @@ import (
 )
 
 func (me *HTMLController) Error(c xhttp.Context, err error) {
-	go errorSave(c.Request(), err)
+	//go errorSave(c.Request(), err)
 	logger.Error(err.Error())
 	c.HTML(xhttp.StatusBadRequest, tmplErr, result.Http{Message: err.Error()})
 }
