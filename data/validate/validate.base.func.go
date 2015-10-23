@@ -24,7 +24,7 @@ func Required(input string) error {
 // nil otherwise.
 func Min(input string, min int) error {
 	if strings.IsBlank(input) {
-		return errors.Newf(Messages[typMin], min)
+		return nil
 	}
 	v, err := strconv.Atoi(input)
 	if err != nil {
@@ -40,7 +40,7 @@ func Min(input string, min int) error {
 // nil otherwise.
 func Max(input string, max int) error {
 	if strings.IsBlank(input) {
-		return errors.Newf(Messages[typMax], max)
+		return nil
 	}
 	v, err := strconv.Atoi(input)
 	if err != nil {
@@ -56,7 +56,7 @@ func Max(input string, max int) error {
 // nil otherwise.
 func Range(input string, min, max int) error {
 	if strings.IsBlank(input) {
-		return errors.Newf(Messages[typRange], min, max)
+		return nil
 	}
 	v, err := strconv.Atoi(input)
 	if err != nil {
@@ -71,6 +71,9 @@ func Range(input string, min, max int) error {
 // Returns error if the provided input is least {min} characters,
 // nil otherwise.
 func Minlen(input string, min int) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
 	if utf8.RuneCountInString(input) < min {
 		return errors.Newf(Messages[typMinlen], min)
 	}
@@ -80,6 +83,9 @@ func Minlen(input string, min int) error {
 // Returns error if the provided input is more than {max} characters,
 // nil otherwise.
 func Maxlen(input string, max int) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
 	if utf8.RuneCountInString(input) > max {
 		return errors.Newf(Messages[typMaxlen], max)
 	}
@@ -89,6 +95,9 @@ func Maxlen(input string, max int) error {
 // Returns error if the provided input is between {min} and {max} characters
 // long, nil otherwise.
 func Rangelen(input string, min, max int) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
 	l := utf8.RuneCountInString(input)
 	if l < min || l > max {
 		return errors.Newf(Messages[typRangelen], min, max)
@@ -99,6 +108,9 @@ func Rangelen(input string, min, max int) error {
 // Returns error if the provided input is not a floating point number, nil
 // otherwise.
 func Float(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
 	if Rules[typFloat].MatchString(input) == false {
 		return errors.New(Messages[typFloat])
 	}
@@ -107,6 +119,9 @@ func Float(input string) error {
 
 // Returns error if the provided input is not an integer value, nil otherwise.
 func Integer(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
 	if Rules[typInteger].MatchString(input) == false {
 		return errors.New(Messages[typInteger])
 	}
@@ -116,6 +131,9 @@ func Integer(input string) error {
 // Returns error if the provided input is not an alphanumeric (a-zA-Z0-9)
 // string, nil otherwise.
 func Alphanumeric(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
 	if Rules[typAlphanumeric].MatchString(input) == false {
 		return errors.New(Messages[typAlphanumeric])
 	}
@@ -125,6 +143,9 @@ func Alphanumeric(input string) error {
 // Returns error if the provided input is not an alphabetic (a-zA-Z) string,
 // nil otherwise.
 func Alphabetic(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
 	if Rules[typAlphabetic].MatchString(input) == false {
 		return errors.New(Messages[typAlphabetic])
 	}
@@ -134,6 +155,9 @@ func Alphabetic(input string) error {
 // Returns error if the provided input is not match {regexp} string,
 // nil otherwise.
 func Match(input string, regexp *regexp.Regexp) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
 	if regexp.MatchString(input) == false {
 		return errors.New(Messages[typMatch])
 	}
@@ -143,6 +167,9 @@ func Match(input string, regexp *regexp.Regexp) error {
 // Returns error if the provided input is match {regexp} string,
 // nil otherwise.
 func Nomatch(input string, regexp *regexp.Regexp) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
 	if regexp.MatchString(input) == true {
 		return errors.New(Messages[typNomatch])
 	}
@@ -151,6 +178,9 @@ func Nomatch(input string, regexp *regexp.Regexp) error {
 
 // Returns error if the provided input is not an email, nil otherwise.
 func Email(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
 	if Rules[typEmail].MatchString(input) == false {
 		return errors.New(Messages[typEmail])
 	}
@@ -159,6 +189,9 @@ func Email(input string) error {
 
 // Returns error if the provided input is not an URL, nil otherwise.
 func URL(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
 	if Rules[typURL].MatchString(input) == false {
 		return errors.New(Messages[typURL])
 	}
@@ -167,6 +200,9 @@ func URL(input string) error {
 
 // Returns error if the provided input is not an IP, nil otherwise.
 func IP(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
 	if Rules[typIP].MatchString(input) == false {
 		return errors.New(Messages[typIP])
 	}
@@ -175,6 +211,9 @@ func IP(input string) error {
 
 // Returns error if the provided input is not an mobile, nil otherwise.
 func Mobile(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
 	if Rules[typMobile].MatchString(input) == false {
 		return errors.New(Messages[typMobile])
 	}
@@ -183,6 +222,9 @@ func Mobile(input string) error {
 
 // Returns error if the provided input is not an tel, nil otherwise.
 func Tel(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
 	if Rules[typTel].MatchString(input) == false {
 		return errors.New(Messages[typTel])
 	}
@@ -191,6 +233,9 @@ func Tel(input string) error {
 
 // Returns error if the provided input is not an phone, nil otherwise.
 func Phone(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
 	if Rules[typMobile].MatchString(input) == false && Rules[typTel].MatchString(input) == false {
 		return errors.New(Messages[typPhone])
 	}
@@ -199,6 +244,9 @@ func Phone(input string) error {
 
 // Returns error if the provided input is not an zipcode, nil otherwise.
 func Zipcode(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
 	if Rules[typZipcode].MatchString(input) == false {
 		return errors.New(Messages[typZipcode])
 	}
