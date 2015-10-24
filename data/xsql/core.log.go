@@ -52,7 +52,3 @@ func clearSpace(sql string) string {
 	sql = strings.Replace(sql, "\n", "", -1)
 	return sql
 }
-
-func init() {
-	SetPriority(log.Pdebug)
-}
