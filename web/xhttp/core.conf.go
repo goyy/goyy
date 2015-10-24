@@ -61,6 +61,7 @@ var Conf = &conf{
 		Enable:     true,
 		LoginUrl:   "/login",
 		SuccessUrl: "/",
+		ForbidUrl:  "/403",
 		Filters: []xtype.Map{
 			{"/**", "anon"},
 		},
@@ -130,6 +131,7 @@ type secureOptions struct {
 	Enable     bool // Whether service is enabled
 	LoginUrl   string
 	SuccessUrl string
+	ForbidUrl  string
 	Filters    []xtype.Map
 }
 

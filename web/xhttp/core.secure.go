@@ -26,6 +26,10 @@ var sec = &secureServeMux{}
 func (me *secureServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool {
 	path := r.URL.Path
 	s := newSession4Redis(w, r)
+	if me.isForbidden(path) {
+		http.Redirect(w, r, Conf.Secure.ForbidUrl, http.StatusFound)
+		return true
+	}
 	if !s.IsLogin() {
 		if me.isRedirectLogin(path) {
 			loginUrl := me.loginUrl
@@ -47,12 +51,20 @@ func (me *secureServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool
 	return false
 }
 
+func (me *secureServeMux) isForbidden(path string) bool {
+	for _, v := range Conf.Secure.Filters {
+		if me.isMatch(path, v.Key) {
+			if v.Value == "forbid" {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func (me *secureServeMux) isRedirectLogin(path string) bool {
 	for _, v := range Conf.Secure.Filters {
-		str := strings.Replace(v.Key, ".", `\.`, -1)
-		str = strings.Replace(str, "**", ".*", -1)
-		reg := regexp.MustCompile(str)
-		if reg.MatchString(path) {
+		if me.isMatch(path, v.Key) {
 			switch v.Value {
 			case "authc":
 				return true
@@ -60,6 +72,16 @@ func (me *secureServeMux) isRedirectLogin(path string) bool {
 				return false
 			}
 		}
+	}
+	return false
+}
+
+func (me *secureServeMux) isMatch(path, conf string) bool {
+	str := strings.Replace(conf, ".", `\.`, -1)
+	str = strings.Replace(str, "**", ".*", -1)
+	reg := regexp.MustCompile(str)
+	if reg.MatchString(path) {
+		return true
 	}
 	return false
 }
