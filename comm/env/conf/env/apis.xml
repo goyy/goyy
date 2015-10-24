@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE env PUBLIC "-//GOYY//DTD ENV 1.0//EN" "http://goyy.org/dtd/env-1.0.dtd">
+<configuration>
+	<environments default="development">
+		<environment id="development">
+			<api name="env">
+				<url>/apis</url>
+			</api>
+		</environment>
+		<environment id="test">
+			<api name="env">
+				<url>/apis</url>
+			</api>
+		</environment>
+		<environment id="production">
+			<api name="env">
+				<url>/apis</url>
+			</api>
+		</environment>
+	</environments>
+</configuration>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE env PUBLIC "-//GOYY//DTD ENV 1.0//EN" "http://goyy.org/dtd/env-1.0.dtd">
+<configuration>
+	<environments default="development">
+		<environment id="development">
+			<upload name="env">
+				<dir>/assets/upls</dir>
+				<url>/upls</url>
+				<maxSize>5242880</maxSize>
+			</upload>
+		</environment>
+		<environment id="test">
+			<upload name="env">
+				<dir>/assets/upls</dir>
+				<url>/upls</url>
+				<maxSize>5242880</maxSize>
+			</upload>
+		</environment>
+		<environment id="production">
+			<upload name="env">
+				<dir>/assets/upls</dir>
+				<url>/upls</url>
+				<maxSize>5242880</maxSize>
+			</upload>
+		</environment>
+	</environments>
+</configuration>

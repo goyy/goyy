@@ -15,7 +15,13 @@ var locales = map[string]map[string]string{
 }
 
 var en_US = map[string]string{
-	"empty.environments.default":              "environments.default: can not be empty!",
-	"empty.environments.environment.database": "environments.environment.database[@name='%s']: can not be empty!",
-	"empty.environments.environment.mail":     "environments.environment.mail[@name='%s']: can not be empty!",
+	"empty.environments.default":               "environments.default: can not be empty!",
+	"empty.environments.environment.database":  "environments.environment.database[@name='%s']: can not be empty!",
+	"empty.environments.environment.mail":      "environments.environment.mail[@name='%s']: can not be empty!",
+	"empty.environments.environment.session":   "environments.environment.session[@name='%s']: can not be empty!",
+	"empty.environments.environment.api":       "environments.environment.api[@name='%s']: can not be empty!",
+	"empty.environments.environment.asset":     "environments.environment.asset[@name='%s']: can not be empty!",
+	"empty.environments.environment.developer": "environments.environment.developer[@name='%s']: can not be empty!",
+	"empty.environments.environment.operation": "environments.environment.operation[@name='%s']: can not be empty!",
+	"empty.environments.environment.upload":    "environments.environment.upload[@name='%s']: can not be empty!",
 }

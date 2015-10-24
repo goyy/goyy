@@ -14,9 +14,15 @@ type xEnvironments struct {
 }
 
 type xEnvironment struct {
-	Id        string      `xml:"id,attr"`
-	Databases []xDatabase `xml:"database"`
-	Mails     []xMail     `xml:"mail"`
+	Id         string      `xml:"id,attr"`
+	Databases  []xDatabase `xml:"database"`
+	Mails      []xMail     `xml:"mail"`
+	Sessions   []xSession  `xml:"session"`
+	Apis       []xApi      `xml:"api"`
+	Assets     []xStatic   `xml:"asset"`
+	Developers []xStatic   `xml:"developer"`
+	Operations []xStatic   `xml:"operation"`
+	Uploads    []xUpload   `xml:"upload"`
 }
 
 type xDatabase struct {
@@ -35,4 +41,27 @@ type xMail struct {
 	Password string `xml:"password"`
 	Host     string `xml:"host"`
 	Port     string `xml:"port"`
+}
+
+type xSession struct {
+	Name string `xml:"name,attr"`
+	Addr string `xml:"addr"`
+}
+
+type xApi struct {
+	Name string `xml:"name,attr"`
+	URL  string `xml:"url"`
+}
+
+type xStatic struct {
+	Name string `xml:"name,attr"`
+	Dir  string `xml:"dir"`
+	URL  string `xml:"url"`
+}
+
+type xUpload struct {
+	Name    string `xml:"name,attr"`
+	Dir     string `xml:"dir"`
+	URL     string `xml:"url"`
+	MaxSize string `xml:"maxSize"`
 }

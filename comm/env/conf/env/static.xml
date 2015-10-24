@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE env PUBLIC "-//GOYY//DTD ENV 1.0//EN" "http://goyy.org/dtd/env-1.0.dtd">
+<configuration>
+	<environments default="development">
+		<environment id="development">
+			<asset name="env">
+				<dir>static</dir>
+				<url>/assets</url>
+			</asset>
+			<developer name="env">
+				<dir>/assets/devs</dir>
+				<url>/devs</url>
+			</developer>
+			<operation name="env">
+				<dir>/assets/oprs</dir>
+				<url>/oprs</url>
+			</operation>
+		</environment>
+		<environment id="test">
+			<asset name="env">
+				<dir>/assets</dir>
+				<url>/assets</url>
+			</asset>
+			<developer name="env">
+				<dir>/assets/devs</dir>
+				<url>/devs</url>
+			</developer>
+			<operation name="env">
+				<dir>/assets/oprs</dir>
+				<url>/oprs</url>
+			</operation>
+		</environment>
+		<environment id="production">
+			<asset name="env">
+				<dir>/assets</dir>
+				<url>/assets</url>
+			</asset>
+			<developer name="env">
+				<dir>/assets/devs</dir>
+				<url>/devs</url>
+			</developer>
+			<operation name="env">
+				<dir>/assets/oprs</dir>
+				<url>/oprs</url>
+			</operation>
+		</environment>
+	</environments>
+</configuration>

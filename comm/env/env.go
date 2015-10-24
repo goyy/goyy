@@ -20,16 +20,15 @@ func SetConf(path string) {
 }
 
 // Get the database link parameters based on the environment profiles.
-func Database(name string) (database xDatabase, err error) {
-	xEnv, perr := parse(conf + "/env/db.xml")
-	if perr != nil {
-		err = perr
+func Database(name string) (out xDatabase, err error) {
+	xEnv, err := parse(conf + "/env/db.xml")
+	if err != nil {
 		return
 	}
-	dbs := xEnv.Databases
-	for _, db := range dbs {
-		if db.Name == name {
-			database = db
+	outs := xEnv.Databases
+	for _, v := range outs {
+		if v.Name == name {
+			out = v
 			return
 		}
 	}
@@ -38,20 +37,121 @@ func Database(name string) (database xDatabase, err error) {
 }
 
 // Get the mail server parameters based on the environment profiles.
-func Mail(name string) (mail xMail, err error) {
-	xEnv, perr := parse(conf + "/env/mail.xml")
-	if perr != nil {
-		err = perr
+func Mail(name string) (out xMail, err error) {
+	xEnv, err := parse(conf + "/env/mail.xml")
+	if err != nil {
 		return
 	}
-	mails := xEnv.Mails
-	for _, m := range mails {
-		if m.Name == name {
-			mail = m
+	outs := xEnv.Mails
+	for _, v := range outs {
+		if v.Name == name {
+			out = v
 			return
 		}
 	}
 	err = errors.New(i18N.Messagef("empty.environments.environment.mail", name))
+	return
+}
+
+// Get the session based on the environment profiles.
+func Session(name string) (out xSession, err error) {
+	xEnv, err := parse(conf + "/env/session.xml")
+	if err != nil {
+		return
+	}
+	outs := xEnv.Sessions
+	for _, v := range outs {
+		if v.Name == name {
+			out = v
+			return
+		}
+	}
+	err = errors.New(i18N.Messagef("empty.environments.environment.session", name))
+	return
+}
+
+// Get the apis based on the environment profiles.
+func Api(name string) (out xApi, err error) {
+	xEnv, err := parse(conf + "/env/api.xml")
+	if err != nil {
+		return
+	}
+	outs := xEnv.Apis
+	for _, v := range outs {
+		if v.Name == name {
+			out = v
+			return
+		}
+	}
+	err = errors.New(i18N.Messagef("empty.environments.environment.api", name))
+	return
+}
+
+// Get the asset based on the environment profiles.
+func Asset(name string) (out xStatic, err error) {
+	xEnv, err := parse(conf + "/env/static.xml")
+	if err != nil {
+		return
+	}
+	outs := xEnv.Assets
+	for _, v := range outs {
+		if v.Name == name {
+			out = v
+			return
+		}
+	}
+	err = errors.New(i18N.Messagef("empty.environments.environment.asset", name))
+	return
+}
+
+// Get the developer based on the environment profiles.
+func Developer(name string) (out xStatic, err error) {
+	xEnv, err := parse(conf + "/env/static.xml")
+	if err != nil {
+		return
+	}
+	outs := xEnv.Developers
+	for _, v := range outs {
+		if v.Name == name {
+			out = v
+			return
+		}
+	}
+	err = errors.New(i18N.Messagef("empty.environments.environment.developer", name))
+	return
+}
+
+// Get the operation based on the environment profiles.
+func Operation(name string) (out xStatic, err error) {
+	xEnv, err := parse(conf + "/env/static.xml")
+	if err != nil {
+		return
+	}
+	outs := xEnv.Operations
+	for _, v := range outs {
+		if v.Name == name {
+			out = v
+			return
+		}
+	}
+	err = errors.New(i18N.Messagef("empty.environments.environment.operation", name))
+	return
+}
+
+// Get the upload based on the environment profiles.
+func Upload(name string) (out xUpload, err error) {
+	xEnv, err := parse(conf + "/env/upload.xml")
+	if err != nil {
+		return
+	}
+	outs := xEnv.Uploads
+	for _, v := range outs {
+		if v.Name == name {
+			out = v
+			return
+		}
+	}
+	err = errors.New(i18N.Messagef("empty.environments.environment.upload", name))
 	return
 }
 
