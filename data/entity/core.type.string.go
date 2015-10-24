@@ -4,6 +4,10 @@
 
 package entity
 
+import (
+	"bytes"
+)
+
 type String struct {
 	base
 	value []byte
@@ -37,7 +41,8 @@ func (me *String) SetString(v string) error {
 }
 
 func (me *String) String() string {
-	return string(me.value)
+	out := bytes.TrimRight(me.value, "\x00")
+	return string(out)
 }
 
 func (me *String) Name() string {
