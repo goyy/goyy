@@ -17,10 +17,12 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"sync"
 )
 
 var (
-	r = &renderer{}
+	r     = &renderer{}
+	mutex sync.Mutex
 )
 
 type renderer struct {
@@ -28,12 +30,15 @@ type renderer struct {
 }
 
 func (me *renderer) HTML(w http.ResponseWriter, status int, name string, v interface{}) error {
+	mutex.Lock()
 	if Conf.Template.Reloaded || me.t == nil {
 		err := me.compile(Conf.Template)
 		if err != nil {
+			mutex.Unlock()
 			return err
 		}
 	}
+	mutex.Unlock()
 	me.writeHeader(w, status, "text/html")
 	return me.t.ExecuteTemplate(w, name, v)
 }
