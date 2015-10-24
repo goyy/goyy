@@ -6,6 +6,7 @@ package result
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -32,11 +33,13 @@ func (me *Client) ParsePage(out *Page) error {
 }
 
 func (me *Client) ParseResult(out *Result) error {
-	dec := json.NewDecoder(strings.NewReader(string(me.Body)))
+	body := string(me.Body)
+	dec := json.NewDecoder(strings.NewReader(body))
 	if err := dec.Decode(out); err == io.EOF {
 		return nil
 	} else if err != nil {
 		logger.Error(err.Error())
+		fmt.Println(body)
 		return err
 	}
 	return nil
