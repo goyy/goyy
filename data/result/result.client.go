@@ -7,7 +7,6 @@ package result
 import (
 	"encoding/json"
 	"io"
-	"log"
 	"net/http"
 	"strings"
 )
@@ -37,7 +36,8 @@ func (me *Client) ParseResult(out *Result) error {
 	if err := dec.Decode(out); err == io.EOF {
 		return nil
 	} else if err != nil {
-		log.Fatal(err)
+		logger.Error(err.Error())
+		return err
 	}
 	return nil
 }
