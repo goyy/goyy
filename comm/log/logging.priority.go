@@ -8,11 +8,15 @@ package log
 func (me *Logging) Trace(v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Trace(v...)
+		if me.console != nil {
+			me.console.Trace(v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Trace(v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Trace(v...)
+		}
 	}
 }
 
@@ -20,11 +24,15 @@ func (me *Logging) Trace(v ...interface{}) {
 func (me *Logging) Tracef(format string, v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Tracef(format, v...)
+		if me.console != nil {
+			me.console.Tracef(format, v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Tracef(format, v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Tracef(format, v...)
+		}
 	}
 }
 
@@ -32,11 +40,15 @@ func (me *Logging) Tracef(format string, v ...interface{}) {
 func (me *Logging) Traceln(v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Traceln(v...)
+		if me.console != nil {
+			me.console.Traceln(v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Traceln(v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Traceln(v...)
+		}
 	}
 }
 
@@ -44,11 +56,15 @@ func (me *Logging) Traceln(v ...interface{}) {
 func (me *Logging) Debug(v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Debug(v...)
+		if me.console != nil {
+			me.console.Debug(v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Debug(v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Debug(v...)
+		}
 	}
 }
 
@@ -56,11 +72,15 @@ func (me *Logging) Debug(v ...interface{}) {
 func (me *Logging) Debugf(format string, v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Debugf(format, v...)
+		if me.console != nil {
+			me.console.Debugf(format, v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Debugf(format, v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Debugf(format, v...)
+		}
 	}
 }
 
@@ -68,11 +88,15 @@ func (me *Logging) Debugf(format string, v ...interface{}) {
 func (me *Logging) Debugln(v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Debugln(v...)
+		if me.console != nil {
+			me.console.Debugln(v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Debugln(v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Debugln(v...)
+		}
 	}
 }
 
@@ -80,11 +104,15 @@ func (me *Logging) Debugln(v ...interface{}) {
 func (me *Logging) Info(v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Info(v...)
+		if me.console != nil {
+			me.console.Info(v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Info(v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Info(v...)
+		}
 	}
 }
 
@@ -92,11 +120,15 @@ func (me *Logging) Info(v ...interface{}) {
 func (me *Logging) Infof(format string, v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Infof(format, v...)
+		if me.console != nil {
+			me.console.Infof(format, v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Infof(format, v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Infof(format, v...)
+		}
 	}
 }
 
@@ -104,11 +136,15 @@ func (me *Logging) Infof(format string, v ...interface{}) {
 func (me *Logging) Infoln(v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Infoln(v...)
+		if me.console != nil {
+			me.console.Infoln(v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Infoln(v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Infoln(v...)
+		}
 	}
 }
 
@@ -116,11 +152,15 @@ func (me *Logging) Infoln(v ...interface{}) {
 func (me *Logging) Warn(v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Warn(v...)
+		if me.console != nil {
+			me.console.Warn(v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Warn(v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Warn(v...)
+		}
 	}
 }
 
@@ -128,11 +168,15 @@ func (me *Logging) Warn(v ...interface{}) {
 func (me *Logging) Warnf(format string, v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Warnf(format, v...)
+		if me.console != nil {
+			me.console.Warnf(format, v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Warnf(format, v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Warnf(format, v...)
+		}
 	}
 }
 
@@ -140,11 +184,15 @@ func (me *Logging) Warnf(format string, v ...interface{}) {
 func (me *Logging) Warnln(v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Warnln(v...)
+		if me.console != nil {
+			me.console.Warnln(v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Warnln(v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Warnln(v...)
+		}
 	}
 }
 
@@ -152,11 +200,15 @@ func (me *Logging) Warnln(v ...interface{}) {
 func (me *Logging) Error(v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Error(v...)
+		if me.console != nil {
+			me.console.Error(v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Error(v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Error(v...)
+		}
 	}
 }
 
@@ -164,11 +216,15 @@ func (me *Logging) Error(v ...interface{}) {
 func (me *Logging) Errorf(format string, v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Errorf(format, v...)
+		if me.console != nil {
+			me.console.Errorf(format, v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Errorf(format, v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Errorf(format, v...)
+		}
 	}
 }
 
@@ -176,11 +232,15 @@ func (me *Logging) Errorf(format string, v ...interface{}) {
 func (me *Logging) Errorln(v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Errorln(v...)
+		if me.console != nil {
+			me.console.Errorln(v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Errorln(v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Errorln(v...)
+		}
 	}
 }
 
@@ -188,11 +248,15 @@ func (me *Logging) Errorln(v ...interface{}) {
 func (me *Logging) Critical(v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Critical(v...)
+		if me.console != nil {
+			me.console.Critical(v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Critical(v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Critical(v...)
+		}
 	}
 }
 
@@ -200,11 +264,15 @@ func (me *Logging) Critical(v ...interface{}) {
 func (me *Logging) Criticalf(format string, v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Criticalf(format, v...)
+		if me.console != nil {
+			me.console.Criticalf(format, v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Criticalf(format, v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Criticalf(format, v...)
+		}
 	}
 }
 
@@ -212,11 +280,15 @@ func (me *Logging) Criticalf(format string, v ...interface{}) {
 func (me *Logging) Criticalln(v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Criticalln(v...)
+		if me.console != nil {
+			me.console.Criticalln(v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Criticalln(v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Criticalln(v...)
+		}
 	}
 }
 
@@ -224,11 +296,15 @@ func (me *Logging) Criticalln(v ...interface{}) {
 func (me *Logging) Print(v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Print(v...)
+		if me.console != nil {
+			me.console.Print(v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Print(v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Print(v...)
+		}
 	}
 }
 
@@ -236,11 +312,15 @@ func (me *Logging) Print(v ...interface{}) {
 func (me *Logging) Printf(format string, v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Printf(format, v...)
+		if me.console != nil {
+			me.console.Printf(format, v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Printf(format, v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Printf(format, v...)
+		}
 	}
 }
 
@@ -248,10 +328,14 @@ func (me *Logging) Printf(format string, v ...interface{}) {
 func (me *Logging) Println(v ...interface{}) {
 	if me.outputs&Oconsole != 0 {
 		me.resetConsoleLogger()
-		me.console.Println(v...)
+		if me.console != nil {
+			me.console.Println(v...)
+		}
 	}
 	if me.outputs&Odailyfile != 0 {
 		me.resetDailyFileLogger()
-		me.dailyfile.Println(v...)
+		if me.dailyfile != nil {
+			me.dailyfile.Println(v...)
+		}
 	}
 }
