@@ -5,6 +5,7 @@
 package xhttp
 
 import (
+	"gopkg.in/goyy/goyy.v0/util/strings"
 	"net/http"
 )
 
@@ -14,6 +15,18 @@ type engine struct {
 
 // ServeHTTP makes the router implement the http.Handler interface.
 func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	defer func() {
+		if err := recover(); err != nil {
+			logger.Error(err)
+			if strings.IsNotBlank(Conf.Err.Err500) {
+				http.Redirect(w, r, Conf.Err.Err500, http.StatusFound)
+				return
+			} else {
+				w.WriteHeader(500)
+				w.Write([]byte(default500Body))
+			}
+		}
+	}()
 	if Conf.Asset.Enable { // assetServeMux
 		if asts == nil {
 			asts = &staticServeMux{
