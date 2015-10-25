@@ -304,5 +304,5 @@ func (me *ClientController) Box(c xhttp.Context) {
 }
 
 func (me *ClientController) URL(c xhttp.Context, path string) string {
-	return "http://" + c.Request().Host + path
+	return xhttp.Conf.Api.URL + path
 }
