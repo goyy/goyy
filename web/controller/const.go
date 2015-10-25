@@ -5,7 +5,7 @@
 package controller
 
 const (
-	tmplErr = "error"
+	default500Body = "500 Internal Server Error"
 )
 
 const (
