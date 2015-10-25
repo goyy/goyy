@@ -304,5 +304,5 @@ func (me *ClientController) Box(c xhttp.Context) {
 }
 
 func (me *ClientController) URL(c xhttp.Context, path string) string {
-	return xhttp.Conf.Api.URL + path
+	return "http://127.0.0.1:9097" + path
 }
