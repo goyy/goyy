@@ -11,32 +11,32 @@ import (
 	"time"
 )
 
-func GET(path string, handle Handle) {
-	defaultEngine.Router.GET(path, handle)
+func GET(path string, handle Handle, permissions ...string) {
+	defaultEngine.Router.GET(path, handle, permissions...)
 }
 
-func POST(path string, handle Handle) {
-	defaultEngine.Router.POST(path, handle)
+func POST(path string, handle Handle, permissions ...string) {
+	defaultEngine.Router.POST(path, handle, permissions...)
 }
 
-func PUT(path string, handle Handle) {
-	defaultEngine.Router.PUT(path, handle)
+func PUT(path string, handle Handle, permissions ...string) {
+	defaultEngine.Router.PUT(path, handle, permissions...)
 }
 
-func DELETE(path string, handle Handle) {
-	defaultEngine.Router.DELETE(path, handle)
+func DELETE(path string, handle Handle, permissions ...string) {
+	defaultEngine.Router.DELETE(path, handle, permissions...)
 }
 
-func PATCH(path string, handle Handle) {
-	defaultEngine.Router.PATCH(path, handle)
+func PATCH(path string, handle Handle, permissions ...string) {
+	defaultEngine.Router.PATCH(path, handle, permissions...)
 }
 
-func HEAD(path string, handle Handle) {
-	defaultEngine.Router.HEAD(path, handle)
+func HEAD(path string, handle Handle, permissions ...string) {
+	defaultEngine.Router.HEAD(path, handle, permissions...)
 }
 
-func OPTIONS(path string, handle Handle) {
-	defaultEngine.Router.OPTIONS(path, handle)
+func OPTIONS(path string, handle Handle, permissions ...string) {
+	defaultEngine.Router.OPTIONS(path, handle, permissions...)
 }
 
 // Attachs a global middleware to the router. ie. the middlewares attached though Use() will be

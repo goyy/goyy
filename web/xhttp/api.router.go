@@ -11,13 +11,13 @@ import (
 type Router interface {
 	Use(middlewares ...Handler) Router
 
-	GET(pattern string, handle Handle)
-	POST(pattern string, handle Handle)
-	PUT(pattern string, handle Handle)
-	DELETE(pattern string, handle Handle)
-	PATCH(pattern string, handle Handle)
-	HEAD(pattern string, handle Handle)
-	OPTIONS(pattern string, handle Handle)
+	GET(pattern string, handle Handle, permissions ...string)
+	POST(pattern string, handle Handle, permissions ...string)
+	PUT(pattern string, handle Handle, permissions ...string)
+	DELETE(pattern string, handle Handle, permissions ...string)
+	PATCH(pattern string, handle Handle, permissions ...string)
+	HEAD(pattern string, handle Handle, permissions ...string)
+	OPTIONS(pattern string, handle Handle, permissions ...string)
 
 	ServeHTTP(w http.ResponseWriter, req *http.Request)
 }
