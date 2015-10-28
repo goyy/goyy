@@ -18,9 +18,9 @@ type Logging struct {
 func New(prefix string) *Logging {
 	return &Logging{
 		prefix:   prefix,
-		priority: Perror,
-		layouts:  LstdFlags | Lpriority,
-		outputs:  Ostd,
+		priority: DefaultPriority,
+		layouts:  DefaultLayout,
+		outputs:  DefaultOutput,
 	}
 }
 

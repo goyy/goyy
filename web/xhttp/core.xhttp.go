@@ -5,6 +5,7 @@
 package xhttp
 
 import (
+	"fmt"
 	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/data/cache"
 	"net/http"
@@ -54,6 +55,6 @@ func Run() error {
 		MaxActive:   12000,
 		IdleTimeout: 240 * time.Second,
 	})
-	logger.Printf("Listening and serving HTTP on %s\n", Conf.Addr)
+	fmt.Printf("Listening and serving HTTP on %s\n", Conf.Addr)
 	return http.ListenAndServe(Conf.Addr, defaultEngine)
 }
