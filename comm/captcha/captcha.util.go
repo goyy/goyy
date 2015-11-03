@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package validcode
+package captcha
 
 import (
 	crand "crypto/rand"
@@ -15,8 +15,8 @@ import (
 )
 
 func Judge(c xhttp.Context) bool {
-	p := c.Param("validcode")
-	if v, err := c.Session().Get("validcode"); err == nil && p == v {
+	p := c.Param(key)
+	if v, err := c.Session().Get(key); err == nil && p == v {
 		return true
 	}
 	return false
@@ -108,13 +108,13 @@ func createImage(c xhttp.Context) {
 		c.Error(500)
 		return
 	}
-	validcode := ""
+	val := ""
 	d = []byte(s)
 	for v := range d {
 		d[v] %= 10
-		validcode += strconv.FormatInt(int64(d[v]), 32)
+		val += strconv.FormatInt(int64(d[v]), 32)
 	}
 	c.ResponseWriter().Header().Set("Content-Type", "image/png")
-	c.Session().Set("validcode", validcode)
+	c.Session().Set(key, val)
 	NewImage(d, 100, 40).WriteTo(c.ResponseWriter())
 }
