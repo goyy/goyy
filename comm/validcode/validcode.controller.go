@@ -9,17 +9,17 @@ import (
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
-type ValidcodeController struct {
+type Controller struct {
 	controller.JSONController
 }
 
 // Get verification code
-func (me *ValidcodeController) Build(c xhttp.Context) {
+func (me *Controller) Build(c xhttp.Context) {
 	createImage(c)
 }
 
 // Ajax verification code
-func (me *ValidcodeController) Judge(c xhttp.Context) {
+func (me *Controller) Judge(c xhttp.Context) {
 	r := Judge(c)
 	if r {
 		c.JSON(xhttp.StatusOK, me.SuccessMessage(c, "Verification code matching correctly"))
