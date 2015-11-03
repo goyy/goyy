@@ -116,5 +116,5 @@ func createImage(c xhttp.Context) {
 	}
 	c.ResponseWriter().Header().Set("Content-Type", "image/png")
 	c.Session().Set("validcode", validcode)
-	NewImage(d, 90, 40).WriteTo(c.ResponseWriter())
+	NewImage(d, 100, 40).WriteTo(c.ResponseWriter())
 }
