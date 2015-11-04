@@ -207,6 +207,52 @@ func TestValidateIP(t *testing.T) {
 	}
 }
 
+func TestValidateMobile(t *testing.T) {
+	in := "18611112222"
+	if err := validate.Mobile(in); err != nil {
+		t.Errorf(`validate.Mobile(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "13511112222"
+	if err := validate.Mobile(in); err != nil {
+		t.Errorf(`validate.Mobile(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "17011112222"
+	if err := validate.Mobile(in); err != nil {
+		t.Errorf(`validate.Mobile(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "+8618611112222"
+	if err := validate.Mobile(in); err != nil {
+		t.Errorf(`validate.Mobile(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "1111-2222"
+	if err := validate.Mobile(in); err == nil {
+		t.Errorf(`validate.Mobile(%s) = %v, want %s`, in, "nil", "not nil")
+	}
+}
+
+func TestValidateTel(t *testing.T) {
+	in := "01011112222"
+	if err := validate.Tel(in); err != nil {
+		t.Errorf(`validate.Tel(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "010-11112222"
+	if err := validate.Tel(in); err != nil {
+		t.Errorf(`validate.Tel(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "11112222"
+	if err := validate.Tel(in); err != nil {
+		t.Errorf(`validate.Tel(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "1112222"
+	if err := validate.Tel(in); err != nil {
+		t.Errorf(`validate.Tel(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "1111-2222"
+	if err := validate.Tel(in); err == nil {
+		t.Errorf(`validate.Tel(%s) = %v, want %s`, in, "nil", "not nil")
+	}
+}
+
 func TestValidateChain(t *testing.T) {
 	fnOk := func(s string) error {
 		return nil
