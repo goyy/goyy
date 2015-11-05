@@ -50,7 +50,7 @@ var Conf = &conf{
 		Enable: true,
 		Addr:   ":6379",
 		Options: &session.Options{
-			Path:     "",
+			Path:     "/",
 			Domain:   "",
 			MaxAge:   30 * 60,
 			Secure:   false,

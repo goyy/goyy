@@ -15,7 +15,10 @@ import (
 )
 
 func New(w http.ResponseWriter, r *http.Request, o *Options) Interface {
-	cookie, _ := r.Cookie(cookieKey)
+	cookie, err := r.Cookie(cookieKey)
+	if err != nil {
+		logger.Error(err.Error())
+	}
 	if cookie == nil {
 		sid := strings.Replace(uuid.NewV4().String(), "-", "", -1)
 		cookie = &http.Cookie{
