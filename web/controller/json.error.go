@@ -14,7 +14,7 @@ func (me *JSONController) Error(c xhttp.Context, err error) {
 	logger.Error(err.Error())
 	switch t := err.(type) {
 	case *PreError:
-		c.JSON(xhttp.StatusPreconditionFailed, result.Http{Code: t.Code, Message: t.Message})
+		c.JSON(xhttp.StatusOK, result.Http{Success: false, Code: t.Code, Message: t.Message})
 	default:
 		c.JSON(xhttp.StatusInternalServerError, result.Http{Message: err.Error()})
 	}
