@@ -17,7 +17,14 @@ func (me *ClientController) Error(c xhttp.Context, err error) {
 		c.Redirect(xhttp.Conf.Err.Err500, xhttp.StatusFound)
 		return
 	} else {
-		c.ResponseWriter().WriteHeader(500)
+		status := xhttp.StatusInternalServerError
+		switch err.(type) {
+		case *PreError:
+			status = xhttp.StatusPreconditionFailed
+		default:
+			status = xhttp.StatusInternalServerError
+		}
+		c.ResponseWriter().WriteHeader(status)
 		c.ResponseWriter().Write([]byte(default500Body))
 		return
 	}
@@ -26,5 +33,10 @@ func (me *ClientController) Error(c xhttp.Context, err error) {
 func (me *ClientController) ErrorJson(c xhttp.Context, err error) {
 	//go errorSave(c.Request(), err)
 	logger.Error(err.Error())
-	c.JSON(xhttp.StatusBadRequest, result.Http{Message: err.Error()})
+	switch t := err.(type) {
+	case *PreError:
+		c.JSON(xhttp.StatusPreconditionFailed, result.Http{Code: t.Code, Message: t.Message})
+	default:
+		c.JSON(xhttp.StatusInternalServerError, result.Http{Message: err.Error()})
+	}
 }

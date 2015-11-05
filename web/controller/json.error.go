@@ -12,5 +12,10 @@ import (
 func (me *JSONController) Error(c xhttp.Context, err error) {
 	//go errorSave(c.Request(), err)
 	logger.Error(err.Error())
-	c.JSON(xhttp.StatusInternalServerError, result.Http{Message: err.Error()})
+	switch t := err.(type) {
+	case *PreError:
+		c.JSON(xhttp.StatusPreconditionFailed, result.Http{Code: t.Code, Message: t.Message})
+	default:
+		c.JSON(xhttp.StatusInternalServerError, result.Http{Message: err.Error()})
+	}
 }

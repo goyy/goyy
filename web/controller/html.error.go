@@ -16,7 +16,14 @@ func (me *HTMLController) Error(c xhttp.Context, err error) {
 		c.Redirect(xhttp.Conf.Err.Err500, xhttp.StatusFound)
 		return
 	} else {
-		c.ResponseWriter().WriteHeader(500)
+		status := xhttp.StatusInternalServerError
+		switch err.(type) {
+		case *PreError:
+			status = xhttp.StatusPreconditionFailed
+		default:
+			status = xhttp.StatusInternalServerError
+		}
+		c.ResponseWriter().WriteHeader(status)
 		c.ResponseWriter().Write([]byte(default500Body))
 		return
 	}
