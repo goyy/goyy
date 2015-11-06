@@ -5,13 +5,18 @@
 package captcha
 
 import (
-	"math/rand"
-	"time"
+	"io"
 )
 
-func init() {
-	rand.Seed(int64(time.Second))
-}
+const (
+	// Default number of digits in captcha solution.
+	DefaultLen = 4
+)
 
-// Standard characters allowed in uniuri string.
-var StdChars = []byte("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")
+// WriteImage writes PNG-encoded image representation of the captcha with the
+// given id. The image will have the given width and height.
+func WriteImage(w io.Writer, id string, length, width, height int) ([]byte, error) {
+	v := RandomDigits(length)
+	_, err := NewImage(id, v, width, height).WriteTo(w)
+	return v, err
+}

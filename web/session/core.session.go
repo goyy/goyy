@@ -49,7 +49,7 @@ type session struct {
 
 func (me *session) Get(key string) (string, error) {
 	v, err := cache.HGet(me.key, key)
-	logger.Debugf("Get %v %v %v", me.key, key, err)
+	logger.Debugf("Get %v %v %v\r\n", me.key, key, err)
 	if err != nil {
 		return "", err
 	}
@@ -59,7 +59,7 @@ func (me *session) Get(key string) (string, error) {
 
 func (me *session) Set(key string, val string) error {
 	err := cache.HSet(me.key, key, val)
-	logger.Debugf("Set %v %v %v %v", me.key, key, val, err)
+	logger.Debugf("Set %v %v %v %v\r\n", me.key, key, val, err)
 	if err != nil {
 		return err
 	}
@@ -69,7 +69,7 @@ func (me *session) Set(key string, val string) error {
 
 func (me *session) Delete(key string) error {
 	err := cache.HDelete(me.key, key)
-	logger.Debugf("Delete %v %v %v", me.key, key, err)
+	logger.Debugf("Delete %v %v %v\r\n", me.key, key, err)
 	if err != nil {
 		return err
 	}
@@ -78,7 +78,7 @@ func (me *session) Delete(key string) error {
 
 func (me *session) Clear() error {
 	err := cache.Delete(me.key)
-	logger.Debugf("Clear %v %v", me.key, err)
+	logger.Debugf("Clear %v %v\r\n", me.key, err)
 	if err != nil {
 		return err
 	}
@@ -173,13 +173,13 @@ func (me *session) ResetPrincipal() error {
 
 func (me *session) exists(key string) bool {
 	v := cache.HExists(me.key, key)
-	logger.Debugf("exists %v %v %v", me.key, key, v)
+	logger.Debugf("exists %v %v %v\r\n", me.key, key, v)
 	return v
 }
 
 func (me *session) expire(second int) error {
 	err := cache.Expire(me.key, second)
-	logger.Debugf("expire %v %v", me.key, err)
+	logger.Debugf("expire %v %v\r\n", me.key, err)
 	if err != nil {
 		return err
 	}
