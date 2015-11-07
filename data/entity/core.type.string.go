@@ -5,7 +5,7 @@
 package entity
 
 import (
-	"bytes"
+	"gopkg.in/goyy/goyy.v0/util/bytes"
 )
 
 type String struct {
@@ -41,7 +41,7 @@ func (me *String) SetString(v string) error {
 }
 
 func (me *String) String() string {
-	out := bytes.TrimRight(me.value, "\x00")
+	out := bytes.TrimRightNul(me.value)
 	return string(out)
 }
 
