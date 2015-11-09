@@ -66,42 +66,42 @@ func NewImage(id string, digits []byte, width, height int) *Image {
 	return m
 }
 
-func (m *Image) getRandomPalette() color.Palette {
+func (me *Image) getRandomPalette() color.Palette {
 	p := make([]color.Color, circleCount+1)
 	// Transparent color.
 	p[0] = color.RGBA{0xFF, 0xFF, 0xFF, 0x00}
 	// Primary color.
 	prim := color.RGBA{
-		uint8(m.rng.Intn(129)),
-		uint8(m.rng.Intn(129)),
-		uint8(m.rng.Intn(129)),
+		uint8(me.rng.Intn(129)),
+		uint8(me.rng.Intn(129)),
+		uint8(me.rng.Intn(129)),
 		0xFF,
 	}
 	p[1] = prim
 	// Circle colors.
 	for i := 2; i <= circleCount; i++ {
-		p[i] = m.randomBrightness(prim, 255)
+		p[i] = me.randomBrightness(prim, 255)
 	}
 	return p
 }
 
 // encodedPNG encodes an image to PNG and returns
 // the result as a byte slice.
-func (m *Image) encodedPNG() []byte {
+func (me *Image) encodedPNG() []byte {
 	var buf bytes.Buffer
-	if err := png.Encode(&buf, m.Paletted); err != nil {
+	if err := png.Encode(&buf, me.Paletted); err != nil {
 		panic(err.Error())
 	}
 	return buf.Bytes()
 }
 
 // WriteTo writes captcha image in PNG format into the given writer.
-func (m *Image) WriteTo(w io.Writer) (int64, error) {
-	n, err := w.Write(m.encodedPNG())
+func (me *Image) WriteTo(w io.Writer) (int64, error) {
+	n, err := w.Write(me.encodedPNG())
 	return int64(n), err
 }
 
-func (m *Image) calculateSizes(width, height, ncount int) {
+func (me *Image) calculateSizes(width, height, ncount int) {
 	// Goal: fit all digits inside the image.
 	var border int
 	if width > height {
@@ -128,32 +128,32 @@ func (m *Image) calculateSizes(width, height, ncount int) {
 		nw = fw / fh * nh
 	}
 	// Calculate dot size.
-	m.dotSize = int(nh / fh)
-	if m.dotSize < 1 {
-		m.dotSize = 1
+	me.dotSize = int(nh / fh)
+	if me.dotSize < 1 {
+		me.dotSize = 1
 	}
 	// Save everything, making the actual width smaller by 1 dot to account
 	// for spacing between digits.
-	m.numWidth = int(nw) - m.dotSize
-	m.numHeight = int(nh)
+	me.numWidth = int(nw) - me.dotSize
+	me.numHeight = int(nh)
 }
 
-func (m *Image) drawHorizLine(fromX, toX, y int, colorIdx uint8) {
+func (me *Image) drawHorizLine(fromX, toX, y int, colorIdx uint8) {
 	for x := fromX; x <= toX; x++ {
-		m.SetColorIndex(x, y, colorIdx)
+		me.SetColorIndex(x, y, colorIdx)
 	}
 }
 
-func (m *Image) drawCircle(x, y, radius int, colorIdx uint8) {
+func (me *Image) drawCircle(x, y, radius int, colorIdx uint8) {
 	f := 1 - radius
 	dfx := 1
 	dfy := -2 * radius
 	xo := 0
 	yo := radius
 
-	m.SetColorIndex(x, y+radius, colorIdx)
-	m.SetColorIndex(x, y-radius, colorIdx)
-	m.drawHorizLine(x-radius, x+radius, y, colorIdx)
+	me.SetColorIndex(x, y+radius, colorIdx)
+	me.SetColorIndex(x, y-radius, colorIdx)
+	me.drawHorizLine(x-radius, x+radius, y, colorIdx)
 
 	for xo < yo {
 		if f >= 0 {
@@ -164,62 +164,62 @@ func (m *Image) drawCircle(x, y, radius int, colorIdx uint8) {
 		xo++
 		dfx += 2
 		f += dfx
-		m.drawHorizLine(x-xo, x+xo, y+yo, colorIdx)
-		m.drawHorizLine(x-xo, x+xo, y-yo, colorIdx)
-		m.drawHorizLine(x-yo, x+yo, y+xo, colorIdx)
-		m.drawHorizLine(x-yo, x+yo, y-xo, colorIdx)
+		me.drawHorizLine(x-xo, x+xo, y+yo, colorIdx)
+		me.drawHorizLine(x-xo, x+xo, y-yo, colorIdx)
+		me.drawHorizLine(x-yo, x+yo, y+xo, colorIdx)
+		me.drawHorizLine(x-yo, x+yo, y-xo, colorIdx)
 	}
 }
 
-func (m *Image) fillWithCircles(n, maxradius int) {
-	maxx := m.Bounds().Max.X
-	maxy := m.Bounds().Max.Y
+func (me *Image) fillWithCircles(n, maxradius int) {
+	maxx := me.Bounds().Max.X
+	maxy := me.Bounds().Max.Y
 	for i := 0; i < n; i++ {
-		colorIdx := uint8(m.rng.Int(1, circleCount-1))
-		r := m.rng.Int(1, maxradius)
-		m.drawCircle(m.rng.Int(r, maxx-r), m.rng.Int(r, maxy-r), r, colorIdx)
+		colorIdx := uint8(me.rng.Int(1, circleCount-1))
+		r := me.rng.Int(1, maxradius)
+		me.drawCircle(me.rng.Int(r, maxx-r), me.rng.Int(r, maxy-r), r, colorIdx)
 	}
 }
 
-func (m *Image) strikeThrough() {
-	maxx := m.Bounds().Max.X
-	maxy := m.Bounds().Max.Y
-	y := m.rng.Int(maxy/3, maxy-maxy/3)
-	amplitude := m.rng.Float(5, 20)
-	period := m.rng.Float(80, 180)
+func (me *Image) strikeThrough() {
+	maxx := me.Bounds().Max.X
+	maxy := me.Bounds().Max.Y
+	y := me.rng.Int(maxy/3, maxy-maxy/3)
+	amplitude := me.rng.Float(5, 20)
+	period := me.rng.Float(80, 180)
 	dx := 2.0 * math.Pi / period
 	for x := 0; x < maxx; x++ {
 		xo := amplitude * math.Cos(float64(y)*dx)
 		yo := amplitude * math.Sin(float64(x)*dx)
-		for yn := 0; yn < m.dotSize; yn++ {
-			r := m.rng.Int(0, m.dotSize)
-			m.drawCircle(x+int(xo), y+int(yo)+(yn*m.dotSize), r/2, 1)
+		for yn := 0; yn < me.dotSize; yn++ {
+			r := me.rng.Int(0, me.dotSize)
+			me.drawCircle(x+int(xo), y+int(yo)+(yn*me.dotSize), r/2, 1)
 		}
 	}
 }
 
-func (m *Image) drawDigit(digit []byte, x, y int) {
-	skf := m.rng.Float(-maxSkew, maxSkew)
+func (me *Image) drawDigit(digit []byte, x, y int) {
+	skf := me.rng.Float(-maxSkew, maxSkew)
 	xs := float64(x)
-	r := m.dotSize / 2
-	y += m.rng.Int(-r, r)
+	r := me.dotSize / 2
+	y += me.rng.Int(-r, r)
 	for yo := 0; yo < fontHeight; yo++ {
 		for xo := 0; xo < fontWidth; xo++ {
 			if digit[yo*fontWidth+xo] != blackChar {
 				continue
 			}
-			m.drawCircle(x+xo*m.dotSize, y+yo*m.dotSize, r, 1)
+			me.drawCircle(x+xo*me.dotSize, y+yo*me.dotSize, r, 1)
 		}
 		xs += skf
 		x = int(xs)
 	}
 }
 
-func (m *Image) distort(amplude float64, period float64) {
-	w := m.Bounds().Max.X
-	h := m.Bounds().Max.Y
+func (me *Image) distort(amplude float64, period float64) {
+	w := me.Bounds().Max.X
+	h := me.Bounds().Max.Y
 
-	oldm := m.Paletted
+	oldm := me.Paletted
 	newm := image.NewPaletted(image.Rect(0, 0, w, h), oldm.Palette)
 
 	dx := 2.0 * math.Pi / period
@@ -230,16 +230,16 @@ func (m *Image) distort(amplude float64, period float64) {
 			newm.SetColorIndex(x, y, oldm.ColorIndexAt(x+int(xo), y+int(yo)))
 		}
 	}
-	m.Paletted = newm
+	me.Paletted = newm
 }
 
-func (m *Image) randomBrightness(c color.RGBA, max uint8) color.RGBA {
+func (me *Image) randomBrightness(c color.RGBA, max uint8) color.RGBA {
 	minc := min3(c.R, c.G, c.B)
 	maxc := max3(c.R, c.G, c.B)
 	if maxc > max {
 		return c
 	}
-	n := m.rng.Intn(int(max-maxc)) - int(minc)
+	n := me.rng.Intn(int(max-maxc)) - int(minc)
 	return color.RGBA{
 		uint8(int(c.R) + n),
 		uint8(int(c.G) + n),
