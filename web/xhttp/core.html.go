@@ -9,10 +9,25 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strconv"
+	"sync"
 )
 
-type htmlServeMux struct{}
+type htmlServeMux struct {
+	isCompiled bool
+	templates  map[string]*templateInfo
+}
+
+type templateInfo struct {
+	id              string
+	content         string
+	isSec           bool
+	includes        []string
+	lastModified    int64
+	maxLastModified int64
+}
 
 type directiveInfo struct {
 	statement  string // <!--#include file="/footer.html" param="home"-->content<!--#endinclude"-->
@@ -67,19 +82,121 @@ type tagTextInfo struct {
 	dstVal    string // /title.html
 }
 
-var hsm = &htmlServeMux{}
+var hsm = &htmlServeMux{
+	templates: make(map[string]*templateInfo),
+}
+
+var htmlMutex sync.Mutex
+
+func (me *htmlServeMux) compile(options *htmlOptions) error {
+	filepath.Walk(options.Dir, func(path string, info os.FileInfo, err error) error {
+		r, err := filepath.Rel(options.Dir, path)
+		if err != nil {
+			logger.Error(err.Error())
+			return err
+		} else {
+			r = strings.Replace(r, "\\", "/", -1)
+		}
+
+		ext := strings.ToLower(files.Extension(r))
+
+		for _, extension := range options.Extensions {
+			if ext == extension {
+				if c, err := files.Read(path); err == nil {
+					lm := times.NowUnix()
+					if modTime, err := files.ModTime(path); err == nil {
+						lm = modTime
+					} else {
+						logger.Error(err.Error())
+					}
+					id := "/" + filepath.ToSlash(r)
+					c, i, m := me.parseContent(c)
+					mls := m
+					if lm > mls {
+						mls = lm
+					}
+					ti := &templateInfo{
+						id:              id,
+						content:         c,
+						includes:        i,
+						lastModified:    lm,
+						maxLastModified: mls,
+					}
+					if me.isSec(c) {
+						ti.isSec = true
+					}
+					if _, ok := me.templates[id]; !ok {
+						me.templates[id] = ti
+					}
+				} else {
+					logger.Error(err.Error())
+					return err
+				}
+				break
+			}
+		}
+		return nil
+	})
+	return nil
+}
 
 func (me *htmlServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool {
 	if me.isHtml(r.URL.Path) {
-		filename := Conf.Template.Dir + r.URL.Path
+		filename := Conf.Html.Dir + r.URL.Path
 		if files.IsExist(filename) {
-			if me.isUseBrowserCache(w, r, filename) {
-				return true
+			if me.isCompiled == false {
+				htmlMutex.Lock()
+				if me.isCompiled == false {
+					if err := me.compile(Conf.Html); err != nil {
+						htmlMutex.Unlock()
+						logger.Error(err.Error())
+						return true
+					}
+					me.isCompiled = true
+				}
+				htmlMutex.Unlock()
 			}
-			if c, err := files.Read(filename); err != nil {
-				w.Write([]byte(err.Error()))
+			if Conf.Html.Reloaded {
+				if me.isUseBrowserCache(w, r, filename) {
+					return true
+				}
+				if c, err := files.Read(filename); err != nil {
+					w.Write([]byte(err.Error()))
+				} else {
+					w.Write([]byte(me.parseFile(w, r, c)))
+				}
 			} else {
-				w.Write([]byte(me.parseFile(w, r, c)))
+				if ti, ok := me.templates[r.URL.Path]; ok {
+					if ti.isSec {
+						lm := ti.maxLastModified
+						var lastLoginTimeUnix int64
+						s := newSession4Redis(w, r)
+						if p, err := s.Principal(); err == nil {
+							if strings.IsNotBlank(p.LoginTime) {
+								if i, err := strconv.Atoi(p.LoginTime); err == nil {
+									lastLoginTimeUnix = int64(i)
+								}
+							}
+						} else {
+							logger.Error(err.Error())
+						}
+						if lastLoginTimeUnix > lm {
+							lm = lastLoginTimeUnix
+						}
+						if me.hasUseBrowserCache(w, r, lm) {
+							return true
+						} else {
+							c := me.parseSec(w, r, ti.content)
+							w.Write([]byte(c))
+							return true
+						}
+					} else {
+						if me.hasUseBrowserCache(w, r, ti.maxLastModified) {
+							return true
+						}
+					}
+					w.Write([]byte(ti.content))
+				}
 			}
 			return true
 		}
@@ -116,21 +233,46 @@ func (me *htmlServeMux) isSec(content string) bool {
 	return false
 }
 
+func (me *htmlServeMux) hasUseBrowserCache(w http.ResponseWriter, r *http.Request, fileModTime int64) bool {
+	// Browser save file last modified time
+	browserModTime := r.Header.Get(ifModifiedSince)
+	if strings.IsNotBlank(browserModTime) {
+		if v, err := times.ParseUnixGMT(browserModTime); err == nil {
+			if fileModTime > v {
+				maxLastModified := times.FormatUnixGMT(fileModTime)
+				w.Header().Set(lastModified, maxLastModified)
+			} else {
+				// Tell the browser to use the cache
+				w.WriteHeader(304)
+				return true
+			}
+		} else {
+			logger.Error(err.Error())
+		}
+	} else {
+		maxLastModified := times.FormatUnixGMT(fileModTime)
+		w.Header().Set(lastModified, maxLastModified)
+	}
+	return false
+}
+
 func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request, filename string) bool {
 	if fileModTimeUnix, err := files.ModTime(filename); err == nil {
 		var browserModTimeUnix int64
 		// Browser save file last modified time
-		browserModTime := r.Header.Get("If-Modified-Since")
+		browserModTime := r.Header.Get(ifModifiedSince)
 		if strings.IsNotBlank(browserModTime) {
 			if v, err := times.ParseUnixGMT(browserModTime); err == nil {
 				browserModTimeUnix = v
+			} else {
+				logger.Error(err.Error())
 			}
 		}
 		if browserModTimeUnix < fileModTimeUnix {
 			// Actual file last modified time
 			fileModTime := times.FormatUnixGMT(fileModTimeUnix)
 			// Tell the browser not to use cache
-			w.Header().Set("last-modified", fileModTime)
+			w.Header().Set(lastModified, fileModTime)
 			return false
 		} else {
 			var content string
@@ -151,7 +293,7 @@ func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request
 					// Actual last login time
 					lastLoginTime := times.FormatUnixGMT(lastLoginTimeUnix)
 					// Tell the browser not to use cache
-					w.Header().Set("Last-Modified", lastLoginTime)
+					w.Header().Set(lastModified, lastLoginTime)
 					return false
 				}
 			}
@@ -170,7 +312,7 @@ func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request
 					// The actual last modification time of the include file
 					includeFileModTime := times.FormatUnixGMT(includeFileModTimeUnix)
 					// Tell the browser not to use cache
-					w.Header().Set("last-modified", includeFileModTime)
+					w.Header().Set(lastModified, includeFileModTime)
 					return false
 				}
 			}
@@ -182,32 +324,54 @@ func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request
 	return false
 }
 
-func (me *htmlServeMux) parseFile(w http.ResponseWriter, r *http.Request, content string) string {
-	content = me.parseIncludeFile(content)
+func (me *htmlServeMux) parseContent(content string) (string, []string, int64) {
+	content, i, m := me.parseIncludeFile(content)
 	content = me.replaceAssets(content)
 	content = me.parseIfFile(content)
 	content = me.parseTagAttrFile(content, tagAttrHref)
 	content = me.parseTagAttrFile(content, tagAttrSrc)
 	content = me.parseTagAttrFile(content, tagAttrAction)
 	content = me.parseTagTextFile(content, tagTextTitle)
+	return content, i, m
+}
+
+func (me *htmlServeMux) parseSec(w http.ResponseWriter, r *http.Request, content string) string {
+	content = me.parseSecUserFile(w, r, content)
+	content = me.parseSecLoginFile(w, r, content)
+	content = me.parseSecIsPermissionFile(w, r, content)
+	content = me.parseSecIsAnyPermissionFile(w, r, content)
+	return content
+}
+
+func (me *htmlServeMux) parseFile(w http.ResponseWriter, r *http.Request, content string) string {
+	content, _, _ = me.parseContent(content)
 	if me.isSec(content) {
-		content = me.parseSecUserFile(w, r, content)
-		content = me.parseSecLoginFile(w, r, content)
-		content = me.parseSecIsPermissionFile(w, r, content)
-		content = me.parseSecIsAnyPermissionFile(w, r, content)
+		content = me.parseSec(w, r, content)
 	}
 	return content
 }
 
-func (me *htmlServeMux) parseIncludeFile(content string) string {
+func (me *htmlServeMux) parseIncludeFile(content string) (string, []string, int64) {
+	includes := []string{}
+	lastModified := int64(0)
 	directives := make([]directiveInfo, 0)
 	directives = me.buildDirectiveInfo(content, directiveIncludeBegin, directiveArgEnd, directiveIncludeEnd, directives)
 	for i := len(directives) - 1; i >= 0; i-- {
-		v, err := files.Read(directives[i].argValue)
+		filename := directives[i].argValue
+		v, err := files.Read(filename)
 		if err != nil {
 			logger.Error(err.Error())
 			continue
 		}
+		if modTime, err := files.ModTime(filename); err == nil {
+			if modTime > lastModified {
+				lastModified = modTime
+			}
+		} else {
+			logger.Error(err.Error())
+		}
+		f := strings.After(filename, Conf.Html.Dir)
+		includes = append(includes, f)
 
 		ifparams := make([]directiveInfo, 0)
 		ifparams = me.buildDirectiveInfo(v, tplBegin, tplArgEnd, tplEnd, ifparams)
@@ -221,7 +385,7 @@ func (me *htmlServeMux) parseIncludeFile(content string) string {
 
 		content = strings.Replace(content, directives[i].statement, v, -1)
 	}
-	return content
+	return content, includes, lastModified
 }
 
 func (me *htmlServeMux) parseIfFile(content string) string {
@@ -377,7 +541,7 @@ func (me *htmlServeMux) buildDirectiveInfo(content, directiveBegin, argEnd, dire
 				paramValue = strings.After(argValue, directiveIncludeParamBegin)
 				argValue = strings.Before(argValue, directiveIncludeParamBegin)
 			}
-			argValue = Conf.Template.Dir + argValue
+			argValue = Conf.Html.Dir + argValue
 			if !files.IsExist(argValue) {
 				continue
 			}
@@ -524,7 +688,7 @@ func (me *htmlServeMux) buildTagTextInfo(content, attr string, tags []tagTextInf
 		newstmt := statement
 		dstVal := strings.Slice(content, dstBegin+len(dstBeginPre), dstEnd)
 		if strings.IsNotBlank(dstVal) {
-			filename := Conf.Template.Dir + dstVal
+			filename := Conf.Html.Dir + dstVal
 			if files.IsExist(filename) {
 				if c, err := files.Read(filename); err == nil {
 					title := strings.Slice(content, srcBegin+len(tagBeginPre), srcEnd)

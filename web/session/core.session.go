@@ -9,9 +9,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/cache"
 	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/strings"
-	"gopkg.in/goyy/goyy.v0/util/times"
 	"net/http"
-	"strconv"
 )
 
 func New(w http.ResponseWriter, r *http.Request, o *Options) Interface {
@@ -125,6 +123,10 @@ func (me *session) Principal() (Principal, error) {
 	if err != nil {
 		return p, err
 	}
+	loginTime, err := me.Get(principalLoginTime)
+	if err != nil {
+		return p, err
+	}
 	permissions, err := me.Get(principalPermissions)
 	if err != nil {
 		return p, err
@@ -132,6 +134,7 @@ func (me *session) Principal() (Principal, error) {
 	p.Id = id
 	p.Name = name
 	p.LoginName = loginName
+	p.LoginTime = loginTime
 	p.Permissions = permissions
 	return p, nil
 }
@@ -146,7 +149,7 @@ func (me *session) SetPrincipal(value Principal) error {
 	if err := me.Set(principalLoginName, value.LoginName); err != nil {
 		return err
 	}
-	if err := me.Set(principalLoginTime, strconv.FormatInt(times.NowUnix(), 10)); err != nil {
+	if err := me.Set(principalLoginTime, value.LoginTime); err != nil {
 		return err
 	}
 	if err := me.Set(principalPermissions, value.Permissions); err != nil {
@@ -163,6 +166,9 @@ func (me *session) ResetPrincipal() error {
 		return err
 	}
 	if err := me.Delete(principalLoginName); err != nil {
+		return err
+	}
+	if err := me.Delete(principalLoginTime); err != nil {
 		return err
 	}
 	if err := me.Delete(principalPermissions); err != nil {

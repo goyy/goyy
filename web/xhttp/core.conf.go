@@ -44,7 +44,10 @@ var Conf = &conf{
 		MaxSize: 5242880,
 	},
 	Html: &htmlOptions{
-		Enable: false,
+		Enable:     false,
+		Dir:        "templates",
+		Extensions: []string{"html"},
+		Reloaded:   true,
 	},
 	Session: &sessionOptions{
 		Enable: true,
@@ -118,7 +121,10 @@ type uploadOptions struct {
 }
 
 type htmlOptions struct {
-	Enable bool // Whether service is enabled
+	Enable     bool     // Whether service is enabled
+	Dir        string   // Directory to load templates. Default is "templates"
+	Extensions []string // Extensions to parse template files from. Defaults to ["html"]
+	Reloaded   bool     // Reloaded sets up the template for each reload
 }
 
 type sessionOptions struct {

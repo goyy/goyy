@@ -15,6 +15,9 @@ const (
 	default405Body = "405 method not allowed"
 	default500Body = "500 Internal Server Error"
 
+	ifModifiedSince = "If-Modified-Since"
+	lastModified    = "Last-Modified"
+
 	directiveArgEnd                  = `"-->`
 	directiveIncludeBegin            = `<!--#include file="`
 	directiveIncludeParamBegin       = `" param="`

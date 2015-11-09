@@ -122,7 +122,7 @@ func (me *renderer) compile(options *templateOptions) error {
 			r = strings.Replace(r, "\\", "/", -1)
 		}
 
-		ext := files.Extension(r)
+		ext := strings.ToLower(files.Extension(r))
 
 		for _, extension := range options.Extensions {
 			if ext == extension {
