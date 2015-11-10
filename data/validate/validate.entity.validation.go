@@ -87,16 +87,64 @@ func (me *Validation) Integer(field, input string) *Error {
 	return me.err(field, typInteger, Integer(input))
 }
 
-// Returns error if the provided input is not an alphanumeric (a-zA-Z0-9)
-// string, nil otherwise.
-func (me *Validation) Alphanumeric(field, input string) *Error {
-	return me.err(field, typAlphanumeric, Alphanumeric(input))
-}
-
 // Returns error if the provided input is not an alphabetic (a-zA-Z) string,
 // nil otherwise.
-func (me *Validation) Alphabetic(field, input string) *Error {
-	return me.err(field, typAlphabetic, Alphabetic(input))
+func (me *Validation) Alpha(field, input string) *Error {
+	return me.err(field, typAlpha, Alpha(input))
+}
+
+// Returns error if the provided input is not an alphabetic or rod (a-zA-Z\-_) string,
+// nil otherwise.
+func (me *Validation) Alrod(field, input string) *Error {
+	return me.err(field, typAlrod, Alrod(input))
+}
+
+// Returns error if the provided input is not an alphanumeric (a-zA-Z0-9)
+// string, nil otherwise.
+func (me *Validation) Alnum(field, input string) *Error {
+	return me.err(field, typAlnum, Alnum(input))
+}
+
+// Returns error if the provided input is not an alphanumeric or rod (a-zA-Z0-9\-_)
+// string, nil otherwise.
+func (me *Validation) Alnumrod(field, input string) *Error {
+	return me.err(field, typAlnumrod, Alnumrod(input))
+}
+
+// Returns error if the provided input is not an alphanumeric or chinese (a-zA-Z0-9\p{Han})
+// string, nil otherwise.
+func (me *Validation) Alnumhan(field, input string) *Error {
+	return me.err(field, typAlnumhan, Alnumhan(input))
+}
+
+// Returns error if the provided input is not an alphanumeric or chinese or rod (a-zA-Z0-9\p{Han}\-_)
+// string, nil otherwise.
+func (me *Validation) Alnumhanrod(field, input string) *Error {
+	return me.err(field, typAlnumhanrod, Alnumhanrod(input))
+}
+
+// Returns error if the provided input is not an alphabetic or chinese (a-zA-Z0-9\p{Han})
+// string, nil otherwise.
+func (me *Validation) Alhan(field, input string) *Error {
+	return me.err(field, typAlhan, Alhan(input))
+}
+
+// Returns error if the provided input is not an alphabetic or chinese or rod (a-zA-Z0-9\p{Han}\-_)
+// string, nil otherwise.
+func (me *Validation) Alhanrod(field, input string) *Error {
+	return me.err(field, typAlhanrod, Alhanrod(input))
+}
+
+// Returns error if the provided input is not an chinese (a-zA-Z0-9\p{Han})
+// string, nil otherwise.
+func (me *Validation) Han(field, input string) *Error {
+	return me.err(field, typHan, Han(input))
+}
+
+// Returns error if the provided input is not an chinese or rod (a-zA-Z0-9\p{Han}\-_)
+// string, nil otherwise.
+func (me *Validation) Hanrod(field, input string) *Error {
+	return me.err(field, typHanrod, Hanrod(input))
 }
 
 // Returns error if the provided input is not match {regexp} string,

@@ -419,11 +419,35 @@ func (me *{{$e.Name}}) Validate() error {{"{"}}{{range $f := $e.Fields}}{{range 
 	}{{end}}{{if eq $v.Name "integer"}}
 	if err := validate.Integer(me.{{$f.Name}}.String()); err != nil {
 		return err
-	}{{end}}{{if eq $v.Name "alphanumeric"}}
-	if err := validate.Alphanumeric(me.{{$f.Name}}.String()); err != nil {
+	}{{end}}{{if eq $v.Name "alpha"}}
+	if err := validate.Alpha(me.{{$f.Name}}.String()); err != nil {
 		return err
-	}{{end}}{{if eq $v.Name "alphabetic"}}
-	if err := validate.Alphabetic(me.{{$f.Name}}.String()); err != nil {
+	}{{end}}{{if eq $v.Name "alrod"}}
+	if err := validate.Alrod(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "alnum"}}
+	if err := validate.Alnum(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "alnumrod"}}
+	if err := validate.Alnumrod(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "alnumhan"}}
+	if err := validate.Alnumhan(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "alnumhanrod"}}
+	if err := validate.Alnumhanrod(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "alhan"}}
+	if err := validate.Alhan(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "alhanrod"}}
+	if err := validate.Alhanrod(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "han"}}
+	if err := validate.Han(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "hanrod"}}
+	if err := validate.Hanrod(me.{{$f.Name}}.String()); err != nil {
 		return err
 	}{{end}}{{end}}{{end}}
 	return nil

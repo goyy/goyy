@@ -131,7 +131,8 @@ func (me *field) InitValidation(tag string) error {
 				me.Validations = append(me.Validations, valid)
 			case "min", "max", "range", "minlen", "maxlen", "rangelen",
 				"email", "url", "ip", "mobile", "tel", "phone", "zipcode",
-				"float", "integer", "alphanumeric", "alphabetic":
+				"float", "integer", "alpha", "alrod", "alnum", "alnumrod",
+				"alnumhan", "alnumhanrod", "alhan", "alhanrod", "han", "hanrod":
 				if strings.IsBlank(value) {
 					continue
 				}

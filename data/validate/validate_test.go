@@ -148,25 +148,213 @@ func TestValidateInteger(t *testing.T) {
 	}
 }
 
-func TestValidateAlphanumeric(t *testing.T) {
-	in := "ABc123"
-	if err := validate.Alphanumeric(in); err != nil {
-		t.Errorf(`validate.Alphanumeric(%s) = %v, want %s`, in, err.Error(), "nil")
+func TestValidateAlpha(t *testing.T) {
+	in := "ABc"
+	if err := validate.Alpha(in); err != nil {
+		t.Errorf(`validate.Alpha(%s) = %v, want %s`, in, err.Error(), "nil")
 	}
-	in = "ABc_123"
-	if err := validate.Alphanumeric(in); err == nil {
-		t.Errorf(`validate.Alphanumeric(%s) = %v, want %s`, in, "nil", "not nil")
+	in = "ABc123"
+	if err := validate.Alpha(in); err == nil {
+		t.Errorf(`validate.Alpha(%s) = %v, want %s`, in, "nil", "not nil")
 	}
 }
 
-func TestValidateAlphabetic(t *testing.T) {
+func TestValidateAlrod(t *testing.T) {
 	in := "ABc"
-	if err := validate.Alphabetic(in); err != nil {
-		t.Errorf(`validate.Alphabetic(%s) = %v, want %s`, in, err.Error(), "nil")
+	if err := validate.Alrod(in); err != nil {
+		t.Errorf(`validate.Alrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "AB-c"
+	if err := validate.Alrod(in); err != nil {
+		t.Errorf(`validate.Alrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "AB_c"
+	if err := validate.Alrod(in); err != nil {
+		t.Errorf(`validate.Alrod(%s) = %v, want %s`, in, err.Error(), "nil")
 	}
 	in = "ABc123"
-	if err := validate.Alphabetic(in); err == nil {
-		t.Errorf(`validate.Alphabetic(%s) = %v, want %s`, in, "nil", "not nil")
+	if err := validate.Alrod(in); err == nil {
+		t.Errorf(`validate.Alrod(%s) = %v, want %s`, in, "nil", "not nil")
+	}
+}
+
+func TestValidateAlnum(t *testing.T) {
+	in := "ABc123"
+	if err := validate.Alnum(in); err != nil {
+		t.Errorf(`validate.Alnum(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc_123"
+	if err := validate.Alnum(in); err == nil {
+		t.Errorf(`validate.Alnum(%s) = %v, want %s`, in, "nil", "not nil")
+	}
+}
+
+func TestValidateAlnumrod(t *testing.T) {
+	in := "ABc123"
+	if err := validate.Alnumrod(in); err != nil {
+		t.Errorf(`validate.Alnumrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc-123"
+	if err := validate.Alnumrod(in); err != nil {
+		t.Errorf(`validate.Alnumrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc_123"
+	if err := validate.Alnumrod(in); err != nil {
+		t.Errorf(`validate.Alnumrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc&123"
+	if err := validate.Alnumrod(in); err == nil {
+		t.Errorf(`validate.Alnumrod(%s) = %v, want %s`, in, "nil", "not nil")
+	}
+}
+
+func TestValidateAlnumhan(t *testing.T) {
+	in := "ABc"
+	if err := validate.Alnumhan(in); err != nil {
+		t.Errorf(`validate.Alnumhan(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc123"
+	if err := validate.Alnumhan(in); err != nil {
+		t.Errorf(`validate.Alnumhan(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc中文"
+	if err := validate.Alnumhan(in); err != nil {
+		t.Errorf(`validate.Alnumhan(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc123中文"
+	if err := validate.Alnumhan(in); err != nil {
+		t.Errorf(`validate.Alnumhan(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc-123"
+	if err := validate.Alnumhan(in); err == nil {
+		t.Errorf(`validate.Alnumhan(%s) = %v, want %s`, in, "nil", "not nil")
+	}
+}
+
+func TestValidateAlnumhanrod(t *testing.T) {
+	in := "ABc"
+	if err := validate.Alnumhanrod(in); err != nil {
+		t.Errorf(`validate.Alnumhanrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc123"
+	if err := validate.Alnumhanrod(in); err != nil {
+		t.Errorf(`validate.Alnumhanrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc-123"
+	if err := validate.Alnumhanrod(in); err != nil {
+		t.Errorf(`validate.Alnumhanrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc中文"
+	if err := validate.Alnumhanrod(in); err != nil {
+		t.Errorf(`validate.Alnumhanrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc_中文"
+	if err := validate.Alnumhanrod(in); err != nil {
+		t.Errorf(`validate.Alnumhanrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc123中文"
+	if err := validate.Alnumhanrod(in); err != nil {
+		t.Errorf(`validate.Alnumhanrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc&123"
+	if err := validate.Alnumhanrod(in); err == nil {
+		t.Errorf(`validate.Alnumhanrod(%s) = %v, want %s`, in, "nil", "not nil")
+	}
+}
+
+func TestValidateAlhan(t *testing.T) {
+	in := "ABc"
+	if err := validate.Alhan(in); err != nil {
+		t.Errorf(`validate.Alhan(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc中文"
+	if err := validate.Alhan(in); err != nil {
+		t.Errorf(`validate.Alhan(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "中文"
+	if err := validate.Alhan(in); err != nil {
+		t.Errorf(`validate.Alhan(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "123"
+	if err := validate.Alhan(in); err == nil {
+		t.Errorf(`validate.Alhan(%s) = %v, want %s`, in, "nil", "not nil")
+	}
+	in = "ABc123"
+	if err := validate.Alhan(in); err == nil {
+		t.Errorf(`validate.Alhan(%s) = %v, want %s`, in, "nil", "not nil")
+	}
+	in = "ABc_123"
+	if err := validate.Alhan(in); err == nil {
+		t.Errorf(`validate.Alhan(%s) = %v, want %s`, in, "nil", "not nil")
+	}
+}
+
+func TestValidateAlhanrod(t *testing.T) {
+	in := "ABc"
+	if err := validate.Alhanrod(in); err != nil {
+		t.Errorf(`validate.Alhanrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc中文"
+	if err := validate.Alhanrod(in); err != nil {
+		t.Errorf(`validate.Alhanrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc-中文"
+	if err := validate.Alhanrod(in); err != nil {
+		t.Errorf(`validate.Alhanrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "中文"
+	if err := validate.Alhanrod(in); err != nil {
+		t.Errorf(`validate.Alhanrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "123"
+	if err := validate.Alhanrod(in); err == nil {
+		t.Errorf(`validate.Alhanrod(%s) = %v, want %s`, in, "nil", "not nil")
+	}
+	in = "ABc123"
+	if err := validate.Alhanrod(in); err == nil {
+		t.Errorf(`validate.Alhanrod(%s) = %v, want %s`, in, "nil", "not nil")
+	}
+	in = "ABc_123"
+	if err := validate.Alhanrod(in); err == nil {
+		t.Errorf(`validate.Alhanrod(%s) = %v, want %s`, in, "nil", "not nil")
+	}
+	in = "ABc&123"
+	if err := validate.Alhanrod(in); err == nil {
+		t.Errorf(`validate.Alhanrod(%s) = %v, want %s`, in, "nil", "not nil")
+	}
+}
+
+func TestValidateHan(t *testing.T) {
+	in := "中文"
+	if err := validate.Han(in); err != nil {
+		t.Errorf(`validate.Han(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "ABc"
+	if err := validate.Han(in); err == nil {
+		t.Errorf(`validate.Han(%s) = %v, want %s`, in, "nil", "not nil")
+	}
+	in = "123"
+	if err := validate.Han(in); err == nil {
+		t.Errorf(`validate.Han(%s) = %v, want %s`, in, "nil", "not nil")
+	}
+}
+
+func TestValidateHanrod(t *testing.T) {
+	in := "中文"
+	if err := validate.Hanrod(in); err != nil {
+		t.Errorf(`validate.Hanrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "中-文"
+	if err := validate.Hanrod(in); err != nil {
+		t.Errorf(`validate.Hanrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "中_文"
+	if err := validate.Hanrod(in); err != nil {
+		t.Errorf(`validate.Hanrod(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "中&文"
+	if err := validate.Hanrod(in); err == nil {
+		t.Errorf(`validate.Hanrod(%s) = %v, want %s`, in, "nil", "not nil")
 	}
 }
 
@@ -250,6 +438,29 @@ func TestValidateTel(t *testing.T) {
 	in = "1111-2222"
 	if err := validate.Tel(in); err == nil {
 		t.Errorf(`validate.Tel(%s) = %v, want %s`, in, "nil", "not nil")
+	}
+}
+
+func TestValidateZipcode(t *testing.T) {
+	in := "623000"
+	if err := validate.Zipcode(in); err != nil {
+		t.Errorf(`validate.Zipcode(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "102629"
+	if err := validate.Zipcode(in); err != nil {
+		t.Errorf(`validate.Zipcode(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "335501"
+	if err := validate.Zipcode(in); err != nil {
+		t.Errorf(`validate.Zipcode(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "065201"
+	if err := validate.Zipcode(in); err != nil {
+		t.Errorf(`validate.Zipcode(%s) = %v, want %s`, in, err.Error(), "nil")
+	}
+	in = "010"
+	if err := validate.Zipcode(in); err == nil {
+		t.Errorf(`validate.Zipcode(%s) = %v, want %s`, in, "nil", "not nil")
 	}
 }
 

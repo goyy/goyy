@@ -128,26 +128,122 @@ func Integer(input string) error {
 	return nil
 }
 
-// Returns error if the provided input is not an alphanumeric (a-zA-Z0-9)
-// string, nil otherwise.
-func Alphanumeric(input string) error {
+// Returns error if the provided input is not an alphabetic (a-zA-Z) string,
+// nil otherwise.
+func Alpha(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typAlphanumeric].MatchString(input) == false {
-		return errors.New(Messages[typAlphanumeric])
+	if Rules[typAlpha].MatchString(input) == false {
+		return errors.New(Messages[typAlpha])
 	}
 	return nil
 }
 
-// Returns error if the provided input is not an alphabetic (a-zA-Z) string,
+// Returns error if the provided input is not an alphabetic or rod (a-zA-Z\-_) string,
 // nil otherwise.
-func Alphabetic(input string) error {
+func Alrod(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typAlphabetic].MatchString(input) == false {
-		return errors.New(Messages[typAlphabetic])
+	if Rules[typAlrod].MatchString(input) == false {
+		return errors.New(Messages[typAlrod])
+	}
+	return nil
+}
+
+// Returns error if the provided input is not an alphanumeric (a-zA-Z0-9)
+// string, nil otherwise.
+func Alnum(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
+	if Rules[typAlnum].MatchString(input) == false {
+		return errors.New(Messages[typAlnum])
+	}
+	return nil
+}
+
+// Returns error if the provided input is not an alphanumeric or rod (a-zA-Z0-9\-_)
+// string, nil otherwise.
+func Alnumrod(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
+	if Rules[typAlnumrod].MatchString(input) == false {
+		return errors.New(Messages[typAlnumrod])
+	}
+	return nil
+}
+
+// Returns error if the provided input is not an alphanumeric or chinese (a-zA-Z0-9\p{Han})
+// string, nil otherwise.
+func Alnumhan(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
+	if Rules[typAlnumhan].MatchString(input) == false {
+		return errors.New(Messages[typAlnumhan])
+	}
+	return nil
+}
+
+// Returns error if the provided input is not an alphanumeric or chinese or rod (a-zA-Z0-9\p{Han}\-_)
+// string, nil otherwise.
+func Alnumhanrod(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
+	if Rules[typAlnumhanrod].MatchString(input) == false {
+		return errors.New(Messages[typAlnumhanrod])
+	}
+	return nil
+}
+
+// Returns error if the provided input is not an alphabetic or chinese (a-zA-Z\p{Han})
+// string, nil otherwise.
+func Alhan(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
+	if Rules[typAlhan].MatchString(input) == false {
+		return errors.New(Messages[typAlhan])
+	}
+	return nil
+}
+
+// Returns error if the provided input is not an alphabetic or chinese or rod (a-zA-Z\p{Han}\-_)
+// string, nil otherwise.
+func Alhanrod(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
+	if Rules[typAlhanrod].MatchString(input) == false {
+		return errors.New(Messages[typAlhanrod])
+	}
+	return nil
+}
+
+// Returns error if the provided input is not an alphabetic or chinese (\p{Han})
+// string, nil otherwise.
+func Han(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
+	if Rules[typHan].MatchString(input) == false {
+		return errors.New(Messages[typHan])
+	}
+	return nil
+}
+
+// Returns error if the provided input is not an alphabetic or chinese or rod (\p{Han}\-_)
+// string, nil otherwise.
+func Hanrod(input string) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
+	if Rules[typHanrod].MatchString(input) == false {
+		return errors.New(Messages[typHanrod])
 	}
 	return nil
 }
