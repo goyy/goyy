@@ -388,7 +388,7 @@ func (me factory) writeBy(typ, content string) error {
 	if typ == "reg.controller.client" {
 		dir = me.Clidir + "/internal/" + me.Project
 	}
-	if typ == "reg.pro.controller.client" {
+	if typ == "reg.proj.controller.client" {
 		dir = me.Clidir + "/internal"
 	}
 	if typ == "reg.controller.json" {
@@ -467,7 +467,7 @@ func (me factory) writeControllerClientReg() error {
 	if err != nil {
 		return err
 	}
-	return me.writeBy("reg.pro.controller.client", tmplControllerClientRegPro)
+	return me.writeBy("reg.proj.controller.client", tmplControllerClientRegProj)
 }
 
 func (me factory) writeSqlMain() error {
@@ -563,10 +563,10 @@ func (me factory) genFileName(typ, name string) string {
 		return "main." + me.PackageName + ".go"
 	}
 	if typ == "reg.controller.html" || typ == "reg.controller.client" || typ == "reg.controller.json" {
-		return "register." + me.PackageName + ".go"
+		return "xgen.register." + me.PackageName + ".go"
 	}
-	if typ == "reg.pro.controller.client" {
-		return "register." + me.Project + ".go"
+	if typ == "reg.proj.controller.client" {
+		return "xgen.register." + me.Project + ".go"
 	}
 	if strings.HasPrefix(name, typMain) {
 		name = strings.After(name, typMain)
