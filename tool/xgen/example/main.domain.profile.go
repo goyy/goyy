@@ -14,5 +14,5 @@ type Profile struct {
 	id        entity.String
 	userId    entity.String
 	attribute entity.String
-	value     entity.String
+	val       entity.String
 }

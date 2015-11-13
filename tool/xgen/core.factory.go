@@ -200,15 +200,17 @@ func (me *factory) Init(path string) error {
 					)
 				}
 				// validation init
-				items = tagItemValue(f.Tag.Value, "validation")
-				if err := col.InitValidation(items); err != nil {
-					return fmt.Errorf(
-						"Unable to parse tag '%s' from entity '%s' in '%s': %v",
-						items,
-						e.Name,
-						path,
-						err,
-					)
+				if f.Tag != nil && strings.IsNotBlank(f.Tag.Value) {
+					items = tagItemValue(f.Tag.Value, "validation")
+					if err := col.InitValidation(items); err != nil {
+						return fmt.Errorf(
+							"Unable to parse tag '%s' from entity '%s' in '%s': %v",
+							items,
+							e.Name,
+							path,
+							err,
+						)
+					}
 				}
 				e.Fields = append(e.Fields, col)
 				if col.IsPrimary {
@@ -339,8 +341,10 @@ func (me factory) Write() error {
 		}
 	}
 	if me.HasGenApi {
-		if err := me.writeApiMain(); err != nil {
-			return err
+		if strings.IsNotBlank(me.Apipath) {
+			if err := me.writeApiMain(); err != nil {
+				return err
+			}
 		}
 	}
 	if me.HasGenSql {
@@ -439,6 +443,9 @@ func (me factory) writeControllerHtmlMain() error {
 }
 
 func (me factory) writeControllerHtmlReg() error {
+	if strings.IsBlank(me.Htmpath) {
+		return nil
+	}
 	return me.writeBy("reg.controller.html", tmplControllerHtmlReg)
 }
 
