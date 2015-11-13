@@ -463,3 +463,7 @@ func (me *User) SetString(field, value string) error {
 	}
 	return nil
 }
+
+func (me *User) Validate() error {
+	return nil
+}
