@@ -12,14 +12,12 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/times"
 	"strconv"
 	"testing"
-	"time"
 )
 
-var created = time.Now()
+var created = times.NowUnix()
 
 func buildUser(i string) entity.Interface {
 	user := NewUser()
-	user.SetId("demo-i-" + i)
 	user.SetCode(i)
 	user.SetName(i)
 	user.SetPassword(i)
@@ -31,7 +29,7 @@ func buildUser(i string) entity.Interface {
 	user.SetOrg(i)
 	user.SetArea(i)
 	user.SetCreater(i)
-	user.SetCreated(created.Unix())
+	user.SetCreated(created)
 	user.SetModifier(i)
 	user.SetModified(times.NowUnix())
 	user.SetVersion(0)
@@ -80,8 +78,8 @@ func TestSessionInsert(t *testing.T) {
 
 func TestSessionGet(t *testing.T) {
 	user := NewUser()
-	user.SetId("demo-i-02")
-	expected := "02"
+	user.SetId("aa")
+	expected := "aa"
 	if _ = session.Get(user); user.Name() != expected {
 		t.Errorf(`session.Get():"%v", want:"%v"`, user.Name(), expected)
 	}
@@ -103,9 +101,10 @@ func TestSessionSelectOne(t *testing.T) {
 
 func TestSessionSelectList(t *testing.T) {
 	s1, _ := domain.NewSift("sNameGT", "11")
-	s2, _ := domain.NewSift("sNameOA", "asc")
+	s2, _ := domain.NewSift("sVersionEQ", "0")
+	s3, _ := domain.NewSift("sNameOA", "asc")
 	users := NewUserEntities(20)
-	err := session.SelectList(users, s1, s2)
+	err := session.SelectList(users, s1, s2, s3)
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -156,12 +155,12 @@ func TestSessionSelectPage(t *testing.T) {
 func TestSessionQueryRows(t *testing.T) {
 	var dql string
 	if session.DBType() == dialect.MYSQL {
-		dql = "select * from users where id like ?"
+		dql = "select * from users where name like ?"
 	} else {
-		dql = "select * from users where id like :1"
+		dql = "select * from users where name like :1"
 	}
 	users := NewUserEntities(30)
-	err := session.Query(dql, "demo-i-2%").Rows(users)
+	err := session.Query(dql, "2%").Rows(users)
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -181,17 +180,17 @@ func TestSessionQueryRows(t *testing.T) {
 func TestSessionQueryRow(t *testing.T) {
 	var dql string
 	if session.DBType() == dialect.MYSQL {
-		dql = "select * from users where id = ?"
+		dql = "select * from users where name = ?"
 	} else {
-		dql = "select * from users where id = :1"
+		dql = "select * from users where name = :1"
 	}
 	user := NewUser()
-	err := session.Query(dql, "demo-i-02").Row(user)
+	err := session.Query(dql, "12").Row(user)
 	if err != nil {
 		t.Error(err.Error())
 		return
 	}
-	expected := "02"
+	expected := "12"
 	if out := user.Creater(); out != expected {
 		t.Errorf(`query.Row():"%v", want:"%v"`, out, expected)
 	}
@@ -240,14 +239,14 @@ func TestSessionQueryTime(t *testing.T) {
 	} else {
 		dql = "select created from users where name = :1"
 	}
-	out, err := session.Query(dql, "03").Time()
+	out, err := session.Query(dql, "03").Int()
 	if err != nil {
 		t.Error(err.Error())
 		return
 	}
-	expected := times.FormatYYMDHMS(created)
-	if times.FormatYYMDHMS(out) != expected {
-		t.Errorf(`query.Time():"%v", want:"%v"`, times.FormatYYMDHMS(out), expected)
+	expected := times.FormatUnixYYMDHMS(created)
+	if times.FormatUnixYYMDHMS(int64(out)) != expected {
+		t.Errorf(`query.Time():"%v", want:"%v"`, times.FormatUnixYYMDHMS(int64(out)), expected)
 	}
 }
 
@@ -291,26 +290,26 @@ func TestSessionQueryPage(t *testing.T) {
 func TestSessionUpdate(t *testing.T) {
 	var dql string
 	if session.DBType() == dialect.MYSQL {
-		dql = "select * from users where id = ?"
+		dql = "select * from users where name = ?"
 	} else {
-		dql = "select * from users where id = :1"
+		dql = "select * from users where name = :1"
 	}
 	user := NewUser()
-	err := session.Query(dql, "demo-i-02").Row(user)
+	err := session.Query(dql, "22").Row(user)
 	if err != nil {
 		t.Error(err.Error())
 		return
 	}
 	expected := "user2"
-	user.SetName(expected)
+	user.SetCode(expected)
 	session.Update(user)
 	user = NewUser()
-	err = session.Query(dql, "demo-i-02").Row(user)
+	err = session.Query(dql, "22").Row(user)
 	if err != nil {
 		t.Error(err.Error())
 		return
 	}
-	if out := user.Name(); out != expected {
+	if out := user.Code(); out != expected {
 		t.Errorf(`query.Update:"%v", want:"%v"`, out, expected)
 	}
 }
@@ -318,12 +317,12 @@ func TestSessionUpdate(t *testing.T) {
 func TestSessionDisable(t *testing.T) {
 	var dql string
 	if session.DBType() == dialect.MYSQL {
-		dql = "select * from users where id = ?"
+		dql = "select * from users where name = ?"
 	} else {
-		dql = "select * from users where id = :1"
+		dql = "select * from users where name = :1"
 	}
 	user := NewUser()
-	err := session.Query(dql, "demo-i-02").Row(user)
+	err := session.Query(dql, "23").Row(user)
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -331,7 +330,7 @@ func TestSessionDisable(t *testing.T) {
 	session.Disable(user)
 	expected := entity.DeletionDisable
 	user = NewUser()
-	err = session.Query(dql, "demo-i-02").Row(user)
+	err = session.Query(dql, "23").Row(user)
 	if err != nil {
 		t.Error(err.Error())
 		return

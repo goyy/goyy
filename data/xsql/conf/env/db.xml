@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE env PUBLIC "-//GOYY//DTD ENV 1.0//EN" "http://goyy.org/dtd/env-1.0.dtd">
 <configuration>
-	<environments default="test">
+	<environments default="development">
 		<environment id="development">
 			<database name="db">
 				<driverName>mymysql</driverName>
@@ -13,7 +13,7 @@
 		<environment id="test">
 			<database name="db">
 				<driverName>oci8</driverName>
-				<dataSourceName>ynd_site_dev_01/(h^h$sqOZ@dev</dataSourceName>
+				<dataSourceName>xsql/xsql@dev</dataSourceName>
 				<maxIdleConns>10</maxIdleConns>
 				<maxOpenConns>100</maxOpenConns>
 			</database>

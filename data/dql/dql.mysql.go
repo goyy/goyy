@@ -25,7 +25,7 @@ func (me *mysql) SelectOne(e entity.Interface) (dql string, arg interface{}) {
 }
 
 func (me *mysql) SelectPage(dql string, pageable domain.Pageable) string {
-	dqlf := "%slimit %d,%d "
+	dqlf := "%s limit %d,%d "
 	return fmt.Sprintf(dqlf, dql, pageable.Offset(), pageable.PageSize())
 }
 
