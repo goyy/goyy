@@ -19,6 +19,7 @@ type Interface interface {
 	Names() []string
 	SetString(field, value string) error
 	Validate() error
+	JSON() string
 }
 
 type Interfaces interface {
@@ -29,4 +30,5 @@ type Interfaces interface {
 	Cap() int
 	Index(i int) Interface
 	Slice() interface{}
+	JSON() string
 }

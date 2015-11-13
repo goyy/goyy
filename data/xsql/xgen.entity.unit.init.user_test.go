@@ -2,6 +2,8 @@
 package xsql_test
 
 import (
+	"bytes"
+	"fmt"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
 	"gopkg.in/goyy/goyy.v0/util/strings"
@@ -466,4 +468,28 @@ func (me *User) SetString(field, value string) error {
 
 func (me *User) Validate() error {
 	return nil
+}
+
+func (me *User) JSON() string {
+	var b bytes.Buffer
+	b.WriteString("{")
+	b.WriteString(fmt.Sprintf(`,"id":%q`, me.id.String()))
+	b.WriteString(fmt.Sprintf(`,"code":%q`, me.code.String()))
+	b.WriteString(fmt.Sprintf(`,"name":%q`, me.name.String()))
+	b.WriteString(fmt.Sprintf(`,"password":%q`, me.password.String()))
+	b.WriteString(fmt.Sprintf(`,"memo":%q`, me.memo.String()))
+	b.WriteString(fmt.Sprintf(`,"genre":%q`, me.genre.String()))
+	b.WriteString(fmt.Sprintf(`,"status":%q`, me.status.String()))
+	b.WriteString(fmt.Sprintf(`,"roles":%q`, me.roles.String()))
+	b.WriteString(fmt.Sprintf(`,"posts":%q`, me.posts.String()))
+	b.WriteString(fmt.Sprintf(`,"org":%q`, me.org.String()))
+	b.WriteString(fmt.Sprintf(`,"area":%q`, me.area.String()))
+	b.WriteString(fmt.Sprintf(`,"creater":%q`, me.creater.String()))
+	b.WriteString(fmt.Sprintf(`,"created":%q`, me.created.String()))
+	b.WriteString(fmt.Sprintf(`,"modifier":%q`, me.modifier.String()))
+	b.WriteString(fmt.Sprintf(`,"modified":%q`, me.modified.String()))
+	b.WriteString(fmt.Sprintf(`,"version":%q`, me.version.String()))
+	b.WriteString(fmt.Sprintf(`,"deletion":%q`, me.deletion.String()))
+	b.WriteString("}")
+	return b.String()
 }

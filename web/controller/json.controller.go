@@ -133,3 +133,16 @@ func (me *JSONController) Box(c xhttp.Context) {
 		return
 	}
 }
+
+func (me *JSONController) Exp(c xhttp.Context) {
+	r, err := me.baseController.Exp(c, me.Mgr, me.PreExp, me.PostExp)
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+	err = c.Text(xhttp.StatusOK, r.JSON())
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+}

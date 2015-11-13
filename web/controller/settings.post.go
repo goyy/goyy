@@ -5,6 +5,7 @@
 package controller
 
 import (
+	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/result"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
@@ -18,4 +19,5 @@ type post struct {
 	PostSaved    func(c xhttp.Context, r *result.Entity) error
 	PostDisable  func(c xhttp.Context, r *result.Page) error
 	PostDisabled func(c xhttp.Context, r *result.Entity) error
+	PostExp      func(c xhttp.Context, r entity.Interfaces) error
 }

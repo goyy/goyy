@@ -2,6 +2,7 @@
 package result_test
 
 import (
+	"bytes"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 )
 
@@ -49,4 +50,17 @@ func (me *UserEntities) Value(v int) *User {
 
 func (me *UserEntities) Values() []*User {
 	return me.datas
+}
+
+func (me *UserEntities) JSON() string {
+	var b bytes.Buffer
+	b.WriteString(`{"datas":[`)
+	for i := 0; i < me.Len(); i++ {
+		if i > 0 {
+			b.WriteString(",")
+		}
+		b.WriteString(me.Index(i).JSON())
+	}
+	b.WriteString("]}")
+	return b.String()
 }

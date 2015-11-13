@@ -6,7 +6,6 @@ package result
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -39,7 +38,7 @@ func (me *Client) ParseResult(out *Result) error {
 		return nil
 	} else if err != nil {
 		logger.Error(err.Error())
-		fmt.Println(body)
+		logger.Println(body)
 		return err
 	}
 	return nil

@@ -10,8 +10,8 @@ import (
 // Profile stores user attributes.
 // @entity
 type Profile struct {
+	entity.Sys
 	table     schema.Table
-	id        entity.String
 	userId    entity.String
 	attribute entity.String
 	val       entity.String

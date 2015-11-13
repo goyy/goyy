@@ -16,4 +16,5 @@ type postfn struct {
 	PostEdit    func(c xhttp.Context, r *result.Result) error
 	PostSave    func(c xhttp.Context, r *result.Result) error
 	PostDisable func(c xhttp.Context, r *result.Result) error
+	PostExp     func(c xhttp.Context, r *result.Result) error
 }

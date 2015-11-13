@@ -17,4 +17,5 @@ type pre struct {
 	PreSaved    func(c xhttp.Context) error
 	PreDisable  func(c xhttp.Context) error
 	PreDisabled func(c xhttp.Context) error
+	PreExp      func(c xhttp.Context) error
 }

@@ -2,6 +2,8 @@
 package internal
 
 import (
+	"bytes"
+	"fmt"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
 	"gopkg.in/goyy/goyy.v0/util/strings"
@@ -144,4 +146,14 @@ func (me *User) SetString(field, value string) error {
 
 func (me *User) Validate() error {
 	return nil
+}
+
+func (me *User) JSON() string {
+	var b bytes.Buffer
+	b.WriteString("{")
+	b.WriteString(fmt.Sprintf(`,"id":%q`, me.id.String()))
+	b.WriteString(fmt.Sprintf(`,"name":%q`, me.name.String()))
+	b.WriteString(fmt.Sprintf(`,"loginName":%q`, me.loginName.String()))
+	b.WriteString("}")
+	return b.String()
 }

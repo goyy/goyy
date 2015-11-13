@@ -2,6 +2,8 @@
 package internal
 
 import (
+	"bytes"
+	"fmt"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
 	"gopkg.in/goyy/goyy.v0/util/strings"
@@ -121,4 +123,13 @@ func (me *Permission) SetString(field, value string) error {
 
 func (me *Permission) Validate() error {
 	return nil
+}
+
+func (me *Permission) JSON() string {
+	var b bytes.Buffer
+	b.WriteString("{")
+	b.WriteString(fmt.Sprintf(`,"id":%q`, me.id.String()))
+	b.WriteString(fmt.Sprintf(`,"permission":%q`, me.permission.String()))
+	b.WriteString("}")
+	return b.String()
 }

@@ -266,3 +266,31 @@ func (me *baseController) Page(c xhttp.Context, mgr service.Service) (out *resul
 	data, err := mgr.SelectPageBySift(v, p, sifts...)
 	return &result.Page{Success: true, Data: data}, nil
 }
+
+func (me *baseController) Exp(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r entity.Interfaces) error) (out entity.Interfaces, err error) {
+	if pre != nil {
+		if err = pre(c); err != nil {
+			return
+		}
+	}
+	// If the query condition does not deletion the field,
+	// the default query is not logically deleted.
+	if c.Param(siftDeletion) == "" {
+		c.Params().Set(siftDeletion, strconv.Itoa(entity.DeletionEnable))
+	}
+	out = mgr.NewEntities()
+	sifts, err := domain.NewSifts(c.Params())
+	if err != nil {
+		return nil, err
+	}
+	err = mgr.SelectListBySift(out, sifts...)
+	if err != nil {
+		return
+	}
+	if post != nil {
+		if err = post(c, out); err != nil {
+			return
+		}
+	}
+	return
+}
