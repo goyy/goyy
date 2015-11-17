@@ -21,6 +21,7 @@ const (
 	pDisabled = "disabled"
 	pTree     = "tree"
 	pBox      = "box"
+	pExp      = "export"
 
 	vList = "list"
 	vForm = "form"
@@ -178,6 +179,10 @@ func ApiBox(project, module string) string {
 	return ApiBy(project, module, pBox)
 }
 
+func ApiExp(project, module string) string {
+	return ApiBy(project, module, pExp)
+}
+
 // ----------------------------------------------------------
 // permission
 // ----------------------------------------------------------
@@ -203,4 +208,8 @@ func PermitEdit(project, module string) string {
 
 func PermitDisable(project, module string) string {
 	return PermitBy(project, module, pDisable)
+}
+
+func PermitExp(project, module string) string {
+	return PermitBy(project, module, pExp)
 }

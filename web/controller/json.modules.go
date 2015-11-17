@@ -52,6 +52,10 @@ func (me *JSONController) ApiBox() string {
 	return ApiBox(me.Project, me.Module)
 }
 
+func (me *JSONController) ApiExp() string {
+	return ApiExp(me.Project, me.Module)
+}
+
 // ----------------------------------------------------------
 // permission
 // ----------------------------------------------------------
@@ -74,4 +78,8 @@ func (me *JSONController) PermitEdit() string {
 
 func (me *JSONController) PermitDisable() string {
 	return PermitDisable(me.Project, me.Module)
+}
+
+func (me *JSONController) PermitExp() string {
+	return PermitExp(me.Project, me.Module)
 }
