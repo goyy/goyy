@@ -70,6 +70,11 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+	if Conf.Illegal.Enable {
+		if ism.ServeHTTP(w, r) { // illegalServeMux
+			return
+		}
+	}
 	if Conf.Html.Enable {
 		if hsm.ServeHTTP(w, r) { // htmlServeMux
 			return

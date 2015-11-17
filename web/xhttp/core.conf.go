@@ -43,6 +43,11 @@ var Conf = &conf{
 		URL:     "/upls",
 		MaxSize: 5242880,
 	},
+	Illegal: &illegalOptions{
+		Enable:   false,
+		Values:   []string{},
+		Excludes: []string{},
+	},
 	Html: &htmlOptions{
 		Enable:     false,
 		Dir:        "templates",
@@ -91,6 +96,7 @@ type conf struct {
 	Developer *staticOptions   // Developer static resource options
 	Operation *staticOptions   // Operation static resource options
 	Upload    *uploadOptions   // Upload options
+	Illegal   *illegalOptions  // Illegal character options
 	Html      *htmlOptions     // Html resource options
 	Session   *sessionOptions  // the session TCP network address
 	Secure    *secureOptions   // url secure options
@@ -118,6 +124,15 @@ type uploadOptions struct {
 	Dir     string // Upload directory
 	URL     string // Upload URL prefix
 	MaxSize int    // Max upload size
+}
+
+type illegalOptions struct {
+	// Whether service is enabled
+	Enable bool
+	// Need to scan the illegal character(Multiple characters using "," separated)
+	Values []string
+	// Excluded URL
+	Excludes []string
 }
 
 type htmlOptions struct {
