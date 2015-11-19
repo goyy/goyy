@@ -5,6 +5,7 @@
 package xhttp
 
 import (
+	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/util/files"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
@@ -328,6 +329,7 @@ func (me *htmlServeMux) parseContent(content string) (string, []string, int64) {
 	content, i, m := me.parseIncludeFile(content)
 	content = me.replaceAssets(content)
 	content = me.parseIfFile(content)
+	content = me.parseProfileFile(content)
 	content = me.parseTagAttrFile(content, tagAttrHref)
 	content = me.parseTagAttrFile(content, tagAttrSrc)
 	content = me.parseTagAttrFile(content, tagAttrAction)
@@ -393,6 +395,17 @@ func (me *htmlServeMux) parseIfFile(content string) string {
 	directives = me.buildDirectiveInfo(content, directiveIfBegin, directiveArgEnd, directiveIfEnd, directives)
 	for i := len(directives) - 1; i >= 0; i-- {
 		if directives[i].argValue == "false" {
+			content = strings.Replace(content, directives[i].statement, "", -1)
+		}
+	}
+	return content
+}
+
+func (me *htmlServeMux) parseProfileFile(content string) string {
+	directives := make([]directiveInfo, 0)
+	directives = me.buildDirectiveInfo(content, directiveProfileBegin, directiveArgEnd, directiveProfileEnd, directives)
+	for i := len(directives) - 1; i >= 0; i-- {
+		if !profile.Accepts(directives[i].argValue) {
 			content = strings.Replace(content, directives[i].statement, "", -1)
 		}
 	}

@@ -24,6 +24,8 @@ const (
 	directiveIncludeEnd              = `<!--#endinclude-->`
 	directiveIfBegin                 = `<!--#if expr="`
 	directiveIfEnd                   = `<!--#endif-->`
+	directiveProfileBegin            = `<!--#profile accepts="`
+	directiveProfileEnd              = `<!--#endprofile-->`
 	directiveSecLoginBegin           = `<!--#sec login="`
 	directiveSecUserBegin            = `<!--#sec user="`
 	directiveSecIsPermissionBegin    = `<!--#sec isPermission="`
