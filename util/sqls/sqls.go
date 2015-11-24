@@ -11,20 +11,20 @@ import (
 
 // select ... from ... -> select count(*) from ...
 func ParseCountSql(sql string) string {
-	intHead := &xtype.IntHeap{}
+	is := &xtype.IntStack{}
 	ss := strings.Split(sql, " ")
 	p := 0
 	for _, v := range ss {
 		if strings.Contains(strings.ToLower(v), "select") {
 			p = p + 1
-			intHead.Push(p)
+			is.Push(p)
 			continue
 		}
 		if strings.Contains(strings.ToLower(v), "from") {
-			if intHead.Len() == 1 {
+			if is.Len() == 1 {
 				break
 			}
-			intHead.Pop()
+			is.Pop()
 			continue
 		}
 	}
