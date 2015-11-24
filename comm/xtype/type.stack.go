@@ -4,17 +4,17 @@
 
 package xtype
 
-type IntHeap []int
+type IntStack []int
 
-func (me IntHeap) Len() int {
+func (me IntStack) Len() int {
 	return len(me)
 }
 
-func (me *IntHeap) Push(x interface{}) {
+func (me *IntStack) Push(x interface{}) {
 	*me = append(*me, x.(int))
 }
 
-func (me *IntHeap) Pop() interface{} {
+func (me *IntStack) Pop() interface{} {
 	old := *me
 	n := len(old)
 	x := old[n-1]
