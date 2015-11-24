@@ -103,3 +103,12 @@ func ExampleBetweenSame() {
 
 	// Output: abc
 }
+
+func ExampleBetweens() {
+	fmt.Println(strings.Betweens("[a][b][c]", "[", "]"))
+	fmt.Println(strings.Betweens("1(aa)2(bb)3(cc)4", "(", ")"))
+
+	// Output:
+	// [a b c]
+	// [aa bb cc]
+}

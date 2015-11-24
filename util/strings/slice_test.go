@@ -5,6 +5,7 @@
 package strings_test
 
 import (
+	"fmt"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"testing"
 )
@@ -190,6 +191,24 @@ func TestBetweenSame(t *testing.T) {
 	for _, v := range s {
 		if out := strings.BetweenSame(v.s, v.tag); out != v.out {
 			t.Errorf("BetweenSame(%#q, %#q) = %#q, want %#q", v.s, v.tag, out, v.out)
+		}
+	}
+}
+
+func TestBetweens(t *testing.T) {
+	s := []struct {
+		s, start, end, out string
+	}{
+		{"[a][b][c]", "[", "]", `[a b c]`},
+		{"1(aa)2(bb)3(cc)4", "(", ")", `[aa bb cc]`},
+		{" 1${id}2 3${name} ${pwd}4", "${", "}", `[id name pwd]`},
+		{"[a][b][c]", "", "", "[]"},
+		{"", "[", "]", "[]"},
+		{"", "", "", "[]"},
+	}
+	for _, v := range s {
+		if out := strings.Betweens(v.s, v.start, v.end); fmt.Sprintf("%s", out) != v.out {
+			t.Errorf("Betweens(%#q, %#q, %#q) = %#q, want %#q", v.s, v.start, v.end, fmt.Sprintf("%s", out), v.out)
 		}
 	}
 }

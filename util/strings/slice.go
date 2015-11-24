@@ -78,7 +78,8 @@ func Mid(s string, start, length int) string {
 	return s[start : start+length]
 }
 
-// Gets the substring before the first occurrence of a separator. The separator is not returned.
+// Gets the substring before the first occurrence of a separator.
+// The separator is not returned.
 func Before(s, sep string) string {
 	if IsBlank(s) || IsBlank(sep) {
 		return s
@@ -90,7 +91,8 @@ func Before(s, sep string) string {
 	return s[0:pos]
 }
 
-// Gets the substring after the first occurrence of a separator. The separator is not returned.
+// Gets the substring after the first occurrence of a separator.
+// The separator is not returned.
 func After(s, sep string) string {
 	if IsBlank(s) || IsBlank(sep) {
 		return s
@@ -102,7 +104,8 @@ func After(s, sep string) string {
 	return s[pos+len(sep):]
 }
 
-// Gets the substring before the last occurrence of a separator. The separator is not returned.
+// Gets the substring before the last occurrence of a separator.
+// The separator is not returned.
 func BeforeLast(s, sep string) string {
 	if IsBlank(s) || IsBlank(sep) {
 		return s
@@ -114,7 +117,8 @@ func BeforeLast(s, sep string) string {
 	return s[0:pos]
 }
 
-// Gets the substring after the last occurrence of a separator. The separator is not returned.
+// Gets the substring after the last occurrence of a separator.
+// The separator is not returned.
 func AfterLast(s, sep string) string {
 	if IsBlank(s) || IsBlank(sep) {
 		return s
@@ -126,7 +130,8 @@ func AfterLast(s, sep string) string {
 	return s[pos+len(sep):]
 }
 
-// Gets the String that is nested in between two Strings. Only the first match is returned.
+// Gets the string that is nested in between two string.
+// Only the first match is returned.
 func Between(s, start, end string) string {
 	if IsBlank(s) || IsBlank(start) || IsBlank(end) {
 		return ""
@@ -141,7 +146,35 @@ func Between(s, start, end string) string {
 	return ""
 }
 
-// Gets the String that is nested in between two instances of the same String.
+// Gets the string that is nested in between two instances of the same String.
 func BetweenSame(s, tag string) string {
 	return Between(s, tag, tag)
+}
+
+// Gets the slice string that is nested in between two string.
+// Only the first match is returned.
+// eg.
+// strings.Betweens("[a][b][c]", "[", "]")                  = [a b c]
+// strings.Betweens("1(aa)2(bb)3(cc)4", "{", "}")           = [aa bb cc]
+// strings.Betweens(" 1${id}2 3${name} ${pwd}4", "${", "}") = [id name pwd]
+func Betweens(s, start, end string) (out []string) {
+	if IsBlank(s) || IsBlank(start) || IsBlank(end) {
+		return
+	}
+	b := 0
+	for {
+		b = IndexStart(s, start, b)
+		if b == -1 {
+			break
+		} else {
+			e := IndexStart(s, end, b+len(start))
+			if e == -1 {
+				break
+			} else {
+				out = append(out, s[b+len(start):e])
+				b = e + len(end)
+			}
+		}
+	}
+	return
 }
