@@ -250,6 +250,24 @@ func TestSessionQueryTime(t *testing.T) {
 	}
 }
 
+func TestSessionQueryIn(t *testing.T) {
+	var dql string
+	if session.DBType() == dialect.MYSQL {
+		dql = "select count(*) from users where name in (?,?)"
+	} else {
+		dql = "select count(*) from users where name in (:1,:2)"
+	}
+	out, err := session.Query(dql, "01", "02").Int()
+	if err != nil {
+		t.Error(err.Error())
+		return
+	}
+	expected := 2
+	if out != expected {
+		t.Errorf(`query:in:"%v", want:"%v"`, out, expected)
+	}
+}
+
 func TestSessionQueryPage(t *testing.T) {
 	var dql string
 	if session.DBType() == dialect.MYSQL {
