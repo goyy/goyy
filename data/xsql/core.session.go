@@ -11,6 +11,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/dql"
 	"gopkg.in/goyy/goyy.v0/data/entity"
+	"gopkg.in/goyy/goyy.v0/util/sqls"
 	"gopkg.in/goyy/goyy.v0/util/uuids"
 	"time"
 )
@@ -25,6 +26,24 @@ type session struct {
 // New Query
 func (me *session) Query(dql string, args ...interface{}) Query {
 	return &query{db: me.db, session: me, dql: dql, args: args}
+}
+
+// New NamedQuery
+func (me *session) NamedQuery(dql string, args map[string]interface{}) (Query, error) {
+	d, a, err := sqls.ParseNamedSql(me.dialect, dql, args)
+	if err != nil {
+		logger.Error(err.Error())
+		return nil, err
+	}
+	return &query{
+		db:        me.db,
+		session:   me,
+		dql:       d,
+		args:      a,
+		isNamed:   true,
+		namedDql:  dql,
+		namedArgs: args,
+	}, nil
 }
 
 // Select one SQL

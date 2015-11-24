@@ -16,10 +16,13 @@ import (
 
 // add space string:{before is add:yes, after is add:no}
 type query struct {
-	db      *sql.DB
-	session *session
-	dql     string
-	args    []interface{}
+	db        *sql.DB
+	session   *session
+	dql       string
+	args      []interface{}
+	isNamed   bool
+	namedDql  string
+	namedArgs map[string]interface{}
 }
 
 // Retrieve a list of mapped entities from the dql and args.

@@ -12,6 +12,7 @@ import (
 
 type Session interface {
 	Query(dql string, args ...interface{}) Query
+	NamedQuery(dql string, args map[string]interface{}) (Query, error)
 
 	Get(out entity.Interface) error
 	SelectOne(out entity.Interface, sifts ...domain.Sift) error

@@ -214,6 +214,40 @@ func TestSessionQueryInt(t *testing.T) {
 	}
 }
 
+func TestSessionNamedQueryInt(t *testing.T) {
+	s := []struct {
+		dql      string
+		args     map[string]interface{}
+		expected int
+	}{
+		{
+			"select count(*) from users where name like #{name}",
+			map[string]interface{}{"name": "1%", "version": 0},
+			10,
+		},
+		{
+			"select count(*) from users where version = #{version}",
+			map[string]interface{}{"name": "1%", "version": 0},
+			25,
+		},
+	}
+	for _, v := range s {
+		query, err := session.NamedQuery(v.dql, v.args)
+		if err != nil {
+			t.Error(err.Error())
+			return
+		}
+		out, err := query.Int()
+		if err != nil {
+			t.Error(err.Error())
+			return
+		}
+		if out != v.expected {
+			t.Errorf(`namedQuery.Int():"%v", want:"%v"`, out, v.expected)
+		}
+	}
+}
+
 func TestSessionQueryStr(t *testing.T) {
 	var dql string
 	if session.DBType() == dialect.MYSQL {
