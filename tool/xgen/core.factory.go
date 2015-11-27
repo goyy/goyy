@@ -502,6 +502,9 @@ func (me factory) writeConstMain() error {
 }
 
 func (me factory) writeDtoXgen() error {
+	if strings.IsBlank(me.Clidir) {
+		return nil
+	}
 	return me.writeBy("xgen.dto", tmplDtoXgen)
 }
 
