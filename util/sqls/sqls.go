@@ -5,11 +5,14 @@
 package sqls
 
 import (
+	"bytes"
 	"fmt"
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/data/dialect"
 	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/util/templates"
+	"text/template"
 )
 
 // select ... from ... -> select count(*) from ...
@@ -64,5 +67,23 @@ func ParseNamedSql(dia dialect.Interface, sql string, args map[string]interface{
 		}
 		sqlout = sql
 	}
+	return
+}
+
+// ParseTemplateSql takes a query using named parameters and an argument and
+// returns a new query with a list of args that can be executed by a database.
+func ParseTemplateSql(sql string, args map[string]interface{}) (out string, err error) {
+	t, err := template.New("sqls-tmpl").Funcs(templates.Text.FuncMap).Parse(sql)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	var v bytes.Buffer
+	err = t.Execute(&v, args)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	out = v.String()
 	return
 }

@@ -71,3 +71,28 @@ func TestParseNamedSql(t *testing.T) {
 		}
 	}
 }
+
+func TestParseTemplateSql(t *testing.T) {
+	s := []struct {
+		sql  string
+		args map[string]interface{}
+		out  string
+	}{
+		{
+			"select * from users where id = #{id}{{if notblank .name}} and name = #{name}{{end}}",
+			map[string]interface{}{"id": "1", "name": "", "memo": "memo"},
+			"select * from users where id = #{id}",
+		},
+		{
+			"select * from users where id = #{id}{{if blank .name}} and name is null{{end}}",
+			map[string]interface{}{"id": "1", "name": "", "memo": "memo"},
+			"select * from users where id = #{id} and name is null",
+		},
+	}
+	for _, v := range s {
+		out, _ := sqls.ParseTemplateSql(v.sql, v.args)
+		if out != v.out {
+			t.Errorf("sqls.ParseTemplateSql(%#q, %#q) = %#q, want %#q", v.sql, v.args, out, v.out)
+		}
+	}
+}
