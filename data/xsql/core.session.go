@@ -30,7 +30,12 @@ func (me *session) Query(dql string, args ...interface{}) Query {
 
 // New NamedQuery
 func (me *session) NamedQuery(dql string, args map[string]interface{}) (Query, error) {
-	d, a, err := sqls.ParseNamedSql(me.dialect, dql, args)
+	sql, err := sqls.ParseTemplateSql(dql, args)
+	if err != nil {
+		logger.Error(err.Error())
+		return nil, err
+	}
+	d, a, err := sqls.ParseNamedSql(me.dialect, sql, args)
 	if err != nil {
 		logger.Error(err.Error())
 		return nil, err

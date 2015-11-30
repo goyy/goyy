@@ -222,13 +222,18 @@ func TestSessionNamedQueryInt(t *testing.T) {
 	}{
 		{
 			"select count(*) from users where name like #{name}",
-			map[string]interface{}{"name": "1%", "version": 0},
+			map[string]interface{}{"name": "1%", "version": 0, "memo": "memo"},
 			10,
 		},
 		{
 			"select count(*) from users where version = #{version}",
-			map[string]interface{}{"name": "1%", "version": 0},
+			map[string]interface{}{"name": "1%", "version": 0, "memo": "memo"},
 			25,
+		},
+		{
+			"select count(*) from users where name like #{name}{{if gt .version 0}} and version = #{version}{{end}}",
+			map[string]interface{}{"name": "1%", "version": 0, "memo": "memo"},
+			10,
 		},
 	}
 	for _, v := range s {
