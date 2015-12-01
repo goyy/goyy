@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE env PUBLIC "-//GOYY//DTD ENV 1.0//EN" "http://goyy.org/dtd/env-1.0.dtd">
+<configuration>
+	<environments default="development">
+		<environment id="development">
+			<asset name="goyy">
+				<dir>static</dir>
+				<url>/assets</url>
+			</asset>
+			<developer name="goyy">
+				<dir>/assets/yydev</dir>
+				<url>/devs</url>
+			</developer>
+			<operation name="goyy">
+				<dir>/assets/yyopr</dir>
+				<url>/oprs</url>
+			</operation>
+		</environment>
+		<environment id="test">
+			<asset name="goyy">
+				<dir>/assets/yybms</dir>
+				<url>http://127.0.0.1:9099/yybms</url>
+			</asset>
+			<developer name="goyy">
+				<dir>/assets/yydev</dir>
+				<url>http://127.0.0.1:9099/yydev</url>
+			</developer>
+			<operation name="goyy">
+				<dir>/assets/yyopr</dir>
+				<url>http://127.0.0.1:9099/yyopr</url>
+			</operation>
+		</environment>
+		<environment id="production">
+			<asset name="goyy">
+				<dir>/assets/yybms</dir>
+				<url>http://assets.goyy.org/yybms</url>
+			</asset>
+			<developer name="goyy">
+				<dir>/assets/yydev</dir>
+				<url>http://assets.goyy.org/yydev</url>
+			</developer>
+			<operation name="goyy">
+				<dir>/assets/yyopr</dir>
+				<url>http://assets.goyy.org/yyopr</url>
+			</operation>
+		</environment>
+	</environments>
+</configuration>
