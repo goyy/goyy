@@ -11,7 +11,7 @@ var ctl = &Controller{
 			Settings: controller.Settings{
 				Project: "sys",
 				Module:  "menu",
-				Title:   "",
+				Title:   "MENU",
 			},
 			DTO: func() interface{} {
 				return &DTO{}

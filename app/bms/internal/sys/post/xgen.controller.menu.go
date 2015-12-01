@@ -10,7 +10,7 @@ var menuCtl = &MenuController{
 		Settings: controller.Settings{
 			Project: "sys",
 			Module:  "post.menu",
-			Title:   "",
+			Title:   "POST MENU",
 		},
 		DTO: func() interface{} {
 			return &MenuDTO{}

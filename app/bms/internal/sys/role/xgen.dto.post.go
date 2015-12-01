@@ -9,4 +9,6 @@ type PostDTOs []PostDTO
 
 type PostDTO struct {
 	dto.Sys
+	RoleId string `json:"roleId"`
+	PostId string `json:"postId"`
 }

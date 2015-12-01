@@ -9,4 +9,5 @@ type DTOs []DTO
 
 type DTO struct {
 	dto.Tree
+	AreaId string `json:"areaId"`
 }

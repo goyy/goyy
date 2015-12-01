@@ -10,7 +10,7 @@ var ctl = &Controller{
 		Settings: controller.Settings{
 			Project: "sys",
 			Module:  "dict",
-			Title:   "",
+			Title:   "DICT",
 		},
 		DTO: func() interface{} {
 			return &DTO{}

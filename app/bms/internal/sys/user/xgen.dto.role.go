@@ -9,4 +9,6 @@ type RoleDTOs []RoleDTO
 
 type RoleDTO struct {
 	dto.Sys
+	UserId string `json:"userId"`
+	RoleId string `json:"roleId"`
 }

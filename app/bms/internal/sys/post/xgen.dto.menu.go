@@ -9,4 +9,6 @@ type MenuDTOs []MenuDTO
 
 type MenuDTO struct {
 	dto.Sys
+	PostId string `json:"postId"`
+	MenuId string `json:"menuId"`
 }

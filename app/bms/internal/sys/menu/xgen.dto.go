@@ -9,4 +9,9 @@ type DTOs []DTO
 
 type DTO struct {
 	dto.Tree
+	Href       string `json:"href"`
+	Target     string `json:"target"`
+	Icon       string `json:"icon"`
+	Hidden     bool   `json:"hidden"`
+	Permission string `json:"permission"`
 }

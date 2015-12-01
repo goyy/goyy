@@ -9,4 +9,8 @@ type DTOs []DTO
 
 type DTO struct {
 	dto.Sys
+	Name    string `json:"name"`
+	Code    string `json:"code"`
+	Genre   string `json:"genre"`
+	Ordinal string `json:"ordinal"`
 }
