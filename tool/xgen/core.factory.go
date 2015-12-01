@@ -167,7 +167,7 @@ func (me *factory) Init(path string) error {
 					items = fmt.Sprintf("column=%s", strings.UnCamel(f.Names[0].Name, "_"))
 				}
 			} else {
-				items = tagItemValue(f.Tag.Value, "orm")
+				items = tagItemValue(f.Tag.Value, "db")
 			}
 
 			if strings.IsNotBlank(items) {
