@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	ROLE_ENTITY           = schema.TABLE("")
+	ROLE_ENTITY           = schema.TABLE("sys_user_role")
 	ROLE_ENTITY_ID        = ROLE_ENTITY.PRIMARY("id")
 	ROLE_ENTITY_MEMO      = ROLE_ENTITY.COLUMN("memo")
 	ROLE_ENTITY_CREATES   = ROLE_ENTITY.COLUMN("creates")
@@ -22,12 +22,30 @@ var (
 	ROLE_ENTITY_DELETION  = ROLE_ENTITY.DELETION("deletion")
 	ROLE_ENTITY_ARTIFICAL = ROLE_ENTITY.COLUMN("artifical")
 	ROLE_ENTITY_HISTORY   = ROLE_ENTITY.COLUMN("history")
+	ROLE_ENTITY_USER_ID   = ROLE_ENTITY.COLUMN("user_id")
+	ROLE_ENTITY_ROLE_ID   = ROLE_ENTITY.COLUMN("role_id")
 )
 
 func NewRoleEntity() *RoleEntity {
 	e := &RoleEntity{}
 	e.init()
 	return e
+}
+
+func (me *RoleEntity) UserId() string {
+	return me.userId.Value()
+}
+
+func (me *RoleEntity) SetUserId(v string) {
+	me.userId.SetValue(v)
+}
+
+func (me *RoleEntity) RoleId() string {
+	return me.roleId.Value()
+}
+
+func (me *RoleEntity) SetRoleId(v string) {
+	me.roleId.SetValue(v)
 }
 
 func (me *RoleEntity) init() {
@@ -66,6 +84,8 @@ func (me *RoleEntity) init() {
 	if t, ok := me.Sys.Type("history"); ok {
 		t.SetColumn(ROLE_ENTITY_HISTORY)
 	}
+	me.userId.SetColumn(ROLE_ENTITY_USER_ID)
+	me.roleId.SetColumn(ROLE_ENTITY_ROLE_ID)
 
 	if t, ok := me.Sys.Type("created"); ok {
 		t.SetDefault("-62135596800")
@@ -81,6 +101,8 @@ func (me *RoleEntity) init() {
 			t.SetField(entity.DefaultField())
 		}
 	}
+	me.userId.SetField(entity.DefaultField())
+	me.roleId.SetField(entity.DefaultField())
 }
 
 func (me RoleEntity) New() entity.Interface {
@@ -89,12 +111,20 @@ func (me RoleEntity) New() entity.Interface {
 
 func (me *RoleEntity) Get(column string) interface{} {
 	switch column {
+	case ROLE_ENTITY_USER_ID.Name():
+		return me.userId.Value()
+	case ROLE_ENTITY_ROLE_ID.Name():
+		return me.roleId.Value()
 	}
 	return me.Sys.Get(column)
 }
 
 func (me *RoleEntity) GetPtr(column string) interface{} {
 	switch column {
+	case ROLE_ENTITY_USER_ID.Name():
+		return me.userId.ValuePtr()
+	case ROLE_ENTITY_ROLE_ID.Name():
+		return me.roleId.ValuePtr()
 	}
 	return me.Sys.GetPtr(column)
 }
@@ -105,12 +135,20 @@ func (me *RoleEntity) Table() schema.Table {
 
 func (me *RoleEntity) Type(column string) (entity.Type, bool) {
 	switch column {
+	case ROLE_ENTITY_USER_ID.Name():
+		return &me.userId, true
+	case ROLE_ENTITY_ROLE_ID.Name():
+		return &me.roleId, true
 	}
 	return me.Sys.Type(column)
 }
 
 func (me *RoleEntity) Column(field string) (schema.Column, bool) {
 	switch strings.ToLowerFirst(field) {
+	case "userId":
+		return ROLE_ENTITY_USER_ID, true
+	case "roleId":
+		return ROLE_ENTITY_ROLE_ID, true
 	}
 	return me.Sys.Column(field)
 }
@@ -128,6 +166,8 @@ func (me *RoleEntity) Columns() []schema.Column {
 		ROLE_ENTITY_DELETION,
 		ROLE_ENTITY_ARTIFICAL,
 		ROLE_ENTITY_HISTORY,
+		ROLE_ENTITY_USER_ID,
+		ROLE_ENTITY_ROLE_ID,
 	}
 }
 
@@ -144,6 +184,8 @@ func (me *RoleEntity) Names() []string {
 		"deletion",
 		"artifical",
 		"history",
+		"userId",
+		"roleId",
 	}
 }
 
@@ -153,6 +195,10 @@ func (me *RoleEntity) Value() *RoleEntity {
 
 func (me *RoleEntity) SetString(field, value string) error {
 	switch strings.ToLowerFirst(field) {
+	case "userId":
+		return me.userId.SetString(value)
+	case "roleId":
+		return me.roleId.SetString(value)
 	}
 	return me.Sys.SetString(field, value)
 }
@@ -175,6 +221,8 @@ func (me *RoleEntity) JSON() string {
 	b.WriteString(fmt.Sprintf(`,"deletion":%d`, me.Sys.Deletion()))
 	b.WriteString(fmt.Sprintf(`,"artifical":%d`, me.Sys.Artifical()))
 	b.WriteString(fmt.Sprintf(`,"history":%d`, me.Sys.History()))
+	b.WriteString(fmt.Sprintf(`,"userId":%q`, me.userId.String()))
+	b.WriteString(fmt.Sprintf(`,"roleId":%q`, me.roleId.String()))
 	b.WriteString("}")
 	return b.String()
 }

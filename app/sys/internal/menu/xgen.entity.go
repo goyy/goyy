@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	ENTITY              = schema.TABLE("")
+	ENTITY              = schema.TABLE("sys_menu")
 	ENTITY_ID           = ENTITY.PRIMARY("id")
 	ENTITY_CODE         = ENTITY.COLUMN("code")
 	ENTITY_NAME         = ENTITY.COLUMN("name")
@@ -33,12 +33,57 @@ var (
 	ENTITY_DELETION     = ENTITY.DELETION("deletion")
 	ENTITY_ARTIFICAL    = ENTITY.COLUMN("artifical")
 	ENTITY_HISTORY      = ENTITY.COLUMN("history")
+	ENTITY_HREF         = ENTITY.COLUMN("href")
+	ENTITY_TARGET       = ENTITY.COLUMN("target")
+	ENTITY_ICON         = ENTITY.COLUMN("icon")
+	ENTITY_HIDDEN       = ENTITY.COLUMN("hidden")
+	ENTITY_PERMISSION   = ENTITY.COLUMN("permission")
 )
 
 func NewEntity() *Entity {
 	e := &Entity{}
 	e.init()
 	return e
+}
+
+func (me *Entity) Href() string {
+	return me.href.Value()
+}
+
+func (me *Entity) SetHref(v string) {
+	me.href.SetValue(v)
+}
+
+func (me *Entity) Target() string {
+	return me.target.Value()
+}
+
+func (me *Entity) SetTarget(v string) {
+	me.target.SetValue(v)
+}
+
+func (me *Entity) Icon() string {
+	return me.icon.Value()
+}
+
+func (me *Entity) SetIcon(v string) {
+	me.icon.SetValue(v)
+}
+
+func (me *Entity) Hidden() bool {
+	return me.hidden.Value()
+}
+
+func (me *Entity) SetHidden(v bool) {
+	me.hidden.SetValue(v)
+}
+
+func (me *Entity) Permission() string {
+	return me.permission.Value()
+}
+
+func (me *Entity) SetPermission(v string) {
+	me.permission.SetValue(v)
 }
 
 func (me *Entity) init() {
@@ -110,6 +155,11 @@ func (me *Entity) init() {
 	if t, ok := me.Tree.Type("history"); ok {
 		t.SetColumn(ENTITY_HISTORY)
 	}
+	me.href.SetColumn(ENTITY_HREF)
+	me.target.SetColumn(ENTITY_TARGET)
+	me.icon.SetColumn(ENTITY_ICON)
+	me.hidden.SetColumn(ENTITY_HIDDEN)
+	me.permission.SetColumn(ENTITY_PERMISSION)
 
 	if t, ok := me.Tree.Type("created"); ok {
 		t.SetDefault("-62135596800")
@@ -127,6 +177,11 @@ func (me *Entity) init() {
 			t.SetField(entity.DefaultField())
 		}
 	}
+	me.href.SetField(entity.DefaultField())
+	me.target.SetField(entity.DefaultField())
+	me.icon.SetField(entity.DefaultField())
+	me.hidden.SetField(entity.DefaultField())
+	me.permission.SetField(entity.DefaultField())
 }
 
 func (me Entity) New() entity.Interface {
@@ -135,12 +190,32 @@ func (me Entity) New() entity.Interface {
 
 func (me *Entity) Get(column string) interface{} {
 	switch column {
+	case ENTITY_HREF.Name():
+		return me.href.Value()
+	case ENTITY_TARGET.Name():
+		return me.target.Value()
+	case ENTITY_ICON.Name():
+		return me.icon.Value()
+	case ENTITY_HIDDEN.Name():
+		return me.hidden.Value()
+	case ENTITY_PERMISSION.Name():
+		return me.permission.Value()
 	}
 	return me.Tree.Get(column)
 }
 
 func (me *Entity) GetPtr(column string) interface{} {
 	switch column {
+	case ENTITY_HREF.Name():
+		return me.href.ValuePtr()
+	case ENTITY_TARGET.Name():
+		return me.target.ValuePtr()
+	case ENTITY_ICON.Name():
+		return me.icon.ValuePtr()
+	case ENTITY_HIDDEN.Name():
+		return me.hidden.ValuePtr()
+	case ENTITY_PERMISSION.Name():
+		return me.permission.ValuePtr()
 	}
 	return me.Tree.GetPtr(column)
 }
@@ -151,12 +226,32 @@ func (me *Entity) Table() schema.Table {
 
 func (me *Entity) Type(column string) (entity.Type, bool) {
 	switch column {
+	case ENTITY_HREF.Name():
+		return &me.href, true
+	case ENTITY_TARGET.Name():
+		return &me.target, true
+	case ENTITY_ICON.Name():
+		return &me.icon, true
+	case ENTITY_HIDDEN.Name():
+		return &me.hidden, true
+	case ENTITY_PERMISSION.Name():
+		return &me.permission, true
 	}
 	return me.Tree.Type(column)
 }
 
 func (me *Entity) Column(field string) (schema.Column, bool) {
 	switch strings.ToLowerFirst(field) {
+	case "href":
+		return ENTITY_HREF, true
+	case "target":
+		return ENTITY_TARGET, true
+	case "icon":
+		return ENTITY_ICON, true
+	case "hidden":
+		return ENTITY_HIDDEN, true
+	case "permission":
+		return ENTITY_PERMISSION, true
 	}
 	return me.Tree.Column(field)
 }
@@ -185,6 +280,11 @@ func (me *Entity) Columns() []schema.Column {
 		ENTITY_DELETION,
 		ENTITY_ARTIFICAL,
 		ENTITY_HISTORY,
+		ENTITY_HREF,
+		ENTITY_TARGET,
+		ENTITY_ICON,
+		ENTITY_HIDDEN,
+		ENTITY_PERMISSION,
 	}
 }
 
@@ -212,6 +312,11 @@ func (me *Entity) Names() []string {
 		"deletion",
 		"artifical",
 		"history",
+		"href",
+		"target",
+		"icon",
+		"hidden",
+		"permission",
 	}
 }
 
@@ -221,6 +326,16 @@ func (me *Entity) Value() *Entity {
 
 func (me *Entity) SetString(field, value string) error {
 	switch strings.ToLowerFirst(field) {
+	case "href":
+		return me.href.SetString(value)
+	case "target":
+		return me.target.SetString(value)
+	case "icon":
+		return me.icon.SetString(value)
+	case "hidden":
+		return me.hidden.SetString(value)
+	case "permission":
+		return me.permission.SetString(value)
 	}
 	return me.Tree.SetString(field, value)
 }
@@ -254,6 +369,11 @@ func (me *Entity) JSON() string {
 	b.WriteString(fmt.Sprintf(`,"parentIds":%q`, me.Tree.ParentIds()))
 	b.WriteString(fmt.Sprintf(`,"parentCodes":%q`, me.Tree.ParentCodes()))
 	b.WriteString(fmt.Sprintf(`,"parentNames":%q`, me.Tree.ParentNames()))
+	b.WriteString(fmt.Sprintf(`,"href":%q`, me.href.String()))
+	b.WriteString(fmt.Sprintf(`,"target":%q`, me.target.String()))
+	b.WriteString(fmt.Sprintf(`,"icon":%q`, me.icon.String()))
+	b.WriteString(fmt.Sprintf(`,"hidden":%q`, me.hidden.String()))
+	b.WriteString(fmt.Sprintf(`,"permission":%q`, me.permission.String()))
 	b.WriteString("}")
 	return b.String()
 }

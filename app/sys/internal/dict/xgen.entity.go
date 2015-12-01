@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	ENTITY           = schema.TABLE("")
+	ENTITY           = schema.TABLE("sys_dict")
 	ENTITY_ID        = ENTITY.PRIMARY("id")
 	ENTITY_MEMO      = ENTITY.COLUMN("memo")
 	ENTITY_CREATES   = ENTITY.COLUMN("creates")
@@ -22,12 +22,66 @@ var (
 	ENTITY_DELETION  = ENTITY.DELETION("deletion")
 	ENTITY_ARTIFICAL = ENTITY.COLUMN("artifical")
 	ENTITY_HISTORY   = ENTITY.COLUMN("history")
+	ENTITY_GENRE     = ENTITY.COLUMN("genre")
+	ENTITY_DESCR     = ENTITY.COLUMN("descr")
+	ENTITY_MKEY      = ENTITY.COLUMN("mkey")
+	ENTITY_MVAL      = ENTITY.COLUMN("mval")
+	ENTITY_FILTERS   = ENTITY.COLUMN("filters")
+	ENTITY_ORDINAL   = ENTITY.COLUMN("ordinal")
 )
 
 func NewEntity() *Entity {
 	e := &Entity{}
 	e.init()
 	return e
+}
+
+func (me *Entity) Genre() string {
+	return me.genre.Value()
+}
+
+func (me *Entity) SetGenre(v string) {
+	me.genre.SetValue(v)
+}
+
+func (me *Entity) Descr() string {
+	return me.descr.Value()
+}
+
+func (me *Entity) SetDescr(v string) {
+	me.descr.SetValue(v)
+}
+
+func (me *Entity) Mkey() string {
+	return me.mkey.Value()
+}
+
+func (me *Entity) SetMkey(v string) {
+	me.mkey.SetValue(v)
+}
+
+func (me *Entity) Mval() string {
+	return me.mval.Value()
+}
+
+func (me *Entity) SetMval(v string) {
+	me.mval.SetValue(v)
+}
+
+func (me *Entity) Filters() string {
+	return me.filters.Value()
+}
+
+func (me *Entity) SetFilters(v string) {
+	me.filters.SetValue(v)
+}
+
+func (me *Entity) Ordinal() string {
+	return me.ordinal.Value()
+}
+
+func (me *Entity) SetOrdinal(v string) {
+	me.ordinal.SetValue(v)
 }
 
 func (me *Entity) init() {
@@ -66,6 +120,12 @@ func (me *Entity) init() {
 	if t, ok := me.Sys.Type("history"); ok {
 		t.SetColumn(ENTITY_HISTORY)
 	}
+	me.genre.SetColumn(ENTITY_GENRE)
+	me.descr.SetColumn(ENTITY_DESCR)
+	me.mkey.SetColumn(ENTITY_MKEY)
+	me.mval.SetColumn(ENTITY_MVAL)
+	me.filters.SetColumn(ENTITY_FILTERS)
+	me.ordinal.SetColumn(ENTITY_ORDINAL)
 
 	if t, ok := me.Sys.Type("created"); ok {
 		t.SetDefault("-62135596800")
@@ -81,6 +141,12 @@ func (me *Entity) init() {
 			t.SetField(entity.DefaultField())
 		}
 	}
+	me.genre.SetField(entity.DefaultField())
+	me.descr.SetField(entity.DefaultField())
+	me.mkey.SetField(entity.DefaultField())
+	me.mval.SetField(entity.DefaultField())
+	me.filters.SetField(entity.DefaultField())
+	me.ordinal.SetField(entity.DefaultField())
 }
 
 func (me Entity) New() entity.Interface {
@@ -89,12 +155,36 @@ func (me Entity) New() entity.Interface {
 
 func (me *Entity) Get(column string) interface{} {
 	switch column {
+	case ENTITY_GENRE.Name():
+		return me.genre.Value()
+	case ENTITY_DESCR.Name():
+		return me.descr.Value()
+	case ENTITY_MKEY.Name():
+		return me.mkey.Value()
+	case ENTITY_MVAL.Name():
+		return me.mval.Value()
+	case ENTITY_FILTERS.Name():
+		return me.filters.Value()
+	case ENTITY_ORDINAL.Name():
+		return me.ordinal.Value()
 	}
 	return me.Sys.Get(column)
 }
 
 func (me *Entity) GetPtr(column string) interface{} {
 	switch column {
+	case ENTITY_GENRE.Name():
+		return me.genre.ValuePtr()
+	case ENTITY_DESCR.Name():
+		return me.descr.ValuePtr()
+	case ENTITY_MKEY.Name():
+		return me.mkey.ValuePtr()
+	case ENTITY_MVAL.Name():
+		return me.mval.ValuePtr()
+	case ENTITY_FILTERS.Name():
+		return me.filters.ValuePtr()
+	case ENTITY_ORDINAL.Name():
+		return me.ordinal.ValuePtr()
 	}
 	return me.Sys.GetPtr(column)
 }
@@ -105,12 +195,36 @@ func (me *Entity) Table() schema.Table {
 
 func (me *Entity) Type(column string) (entity.Type, bool) {
 	switch column {
+	case ENTITY_GENRE.Name():
+		return &me.genre, true
+	case ENTITY_DESCR.Name():
+		return &me.descr, true
+	case ENTITY_MKEY.Name():
+		return &me.mkey, true
+	case ENTITY_MVAL.Name():
+		return &me.mval, true
+	case ENTITY_FILTERS.Name():
+		return &me.filters, true
+	case ENTITY_ORDINAL.Name():
+		return &me.ordinal, true
 	}
 	return me.Sys.Type(column)
 }
 
 func (me *Entity) Column(field string) (schema.Column, bool) {
 	switch strings.ToLowerFirst(field) {
+	case "genre":
+		return ENTITY_GENRE, true
+	case "descr":
+		return ENTITY_DESCR, true
+	case "mkey":
+		return ENTITY_MKEY, true
+	case "mval":
+		return ENTITY_MVAL, true
+	case "filters":
+		return ENTITY_FILTERS, true
+	case "ordinal":
+		return ENTITY_ORDINAL, true
 	}
 	return me.Sys.Column(field)
 }
@@ -128,6 +242,12 @@ func (me *Entity) Columns() []schema.Column {
 		ENTITY_DELETION,
 		ENTITY_ARTIFICAL,
 		ENTITY_HISTORY,
+		ENTITY_GENRE,
+		ENTITY_DESCR,
+		ENTITY_MKEY,
+		ENTITY_MVAL,
+		ENTITY_FILTERS,
+		ENTITY_ORDINAL,
 	}
 }
 
@@ -144,6 +264,12 @@ func (me *Entity) Names() []string {
 		"deletion",
 		"artifical",
 		"history",
+		"genre",
+		"descr",
+		"mkey",
+		"mval",
+		"filters",
+		"ordinal",
 	}
 }
 
@@ -153,6 +279,18 @@ func (me *Entity) Value() *Entity {
 
 func (me *Entity) SetString(field, value string) error {
 	switch strings.ToLowerFirst(field) {
+	case "genre":
+		return me.genre.SetString(value)
+	case "descr":
+		return me.descr.SetString(value)
+	case "mkey":
+		return me.mkey.SetString(value)
+	case "mval":
+		return me.mval.SetString(value)
+	case "filters":
+		return me.filters.SetString(value)
+	case "ordinal":
+		return me.ordinal.SetString(value)
 	}
 	return me.Sys.SetString(field, value)
 }
@@ -175,6 +313,12 @@ func (me *Entity) JSON() string {
 	b.WriteString(fmt.Sprintf(`,"deletion":%d`, me.Sys.Deletion()))
 	b.WriteString(fmt.Sprintf(`,"artifical":%d`, me.Sys.Artifical()))
 	b.WriteString(fmt.Sprintf(`,"history":%d`, me.Sys.History()))
+	b.WriteString(fmt.Sprintf(`,"genre":%q`, me.genre.String()))
+	b.WriteString(fmt.Sprintf(`,"descr":%q`, me.descr.String()))
+	b.WriteString(fmt.Sprintf(`,"mkey":%q`, me.mkey.String()))
+	b.WriteString(fmt.Sprintf(`,"mval":%q`, me.mval.String()))
+	b.WriteString(fmt.Sprintf(`,"filters":%q`, me.filters.String()))
+	b.WriteString(fmt.Sprintf(`,"ordinal":%q`, me.ordinal.String()))
 	b.WriteString("}")
 	return b.String()
 }

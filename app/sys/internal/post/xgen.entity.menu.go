@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	MENU_ENTITY           = schema.TABLE("")
+	MENU_ENTITY           = schema.TABLE("sys_post_menu")
 	MENU_ENTITY_ID        = MENU_ENTITY.PRIMARY("id")
 	MENU_ENTITY_MEMO      = MENU_ENTITY.COLUMN("memo")
 	MENU_ENTITY_CREATES   = MENU_ENTITY.COLUMN("creates")
@@ -22,12 +22,30 @@ var (
 	MENU_ENTITY_DELETION  = MENU_ENTITY.DELETION("deletion")
 	MENU_ENTITY_ARTIFICAL = MENU_ENTITY.COLUMN("artifical")
 	MENU_ENTITY_HISTORY   = MENU_ENTITY.COLUMN("history")
+	MENU_ENTITY_POST_ID   = MENU_ENTITY.COLUMN("post_id")
+	MENU_ENTITY_MENU_ID   = MENU_ENTITY.COLUMN("menu_id")
 )
 
 func NewMenuEntity() *MenuEntity {
 	e := &MenuEntity{}
 	e.init()
 	return e
+}
+
+func (me *MenuEntity) PostId() string {
+	return me.postId.Value()
+}
+
+func (me *MenuEntity) SetPostId(v string) {
+	me.postId.SetValue(v)
+}
+
+func (me *MenuEntity) MenuId() string {
+	return me.menuId.Value()
+}
+
+func (me *MenuEntity) SetMenuId(v string) {
+	me.menuId.SetValue(v)
 }
 
 func (me *MenuEntity) init() {
@@ -66,6 +84,8 @@ func (me *MenuEntity) init() {
 	if t, ok := me.Sys.Type("history"); ok {
 		t.SetColumn(MENU_ENTITY_HISTORY)
 	}
+	me.postId.SetColumn(MENU_ENTITY_POST_ID)
+	me.menuId.SetColumn(MENU_ENTITY_MENU_ID)
 
 	if t, ok := me.Sys.Type("created"); ok {
 		t.SetDefault("-62135596800")
@@ -81,6 +101,8 @@ func (me *MenuEntity) init() {
 			t.SetField(entity.DefaultField())
 		}
 	}
+	me.postId.SetField(entity.DefaultField())
+	me.menuId.SetField(entity.DefaultField())
 }
 
 func (me MenuEntity) New() entity.Interface {
@@ -89,12 +111,20 @@ func (me MenuEntity) New() entity.Interface {
 
 func (me *MenuEntity) Get(column string) interface{} {
 	switch column {
+	case MENU_ENTITY_POST_ID.Name():
+		return me.postId.Value()
+	case MENU_ENTITY_MENU_ID.Name():
+		return me.menuId.Value()
 	}
 	return me.Sys.Get(column)
 }
 
 func (me *MenuEntity) GetPtr(column string) interface{} {
 	switch column {
+	case MENU_ENTITY_POST_ID.Name():
+		return me.postId.ValuePtr()
+	case MENU_ENTITY_MENU_ID.Name():
+		return me.menuId.ValuePtr()
 	}
 	return me.Sys.GetPtr(column)
 }
@@ -105,12 +135,20 @@ func (me *MenuEntity) Table() schema.Table {
 
 func (me *MenuEntity) Type(column string) (entity.Type, bool) {
 	switch column {
+	case MENU_ENTITY_POST_ID.Name():
+		return &me.postId, true
+	case MENU_ENTITY_MENU_ID.Name():
+		return &me.menuId, true
 	}
 	return me.Sys.Type(column)
 }
 
 func (me *MenuEntity) Column(field string) (schema.Column, bool) {
 	switch strings.ToLowerFirst(field) {
+	case "postId":
+		return MENU_ENTITY_POST_ID, true
+	case "menuId":
+		return MENU_ENTITY_MENU_ID, true
 	}
 	return me.Sys.Column(field)
 }
@@ -128,6 +166,8 @@ func (me *MenuEntity) Columns() []schema.Column {
 		MENU_ENTITY_DELETION,
 		MENU_ENTITY_ARTIFICAL,
 		MENU_ENTITY_HISTORY,
+		MENU_ENTITY_POST_ID,
+		MENU_ENTITY_MENU_ID,
 	}
 }
 
@@ -144,6 +184,8 @@ func (me *MenuEntity) Names() []string {
 		"deletion",
 		"artifical",
 		"history",
+		"postId",
+		"menuId",
 	}
 }
 
@@ -153,6 +195,10 @@ func (me *MenuEntity) Value() *MenuEntity {
 
 func (me *MenuEntity) SetString(field, value string) error {
 	switch strings.ToLowerFirst(field) {
+	case "postId":
+		return me.postId.SetString(value)
+	case "menuId":
+		return me.menuId.SetString(value)
 	}
 	return me.Sys.SetString(field, value)
 }
@@ -175,6 +221,8 @@ func (me *MenuEntity) JSON() string {
 	b.WriteString(fmt.Sprintf(`,"deletion":%d`, me.Sys.Deletion()))
 	b.WriteString(fmt.Sprintf(`,"artifical":%d`, me.Sys.Artifical()))
 	b.WriteString(fmt.Sprintf(`,"history":%d`, me.Sys.History()))
+	b.WriteString(fmt.Sprintf(`,"postId":%q`, me.postId.String()))
+	b.WriteString(fmt.Sprintf(`,"menuId":%q`, me.menuId.String()))
 	b.WriteString("}")
 	return b.String()
 }

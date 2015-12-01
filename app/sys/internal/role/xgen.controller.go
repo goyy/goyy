@@ -10,7 +10,7 @@ var ctl = &Controller{
 		Settings: controller.Settings{
 			Project: "sys",
 			Module:  "role",
-			Title:   "",
+			Title:   "ROLE",
 		},
 		Mgr: Mgr,
 	},

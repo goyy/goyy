@@ -10,7 +10,7 @@ var roleCtl = &RoleController{
 		Settings: controller.Settings{
 			Project: "sys",
 			Module:  "user.role",
-			Title:   "",
+			Title:   "USER ROLE",
 		},
 		Mgr: RoleMgr,
 	},

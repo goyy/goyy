@@ -10,7 +10,7 @@ var postCtl = &PostController{
 		Settings: controller.Settings{
 			Project: "sys",
 			Module:  "role.post",
-			Title:   "",
+			Title:   "ROLE POST",
 		},
 		Mgr: PostMgr,
 	},

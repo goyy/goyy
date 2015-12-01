@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	POST_ENTITY           = schema.TABLE("")
+	POST_ENTITY           = schema.TABLE("sys_role_post")
 	POST_ENTITY_ID        = POST_ENTITY.PRIMARY("id")
 	POST_ENTITY_MEMO      = POST_ENTITY.COLUMN("memo")
 	POST_ENTITY_CREATES   = POST_ENTITY.COLUMN("creates")
@@ -22,12 +22,30 @@ var (
 	POST_ENTITY_DELETION  = POST_ENTITY.DELETION("deletion")
 	POST_ENTITY_ARTIFICAL = POST_ENTITY.COLUMN("artifical")
 	POST_ENTITY_HISTORY   = POST_ENTITY.COLUMN("history")
+	POST_ENTITY_ROLE_ID   = POST_ENTITY.COLUMN("role_id")
+	POST_ENTITY_POST_ID   = POST_ENTITY.COLUMN("post_id")
 )
 
 func NewPostEntity() *PostEntity {
 	e := &PostEntity{}
 	e.init()
 	return e
+}
+
+func (me *PostEntity) RoleId() string {
+	return me.roleId.Value()
+}
+
+func (me *PostEntity) SetRoleId(v string) {
+	me.roleId.SetValue(v)
+}
+
+func (me *PostEntity) PostId() string {
+	return me.postId.Value()
+}
+
+func (me *PostEntity) SetPostId(v string) {
+	me.postId.SetValue(v)
 }
 
 func (me *PostEntity) init() {
@@ -66,6 +84,8 @@ func (me *PostEntity) init() {
 	if t, ok := me.Sys.Type("history"); ok {
 		t.SetColumn(POST_ENTITY_HISTORY)
 	}
+	me.roleId.SetColumn(POST_ENTITY_ROLE_ID)
+	me.postId.SetColumn(POST_ENTITY_POST_ID)
 
 	if t, ok := me.Sys.Type("created"); ok {
 		t.SetDefault("-62135596800")
@@ -81,6 +101,8 @@ func (me *PostEntity) init() {
 			t.SetField(entity.DefaultField())
 		}
 	}
+	me.roleId.SetField(entity.DefaultField())
+	me.postId.SetField(entity.DefaultField())
 }
 
 func (me PostEntity) New() entity.Interface {
@@ -89,12 +111,20 @@ func (me PostEntity) New() entity.Interface {
 
 func (me *PostEntity) Get(column string) interface{} {
 	switch column {
+	case POST_ENTITY_ROLE_ID.Name():
+		return me.roleId.Value()
+	case POST_ENTITY_POST_ID.Name():
+		return me.postId.Value()
 	}
 	return me.Sys.Get(column)
 }
 
 func (me *PostEntity) GetPtr(column string) interface{} {
 	switch column {
+	case POST_ENTITY_ROLE_ID.Name():
+		return me.roleId.ValuePtr()
+	case POST_ENTITY_POST_ID.Name():
+		return me.postId.ValuePtr()
 	}
 	return me.Sys.GetPtr(column)
 }
@@ -105,12 +135,20 @@ func (me *PostEntity) Table() schema.Table {
 
 func (me *PostEntity) Type(column string) (entity.Type, bool) {
 	switch column {
+	case POST_ENTITY_ROLE_ID.Name():
+		return &me.roleId, true
+	case POST_ENTITY_POST_ID.Name():
+		return &me.postId, true
 	}
 	return me.Sys.Type(column)
 }
 
 func (me *PostEntity) Column(field string) (schema.Column, bool) {
 	switch strings.ToLowerFirst(field) {
+	case "roleId":
+		return POST_ENTITY_ROLE_ID, true
+	case "postId":
+		return POST_ENTITY_POST_ID, true
 	}
 	return me.Sys.Column(field)
 }
@@ -128,6 +166,8 @@ func (me *PostEntity) Columns() []schema.Column {
 		POST_ENTITY_DELETION,
 		POST_ENTITY_ARTIFICAL,
 		POST_ENTITY_HISTORY,
+		POST_ENTITY_ROLE_ID,
+		POST_ENTITY_POST_ID,
 	}
 }
 
@@ -144,6 +184,8 @@ func (me *PostEntity) Names() []string {
 		"deletion",
 		"artifical",
 		"history",
+		"roleId",
+		"postId",
 	}
 }
 
@@ -153,6 +195,10 @@ func (me *PostEntity) Value() *PostEntity {
 
 func (me *PostEntity) SetString(field, value string) error {
 	switch strings.ToLowerFirst(field) {
+	case "roleId":
+		return me.roleId.SetString(value)
+	case "postId":
+		return me.postId.SetString(value)
 	}
 	return me.Sys.SetString(field, value)
 }
@@ -175,6 +221,8 @@ func (me *PostEntity) JSON() string {
 	b.WriteString(fmt.Sprintf(`,"deletion":%d`, me.Sys.Deletion()))
 	b.WriteString(fmt.Sprintf(`,"artifical":%d`, me.Sys.Artifical()))
 	b.WriteString(fmt.Sprintf(`,"history":%d`, me.Sys.History()))
+	b.WriteString(fmt.Sprintf(`,"roleId":%q`, me.roleId.String()))
+	b.WriteString(fmt.Sprintf(`,"postId":%q`, me.postId.String()))
 	b.WriteString("}")
 	return b.String()
 }

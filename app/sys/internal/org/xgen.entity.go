@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	ENTITY              = schema.TABLE("")
+	ENTITY              = schema.TABLE("sys_org")
 	ENTITY_ID           = ENTITY.PRIMARY("id")
 	ENTITY_CODE         = ENTITY.COLUMN("code")
 	ENTITY_NAME         = ENTITY.COLUMN("name")
@@ -33,12 +33,21 @@ var (
 	ENTITY_DELETION     = ENTITY.DELETION("deletion")
 	ENTITY_ARTIFICAL    = ENTITY.COLUMN("artifical")
 	ENTITY_HISTORY      = ENTITY.COLUMN("history")
+	ENTITY_AREA_ID      = ENTITY.COLUMN("area_id")
 )
 
 func NewEntity() *Entity {
 	e := &Entity{}
 	e.init()
 	return e
+}
+
+func (me *Entity) AreaId() string {
+	return me.areaId.Value()
+}
+
+func (me *Entity) SetAreaId(v string) {
+	me.areaId.SetValue(v)
 }
 
 func (me *Entity) init() {
@@ -110,6 +119,7 @@ func (me *Entity) init() {
 	if t, ok := me.Tree.Type("history"); ok {
 		t.SetColumn(ENTITY_HISTORY)
 	}
+	me.areaId.SetColumn(ENTITY_AREA_ID)
 
 	if t, ok := me.Tree.Type("created"); ok {
 		t.SetDefault("-62135596800")
@@ -127,6 +137,7 @@ func (me *Entity) init() {
 			t.SetField(entity.DefaultField())
 		}
 	}
+	me.areaId.SetField(entity.DefaultField())
 }
 
 func (me Entity) New() entity.Interface {
@@ -135,12 +146,16 @@ func (me Entity) New() entity.Interface {
 
 func (me *Entity) Get(column string) interface{} {
 	switch column {
+	case ENTITY_AREA_ID.Name():
+		return me.areaId.Value()
 	}
 	return me.Tree.Get(column)
 }
 
 func (me *Entity) GetPtr(column string) interface{} {
 	switch column {
+	case ENTITY_AREA_ID.Name():
+		return me.areaId.ValuePtr()
 	}
 	return me.Tree.GetPtr(column)
 }
@@ -151,12 +166,16 @@ func (me *Entity) Table() schema.Table {
 
 func (me *Entity) Type(column string) (entity.Type, bool) {
 	switch column {
+	case ENTITY_AREA_ID.Name():
+		return &me.areaId, true
 	}
 	return me.Tree.Type(column)
 }
 
 func (me *Entity) Column(field string) (schema.Column, bool) {
 	switch strings.ToLowerFirst(field) {
+	case "areaId":
+		return ENTITY_AREA_ID, true
 	}
 	return me.Tree.Column(field)
 }
@@ -185,6 +204,7 @@ func (me *Entity) Columns() []schema.Column {
 		ENTITY_DELETION,
 		ENTITY_ARTIFICAL,
 		ENTITY_HISTORY,
+		ENTITY_AREA_ID,
 	}
 }
 
@@ -212,6 +232,7 @@ func (me *Entity) Names() []string {
 		"deletion",
 		"artifical",
 		"history",
+		"areaId",
 	}
 }
 
@@ -221,6 +242,8 @@ func (me *Entity) Value() *Entity {
 
 func (me *Entity) SetString(field, value string) error {
 	switch strings.ToLowerFirst(field) {
+	case "areaId":
+		return me.areaId.SetString(value)
 	}
 	return me.Tree.SetString(field, value)
 }
@@ -254,6 +277,7 @@ func (me *Entity) JSON() string {
 	b.WriteString(fmt.Sprintf(`,"parentIds":%q`, me.Tree.ParentIds()))
 	b.WriteString(fmt.Sprintf(`,"parentCodes":%q`, me.Tree.ParentCodes()))
 	b.WriteString(fmt.Sprintf(`,"parentNames":%q`, me.Tree.ParentNames()))
+	b.WriteString(fmt.Sprintf(`,"areaId":%q`, me.areaId.String()))
 	b.WriteString("}")
 	return b.String()
 }

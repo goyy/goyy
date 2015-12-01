@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	ENTITY              = schema.TABLE("")
+	ENTITY              = schema.TABLE("sys_area")
 	ENTITY_ID           = ENTITY.PRIMARY("id")
 	ENTITY_CODE         = ENTITY.COLUMN("code")
 	ENTITY_NAME         = ENTITY.COLUMN("name")
