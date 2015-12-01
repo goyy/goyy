@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
+<configuration>
+	<tables>
+		<table id="pk" name="PK" comment="primary key table">
+			<column extends="id"/>
+		</table>
+		<table id="sys" name="SYS" extends="pk" comment="sys table">
+			<column extends="memo"/>
+			<column extends="creates"/>
+			<column extends="creater"/>
+			<column extends="created"/>
+			<column extends="modifier"/>
+			<column extends="modified"/>
+			<column extends="version"/>
+			<column extends="deletion"/>
+			<column extends="artifical"/>
+			<column extends="history"/>
+		</table>
+		<table id="tree" name="TREE" extends="sys" comment="tree table">
+			<column extends="code"/>
+			<column extends="name"/>
+			<column extends="fullname"/>
+			<column extends="genre"/>
+			<column extends="ordinal"/>
+			<column extends="parent_id"/>
+			<column extends="parent_ids"/>
+			<column extends="parent_codes"/>
+			<column extends="parent_names"/>
+			<column extends="leaf"/>
+			<column extends="grade"/>
+		</table>
+	</tables>
+</configuration>

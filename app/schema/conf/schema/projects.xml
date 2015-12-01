@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
+<configuration>
+	<projects>
+		<project id="goyy" name="GOYY" database="goyy" generate="true" comment="goyy" clidir="../../../bms" clipath="gopkg.in/goyy/goyy.v0/app/bms"/>
+	</projects>
+</configuration>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
+<configuration>
+	<tables>
+		<table id="area" name="AREA" extends="tree" generate="true" comment="AREA">
+		</table>
+		<table id="org" name="ORG" extends="tree" generate="true" comment="ORG">
+			<column extends="area_id"/>
+		</table>
+		<table id="user" name="USER" extends="sys" generate="true" comment="USER">
+			<column extends="name"/>
+			<column extends="code"/>
+			<column extends="passwd"/>
+			<column extends="genre"/>
+			<column extends="email"/>
+			<column extends="tel"/>
+			<column extends="mobile"/>
+			<column extends="area_id"/>
+			<column extends="org_id"/>
+			<column id="login_name" name="LOGIN NAME" domain="code" comment="LOGIN NAME"/>
+			<column id="login_ip" name="LOGIN IP" domain="code" comment="LOGIN IP"/>
+			<column id="login_time" name="LOGIN TIME" domain="long" comment="LOGIN TIME"/>
+		</table>
+		<table id="user_role" name="USER ROLE" extends="sys" generate="true" comment="USER ROLE" master="user" slave="role">
+			<column extends="user_id"/>
+			<column extends="role_id"/>
+		</table>
+		<table id="role" name="ROLE" extends="sys" generate="true" comment="ROLE">
+			<column extends="name"/>
+			<column extends="code"/>
+			<column extends="genre"/>
+			<column extends="ordinal"/>
+		</table>
+		<table id="role_post" name="ROLE POST" extends="sys" generate="true" comment="ROLE POST" master="role" slave="post">
+			<column extends="role_id"/>
+			<column extends="post_id"/>
+		</table>
+		<table id="post" name="POST" extends="tree" generate="true" comment="POST">
+		</table>
+		<table id="post_menu" name="POST MENU" extends="sys" generate="true" comment="POST MENU" master="post" slave="menu">
+			<column extends="post_id"/>
+			<column extends="menu_id"/>
+		</table>
+		<table id="menu" name="MENU" extends="tree" generate="true" comment="MENU">
+			<column id="href" name="HREF" domain="memo" comment="HREF"/>
+			<column id="target" name="TARGET" domain="code" comment="TARGET"/>
+			<column id="icon" name="ICON" domain="code" comment="ICON"/>
+			<column id="hidden" name="HIDDEN" domain="bool" comment="HIDDEN"/>
+			<column id="permission" name="PERMISSION" domain="memo" comment="PERMISSION"/>
+		</table>
+		<table id="dict" name="DICT" extends="sys" generate="true" comment="DICT">
+			<column extends="genre"/>
+			<column extends="descr"/>
+			<column extends="mkey"/>
+			<column extends="mval"/>
+			<column extends="filters"/>
+			<column extends="ordinal"/>
+		</table>
+		<table id="conf" name="CONF" extends="sys" generate="true" comment="CONF">
+			<column extends="name"/>
+			<column extends="code"/>
+			<column extends="content"/>
+			<column extends="genre"/>
+			<column extends="usable"/>
+			<column extends="ordinal"/>
+		</table>
+	</tables>
+</configuration>

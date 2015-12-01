@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE env PUBLIC "-//GOYY//DTD ENV 1.0//EN" "http://goyy.org/dtd/env-1.0.dtd">
+<configuration>
+	<environments default="development">
+		<environment id="development">
+			<database name="goyy">
+				<driverName>mymysql</driverName>
+				<dataSourceName>tcp:localhost:3306*goyy_development/root/root</dataSourceName>
+				<maxIdleConns>10</maxIdleConns>
+				<maxOpenConns>100</maxOpenConns>
+			</database>
+		</environment>
+		<environment id="test">
+			<database name="goyy">
+				<driverName>mymysql</driverName>
+				<dataSourceName>tcp:localhost:3306*goyy_test/root/root</dataSourceName>
+				<maxIdleConns>10</maxIdleConns>
+				<maxOpenConns>100</maxOpenConns>
+			</database>
+		</environment>
+		<environment id="production">
+			<database name="goyy">
+				<driverName>mymysql</driverName>
+				<dataSourceName>tcp:localhost:3306*goyy_production/root/root</dataSourceName>
+				<maxIdleConns>10</maxIdleConns>
+				<maxOpenConns>100</maxOpenConns>
+			</database>
+		</environment>
+	</environments>
+</configuration>

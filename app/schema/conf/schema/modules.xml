@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
+<configuration>
+	<modules>
+		<module id="sys" name="SYS" prefix="sys" project="goyy" generate="true" comment="system" rootdir="../sys" apipath="gopkg.in/goyy/goyy.v0/app/sys"/>
+	</modules>
+</configuration>
