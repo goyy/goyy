@@ -13,22 +13,22 @@ import (
 
 // @entity
 type User struct {
-	table    schema.Table  `orm:"table=users"`
-	id       entity.String `orm:"column=id&primary=true"`
-	code     entity.String `orm:"column=code"`
-	name     entity.String `orm:"column=name"`
-	password entity.String `orm:"column=password"`
-	memo     entity.String `orm:"column=memo"`
-	genre    entity.String `orm:"column=genre"`
-	status   entity.String `orm:"column=status"`
-	roles    entity.String `orm:"column=roles"`
-	posts    entity.String `orm:"column=posts"`
-	org      entity.String `orm:"column=org"`
-	area     entity.String `orm:"column=area"`
-	creater  entity.String `orm:"column=creater&creater=true"`
-	created  entity.Int64  `orm:"column=created&created=true"`
-	modifier entity.String `orm:"column=modifier&modifier=true"`
-	modified entity.Int64  `orm:"column=modified&modified=true"`
-	version  entity.Int    `orm:"column=version&version=true"`
-	deletion entity.Int    `orm:"column=deletion&deletion=true"`
+	table    schema.Table  `db:"table=users"`
+	id       entity.String `db:"column=id&primary=true"`
+	code     entity.String `db:"column=code"`
+	name     entity.String `db:"column=name"`
+	password entity.String `db:"column=password"`
+	memo     entity.String `db:"column=memo"`
+	genre    entity.String `db:"column=genre"`
+	status   entity.String `db:"column=status"`
+	roles    entity.String `db:"column=roles"`
+	posts    entity.String `db:"column=posts"`
+	org      entity.String `db:"column=org"`
+	area     entity.String `db:"column=area"`
+	creater  entity.String `db:"column=creater&creater=true"`
+	created  entity.Int64  `db:"column=created&created=true"`
+	modifier entity.String `db:"column=modifier&modifier=true"`
+	modified entity.Int64  `db:"column=modified&modified=true"`
+	version  entity.Int    `db:"column=version&version=true"`
+	deletion entity.Int    `db:"column=deletion&deletion=true"`
 }

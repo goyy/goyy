@@ -13,9 +13,9 @@ import (
 
 // @entity
 type User struct {
-	table  schema.Table  `orm:"table=sys_user"`
-	id     entity.String `orm:"column=id&primary=true"`
-	name   entity.String `orm:"column=name"`
-	passwd entity.String `orm:"column=passwd"`
-	email  entity.String `orm:"column=email"`
+	table  schema.Table  `db:"table=sys_user"`
+	id     entity.String `db:"column=id&primary=true"`
+	name   entity.String `db:"column=name"`
+	passwd entity.String `db:"column=passwd"`
+	email  entity.String `db:"column=email"`
 }

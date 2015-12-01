@@ -10,7 +10,7 @@ import (
 )
 
 type Pk struct {
-	id String `orm:"column=id&primary=true"`
+	id String `db:"column=id&primary=true"`
 }
 
 func (me *Pk) Id() string {

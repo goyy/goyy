@@ -207,7 +207,7 @@ func (me *valids) IsExistTables() bool {
 		<table id="pk" name="PK" comment="primary key table">
 			<column extends="id"/>
 		</table>
-		<table id="base" name="BASE" extends="pk" comment="base table">
+		<table id="sys" name="SYS" extends="pk" comment="sys table">
 			<column extends="memo"/>
 			<column extends="creates"/>
 			<column extends="creater"/>
@@ -219,7 +219,7 @@ func (me *valids) IsExistTables() bool {
 			<column extends="artifical"/>
 			<column extends="history"/>
 		</table>
-		<table id="tree" name="TREE" extends="base" comment="tree table">
+		<table id="tree" name="TREE" extends="sys" comment="tree table">
 			<column extends="code"/>
 			<column extends="name"/>
 			<column extends="fullname"/>

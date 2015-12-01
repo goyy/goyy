@@ -13,7 +13,7 @@ import (
 
 // @entity
 type Permission struct {
-	table      schema.Table  `orm:"table=sys_menu"`
-	id         entity.String `orm:"column=id&primary=true"`
-	permission entity.String `orm:"column=permission"`
+	table      schema.Table  `db:"table=sys_menu"`
+	id         entity.String `db:"column=id&primary=true"`
+	permission entity.String `db:"column=permission"`
 }

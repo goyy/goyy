@@ -13,11 +13,11 @@ import (
 
 //go:generate xgen -entity=$GOFILE -scaffold -clidir={{.Module.Clidir}} -clipath={{.Module.Clipath}} -apipath={{.Module.Apipath}}
 
-// {{.Name}}实体结构.
+// {{.Name}}` + i18N.Message("domain.title") + `.
 // @entity(project:"{{.Module.Id}}"{{if notblank .Slave}} relationship:"slave"{{end}})
 type {{if notblank .Master}}{{upper1 .Slave}}{{end}}Entity struct {
 	{{if eq .Super "pk"}}entity.Pk{{end}}{{if eq .Super "sys"}}entity.Sys{{end}}{{if eq .Super "tree"}}entity.Tree{{end}}
-	{{padname "table" $.FieldMaxLen}} {{padname "schema.Table" $.TypeMaxLen}} ` + "`" + `orm:"table={{.Module.Prefix}}_{{.Id}}&comment={{.Name}}"` + "`" + `{{range $column := .Columns}}{{if not (supercol $column.Id $.Super)}}
-	{{padname $column.Field $.FieldMaxLen}} {{padname $column.Etype $.TypeMaxLen}} ` + "`" + `orm:"column={{$column.Id}}"` + "`" + `{{end}}{{end}}
+	{{padname "table" $.FieldMaxLen}} {{padname "schema.Table" $.TypeMaxLen}} ` + "`" + `db:"table={{.Module.Prefix}}_{{.Id}}&comment={{.Name}}"` + "`" + `{{range $column := .Columns}}{{if not (supercol $column.Id $.Super)}}
+	{{padname $column.Field $.FieldMaxLen}} {{padname $column.Etype $.TypeMaxLen}} ` + "`" + `db:"column={{$column.Id}}"` + "`" + `{{end}}{{end}}
 }
 `

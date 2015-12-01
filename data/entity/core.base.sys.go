@@ -11,16 +11,16 @@ import (
 
 type Sys struct {
 	Pk
-	memo      String `orm:"column=memo"`
-	creates   String `orm:"column=creates"`
-	creater   String `orm:"column=creater&creater=true"`
-	created   Int64  `orm:"column=created&created=true&default=-62135596800"`
-	modifier  String `orm:"column=modifier&modifier=true"`
-	modified  Int64  `orm:"column=modified&modified=true&default=-62135596800"`
-	version   Int    `orm:"column=version&version=true"`
-	deletion  Int    `orm:"column=deletion&deletion=true"`
-	artifical Int    `orm:"column=artifical"`
-	history   Int    `orm:"column=history"`
+	memo      String `db:"column=memo"`
+	creates   String `db:"column=creates"`
+	creater   String `db:"column=creater&creater=true"`
+	created   Int64  `db:"column=created&created=true&default=-62135596800"`
+	modifier  String `db:"column=modifier&modifier=true"`
+	modified  Int64  `db:"column=modified&modified=true&default=-62135596800"`
+	version   Int    `db:"column=version&version=true"`
+	deletion  Int    `db:"column=deletion&deletion=true"`
+	artifical Int    `db:"column=artifical"`
+	history   Int    `db:"column=history"`
 }
 
 func (me *Sys) Memo() string {

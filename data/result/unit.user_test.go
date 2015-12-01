@@ -13,11 +13,11 @@ import (
 
 // @entity
 type User struct {
-	table   schema.Table  `orm:"table=sys_user"`
-	id      entity.String `orm:"column=id&primary=true"`
-	name    entity.String `orm:"column=name"`
-	passwd  entity.String `orm:"column=passwd"`
-	age     entity.Int    `orm:"column=age"`
-	email   entity.String `orm:"column=email"`
-	version entity.Int    `orm:"column=version"`
+	table   schema.Table  `db:"table=sys_user"`
+	id      entity.String `db:"column=id&primary=true"`
+	name    entity.String `db:"column=name"`
+	passwd  entity.String `db:"column=passwd"`
+	age     entity.Int    `db:"column=age"`
+	email   entity.String `db:"column=email"`
+	version entity.Int    `db:"column=version"`
 }

@@ -11,7 +11,7 @@ import (
 // @entity(project:"sys")
 type User struct {
 	entity.Sys
-	table schema.Table  `orm:"table=users&comment=user"`
-	email entity.String `orm:"column=email"`
-	roles entity.String `orm:"column=roles&transient=true"`
+	table schema.Table  `db:"table=users&comment=user"`
+	email entity.String `db:"column=email"`
+	roles entity.String `db:"column=roles&transient=true"`
 }

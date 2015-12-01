@@ -13,8 +13,8 @@ import (
 
 // @entity
 type User struct {
-	table     schema.Table  `orm:"table=sys_user"`
-	id        entity.String `orm:"column=id&primary=true"`
-	name      entity.String `orm:"column=name"`
-	loginName entity.String `orm:"column=login_name"`
+	table     schema.Table  `db:"table=sys_user"`
+	id        entity.String `db:"column=id&primary=true"`
+	name      entity.String `db:"column=name"`
+	loginName entity.String `db:"column=login_name"`
 }

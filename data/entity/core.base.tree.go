@@ -11,17 +11,17 @@ import (
 
 type Tree struct {
 	Sys
-	code        String `orm:"column=code"`
-	name        String `orm:"column=name"`
-	fullname    String `orm:"column=fullname"`
-	genre       String `orm:"column=genre"`
-	leaf        Int    `orm:"column=leaf"`
-	grade       Int    `orm:"column=grade"`
-	ordinal     String `orm:"column=ordinal"`
-	parentId    String `orm:"column=parent_id"`
-	parentIds   String `orm:"column=parent_ids"`
-	parentCodes String `orm:"column=parent_codes"`
-	parentNames String `orm:"column=parent_mames"`
+	code        String `db:"column=code"`
+	name        String `db:"column=name"`
+	fullname    String `db:"column=fullname"`
+	genre       String `db:"column=genre"`
+	leaf        Int    `db:"column=leaf"`
+	grade       Int    `db:"column=grade"`
+	ordinal     String `db:"column=ordinal"`
+	parentId    String `db:"column=parent_id"`
+	parentIds   String `db:"column=parent_ids"`
+	parentCodes String `db:"column=parent_codes"`
+	parentNames String `db:"column=parent_mames"`
 }
 
 func (me *Tree) Code() string {
