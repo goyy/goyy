@@ -104,6 +104,23 @@ func Asset(name string) (out xStatic, err error) {
 	return
 }
 
+// Get the static based on the environment profiles.
+func Static(name string) (out xStatic, err error) {
+	xEnv, err := parse(conf + "/env/static.xml")
+	if err != nil {
+		return
+	}
+	outs := xEnv.Statics
+	for _, v := range outs {
+		if v.Name == name {
+			out = v
+			return
+		}
+	}
+	err = errors.New(i18N.Messagef("empty.environments.environment.static", name))
+	return
+}
+
 // Get the developer based on the environment profiles.
 func Developer(name string) (out xStatic, err error) {
 	xEnv, err := parse(conf + "/env/static.xml")

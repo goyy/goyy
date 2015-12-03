@@ -20,6 +20,7 @@ type xEnvironment struct {
 	Sessions   []xSession  `xml:"session"`
 	Apis       []xApi      `xml:"api"`
 	Assets     []xStatic   `xml:"asset"`
+	Statics    []xStatic   `xml:"static"`
 	Developers []xStatic   `xml:"developer"`
 	Operations []xStatic   `xml:"operation"`
 	Uploads    []xUpload   `xml:"upload"`

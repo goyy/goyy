@@ -4,9 +4,13 @@
 	<environments default="development">
 		<environment id="development">
 			<asset name="env">
-				<dir>static</dir>
+				<dir>/assets</dir>
 				<url>/assets</url>
 			</asset>
+			<static name="env">
+				<dir>static</dir>
+				<url>/statics</url>
+			</static>
 			<developer name="env">
 				<dir>/assets/devs</dir>
 				<url>/devs</url>
@@ -21,6 +25,10 @@
 				<dir>/assets</dir>
 				<url>/assets</url>
 			</asset>
+			<static name="env">
+				<dir>static</dir>
+				<url>/statics</url>
+			</static>
 			<developer name="env">
 				<dir>/assets/devs</dir>
 				<url>/devs</url>
@@ -35,6 +43,10 @@
 				<dir>/assets</dir>
 				<url>/assets</url>
 			</asset>
+			<static name="env">
+				<dir>static</dir>
+				<url>/statics</url>
+			</static>
 			<developer name="env">
 				<dir>/assets/devs</dir>
 				<url>/devs</url>
