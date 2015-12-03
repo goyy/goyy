@@ -24,8 +24,13 @@ var Conf = &conf{
 	},
 	Asset: &staticOptions{
 		Enable: false,
-		Dir:    "static",
+		Dir:    "/assets",
 		URL:    "/assets",
+	},
+	Static: &staticOptions{
+		Enable: false,
+		Dir:    "static",
+		URL:    "/statics",
 	},
 	Developer: &staticOptions{
 		Enable: false,
@@ -92,7 +97,8 @@ type conf struct {
 	Actives   []string         // Active profile
 	Err       *errOptions      // Error options
 	Api       *apiOptions      // Api options
-	Asset     *staticOptions   // Static resource options
+	Asset     *staticOptions   // Asset options
+	Static    *staticOptions   // Static resource options
 	Developer *staticOptions   // Developer static resource options
 	Operation *staticOptions   // Operation static resource options
 	Upload    *uploadOptions   // Upload options

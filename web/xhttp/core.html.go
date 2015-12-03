@@ -206,11 +206,12 @@ func (me *htmlServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool {
 }
 
 func (me *htmlServeMux) replaceAssets(content string) string {
-	content = strings.Replace(content, tagStaticApis, Conf.Api.URL, -1)
-	content = strings.Replace(content, tagStaticAssets, Conf.Asset.URL, -1)
-	content = strings.Replace(content, tagStaticDevelopers, Conf.Developer.URL, -1)
-	content = strings.Replace(content, tagStaticOperations, Conf.Operation.URL, -1)
-	return strings.Replace(content, tagStaticUploads, Conf.Upload.URL, -1)
+	content = strings.Replace(content, tagApis, Conf.Api.URL, -1)
+	content = strings.Replace(content, tagAssets, Conf.Asset.URL, -1)
+	content = strings.Replace(content, tagAssetsStatics, Conf.Static.URL, -1)
+	content = strings.Replace(content, tagAssetsDevelopers, Conf.Developer.URL, -1)
+	content = strings.Replace(content, tagAssetsOperations, Conf.Operation.URL, -1)
+	return strings.Replace(content, tagAssetsUploads, Conf.Upload.URL, -1)
 }
 
 func (me *htmlServeMux) isHtml(path string) bool {

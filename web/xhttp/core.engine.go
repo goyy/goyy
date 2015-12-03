@@ -38,6 +38,17 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+	if Conf.Static.Enable { // staticServeMux
+		if stas == nil {
+			stas = &staticServeMux{
+				urlPrefix: Conf.Static.URL,
+				static:    http.StripPrefix(Conf.Static.URL, http.FileServer(http.Dir(Conf.Static.Dir))),
+			}
+		}
+		if stas.ServeHTTP(w, r) {
+			return
+		}
+	}
 	if Conf.Developer.Enable { // developerServeMux
 		if devs == nil {
 			devs = &staticServeMux{

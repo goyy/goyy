@@ -10,6 +10,7 @@ import (
 )
 
 var asts *staticServeMux
+var stas *staticServeMux
 var devs *staticServeMux
 var oprs *staticServeMux
 

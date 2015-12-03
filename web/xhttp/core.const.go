@@ -46,11 +46,12 @@ const (
 	tagAttrPre          = ` go:`
 	tagAttrPost         = `="`
 	tagAttrEnd          = `"`
-	tagStaticApis       = `{{apis}}`
-	tagStaticAssets     = `{{assets}}`
-	tagStaticDevelopers = `{{developers}}`
-	tagStaticOperations = `{{operations}}`
-	tagStaticUploads    = `{{uploads}}`
+	tagApis             = `{{apis}}`
+	tagAssets           = `{{assets}}`
+	tagAssetsStatics    = `{{statics}}`
+	tagAssetsDevelopers = `{{developers}}`
+	tagAssetsOperations = `{{operations}}`
+	tagAssetsUploads    = `{{uploads}}`
 
 	noWritten = -1
 
