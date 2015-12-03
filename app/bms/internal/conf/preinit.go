@@ -24,6 +24,6 @@ func settings() string {
 	} else {
 		xsql.SetPriority(log.Pdebug)
 	}
-	service.Repository = repository.New(&dialect.Oracle{}, "goyy")
+	service.Repository = repository.New(&dialect.MySQL{}, "goyy")
 	return ""
 }
