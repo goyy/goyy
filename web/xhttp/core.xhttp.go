@@ -6,7 +6,6 @@ package xhttp
 
 import (
 	"fmt"
-	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/data/cache"
 	"net/http"
 	"time"
@@ -48,7 +47,6 @@ func Use(middlewares ...Handler) Router {
 }
 
 func Run() error {
-	profile.SetActives(Conf.Actives...)
 	cache.Init(cache.Conf{
 		Address:     Conf.Session.Addr,
 		MaxIdle:     80,

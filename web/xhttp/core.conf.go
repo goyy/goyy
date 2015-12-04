@@ -5,15 +5,13 @@
 package xhttp
 
 import (
-	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/web/session"
 	"html/template"
 )
 
 var Conf = &conf{
-	Addr:    ":9090",
-	Actives: []string{profile.DEV},
+	Addr: ":9090",
 	Err: &errOptions{
 		Err403: "",
 		Err404: "",
@@ -94,7 +92,6 @@ var Conf = &conf{
 
 type conf struct {
 	Addr      string           // the TCP network address
-	Actives   []string         // Active profile
 	Err       *errOptions      // Error options
 	Api       *apiOptions      // Api options
 	Asset     *staticOptions   // Asset options
