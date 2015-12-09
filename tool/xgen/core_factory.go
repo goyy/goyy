@@ -560,45 +560,56 @@ func (me factory) printerType(e ast.Expr) string {
 }
 
 func (me factory) genFileName(typ, name string) string {
-	if typ == "xgen.log.json" || typ == "xgen.log.client" || typ == "xgen.log.api" {
-		return "xgen.log.go"
-	}
-	if typ == "main.util" {
-		return "main.util.go"
-	}
-	if typ == "main.const" {
-		return "main.const.go"
-	}
-	if typ == "main.api" {
-		return "main." + me.PackageName + ".go"
-	}
-	if typ == "reg.controller.html" || typ == "reg.controller.client" || typ == "reg.controller.json" {
-		return "xgen.register." + me.PackageName + ".go"
-	}
-	if typ == "reg.proj.controller.client" {
-		return "xgen.register." + me.Project + ".go"
+	switch typ {
+	case "xgen.log.json", "xgen.log.client", "xgen.log.api":
+		return "log_xgen.go"
+	case "main.api":
+		return me.PackageName + ".go"
+	case "main.util":
+		return me.PackageName + "_util.go"
+	case "main.const":
+		return me.PackageName + "_const.go"
+	case "reg.controller.html", "reg.controller.client", "reg.controller.json":
+		return me.PackageName + "_register_xgen.go"
+	case "reg.proj.controller.client":
+		return me.Project + "_register_xgen.go"
 	}
 	if strings.HasPrefix(name, typMain) {
 		name = strings.After(name, typMain)
 	}
-	if strings.HasPrefix(name, "domain.") {
-		name = strings.After(name, "domain.")
-	}
-	if strings.HasPrefix(name, "entity.") {
-		name = strings.After(name, "entity.")
+	if strings.HasSuffix(name, "_entity") {
+		name = strings.Before(name, "_entity")
 	}
 	if name == "domain" || name == "entity" || name == "main.domain" || name == "main.entity" {
 		name = ""
 	} else {
 		if strings.IsNotBlank(name) {
-			name = "." + name
+			name = name + "_"
 		}
 	}
 	if strings.HasPrefix(typ, "main.controller") {
-		typ = "main.controller"
+		typ = "controller"
+	}
+	if strings.HasPrefix(typ, "main.service") {
+		typ = "manager"
+	}
+	if strings.HasPrefix(typ, "main.sql") {
+		typ = "sql"
 	}
 	if strings.HasPrefix(typ, "xgen.controller") {
-		typ = "xgen.controller"
+		typ = "controller_xgen"
 	}
-	return fmt.Sprintf("%s%s.go", typ, name)
+	if strings.HasPrefix(typ, "xgen.service") {
+		typ = "manager_xgen"
+	}
+	if strings.HasPrefix(typ, "xgen.entity") {
+		typ = "entity_xgen"
+	}
+	if strings.HasPrefix(typ, "xgen.entities") {
+		typ = "entities_xgen"
+	}
+	if strings.HasPrefix(typ, "xgen.dto") {
+		typ = "dto_xgen"
+	}
+	return fmt.Sprintf("%s%s.go", name, typ)
 }
