@@ -9,6 +9,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/webs"
 	"net/http"
+	"net/url"
 	"sync"
 )
 
@@ -40,7 +41,17 @@ func (me *illegalServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) boo
 		for _, vs := range params {
 			for _, v := range vs {
 				if strings.IsNotBlank(v) {
-					value := strings.TrimSpace(strings.ToLower(v))
+					unescape, err := url.QueryUnescape(v)
+					if err != nil {
+						logger.Error(err.Error())
+						return true
+					}
+					unescape2, err := url.QueryUnescape(unescape)
+					if err != nil {
+						logger.Error(err.Error())
+						return true
+					}
+					value := strings.TrimSpace(strings.ToLower(unescape2))
 					for _, val := range me.values {
 						if strings.Contains(value, val) {
 							logger.Printf("The content of the input contains illegal characters:%s -> %s \r\n", val, r.URL.Path)
