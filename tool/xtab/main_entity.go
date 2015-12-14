@@ -6,11 +6,12 @@ package main
 
 import (
 	"bytes"
-	"gopkg.in/goyy/goyy.v0/util/files"
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"html/template"
 	"io/ioutil"
 	"path/filepath"
+
+	"gopkg.in/goyy/goyy.v0/util/files"
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 func genEntity() {
@@ -18,10 +19,10 @@ func genEntity() {
 		for _, t := range conf.tables {
 			if t.module.project.Id() == p.Id() && t.module.project.generate == "true" && t.module.generate == "true" && t.generate == "true" {
 				dir := t.module.rootdir + "/internal/" + t.id + "/"
-				dstfile := filepath.Join(dir, "main.domain.go")
+				dstfile := filepath.Join(dir, t.id+"_entity.go")
 				if strings.IsNotBlank(t.master) {
 					dir = t.module.rootdir + "/internal/" + t.master + "/"
-					dstfile = filepath.Join(dir, "main.domain."+t.slave+".go")
+					dstfile = filepath.Join(dir, t.slave+"_entity.go")
 				}
 				if files.IsExist(dstfile) {
 					continue
