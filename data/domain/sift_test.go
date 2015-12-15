@@ -5,9 +5,10 @@
 package domain_test
 
 import (
-	"gopkg.in/goyy/goyy.v0/data/domain"
 	"net/http"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/data/domain"
 )
 
 func TestNewSift(t *testing.T) {
@@ -19,6 +20,7 @@ func TestNewSift(t *testing.T) {
 		{"", "1", "", "1", "", "", false},
 		{"s", "2", "", "2", "", "", false},
 		{"sName", "3", "Name", "3", "EQ", "ST", true},
+		{"typesId", "3", "typesId", "3", "EQ", "ST", true},
 		{"sNameEQ", "4", "Name", "4", "EQ", "ST", true},
 		{"sNameEQST", "5", "Name", "5", "EQ", "ST", true},
 		{"sNameSTEQ", "6", "Name", "6", "EQ", "ST", true},
@@ -64,7 +66,7 @@ func TestNewSifts(t *testing.T) {
 		println(err.Error())
 	}
 
-	expected := 0
+	expected := 2
 	if out, _ := domain.NewSiftsReq(req); len(out) != expected {
 		t.Errorf(`domain.NewSifts(req) = "%v", want "%v"`, len(out), expected)
 	}

@@ -5,11 +5,12 @@
 package domain
 
 import (
+	"net/http"
+	"net/url"
+
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
 	"gopkg.in/goyy/goyy.v0/util/webs"
-	"net/http"
-	"net/url"
 )
 
 // Query conditional filtering.
@@ -57,7 +58,10 @@ func NewSift(name, value string, prefix ...string) (Sift, bool) {
 			return nil, false
 		}
 	}
-	k := strings.After(name, prefixOk)
+	k := name
+	if strings.HasPrefix(name, prefixOk) {
+		k = strings.After(name, prefixOk)
+	}
 	if strings.IsBlank(k) {
 		return nil, false
 	}
