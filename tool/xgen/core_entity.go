@@ -12,8 +12,8 @@ type entity struct {
 	Name            string
 	Comment         string
 	Table           string
-	Fields          []field
-	PrimaryKeys     []field
+	Fields          []*field
+	PrimaryKeys     []*field
 	FieldMaxLen     int
 	ColumnMaxLen    int
 	TypeMaxLen      int

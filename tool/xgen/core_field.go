@@ -7,6 +7,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
@@ -50,6 +51,7 @@ func (me *field) Init(name, typ, tag string) error {
 
 		switch strings.ToLower(pair[0]) {
 		case "column":
+			isSetColumn = true
 			me.Column = pair[1]
 		case "default":
 			me.Default = pair[1]

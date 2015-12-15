@@ -11,10 +11,11 @@ import (
 	"go/parser"
 	"go/printer"
 	"go/token"
-	"gopkg.in/goyy/goyy.v0/util/files"
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"io/ioutil"
 	"path/filepath"
+
+	"gopkg.in/goyy/goyy.v0/util/files"
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 // factory is a file generation factory.
@@ -37,7 +38,7 @@ type factory struct {
 	IsTimeField       bool
 	IsValidationField bool
 	IsExtend          bool
-	Entities          []entity
+	Entities          []*entity
 }
 
 // Init initializes an File from a path.
@@ -103,7 +104,7 @@ func (me *factory) Init(path string) error {
 			continue
 		}
 
-		e := entity{Project: project, Relationship: relationship}
+		e := &entity{Project: project, Relationship: relationship}
 		if strings.IsBlank(me.Project) {
 			me.Project = project
 		}
@@ -144,7 +145,7 @@ func (me *factory) Init(path string) error {
 				}
 				switch extend {
 				case "pk", "sys", "tree":
-					col := field{Name: "id", Type: "string", Column: "id", IsPrimary: true}
+					col := &field{Name: "id", Type: "string", Column: "id", IsPrimary: true}
 					e.PrimaryKeys = append(e.PrimaryKeys, col)
 				}
 				break
@@ -189,7 +190,7 @@ func (me *factory) Init(path string) error {
 					continue
 				}
 
-				col := field{}
+				col := &field{}
 				if err := col.Init(f.Names[0].Name, typ, items); err != nil {
 					return fmt.Errorf(
 						"Unable to parse tag '%s' from entity '%s' in '%s': %v",
