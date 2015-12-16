@@ -58,10 +58,10 @@ func NewSift(name, value string, prefix ...string) (Sift, bool) {
 			return nil, false
 		}
 	}
-	k := name
-	if strings.HasPrefix(name, prefixOk) {
-		k = strings.After(name, prefixOk)
+	if !strings.HasPrefix(name, prefixOk) {
+		return nil, false
 	}
+	k := strings.After(name, prefixOk)
 	if strings.IsBlank(k) {
 		return nil, false
 	}

@@ -19,8 +19,8 @@ func TestNewSift(t *testing.T) {
 	}{
 		{"", "1", "", "1", "", "", false},
 		{"s", "2", "", "2", "", "", false},
+		{"typesId", "2", "", "2", "", "", false},
 		{"sName", "3", "Name", "3", "EQ", "ST", true},
-		{"typesId", "3", "typesId", "3", "EQ", "ST", true},
 		{"sNameEQ", "4", "Name", "4", "EQ", "ST", true},
 		{"sNameEQST", "5", "Name", "5", "EQ", "ST", true},
 		{"sNameSTEQ", "6", "Name", "6", "EQ", "ST", true},
