@@ -9,6 +9,7 @@ package {{.PackageName}}
 
 import (
 	"bytes"
+
 	"gopkg.in/goyy/goyy.v0/data/entity"
 ){{range $i, $e := .Entities}}{{with $name := entities $e.Name}}
 

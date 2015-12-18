@@ -9,12 +9,13 @@ package {{.PackageName}}
 
 import (
 	"bytes"
-	"fmt"
+	"fmt"{{if .IsTimeField}}
+	"time"{{end}}
+
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"{{if .IsValidationField}}
 	"gopkg.in/goyy/goyy.v0/data/validate"{{end}}
-	"gopkg.in/goyy/goyy.v0/util/strings"{{if .IsTimeField}}
-	"time"{{end}}
+	"gopkg.in/goyy/goyy.v0/util/strings"
 ){{range $e := .Entities}}
 
 var (
