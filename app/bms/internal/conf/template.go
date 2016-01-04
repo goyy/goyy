@@ -8,7 +8,6 @@ import (
 func init() {
 	xhttp.Conf.Html.Enable = true
 	xhttp.Conf.Template.Enable = true
-	xhttp.Conf.Template.Funcs = xhttp.Conf.Template.Funcs
 	if profile.Accepts(profile.DEV) {
 		xhttp.Conf.Html.Reloaded = true
 		xhttp.Conf.Template.Reloaded = true
