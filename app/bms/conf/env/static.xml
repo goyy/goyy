@@ -4,9 +4,13 @@
 	<environments default="development">
 		<environment id="development">
 			<asset name="goyy">
-				<dir>static</dir>
+				<dir>/assets</dir>
 				<url>/assets</url>
 			</asset>
+			<static name="goyy">
+				<dir>static</dir>
+				<url>/statics</url>
+			</static>
 			<developer name="goyy">
 				<dir>/assets/yydev</dir>
 				<url>/devs</url>
@@ -18,9 +22,13 @@
 		</environment>
 		<environment id="test">
 			<asset name="goyy">
+				<dir>/assets</dir>
+				<url>http://127.0.0.1:9099</url>
+			</asset>
+			<static name="goyy">
 				<dir>/assets/yybms</dir>
 				<url>http://127.0.0.1:9099/yybms</url>
-			</asset>
+			</static>
 			<developer name="goyy">
 				<dir>/assets/yydev</dir>
 				<url>http://127.0.0.1:9099/yydev</url>
@@ -32,9 +40,13 @@
 		</environment>
 		<environment id="production">
 			<asset name="goyy">
+				<dir>/assets</dir>
+				<url>http://assets.goyy.org</url>
+			</asset>
+			<static name="goyy">
 				<dir>/assets/yybms</dir>
 				<url>http://assets.goyy.org/yybms</url>
-			</asset>
+			</static>
 			<developer name="goyy">
 				<dir>/assets/yydev</dir>
 				<url>http://assets.goyy.org/yydev</url>

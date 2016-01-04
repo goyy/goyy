@@ -21,6 +21,18 @@ func init() {
 	}
 
 	if profile.Accepts(profile.DEV) {
+		xhttp.Conf.Static.Enable = true
+	} else {
+		xhttp.Conf.Static.Enable = false
+	}
+	if v, err := env.Static("goyy"); err == nil {
+		xhttp.Conf.Static.Dir = v.Dir
+		xhttp.Conf.Static.URL = v.URL
+	} else {
+		log.Println(err.Error())
+	}
+
+	if profile.Accepts(profile.DEV) {
 		xhttp.Conf.Developer.Enable = true
 	} else {
 		xhttp.Conf.Developer.Enable = false
