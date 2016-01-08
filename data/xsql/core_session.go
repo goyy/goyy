@@ -6,6 +6,8 @@ package xsql
 
 import (
 	"database/sql"
+	"time"
+
 	"gopkg.in/goyy/goyy.v0/data/dialect"
 	"gopkg.in/goyy/goyy.v0/data/dml"
 	"gopkg.in/goyy/goyy.v0/data/domain"
@@ -13,7 +15,6 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/sqls"
 	"gopkg.in/goyy/goyy.v0/util/uuids"
-	"time"
 )
 
 type session struct {
@@ -25,12 +26,18 @@ type session struct {
 
 // New Query
 func (me *session) Query(dql string, args ...interface{}) Query {
-	return &query{db: me.db, session: me, dql: dql, args: args}
+	return &query{
+		db:      me.db,
+		session: me,
+		dql:     sqls.FormatSpace(dql),
+		args:    args,
+	}
 }
 
 // New NamedQuery
 func (me *session) NamedQuery(dql string, args map[string]interface{}) (Query, error) {
-	sql, err := sqls.ParseTemplateSql(dql, args)
+	fdql := sqls.FormatSpace(dql)
+	sql, err := sqls.ParseTemplateSql(fdql, args)
 	if err != nil {
 		logger.Error(err.Error())
 		return nil, err
@@ -46,7 +53,7 @@ func (me *session) NamedQuery(dql string, args map[string]interface{}) (Query, e
 		dql:       d,
 		args:      a,
 		isNamed:   true,
-		namedDql:  dql,
+		namedDql:  fdql,
 		namedArgs: args,
 	}, nil
 }
@@ -162,11 +169,12 @@ func (me *session) Disable(e entity.Interface) (int64, error) {
 }
 
 func (me *session) Exec(dml string, args ...interface{}) (sql.Result, error) {
+	sql := sqls.FormatSpace(dml)
 	if isDebug() {
 		now := time.Now()
-		defer debugLog(now, dml, args...)
+		defer debugLog(now, sql, args...)
 	}
-	stmt, err := me.db.Prepare(dml)
+	stmt, err := me.db.Prepare(sql)
 	if err != nil {
 		logger.Error(err.Error())
 		return nil, err
