@@ -5,13 +5,14 @@
 package result_test
 
 import (
+	"testing"
+
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/result"
-	"testing"
 )
 
 func TestPageJSON(t *testing.T) {
-	expected := `{"success":true,"id":"","token":"","code":"1","message":"ok","memo":"","tag":"","data":{"pageNo":1,"pageSize":10,"totalElements":2,"function":"page","length":8,"slider":1,"slice":[{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0},{"id":"2","name":"sa","passwd":"3df69ku7h","age":20,"email":"sa@gmail.com","version":0}]}}`
+	expected := `{"success":true,"id":"","token":"","code":"1","message":"ok","memo":"","tag":"","data":{"pageNo":1,"pageSize":10,"pageFn":"page","totalPages":1,"totalElements":2,"length":8,"slider":1,"slice":[{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0},{"id":"2","name":"sa","passwd":"3df69ku7h","age":20,"email":"sa@gmail.com","version":0}]}}`
 	u1 := NewUser()
 	u1.SetId("1")
 	u1.SetName("admin")

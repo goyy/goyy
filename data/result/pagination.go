@@ -4,6 +4,12 @@
 
 package result
 
+import (
+	"encoding/json"
+
+	"gopkg.in/goyy/goyy.v0/util/strings"
+)
+
 const (
 	defaultPageNo  = 1
 	defaultPageNot = -1
@@ -50,4 +56,20 @@ func (me *Pagination) Next() int {
 	} else {
 		return me.PageNo + 1
 	}
+}
+
+func (me *Pagination) JSON() (string, error) {
+	b, err := json.Marshal(me)
+	if err == nil {
+		return string(b), nil
+	} else {
+		return "", err
+	}
+}
+
+func (me *Pagination) ParseJSON(jsons string) error {
+	if strings.IsBlank(jsons) {
+		return nil
+	}
+	return json.Unmarshal([]byte(jsons), me)
 }
