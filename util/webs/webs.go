@@ -5,10 +5,11 @@
 package webs
 
 import (
-	"bytes"
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"net/http"
 	"net/url"
+
+	"gopkg.in/goyy/goyy.v0/util/bytes"
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 // Form contains the parsed form data, including both the URL
@@ -139,7 +140,7 @@ func ParseQuery(params url.Values) string {
 	if params == nil {
 		return ""
 	}
-	var b bytes.Buffer
+	b := bytes.NewBuffer()
 	i := 0
 	for k, v := range params {
 		param := strings.JoinIgnoreBlank(v, ",")
@@ -150,6 +151,22 @@ func ParseQuery(params url.Values) string {
 			b.WriteString(k + "=" + param)
 			i++
 		}
+	}
+	return b.String()
+}
+
+func ParseUrlSpecialChars(s string) string {
+	b := bytes.NewBuffer()
+	// Count %, check that they're well-formed.
+	for i := 0; i < len(s); i++ {
+		switch s[i] {
+		case '%':
+			if i+2 >= len(s) || !bytes.IsHex(s[i+1]) || !bytes.IsHex(s[i+2]) {
+				b.WriteString("%25")
+				continue
+			}
+		}
+		b.WriteByte(s[i])
 	}
 	return b.String()
 }

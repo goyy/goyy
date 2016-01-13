@@ -7,10 +7,11 @@ package xhttp
 import (
 	"bytes"
 	"fmt"
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"io/ioutil"
 	"net/http"
 	"runtime"
+
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 var (

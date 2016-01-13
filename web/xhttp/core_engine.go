@@ -5,8 +5,9 @@
 package xhttp
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"net/http"
+
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 type engine struct {

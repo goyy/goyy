@@ -13,3 +13,19 @@ import (
 func TrimRightNul(src []byte) []byte {
 	return bytes.TrimRight(src, "\x00")
 }
+
+func IsHex(c byte) bool {
+	switch {
+	case '0' <= c && c <= '9':
+		return true
+	case 'a' <= c && c <= 'f':
+		return true
+	case 'A' <= c && c <= 'F':
+		return true
+	}
+	return false
+}
+
+func NewBuffer() bytes.Buffer {
+	return bytes.Buffer{}
+}

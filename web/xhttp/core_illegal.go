@@ -6,11 +6,12 @@ package xhttp
 
 import (
 	"fmt"
-	"gopkg.in/goyy/goyy.v0/util/strings"
-	"gopkg.in/goyy/goyy.v0/util/webs"
 	"net/http"
 	"net/url"
 	"sync"
+
+	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/util/webs"
 )
 
 // illegal character
@@ -41,30 +42,25 @@ func (me *illegalServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) boo
 		for _, vs := range params {
 			for _, v := range vs {
 				if strings.IsNotBlank(v) {
+					v = webs.ParseUrlSpecialChars(v)
 					unescape, err := url.QueryUnescape(v)
 					if err != nil {
 						logger.Error(err.Error())
+						me.write(w, r)
 						return true
 					}
+					unescape = webs.ParseUrlSpecialChars(unescape)
 					unescape2, err := url.QueryUnescape(unescape)
 					if err != nil {
 						logger.Error(err.Error())
+						me.write(w, r)
 						return true
 					}
 					value := strings.TrimSpace(strings.ToLower(unescape2))
 					for _, val := range me.values {
 						if strings.Contains(value, val) {
 							logger.Printf("The content of the input contains illegal characters:%s -> %s \r\n", val, r.URL.Path)
-							reqType := r.Header.Get("X-Requested-With")
-							if "XMLHttpRequest" == reqType { // AJAX
-								f := `{"success":false,"message":"%s"}`
-								c := fmt.Sprintf(f, i18N.Message("err.illegal"))
-								w.Write([]byte(c))
-							} else {
-								f := `<script language="javascript">alert("%s");window.history.go(-1);</script>`
-								c := fmt.Sprintf(f, i18N.Message("err.illegal"))
-								w.Write([]byte(c))
-							}
+							me.write(w, r)
 							return true
 						}
 					}
@@ -73,6 +69,19 @@ func (me *illegalServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) boo
 		}
 	}
 	return false
+}
+
+func (me *illegalServeMux) write(w http.ResponseWriter, r *http.Request) {
+	reqType := r.Header.Get("X-Requested-With")
+	if "XMLHttpRequest" == reqType { // AJAX
+		f := `{"success":false,"message":"%s"}`
+		c := fmt.Sprintf(f, i18N.Message("err.illegal"))
+		w.Write([]byte(c))
+	} else {
+		f := `<script language="javascript">alert("%s");window.history.go(-1);</script>`
+		c := fmt.Sprintf(f, i18N.Message("err.illegal"))
+		w.Write([]byte(c))
+	}
 }
 
 func (me *illegalServeMux) setValues() {
