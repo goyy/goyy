@@ -6,6 +6,7 @@ package xhttp
 
 import (
 	"net/http"
+	"runtime/debug"
 
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
@@ -19,6 +20,7 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	defer func() {
 		if err := recover(); err != nil {
 			logger.Error(err)
+			debug.PrintStack()
 			if strings.IsNotBlank(Conf.Err.Err500) {
 				http.Redirect(w, r, Conf.Err.Err500, http.StatusFound)
 				return
