@@ -598,19 +598,27 @@ func (me factory) genFileName(typ, name string) string {
 		typ = "sql"
 	}
 	if strings.HasPrefix(typ, "xgen.controller") {
-		typ = "controller_xgen"
+		typ, name = me.resetTypAndName("controller_xgen", name)
 	}
 	if strings.HasPrefix(typ, "xgen.service") {
-		typ = "manager_xgen"
+		typ, name = me.resetTypAndName("manager_xgen", name)
 	}
 	if strings.HasPrefix(typ, "xgen.entity") {
-		typ = "entity_xgen"
+		typ, name = me.resetTypAndName("entity_xgen", name)
 	}
 	if strings.HasPrefix(typ, "xgen.entities") {
-		typ = "entities_xgen"
+		typ, name = me.resetTypAndName("entities_xgen", name)
 	}
 	if strings.HasPrefix(typ, "xgen.dto") {
-		typ = "dto_xgen"
+		typ, name = me.resetTypAndName("dto_xgen", name)
 	}
 	return fmt.Sprintf("%s%s.go", name, typ)
+}
+
+func (me factory) resetTypAndName(typ, name string) (string, string) {
+	if strings.HasSuffix(name, "_test_") {
+		name = strings.Before(name, "test_")
+		typ = typ + "_test"
+	}
+	return typ, name
 }
