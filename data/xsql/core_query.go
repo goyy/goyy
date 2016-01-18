@@ -6,12 +6,13 @@ package xsql
 
 import (
 	"database/sql"
+	"time"
+
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/dql"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/sqls"
 	"gopkg.in/goyy/goyy.v0/util/strings"
-	"time"
 )
 
 // add space string:{before is add:yes, after is add:no}

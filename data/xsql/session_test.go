@@ -5,13 +5,14 @@
 package xsql_test
 
 import (
+	"strconv"
+	"testing"
+
 	"gopkg.in/goyy/goyy.v0/comm/log"
 	"gopkg.in/goyy/goyy.v0/data/dialect"
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/times"
-	"strconv"
-	"testing"
 )
 
 var created = times.NowUnix()
@@ -220,6 +221,11 @@ func TestSessionNamedQueryInt(t *testing.T) {
 		args     map[string]interface{}
 		expected int
 	}{
+		{
+			"select count(*) from users",
+			map[string]interface{}{"name": "1%", "version": 0, "memo": "memo"},
+			26,
+		},
 		{
 			"select count(*) from users where name like #{name}",
 			map[string]interface{}{"name": "1%", "version": 0, "memo": "memo"},

@@ -7,12 +7,13 @@ package sqls
 import (
 	"bytes"
 	"fmt"
+	"text/template"
+
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/data/dialect"
 	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/templates"
-	"text/template"
 )
 
 // select ... from ... -> select count(*) from ...
@@ -43,6 +44,11 @@ func ParseCountSql(sql string) string {
 func ParseNamedSql(dia dialect.Interface, sql string, args map[string]interface{}) (sqlout string, argsout []interface{}, err error) {
 	if dia == nil || strings.IsBlank(sql) || args == nil {
 		err = errors.NewNotBlank("dia/sql/args")
+		return
+	}
+	if !strings.Contains(sql, "#{") {
+		sqlout = sql
+		argsout = make([]interface{}, 0)
 		return
 	}
 	sqls := strings.Betweens(sql, "#{", "}")
