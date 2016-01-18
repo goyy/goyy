@@ -6,6 +6,7 @@ package service
 
 import (
 	"database/sql"
+
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/result"
@@ -25,6 +26,10 @@ type Service interface {
 	SelectInt(dql string, args ...interface{}) (int, error)
 	SelectFloat(dql string, args ...interface{}) (float64, error)
 	SelectStr(dql string, args ...interface{}) (string, error)
+	SelectOneByNamed(out entity.Interface, query string, args map[string]interface{}) (err error)
+	SelectListByNamed(out entity.Interfaces, query string, args map[string]interface{}) (err error)
+	SelectPageByNamed(content entity.Interfaces, pageable domain.Pageable, dql string, args map[string]interface{}) (out domain.Page, err error)
+	SelectIntByNamed(dql string, args map[string]interface{}) (int, error)
 	SelectOneBySift(out entity.Interface, sifts ...domain.Sift) (err error)
 	SelectListBySift(out entity.Interfaces, sifts ...domain.Sift) (err error)
 	SelectPageBySift(content entity.Interfaces, pageable domain.Pageable, sifts ...domain.Sift) (out domain.Page, err error)

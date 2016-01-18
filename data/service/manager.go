@@ -7,6 +7,7 @@ package service
 import (
 	"database/sql"
 	"errors"
+
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/repository"
@@ -99,6 +100,36 @@ func (me *Manager) SelectStr(dql string, args ...interface{}) (string, error) {
 		me.Pre()
 	}
 	return me.Repository().SelectStr(dql, args...)
+}
+
+func (me *Manager) SelectOneByNamed(out entity.Interface, query string, args map[string]interface{}) (err error) {
+	if me.Pre != nil {
+		me.Pre()
+	}
+	err = me.Repository().SelectOneByNamed(out, query, args)
+	return
+}
+
+func (me *Manager) SelectListByNamed(out entity.Interfaces, query string, args map[string]interface{}) (err error) {
+	if me.Pre != nil {
+		me.Pre()
+	}
+	err = me.Repository().SelectListByNamed(out, query, args)
+	return
+}
+
+func (me *Manager) SelectPageByNamed(content entity.Interfaces, pageable domain.Pageable, dql string, args map[string]interface{}) (out domain.Page, err error) {
+	if me.Pre != nil {
+		me.Pre()
+	}
+	return me.Repository().SelectPageByNamed(content, pageable, dql, args)
+}
+
+func (me *Manager) SelectIntByNamed(dql string, args map[string]interface{}) (int, error) {
+	if me.Pre != nil {
+		me.Pre()
+	}
+	return me.Repository().SelectIntByNamed(dql, args)
 }
 
 func (me *Manager) SelectOneBySift(out entity.Interface, sifts ...domain.Sift) (err error) {

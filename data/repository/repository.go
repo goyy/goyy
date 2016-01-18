@@ -6,11 +6,12 @@ package repository
 
 import (
 	"database/sql"
+	"os"
+
 	"gopkg.in/goyy/goyy.v0/data/dialect"
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/xsql"
-	"os"
 )
 
 type Repository struct {
@@ -167,7 +168,74 @@ func (me *Repository) SelectStr(dql string, args ...interface{}) (string, error)
 	return query.Str()
 }
 
-// Query a single record.
+// Query a single record by named query.
+func (me *Repository) SelectOneByNamed(out entity.Interface, dql string, args map[string]interface{}) error {
+	session, err := me.factory.Session()
+	if err != nil {
+		logger.Debug(err)
+		return err
+	}
+	defer session.Close()
+	query, err := session.NamedQuery(dql, args)
+	if err != nil {
+		logger.Debug(err)
+		return err
+	}
+	err = query.Row(out)
+	return err
+}
+
+// Query multiple records by named query.
+func (me *Repository) SelectListByNamed(out entity.Interfaces, dql string, args map[string]interface{}) error {
+	session, err := me.factory.Session()
+	if err != nil {
+		logger.Debug(err)
+		return err
+	}
+	defer session.Close()
+	query, err := session.NamedQuery(dql, args)
+	if err != nil {
+		logger.Debug(err)
+		return err
+	}
+	err = query.Rows(out)
+	return err
+}
+
+// Paging query record by named query.
+func (me *Repository) SelectPageByNamed(content entity.Interfaces, pageable domain.Pageable, dql string, args map[string]interface{}) (domain.Page, error) {
+	session, err := me.factory.Session()
+	if err != nil {
+		logger.Debug(err)
+		return nil, err
+	}
+	defer session.Close()
+	query, err := session.NamedQuery(dql, args)
+	if err != nil {
+		logger.Debug(err)
+		return nil, err
+	}
+	return query.Page(content, pageable)
+}
+
+// Query a single record by named query.
+// Return value of int type.
+func (me *Repository) SelectIntByNamed(dql string, args map[string]interface{}) (int, error) {
+	session, err := me.factory.Session()
+	if err != nil {
+		logger.Debug(err)
+		return 0, err
+	}
+	defer session.Close()
+	query, err := session.NamedQuery(dql, args)
+	if err != nil {
+		logger.Debug(err)
+		return 0, err
+	}
+	return query.Int()
+}
+
+// Query a single record by sifts.
 func (me *Repository) SelectOneBySift(out entity.Interface, sifts ...domain.Sift) error {
 	session, err := me.factory.Session()
 	if err != nil {
