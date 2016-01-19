@@ -7,6 +7,7 @@ package schema
 type Column interface {
 	Table() Table
 	Name() string
+	Comment() string
 	IsPrimary() bool
 	IsVersion() bool
 	IsDeletion() bool

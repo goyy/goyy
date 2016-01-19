@@ -10,6 +10,7 @@ import (
 
 type table struct {
 	name     string
+	comment  string
 	columns  map[string]*column
 	primary  *column
 	version  *column
@@ -58,6 +59,10 @@ func (me *table) setModified(column *column) {
 
 func (me *table) Name() string {
 	return me.name
+}
+
+func (me *table) Comment() string {
+	return me.comment
 }
 
 func (me *table) Column(columnName string) Column {

@@ -6,6 +6,7 @@ package schema
 
 type Table interface {
 	Name() string
+	Comment() string
 	Column(columnName string) Column
 	Columns() []Column
 	Primary() Column

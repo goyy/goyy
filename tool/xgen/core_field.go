@@ -16,6 +16,7 @@ type field struct {
 	Name        string
 	Type        string
 	Column      string
+	Comment     string
 	Default     string
 	Validations validations
 	IsPrimary   bool
@@ -53,6 +54,8 @@ func (me *field) Init(name, typ, tag string) error {
 		case "column":
 			isSetColumn = true
 			me.Column = pair[1]
+		case "comment":
+			me.Comment = pair[1]
 		case "default":
 			me.Default = pair[1]
 		case "primary":

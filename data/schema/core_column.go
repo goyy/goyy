@@ -7,6 +7,7 @@ package schema
 type column struct {
 	table     *table
 	name      string
+	comment   string
 	primary   bool
 	version   bool
 	deletion  bool
@@ -78,6 +79,10 @@ func (me *column) Table() Table {
 
 func (me *column) Name() string {
 	return me.name
+}
+
+func (me *column) Comment() string {
+	return me.comment
 }
 
 func (me *column) IsPrimary() bool {
