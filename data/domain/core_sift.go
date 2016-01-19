@@ -16,10 +16,17 @@ var ots = []string{ot_st, ot_bl,
 
 // Query conditional filtering.
 type sift struct {
+	name     string
 	key      string
 	value    string
 	typ      string
 	operator string
+}
+
+// Returns the name.
+// @return
+func (me *sift) Name() string {
+	return me.name
 }
 
 // Returns the name of query conditional filtering.

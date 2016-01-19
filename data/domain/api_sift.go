@@ -14,20 +14,30 @@ import (
 )
 
 // Query conditional filtering.
+// eg: sNameEQST=goyy
 type Sift interface {
+	// Returns the name.
+	// eg: sNameEQST
+	// @return
+	Name() string
+
 	// Returns the name of query conditional filtering.
+	// eg: Name
 	// @return
 	Key() string
 
 	// Returns the value of query conditional filtering.
+	// eg: goyy
 	// @return
 	Value() string
 
 	// Returns the operator of query conditional filtering.
+	// eg: EQ
 	// @return
 	Operator() string
 
 	// Returns the type of query conditional filtering.
+	// eg: ST
 	// @return
 	Type() string
 }
@@ -42,7 +52,7 @@ type Sift interface {
 // sAgeGT
 // sMemoLI
 func NewSift(name, value string, prefix ...string) (Sift, bool) {
-	s := &sift{}
+	s := &sift{name: name}
 	var prefixOk string
 	if len(prefix) == 0 {
 		prefixOk = defaultSiftPrefix
@@ -118,6 +128,22 @@ func NewSiftsReq(req *http.Request, prefix ...string) ([]Sift, error) {
 		return nil, err
 	}
 	return NewSifts(values, prefix...)
+}
+
+func SiftsToParams(sifts ...Sift) map[string]string {
+	result := make(map[string]string, 0)
+	for _, sift := range sifts {
+		result[sift.Name()] = sift.Value()
+	}
+	return result
+}
+
+func SiftsToMap(sifts ...Sift) map[string]interface{} {
+	result := make(map[string]interface{}, 0)
+	for _, sift := range sifts {
+		result[sift.Name()] = sift.Value()
+	}
+	return result
 }
 
 func convertValue(operator, typ, value string) string {

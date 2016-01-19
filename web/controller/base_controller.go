@@ -5,17 +5,29 @@
 package controller
 
 import (
+	"strconv"
+
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/result"
 	"gopkg.in/goyy/goyy.v0/data/service"
+	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
-	"strconv"
 )
 
-type baseController struct{}
+type baseController struct {
+	sqlOfIndex   string
+	isSqlOfIndex bool
+}
+
+func (me *baseController) SetSqlOfIndex(sql string) {
+	if strings.IsNotBlank(sql) {
+		me.isSqlOfIndex = true
+		me.sqlOfIndex = sql
+	}
+}
 
 func (me *baseController) Index(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r *result.Page) error) (out *result.Page, err error) {
 	if pre != nil {
@@ -263,8 +275,20 @@ func (me *baseController) Page(c xhttp.Context, mgr service.Service) (out *resul
 	if err != nil {
 		return nil, err
 	}
-	data, err := mgr.SelectPageBySift(v, p, sifts...)
-	return &result.Page{Success: true, Data: data}, nil
+	if me.isSqlOfIndex {
+		params := domain.SiftsToMap(sifts...)
+		data, err := mgr.SelectPageByNamed(v, p, me.sqlOfIndex, params)
+		if err != nil {
+			return nil, err
+		}
+		return &result.Page{Success: true, Data: data}, nil
+	} else {
+		data, err := mgr.SelectPageBySift(v, p, sifts...)
+		if err != nil {
+			return nil, err
+		}
+		return &result.Page{Success: true, Data: data}, nil
+	}
 }
 
 func (me *baseController) Exp(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r entity.Interfaces) error) (out entity.Interfaces, err error) {

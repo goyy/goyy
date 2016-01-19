@@ -5,8 +5,9 @@
 package domain_test
 
 import (
-	"gopkg.in/goyy/goyy.v0/data/domain"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/data/domain"
 )
 
 func TestNewPage(t *testing.T) {

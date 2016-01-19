@@ -5,12 +5,13 @@
 package domain
 
 import (
+	"net/http"
+	"strconv"
+
 	"gopkg.in/goyy/goyy.v0/util/cookies"
 	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/webs"
-	"net/http"
-	"strconv"
 )
 
 // Abstract interface for pagination information.
