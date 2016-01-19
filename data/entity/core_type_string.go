@@ -14,6 +14,9 @@ type String struct {
 }
 
 func (me *String) Value() string {
+	if me.value == nil || len(me.value) == 0 {
+		return ""
+	}
 	return string(me.value)
 }
 
