@@ -5,14 +5,14 @@ string library for Go
 `go get gopkg.in/goyy/goyy.v0/util/strings`
 
 # Usage
-*IsEmpty*
+*IsBlank*
 
-	fmt.Println(strings.IsEmpty(""))
-	fmt.Println(strings.IsEmpty("  "))
-	fmt.Println(strings.IsEmpty(" \t\r\n "))
-	fmt.Println(strings.IsEmpty("a"))
-	fmt.Println(strings.IsEmpty(" a  "))
-	fmt.Println(strings.IsEmpty(" \t\r\n a \t\r\n "))
+	fmt.Println(strings.IsBlank(""))
+	fmt.Println(strings.IsBlank("  "))
+	fmt.Println(strings.IsBlank(" \t\r\n "))
+	fmt.Println(strings.IsBlank("a"))
+	fmt.Println(strings.IsBlank(" a  "))
+	fmt.Println(strings.IsBlank(" \t\r\n a \t\r\n "))
 	// Output:
 	// true
 	// true
@@ -21,14 +21,14 @@ string library for Go
 	// false
 	// false
 
-*IsNotEmpty*
+*IsNotBlank*
 
-	fmt.Println(strings.IsNotEmpty(""))
-	fmt.Println(strings.IsNotEmpty("  "))
-	fmt.Println(strings.IsNotEmpty(" \t\r\n "))
-	fmt.Println(strings.IsNotEmpty("a"))
-	fmt.Println(strings.IsNotEmpty(" a  "))
-	fmt.Println(strings.IsNotEmpty(" \t\r\n a \t\r\n "))
+	fmt.Println(strings.IsNotBlank(""))
+	fmt.Println(strings.IsNotBlank("  "))
+	fmt.Println(strings.IsNotBlank(" \t\r\n "))
+	fmt.Println(strings.IsNotBlank("a"))
+	fmt.Println(strings.IsNotBlank(" a  "))
+	fmt.Println(strings.IsNotBlank(" \t\r\n a \t\r\n "))
 	// Output:
 	// false
 	// false
