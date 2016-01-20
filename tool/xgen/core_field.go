@@ -158,3 +158,10 @@ func (me field) String() string {
 	tmpl.Execute(&buf, me)
 	return buf.String()
 }
+
+func (me field) GetComment() string {
+	if strings.IsBlank(me.Comment) {
+		return strings.ToUpper(me.Column)
+	}
+	return me.Comment
+}

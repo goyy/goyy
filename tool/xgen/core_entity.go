@@ -4,6 +4,10 @@
 
 package main
 
+import (
+	"gopkg.in/goyy/goyy.v0/util/strings"
+)
+
 // entity is an SQL table.
 type entity struct {
 	Project         string
@@ -20,4 +24,11 @@ type entity struct {
 	AllFieldMaxLen  int
 	AllColumnMaxLen int
 	AllTypeMaxLen   int
+}
+
+func (me entity) GetComment() string {
+	if strings.IsBlank(me.Comment) {
+		return strings.ToUpper(me.Name)
+	}
+	return me.Comment
 }
