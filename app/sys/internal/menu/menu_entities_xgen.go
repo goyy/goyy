@@ -3,6 +3,7 @@ package menu
 
 import (
 	"bytes"
+
 	"gopkg.in/goyy/goyy.v0/data/entity"
 )
 

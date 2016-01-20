@@ -3,6 +3,7 @@ package post
 
 import (
 	"bytes"
+
 	"gopkg.in/goyy/goyy.v0/data/entity"
 )
 

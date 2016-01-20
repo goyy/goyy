@@ -4,17 +4,18 @@ package dml_test
 import (
 	"bytes"
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 var (
-	USER        = schema.TABLE("sys_user")
-	USER_ID     = USER.PRIMARY("id")
-	USER_NAME   = USER.COLUMN("name")
-	USER_PASSWD = USER.COLUMN("passwd")
-	USER_EMAIL  = USER.COLUMN("email")
+	USER        = schema.TABLE("sys_user", "USER")
+	USER_ID     = USER.PRIMARY("id", "ID")
+	USER_NAME   = USER.COLUMN("name", "NAME")
+	USER_PASSWD = USER.COLUMN("passwd", "PASSWD")
+	USER_EMAIL  = USER.COLUMN("email", "EMAIL")
 )
 
 func NewUser() *User {

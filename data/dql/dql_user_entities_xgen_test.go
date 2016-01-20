@@ -3,6 +3,7 @@ package dql_test
 
 import (
 	"bytes"
+
 	"gopkg.in/goyy/goyy.v0/data/entity"
 )
 

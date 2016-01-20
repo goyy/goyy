@@ -4,15 +4,16 @@ package internal
 import (
 	"bytes"
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 var (
-	PERMISSION            = schema.TABLE("sys_menu")
-	PERMISSION_ID         = PERMISSION.PRIMARY("id")
-	PERMISSION_PERMISSION = PERMISSION.COLUMN("permission")
+	PERMISSION            = schema.TABLE("sys_menu", "PERMISSION")
+	PERMISSION_ID         = PERMISSION.PRIMARY("id", "ID")
+	PERMISSION_PERMISSION = PERMISSION.COLUMN("permission", "PERMISSION")
 )
 
 func NewPermission() *Permission {

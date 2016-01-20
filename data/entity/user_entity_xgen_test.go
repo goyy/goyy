@@ -4,19 +4,20 @@ package entity_test
 import (
 	"bytes"
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 var (
-	USER         = schema.TABLE("sys_user")
-	USER_ID      = USER.PRIMARY("id")
-	USER_NAME    = USER.COLUMN("name")
-	USER_PASSWD  = USER.COLUMN("passwd")
-	USER_AGE     = USER.COLUMN("age")
-	USER_EMAIL   = USER.COLUMN("email")
-	USER_VERSION = USER.COLUMN("version")
+	USER         = schema.TABLE("sys_user", "USER")
+	USER_ID      = USER.PRIMARY("id", "ID")
+	USER_NAME    = USER.COLUMN("name", "NAME")
+	USER_PASSWD  = USER.COLUMN("passwd", "PASSWD")
+	USER_AGE     = USER.COLUMN("age", "AGE")
+	USER_EMAIL   = USER.COLUMN("email", "EMAIL")
+	USER_VERSION = USER.COLUMN("version", "VERSION")
 )
 
 func NewUser() *User {

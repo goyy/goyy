@@ -4,36 +4,37 @@ package user
 import (
 	"bytes"
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 var (
-	ENTITY            = schema.TABLE("sys_user")
-	ENTITY_ID         = ENTITY.PRIMARY("id")
-	ENTITY_MEMO       = ENTITY.COLUMN("memo")
-	ENTITY_CREATES    = ENTITY.COLUMN("creates")
-	ENTITY_CREATER    = ENTITY.CREATER("creater")
-	ENTITY_CREATED    = ENTITY.CREATED("created")
-	ENTITY_MODIFIER   = ENTITY.MODIFIER("modifier")
-	ENTITY_MODIFIED   = ENTITY.MODIFIED("modified")
-	ENTITY_VERSION    = ENTITY.VERSION("version")
-	ENTITY_DELETION   = ENTITY.DELETION("deletion")
-	ENTITY_ARTIFICAL  = ENTITY.COLUMN("artifical")
-	ENTITY_HISTORY    = ENTITY.COLUMN("history")
-	ENTITY_NAME       = ENTITY.COLUMN("name")
-	ENTITY_CODE       = ENTITY.COLUMN("code")
-	ENTITY_PASSWD     = ENTITY.COLUMN("passwd")
-	ENTITY_GENRE      = ENTITY.COLUMN("genre")
-	ENTITY_EMAIL      = ENTITY.COLUMN("email")
-	ENTITY_TEL        = ENTITY.COLUMN("tel")
-	ENTITY_MOBILE     = ENTITY.COLUMN("mobile")
-	ENTITY_AREA_ID    = ENTITY.COLUMN("area_id")
-	ENTITY_ORG_ID     = ENTITY.COLUMN("org_id")
-	ENTITY_LOGIN_NAME = ENTITY.COLUMN("login_name")
-	ENTITY_LOGIN_IP   = ENTITY.COLUMN("login_ip")
-	ENTITY_LOGIN_TIME = ENTITY.COLUMN("login_time")
+	ENTITY            = schema.TABLE("sys_user", "USER")
+	ENTITY_ID         = ENTITY.PRIMARY("id", "ID")
+	ENTITY_MEMO       = ENTITY.COLUMN("memo", "MEMO")
+	ENTITY_CREATES    = ENTITY.COLUMN("creates", "CREATES")
+	ENTITY_CREATER    = ENTITY.CREATER("creater", "CREATER")
+	ENTITY_CREATED    = ENTITY.CREATED("created", "CREATED")
+	ENTITY_MODIFIER   = ENTITY.MODIFIER("modifier", "MODIFIER")
+	ENTITY_MODIFIED   = ENTITY.MODIFIED("modified", "MODIFIED")
+	ENTITY_VERSION    = ENTITY.VERSION("version", "VERSION")
+	ENTITY_DELETION   = ENTITY.DELETION("deletion", "DELETION")
+	ENTITY_ARTIFICAL  = ENTITY.COLUMN("artifical", "ARTIFICAL")
+	ENTITY_HISTORY    = ENTITY.COLUMN("history", "HISTORY")
+	ENTITY_NAME       = ENTITY.COLUMN("name", "NAME")
+	ENTITY_CODE       = ENTITY.COLUMN("code", "CODE")
+	ENTITY_PASSWD     = ENTITY.COLUMN("passwd", "PASSWD")
+	ENTITY_GENRE      = ENTITY.COLUMN("genre", "GENRE")
+	ENTITY_EMAIL      = ENTITY.COLUMN("email", "EMAIL")
+	ENTITY_TEL        = ENTITY.COLUMN("tel", "TEL")
+	ENTITY_MOBILE     = ENTITY.COLUMN("mobile", "MOBILE")
+	ENTITY_AREA_ID    = ENTITY.COLUMN("area_id", "AREA_ID")
+	ENTITY_ORG_ID     = ENTITY.COLUMN("org_id", "ORG_ID")
+	ENTITY_LOGIN_NAME = ENTITY.COLUMN("login_name", "LOGIN_NAME")
+	ENTITY_LOGIN_IP   = ENTITY.COLUMN("login_ip", "LOGIN_IP")
+	ENTITY_LOGIN_TIME = ENTITY.COLUMN("login_time", "LOGIN_TIME")
 )
 
 func NewEntity() *Entity {

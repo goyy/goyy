@@ -4,28 +4,29 @@ package role
 import (
 	"bytes"
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 var (
-	ENTITY           = schema.TABLE("sys_role")
-	ENTITY_ID        = ENTITY.PRIMARY("id")
-	ENTITY_MEMO      = ENTITY.COLUMN("memo")
-	ENTITY_CREATES   = ENTITY.COLUMN("creates")
-	ENTITY_CREATER   = ENTITY.CREATER("creater")
-	ENTITY_CREATED   = ENTITY.CREATED("created")
-	ENTITY_MODIFIER  = ENTITY.MODIFIER("modifier")
-	ENTITY_MODIFIED  = ENTITY.MODIFIED("modified")
-	ENTITY_VERSION   = ENTITY.VERSION("version")
-	ENTITY_DELETION  = ENTITY.DELETION("deletion")
-	ENTITY_ARTIFICAL = ENTITY.COLUMN("artifical")
-	ENTITY_HISTORY   = ENTITY.COLUMN("history")
-	ENTITY_NAME      = ENTITY.COLUMN("name")
-	ENTITY_CODE      = ENTITY.COLUMN("code")
-	ENTITY_GENRE     = ENTITY.COLUMN("genre")
-	ENTITY_ORDINAL   = ENTITY.COLUMN("ordinal")
+	ENTITY           = schema.TABLE("sys_role", "ROLE")
+	ENTITY_ID        = ENTITY.PRIMARY("id", "ID")
+	ENTITY_MEMO      = ENTITY.COLUMN("memo", "MEMO")
+	ENTITY_CREATES   = ENTITY.COLUMN("creates", "CREATES")
+	ENTITY_CREATER   = ENTITY.CREATER("creater", "CREATER")
+	ENTITY_CREATED   = ENTITY.CREATED("created", "CREATED")
+	ENTITY_MODIFIER  = ENTITY.MODIFIER("modifier", "MODIFIER")
+	ENTITY_MODIFIED  = ENTITY.MODIFIED("modified", "MODIFIED")
+	ENTITY_VERSION   = ENTITY.VERSION("version", "VERSION")
+	ENTITY_DELETION  = ENTITY.DELETION("deletion", "DELETION")
+	ENTITY_ARTIFICAL = ENTITY.COLUMN("artifical", "ARTIFICAL")
+	ENTITY_HISTORY   = ENTITY.COLUMN("history", "HISTORY")
+	ENTITY_NAME      = ENTITY.COLUMN("name", "NAME")
+	ENTITY_CODE      = ENTITY.COLUMN("code", "CODE")
+	ENTITY_GENRE     = ENTITY.COLUMN("genre", "GENRE")
+	ENTITY_ORDINAL   = ENTITY.COLUMN("ordinal", "ORDINAL")
 )
 
 func NewEntity() *Entity {

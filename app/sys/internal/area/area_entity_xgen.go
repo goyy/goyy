@@ -4,35 +4,36 @@ package area
 import (
 	"bytes"
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 var (
-	ENTITY              = schema.TABLE("sys_area")
-	ENTITY_ID           = ENTITY.PRIMARY("id")
-	ENTITY_CODE         = ENTITY.COLUMN("code")
-	ENTITY_NAME         = ENTITY.COLUMN("name")
-	ENTITY_FULLNAME     = ENTITY.COLUMN("fullname")
-	ENTITY_GENRE        = ENTITY.COLUMN("genre")
-	ENTITY_LEAF         = ENTITY.COLUMN("leaf")
-	ENTITY_GRADE        = ENTITY.COLUMN("grade")
-	ENTITY_ORDINAL      = ENTITY.COLUMN("ordinal")
-	ENTITY_PARENT_ID    = ENTITY.COLUMN("parent_id")
-	ENTITY_PARENT_IDS   = ENTITY.COLUMN("parent_ids")
-	ENTITY_PARENT_CODES = ENTITY.COLUMN("parent_codes")
-	ENTITY_PARENT_NAMES = ENTITY.COLUMN("parent_names")
-	ENTITY_MEMO         = ENTITY.COLUMN("memo")
-	ENTITY_CREATES      = ENTITY.COLUMN("creates")
-	ENTITY_CREATER      = ENTITY.CREATER("creater")
-	ENTITY_CREATED      = ENTITY.CREATED("created")
-	ENTITY_MODIFIER     = ENTITY.MODIFIER("modifier")
-	ENTITY_MODIFIED     = ENTITY.MODIFIED("modified")
-	ENTITY_VERSION      = ENTITY.VERSION("version")
-	ENTITY_DELETION     = ENTITY.DELETION("deletion")
-	ENTITY_ARTIFICAL    = ENTITY.COLUMN("artifical")
-	ENTITY_HISTORY      = ENTITY.COLUMN("history")
+	ENTITY              = schema.TABLE("sys_area", "AREA")
+	ENTITY_ID           = ENTITY.PRIMARY("id", "ID")
+	ENTITY_CODE         = ENTITY.COLUMN("code", "CODE")
+	ENTITY_NAME         = ENTITY.COLUMN("name", "NAME")
+	ENTITY_FULLNAME     = ENTITY.COLUMN("fullname", "FULLNAME")
+	ENTITY_GENRE        = ENTITY.COLUMN("genre", "GENRE")
+	ENTITY_LEAF         = ENTITY.COLUMN("leaf", "LEAF")
+	ENTITY_GRADE        = ENTITY.COLUMN("grade", "GRADE")
+	ENTITY_ORDINAL      = ENTITY.COLUMN("ordinal", "ORDINAL")
+	ENTITY_PARENT_ID    = ENTITY.COLUMN("parent_id", "PARENT_ID")
+	ENTITY_PARENT_IDS   = ENTITY.COLUMN("parent_ids", "PARENT_IDS")
+	ENTITY_PARENT_CODES = ENTITY.COLUMN("parent_codes", "PARENT_CODES")
+	ENTITY_PARENT_NAMES = ENTITY.COLUMN("parent_names", "PARENT_NAMES")
+	ENTITY_MEMO         = ENTITY.COLUMN("memo", "MEMO")
+	ENTITY_CREATES      = ENTITY.COLUMN("creates", "CREATES")
+	ENTITY_CREATER      = ENTITY.CREATER("creater", "CREATER")
+	ENTITY_CREATED      = ENTITY.CREATED("created", "CREATED")
+	ENTITY_MODIFIER     = ENTITY.MODIFIER("modifier", "MODIFIER")
+	ENTITY_MODIFIED     = ENTITY.MODIFIED("modified", "MODIFIED")
+	ENTITY_VERSION      = ENTITY.VERSION("version", "VERSION")
+	ENTITY_DELETION     = ENTITY.DELETION("deletion", "DELETION")
+	ENTITY_ARTIFICAL    = ENTITY.COLUMN("artifical", "ARTIFICAL")
+	ENTITY_HISTORY      = ENTITY.COLUMN("history", "HISTORY")
 )
 
 func NewEntity() *Entity {
