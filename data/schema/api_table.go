@@ -18,13 +18,13 @@ type Table interface {
 	Modified() Column
 	String() string
 
-	COLUMN(columnName string) Column
-	PRIMARY(columnName string) Column
-	VERSION(columnName string) Column
-	DELETION(columnName string) Column
-	CREATER(columnName string) Column
-	CREATED(columnName string) Column
-	MODIFIER(columnName string) Column
-	MODIFIED(columnName string) Column
-	TRANSIENT(columnName string) Column
+	COLUMN(columnName, comment string) Column
+	PRIMARY(columnName, comment string) Column
+	VERSION(columnName, comment string) Column
+	DELETION(columnName, comment string) Column
+	CREATER(columnName, comment string) Column
+	CREATED(columnName, comment string) Column
+	MODIFIER(columnName, comment string) Column
+	MODIFIED(columnName, comment string) Column
+	TRANSIENT(columnName, comment string) Column
 }

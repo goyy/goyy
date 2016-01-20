@@ -4,6 +4,10 @@
 
 package schema
 
+import (
+	"gopkg.in/goyy/goyy.v0/util/strings"
+)
+
 type column struct {
 	table     *table
 	name      string
@@ -82,6 +86,9 @@ func (me *column) Name() string {
 }
 
 func (me *column) Comment() string {
+	if strings.IsBlank(me.comment) {
+		return strings.ToUpper(me.name)
+	}
 	return me.comment
 }
 

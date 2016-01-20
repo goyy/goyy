@@ -122,43 +122,43 @@ func (me *table) String() string {
 // New Column
 //========================================
 
-func (me *table) COLUMN(columnName string) Column {
-	return me.newColumn(columnName)
+func (me *table) COLUMN(columnName, comment string) Column {
+	return me.newColumn(columnName, comment)
 }
 
-func (me *table) PRIMARY(columnName string) Column {
-	return me.newColumn(columnName).setPrimary()
+func (me *table) PRIMARY(columnName, comment string) Column {
+	return me.newColumn(columnName, comment).setPrimary()
 }
 
-func (me *table) VERSION(columnName string) Column {
-	return me.newColumn(columnName).setVersion()
+func (me *table) VERSION(columnName, comment string) Column {
+	return me.newColumn(columnName, comment).setVersion()
 }
 
-func (me *table) DELETION(columnName string) Column {
-	return me.newColumn(columnName).setDeletion()
+func (me *table) DELETION(columnName, comment string) Column {
+	return me.newColumn(columnName, comment).setDeletion()
 }
 
-func (me *table) CREATER(columnName string) Column {
-	return me.newColumn(columnName).setCreater()
+func (me *table) CREATER(columnName, comment string) Column {
+	return me.newColumn(columnName, comment).setCreater()
 }
 
-func (me *table) CREATED(columnName string) Column {
-	return me.newColumn(columnName).setCreated()
+func (me *table) CREATED(columnName, comment string) Column {
+	return me.newColumn(columnName, comment).setCreated()
 }
 
-func (me *table) MODIFIER(columnName string) Column {
-	return me.newColumn(columnName).setModifier()
+func (me *table) MODIFIER(columnName, comment string) Column {
+	return me.newColumn(columnName, comment).setModifier()
 }
 
-func (me *table) MODIFIED(columnName string) Column {
-	return me.newColumn(columnName).setModified()
+func (me *table) MODIFIED(columnName, comment string) Column {
+	return me.newColumn(columnName, comment).setModified()
 }
 
-func (me *table) TRANSIENT(columnName string) Column {
-	return me.newColumn(columnName).setTransient()
+func (me *table) TRANSIENT(columnName, comment string) Column {
+	return me.newColumn(columnName, comment).setTransient()
 }
 
-func (me *table) newColumn(columnName string) *column {
+func (me *table) newColumn(columnName, comment string) *column {
 	if me == nil {
 		panic("table are not allowed to nil.")
 	}
@@ -171,6 +171,7 @@ func (me *table) newColumn(columnName string) *column {
 	} else {
 		c := new(column)
 		c.name = name
+		c.comment = comment
 		c.table = me
 		me.columns[name] = c
 		return c
