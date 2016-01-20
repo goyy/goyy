@@ -7,8 +7,10 @@ package i18n
 import (
 	"errors"
 	"fmt"
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"log"
+	"os"
+
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 // I18n is the interface that wraps the operation i18n method.
@@ -32,6 +34,18 @@ func New(locales map[string]map[string]string, locale string) I18n {
 		log.Fatalln("i18n.New:the locales not be nil!")
 	}
 	return &i18N{locales: locales, locale: locale}
+}
+
+// New creates a new I18n by map.
+// locale value from the I18N_LOCALE of the environment variable.
+func NewByEnv(locales map[string]map[string]string) I18n {
+	locale := os.Getenv("I18N_LOCALE")
+	switch locale {
+	case "en_US":
+		return New(locales, Locale_en_US)
+	default:
+		return New(locales, Locale_zh_CN)
+	}
 }
 
 type i18N struct {
