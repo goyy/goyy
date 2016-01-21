@@ -9,6 +9,31 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
+var TreeColumns = [...]string{
+	"id",
+	"code",
+	"name",
+	"fullname",
+	"genre",
+	"leaf",
+	"grade",
+	"ordinal",
+	"parent_id",
+	"parent_ids",
+	"parent_codes",
+	"parent_names",
+	"memo",
+	"creates",
+	"creater",
+	"created",
+	"modifier",
+	"modified",
+	"version",
+	"deletion",
+	"artifical",
+	"history",
+}
+
 type Tree struct {
 	Sys
 	code        String `db:"column=code"`

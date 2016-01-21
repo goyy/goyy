@@ -9,6 +9,20 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
+var SysColumns = [...]string{
+	"id",
+	"memo",
+	"creates",
+	"creater",
+	"created",
+	"modifier",
+	"modified",
+	"version",
+	"deletion",
+	"artifical",
+	"history",
+}
+
 type Sys struct {
 	Pk
 	memo      String `db:"column=memo"`

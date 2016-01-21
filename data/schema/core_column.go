@@ -12,6 +12,7 @@ type column struct {
 	table     *table
 	name      string
 	comment   string
+	dict      string
 	primary   bool
 	version   bool
 	deletion  bool
@@ -90,6 +91,14 @@ func (me *column) Comment() string {
 		return strings.ToUpper(me.name)
 	}
 	return me.comment
+}
+
+func (me *column) Dict() string {
+	return me.dict
+}
+
+func (me *column) SetDict(value string) {
+	me.dict = value
 }
 
 func (me *column) IsPrimary() bool {

@@ -8,6 +8,8 @@ type Column interface {
 	Table() Table
 	Name() string
 	Comment() string
+	Dict() string
+	SetDict(value string)
 	IsPrimary() bool
 	IsVersion() bool
 	IsDeletion() bool

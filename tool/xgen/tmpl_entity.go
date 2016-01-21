@@ -80,13 +80,21 @@ func (me *{{$e.Name}}) Set{{upper1 $f.Name}}(v {{$f.Type}}) {
 }
 {{end}}
 func (me *{{$e.Name}}) init() {
-	me.table = {{uncamel $e.Name|upper}}{{if eq $e.Extend "pk"}}
+	me.table = {{uncamel $e.Name|upper}}
+	me.initSetDict()
+	me.initSetColumn()
+	me.initSetDefault()
+	me.initSetField()
+}
 
-	if t, ok := me.Pk.Type("id"); ok {
+func (me *{{$e.Name}}) initSetDict() {{"{"}}{{range $f := $e.Fields}}{{if notblank $f.Dict}}
+	{{uncamel $e.Name|upper}}_{{upper $f.Column}}.SetDict("{{$f.Dict}}"){{end}}{{end}}
+}
+
+func (me *{{$e.Name}}) initSetColumn() {
+	{{if eq $e.Extend "pk"}}if t, ok := me.Pk.Type("id"); ok {
 		t.SetColumn({{uncamel $e.Name|upper}}_{{upper "id"}})
-	}{{else if eq $e.Extend "sys"}}
-
-	if t, ok := me.Sys.Type("id"); ok {
+	}{{else if eq $e.Extend "sys"}}if t, ok := me.Sys.Type("id"); ok {
 		t.SetColumn({{uncamel $e.Name|upper}}_{{upper "id"}})
 	}
 	if t, ok := me.Sys.Type("memo"); ok {
@@ -118,9 +126,7 @@ func (me *{{$e.Name}}) init() {
 	}
 	if t, ok := me.Sys.Type("history"); ok {
 		t.SetColumn({{uncamel $e.Name|upper}}_{{upper "history"}})
-	}{{else if eq $e.Extend "tree"}}
-
-	if t, ok := me.Tree.Type("id"); ok {
+	}{{else if eq $e.Extend "tree"}}if t, ok := me.Tree.Type("id"); ok {
 		t.SetColumn({{uncamel $e.Name|upper}}_{{upper "id"}})
 	}
 	if t, ok := me.Tree.Type("code"); ok {
@@ -186,40 +192,32 @@ func (me *{{$e.Name}}) init() {
 	if t, ok := me.Tree.Type("history"); ok {
 		t.SetColumn({{uncamel $e.Name|upper}}_{{upper "history"}})
 	}{{end}}{{range $f := $e.Fields}}
-	me.{{$f.Name}}.SetColumn({{uncamel $e.Name|upper}}_{{upper $f.Column}}){{end}}{{if eq $e.Extend "sys"}}
+	me.{{$f.Name}}.SetColumn({{uncamel $e.Name|upper}}_{{upper $f.Column}}){{end}}
+}
 
-	if t, ok := me.Sys.Type("created"); ok {
+func (me *{{$e.Name}}) initSetDefault() {
+	{{if eq $e.Extend "sys"}}if t, ok := me.Sys.Type("created"); ok {
 		t.SetDefault("-62135596800")
 	}
 	if t, ok := me.Sys.Type("modified"); ok {
 		t.SetDefault("-62135596800")
-	}{{else if eq $e.Extend "tree"}}
-
-	if t, ok := me.Tree.Type("created"); ok {
+	}{{else if eq $e.Extend "tree"}}if t, ok := me.Tree.Type("created"); ok {
 		t.SetDefault("-62135596800")
 	}
 	if t, ok := me.Tree.Type("modified"); ok {
 		t.SetDefault("-62135596800")
 	}{{end}}{{range $f := $e.Fields}}{{if notblank $f.Default}}
-	me.{{$f.Name}}.SetDefault("{{$f.Default}}"){{end}}{{end}}{{if eq $e.Extend "pk"}}
+	me.{{$f.Name}}.SetDefault("{{$f.Default}}"){{end}}{{end}}
+}
 
-	if t, ok := me.Pk.Type("id"); ok {
+func (me *{{$e.Name}}) initSetField() {
+	{{if eq $e.Extend "pk"}}if t, ok := me.Pk.Type("id"); ok {
 		t.SetField(entity.DefaultField())
-	}{{else if eq $e.Extend "sys"}}
-
-	columns := []string{"id", "memo", "creates", "creater", "created", "modifier", "modified",
-		"version", "deletion", "artifical", "history"}
-	for _, c := range columns {
+	}{{else if eq $e.Extend "sys"}}for _, c := range entity.SysColumns {
 		if t, ok := me.Sys.Type(c); ok {
 			t.SetField(entity.DefaultField())
 		}
-	}{{else if eq $e.Extend "tree"}}
-
-	columns := []string{"id", "code", "name", "fullname", "genre", "leaf", "grade",
-		"ordinal", "parent_id", "parent_ids", "parent_codes", "parent_names",
-		"memo", "creates", "creater", "created", "modifier", "modified",
-		"version", "deletion", "artifical", "history"}
-	for _, c := range columns {
+	}{{else if eq $e.Extend "tree"}}for _, c := range entity.TreeColumns {
 		if t, ok := me.Tree.Type(c); ok {
 			t.SetField(entity.DefaultField())
 		}
