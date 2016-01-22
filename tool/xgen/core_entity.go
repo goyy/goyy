@@ -5,6 +5,9 @@
 package main
 
 import (
+	"container/heap"
+
+	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
@@ -31,4 +34,36 @@ func (me entity) GetComment() string {
 		return strings.ToUpper(me.Name)
 	}
 	return me.Comment
+}
+
+// GetExcels gets the column names sorted using Excel.Sort
+func (me entity) GetExcelColumns() []string {
+	var columns []string
+	m := make(map[int]string, 0)
+	h := &xtype.IntHeap{}
+	heap.Init(h)
+	for _, f := range me.Fields {
+		if f.IsExcel {
+			m[f.Excel.Sort] = f.Column
+			heap.Push(h, f.Excel.Sort)
+		}
+	}
+	l := h.Len()
+	if l > 0 {
+		for i := 0; i < l; i++ {
+			k := heap.Pop(h).(int)
+			columns = append(columns, m[k])
+		}
+	}
+	return columns
+}
+
+// IsExcelColumns to determine whether there is excel information
+func (me entity) IsExcelColumns() bool {
+	s := me.GetExcelColumns()
+	if s == nil || len(s) == 0 {
+		return false
+	} else {
+		return true
+	}
 }

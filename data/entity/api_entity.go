@@ -20,6 +20,7 @@ type Interface interface {
 	SetString(field, value string) error
 	Validate() error
 	JSON() string
+	ExcelColumns() []string
 }
 
 type Interfaces interface {

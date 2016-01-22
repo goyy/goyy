@@ -499,5 +499,12 @@ func (me *{{$e.Name}}) JSON() string {
 	b.WriteString(fmt.Sprintf(` + "`," + `"{{$f.Name}}":%q` + "`" + `, me.{{$f.Name}}.String())){{end}}
 	b.WriteString("}")
 	return b.String()
+}
+
+func (me *{{$e.Name}}) ExcelColumns() []string {{"{"}}{{if $e.IsExcelColumns}}
+	return []string{{"{"}}{{range $c := $e.GetExcelColumns}}
+		"{{$c}}",{{end}}
+	}{{else}}
+	return nil{{end}}
 }{{end}}
 `
