@@ -8,6 +8,7 @@ type field struct {
 	insertable bool
 	updateable bool
 	modified   bool
+	excel      Excel
 }
 
 func (me *field) Insertable() bool {
@@ -32,6 +33,14 @@ func (me *field) Modified() bool {
 
 func (me *field) SetModified(v bool) {
 	me.modified = v
+}
+
+func (me *field) Excel() Excel {
+	return me.excel
+}
+
+func (me *field) SetExcel(v Excel) {
+	me.excel = v
 }
 
 func DefaultField() Field {

@@ -11,4 +11,6 @@ type Field interface {
 	SetUpdateable(v bool)
 	Modified() bool
 	SetModified(v bool)
+	Excel() Excel
+	SetExcel(v Excel)
 }

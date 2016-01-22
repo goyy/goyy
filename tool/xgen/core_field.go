@@ -20,6 +20,7 @@ type field struct {
 	Dict        string
 	Default     string
 	Validations validations
+	Excel       *excelField
 	IsPrimary   bool
 	IsForeign   bool
 	IsVersion   bool
@@ -105,53 +106,6 @@ func (me *field) Init(name, typ, tag string) error {
 		me.Column = strings.UnCamel(name, "_")
 	}
 
-	return nil
-}
-
-// Init sets the fields.
-func (me *field) InitValidation(tag string) error {
-	if strings.IsBlank(tag) {
-		return nil
-	}
-	tag = strings.ToLower(tag)
-	validations := strings.Split(tag, "&")
-	if validations == nil || len(validations) == 0 {
-		return nil
-	}
-	for _, v := range validations {
-		vs := strings.Split(v, "=")
-		if validations != nil && len(vs) == 2 {
-			name := strings.TrimSpace(vs[0])
-			value := strings.TrimSpace(vs[1])
-			switch name {
-			case "required":
-				if strings.IsBlank(value) {
-					continue
-				}
-				valid := &validation{
-					Name: name,
-				}
-				if value == "true" {
-					valid.Value = "true"
-				} else {
-					valid.Value = "false"
-				}
-				me.Validations = append(me.Validations, valid)
-			case "min", "max", "range", "minlen", "maxlen", "rangelen",
-				"email", "url", "ip", "mobile", "tel", "phone", "zipcode",
-				"float", "integer", "alpha", "alrod", "alnum", "alnumrod",
-				"alnumhan", "alnumhanrod", "alhan", "alhanrod", "han", "hanrod":
-				if strings.IsBlank(value) {
-					continue
-				}
-				valid := &validation{
-					Name:  name,
-					Value: value,
-				}
-				me.Validations = append(me.Validations, valid)
-			}
-		}
-	}
 	return nil
 }
 

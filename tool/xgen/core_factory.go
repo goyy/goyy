@@ -203,7 +203,24 @@ func (me *factory) Init(path string) error {
 				// validation init
 				if f.Tag != nil && strings.IsNotBlank(f.Tag.Value) {
 					items = tagItemValue(f.Tag.Value, "validation")
-					if err := col.InitValidation(items); err != nil {
+					if v, ok := newValidations(items); ok {
+						col.Validations = v
+					} else {
+						return fmt.Errorf(
+							"Unable to parse tag '%s' from entity '%s' in '%s': %v",
+							items,
+							e.Name,
+							path,
+							err,
+						)
+					}
+				}
+				// excel init
+				if f.Tag != nil && strings.IsNotBlank(f.Tag.Value) {
+					items = tagItemValue(f.Tag.Value, "excel")
+					if v, ok := newExcelField(col, items); ok {
+						col.Excel = v
+					} else {
 						return fmt.Errorf(
 							"Unable to parse tag '%s' from entity '%s' in '%s': %v",
 							items,
