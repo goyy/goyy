@@ -55,6 +55,7 @@ func (me *MenuEntity) init() {
 	me.initSetColumn()
 	me.initSetDefault()
 	me.initSetField()
+	me.initSetExcel()
 }
 
 func (me *MenuEntity) initSetDict() {
@@ -115,6 +116,9 @@ func (me *MenuEntity) initSetField() {
 	}
 	me.postId.SetField(entity.DefaultField())
 	me.menuId.SetField(entity.DefaultField())
+}
+
+func (me *MenuEntity) initSetExcel() {
 }
 
 func (me MenuEntity) New() entity.Interface {
@@ -237,4 +241,8 @@ func (me *MenuEntity) JSON() string {
 	b.WriteString(fmt.Sprintf(`,"menuId":%q`, me.menuId.String()))
 	b.WriteString("}")
 	return b.String()
+}
+
+func (me *MenuEntity) ExcelColumns() []string {
+	return nil
 }

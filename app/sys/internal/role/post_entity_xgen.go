@@ -55,6 +55,7 @@ func (me *PostEntity) init() {
 	me.initSetColumn()
 	me.initSetDefault()
 	me.initSetField()
+	me.initSetExcel()
 }
 
 func (me *PostEntity) initSetDict() {
@@ -115,6 +116,9 @@ func (me *PostEntity) initSetField() {
 	}
 	me.roleId.SetField(entity.DefaultField())
 	me.postId.SetField(entity.DefaultField())
+}
+
+func (me *PostEntity) initSetExcel() {
 }
 
 func (me PostEntity) New() entity.Interface {
@@ -237,4 +241,8 @@ func (me *PostEntity) JSON() string {
 	b.WriteString(fmt.Sprintf(`,"postId":%q`, me.postId.String()))
 	b.WriteString("}")
 	return b.String()
+}
+
+func (me *PostEntity) ExcelColumns() []string {
+	return nil
 }

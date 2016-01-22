@@ -62,6 +62,7 @@ func (me *User) init() {
 	me.initSetColumn()
 	me.initSetDefault()
 	me.initSetField()
+	me.initSetExcel()
 }
 
 func (me *User) initSetDict() {
@@ -85,6 +86,9 @@ func (me *User) initSetField() {
 	me.name.SetField(entity.DefaultField())
 	me.passwd.SetField(entity.DefaultField())
 	me.email.SetField(entity.DefaultField())
+}
+
+func (me *User) initSetExcel() {
 }
 
 func (me User) New() entity.Interface {
@@ -200,4 +204,8 @@ func (me *User) JSON() string {
 	b.WriteString(fmt.Sprintf(`,"email":%q`, me.email.String()))
 	b.WriteString("}")
 	return b.String()
+}
+
+func (me *User) ExcelColumns() []string {
+	return nil
 }

@@ -93,6 +93,7 @@ func (me *Entity) init() {
 	me.initSetColumn()
 	me.initSetDefault()
 	me.initSetField()
+	me.initSetExcel()
 }
 
 func (me *Entity) initSetDict() {
@@ -192,6 +193,9 @@ func (me *Entity) initSetField() {
 	me.icon.SetField(entity.DefaultField())
 	me.hidden.SetField(entity.DefaultField())
 	me.permission.SetField(entity.DefaultField())
+}
+
+func (me *Entity) initSetExcel() {
 }
 
 func (me Entity) New() entity.Interface {
@@ -386,4 +390,8 @@ func (me *Entity) JSON() string {
 	b.WriteString(fmt.Sprintf(`,"permission":%q`, me.permission.String()))
 	b.WriteString("}")
 	return b.String()
+}
+
+func (me *Entity) ExcelColumns() []string {
+	return nil
 }

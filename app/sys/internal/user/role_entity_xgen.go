@@ -55,6 +55,7 @@ func (me *RoleEntity) init() {
 	me.initSetColumn()
 	me.initSetDefault()
 	me.initSetField()
+	me.initSetExcel()
 }
 
 func (me *RoleEntity) initSetDict() {
@@ -115,6 +116,9 @@ func (me *RoleEntity) initSetField() {
 	}
 	me.userId.SetField(entity.DefaultField())
 	me.roleId.SetField(entity.DefaultField())
+}
+
+func (me *RoleEntity) initSetExcel() {
 }
 
 func (me RoleEntity) New() entity.Interface {
@@ -237,4 +241,8 @@ func (me *RoleEntity) JSON() string {
 	b.WriteString(fmt.Sprintf(`,"roleId":%q`, me.roleId.String()))
 	b.WriteString("}")
 	return b.String()
+}
+
+func (me *RoleEntity) ExcelColumns() []string {
+	return nil
 }
