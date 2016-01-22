@@ -175,6 +175,17 @@ func (me *User) SetDeletion(v int) {
 
 func (me *User) init() {
 	me.table = USER
+	me.initSetDict()
+	me.initSetColumn()
+	me.initSetDefault()
+	me.initSetField()
+}
+
+func (me *User) initSetDict() {
+}
+
+func (me *User) initSetColumn() {
+	
 	me.id.SetColumn(USER_ID)
 	me.code.SetColumn(USER_CODE)
 	me.name.SetColumn(USER_NAME)
@@ -192,6 +203,14 @@ func (me *User) init() {
 	me.modified.SetColumn(USER_MODIFIED)
 	me.version.SetColumn(USER_VERSION)
 	me.deletion.SetColumn(USER_DELETION)
+}
+
+func (me *User) initSetDefault() {
+	
+}
+
+func (me *User) initSetField() {
+	
 	me.id.SetField(entity.DefaultField())
 	me.code.SetField(entity.DefaultField())
 	me.name.SetField(entity.DefaultField())

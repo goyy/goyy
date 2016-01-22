@@ -49,9 +49,28 @@ func (me *User) SetLoginName(v string) {
 
 func (me *User) init() {
 	me.table = USER
+	me.initSetDict()
+	me.initSetColumn()
+	me.initSetDefault()
+	me.initSetField()
+}
+
+func (me *User) initSetDict() {
+}
+
+func (me *User) initSetColumn() {
+	
 	me.id.SetColumn(USER_ID)
 	me.name.SetColumn(USER_NAME)
 	me.loginName.SetColumn(USER_LOGIN_NAME)
+}
+
+func (me *User) initSetDefault() {
+	
+}
+
+func (me *User) initSetField() {
+	
 	me.id.SetField(entity.DefaultField())
 	me.name.SetField(entity.DefaultField())
 	me.loginName.SetField(entity.DefaultField())

@@ -89,7 +89,16 @@ func (me *Entity) SetPermission(v string) {
 
 func (me *Entity) init() {
 	me.table = ENTITY
+	me.initSetDict()
+	me.initSetColumn()
+	me.initSetDefault()
+	me.initSetField()
+}
 
+func (me *Entity) initSetDict() {
+}
+
+func (me *Entity) initSetColumn() {
 	if t, ok := me.Tree.Type("id"); ok {
 		t.SetColumn(ENTITY_ID)
 	}
@@ -161,19 +170,19 @@ func (me *Entity) init() {
 	me.icon.SetColumn(ENTITY_ICON)
 	me.hidden.SetColumn(ENTITY_HIDDEN)
 	me.permission.SetColumn(ENTITY_PERMISSION)
+}
 
+func (me *Entity) initSetDefault() {
 	if t, ok := me.Tree.Type("created"); ok {
 		t.SetDefault("-62135596800")
 	}
 	if t, ok := me.Tree.Type("modified"); ok {
 		t.SetDefault("-62135596800")
 	}
+}
 
-	columns := []string{"id", "code", "name", "fullname", "genre", "leaf", "grade",
-		"ordinal", "parent_id", "parent_ids", "parent_codes", "parent_names",
-		"memo", "creates", "creater", "created", "modifier", "modified",
-		"version", "deletion", "artifical", "history"}
-	for _, c := range columns {
+func (me *Entity) initSetField() {
+	for _, c := range entity.TreeColumns {
 		if t, ok := me.Tree.Type(c); ok {
 			t.SetField(entity.DefaultField())
 		}

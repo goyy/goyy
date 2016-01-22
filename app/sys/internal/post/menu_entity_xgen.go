@@ -51,7 +51,16 @@ func (me *MenuEntity) SetMenuId(v string) {
 
 func (me *MenuEntity) init() {
 	me.table = MENU_ENTITY
+	me.initSetDict()
+	me.initSetColumn()
+	me.initSetDefault()
+	me.initSetField()
+}
 
+func (me *MenuEntity) initSetDict() {
+}
+
+func (me *MenuEntity) initSetColumn() {
 	if t, ok := me.Sys.Type("id"); ok {
 		t.SetColumn(MENU_ENTITY_ID)
 	}
@@ -87,17 +96,19 @@ func (me *MenuEntity) init() {
 	}
 	me.postId.SetColumn(MENU_ENTITY_POST_ID)
 	me.menuId.SetColumn(MENU_ENTITY_MENU_ID)
+}
 
+func (me *MenuEntity) initSetDefault() {
 	if t, ok := me.Sys.Type("created"); ok {
 		t.SetDefault("-62135596800")
 	}
 	if t, ok := me.Sys.Type("modified"); ok {
 		t.SetDefault("-62135596800")
 	}
+}
 
-	columns := []string{"id", "memo", "creates", "creater", "created", "modifier", "modified",
-		"version", "deletion", "artifical", "history"}
-	for _, c := range columns {
+func (me *MenuEntity) initSetField() {
+	for _, c := range entity.SysColumns {
 		if t, ok := me.Sys.Type(c); ok {
 			t.SetField(entity.DefaultField())
 		}

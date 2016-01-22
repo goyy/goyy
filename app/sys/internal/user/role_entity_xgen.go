@@ -51,7 +51,16 @@ func (me *RoleEntity) SetRoleId(v string) {
 
 func (me *RoleEntity) init() {
 	me.table = ROLE_ENTITY
+	me.initSetDict()
+	me.initSetColumn()
+	me.initSetDefault()
+	me.initSetField()
+}
 
+func (me *RoleEntity) initSetDict() {
+}
+
+func (me *RoleEntity) initSetColumn() {
 	if t, ok := me.Sys.Type("id"); ok {
 		t.SetColumn(ROLE_ENTITY_ID)
 	}
@@ -87,17 +96,19 @@ func (me *RoleEntity) init() {
 	}
 	me.userId.SetColumn(ROLE_ENTITY_USER_ID)
 	me.roleId.SetColumn(ROLE_ENTITY_ROLE_ID)
+}
 
+func (me *RoleEntity) initSetDefault() {
 	if t, ok := me.Sys.Type("created"); ok {
 		t.SetDefault("-62135596800")
 	}
 	if t, ok := me.Sys.Type("modified"); ok {
 		t.SetDefault("-62135596800")
 	}
+}
 
-	columns := []string{"id", "memo", "creates", "creater", "created", "modifier", "modified",
-		"version", "deletion", "artifical", "history"}
-	for _, c := range columns {
+func (me *RoleEntity) initSetField() {
+	for _, c := range entity.SysColumns {
 		if t, ok := me.Sys.Type(c); ok {
 			t.SetField(entity.DefaultField())
 		}

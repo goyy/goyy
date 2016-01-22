@@ -40,8 +40,27 @@ func (me *Permission) SetPermission(v string) {
 
 func (me *Permission) init() {
 	me.table = PERMISSION
+	me.initSetDict()
+	me.initSetColumn()
+	me.initSetDefault()
+	me.initSetField()
+}
+
+func (me *Permission) initSetDict() {
+}
+
+func (me *Permission) initSetColumn() {
+	
 	me.id.SetColumn(PERMISSION_ID)
 	me.permission.SetColumn(PERMISSION_PERMISSION)
+}
+
+func (me *Permission) initSetDefault() {
+	
+}
+
+func (me *Permission) initSetField() {
+	
 	me.id.SetField(entity.DefaultField())
 	me.permission.SetField(entity.DefaultField())
 }

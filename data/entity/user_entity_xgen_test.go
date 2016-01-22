@@ -76,12 +76,31 @@ func (me *User) SetVersion(v int) {
 
 func (me *User) init() {
 	me.table = USER
+	me.initSetDict()
+	me.initSetColumn()
+	me.initSetDefault()
+	me.initSetField()
+}
+
+func (me *User) initSetDict() {
+}
+
+func (me *User) initSetColumn() {
+	
 	me.id.SetColumn(USER_ID)
 	me.name.SetColumn(USER_NAME)
 	me.passwd.SetColumn(USER_PASSWD)
 	me.age.SetColumn(USER_AGE)
 	me.email.SetColumn(USER_EMAIL)
 	me.version.SetColumn(USER_VERSION)
+}
+
+func (me *User) initSetDefault() {
+	
+}
+
+func (me *User) initSetField() {
+	
 	me.id.SetField(entity.DefaultField())
 	me.name.SetField(entity.DefaultField())
 	me.passwd.SetField(entity.DefaultField())

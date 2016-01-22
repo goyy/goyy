@@ -51,7 +51,16 @@ func (me *PostEntity) SetPostId(v string) {
 
 func (me *PostEntity) init() {
 	me.table = POST_ENTITY
+	me.initSetDict()
+	me.initSetColumn()
+	me.initSetDefault()
+	me.initSetField()
+}
 
+func (me *PostEntity) initSetDict() {
+}
+
+func (me *PostEntity) initSetColumn() {
 	if t, ok := me.Sys.Type("id"); ok {
 		t.SetColumn(POST_ENTITY_ID)
 	}
@@ -87,17 +96,19 @@ func (me *PostEntity) init() {
 	}
 	me.roleId.SetColumn(POST_ENTITY_ROLE_ID)
 	me.postId.SetColumn(POST_ENTITY_POST_ID)
+}
 
+func (me *PostEntity) initSetDefault() {
 	if t, ok := me.Sys.Type("created"); ok {
 		t.SetDefault("-62135596800")
 	}
 	if t, ok := me.Sys.Type("modified"); ok {
 		t.SetDefault("-62135596800")
 	}
+}
 
-	columns := []string{"id", "memo", "creates", "creater", "created", "modifier", "modified",
-		"version", "deletion", "artifical", "history"}
-	for _, c := range columns {
+func (me *PostEntity) initSetField() {
+	for _, c := range entity.SysColumns {
 		if t, ok := me.Sys.Type(c); ok {
 			t.SetField(entity.DefaultField())
 		}
