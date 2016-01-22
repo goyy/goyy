@@ -4,24 +4,23 @@
 
 package xtype
 
-// FILO : First In Last Out
-type Stack []interface{}
+// FIFO : First In First Out
+type Queue []interface{}
 
-func (me Stack) Len() int {
+func (me Queue) Len() int {
 	return len(me)
 }
 
-func (me *Stack) Push(v interface{}) {
+func (me *Queue) Push(v interface{}) {
 	*me = append(*me, v)
 }
 
-func (me *Stack) Pop() interface{} {
+func (me *Queue) Pop() interface{} {
 	old := *me
-	n := len(old)
-	if n == 0 {
+	if len(old) == 0 {
 		return nil
 	}
-	s := old[n-1]
-	*me = old[0 : n-1]
+	s := old[0]
+	*me = old[1:]
 	return s
 }
