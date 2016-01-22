@@ -85,6 +85,7 @@ func (me *{{$e.Name}}) init() {
 	me.initSetColumn()
 	me.initSetDefault()
 	me.initSetField()
+	me.initSetExcel()
 }
 
 func (me *{{$e.Name}}) initSetDict() {{"{"}}{{range $f := $e.Fields}}{{if notblank $f.Dict}}
@@ -223,6 +224,10 @@ func (me *{{$e.Name}}) initSetField() {
 		}
 	}{{end}}{{range $f := $e.Fields}}
 	me.{{$f.Name}}.SetField(entity.DefaultField()){{end}}
+}
+
+func (me *{{$e.Name}}) initSetExcel() {{"{"}}{{range $f := $e.Fields}}{{if $f.IsExcel}}
+	me.{{$f.Name}}.Field().SetExcel(entity.NewExcelBy("{{$f.Excel.Value}}", "{{$f.Excel.Title}}", {{$f.Excel.Genre}}, {{$f.Excel.Align}}, {{$f.Excel.Sort}}, {{$f.Excel.Width}})){{end}}{{end}}
 }
 
 func (me {{$e.Name}}) New() entity.Interface {

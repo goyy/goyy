@@ -30,7 +30,7 @@ func newExcelField(f *field, tag string) (*excelField, bool) {
 		return nil, false
 	}
 	ef := &excelField{
-		Value: f.Name,
+		Value: strings.ToUpperFirst(f.Name),
 		Title: f.GetComment(),
 		Width: 3000,
 	}

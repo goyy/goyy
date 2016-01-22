@@ -21,6 +21,7 @@ type field struct {
 	Default     string
 	Validations validations
 	Excel       *excelField
+	IsExcel     bool
 	IsPrimary   bool
 	IsForeign   bool
 	IsVersion   bool

@@ -223,6 +223,7 @@ func (me *factory) Init(path string) error {
 					if strings.IsNotBlank(items) {
 						if v, ok := newExcelField(col, items); ok {
 							col.Excel = v
+							col.IsExcel = true
 						} else {
 							return fmt.Errorf(
 								"Unable to parse tag '%s' from entity '%s' in '%s': %v",
