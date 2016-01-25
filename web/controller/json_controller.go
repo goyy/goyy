@@ -169,26 +169,26 @@ func (me *JSONController) excel(r entity.Interfaces) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if r == nil && r.Len() == 0 {
+	if r == nil {
 		return "", errors.NewNotBlank("r")
-	}
-	for i := 0; i < r.Len(); i++ {
-		e := r.Index(i)
-		if i == 0 { // header
-			row = sheet.AddRow()
-			cw := 0
-			for _, n := range e.ExcelColumns() {
-				if t, ok := e.Type(n); ok {
-					sheet.SetColWidth(cw, cw, float64(t.Field().Excel().Width()))
-					cw++
-					cell = row.AddCell()
-					cell.Value = t.Field().Excel().Title()
-					cell.SetStyle(me.excelHeaderStyle(t.Field().Excel().Align()))
-				}
+	} else { // header
+		e := r.New()
+		row = sheet.AddRow()
+		cw := 0
+		for _, n := range e.ExcelColumns() {
+			if t, ok := e.Type(n); ok {
+				sheet.SetColWidth(cw, cw, float64(t.Field().Excel().Width()))
+				cw++
+				cell = row.AddCell()
+				cell.Value = t.Field().Excel().Title()
+				cell.SetStyle(me.excelHeaderStyle(t.Field().Excel().Align()))
 			}
 		}
+	}
+	for i := 0; i < r.Len(); i++ { // body
+		e := r.Index(i)
 		row = sheet.AddRow()
-		for _, n := range e.ExcelColumns() { // body
+		for _, n := range e.ExcelColumns() {
 			if t, ok := e.Type(n); ok {
 				cell = row.AddCell()
 				cell.Value = t.String()
