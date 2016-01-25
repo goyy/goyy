@@ -5,9 +5,10 @@
 package xhttp
 
 import (
+	"html/template"
+
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/web/session"
-	"html/template"
 )
 
 var Conf = &conf{
@@ -45,6 +46,10 @@ var Conf = &conf{
 		Dir:     "/assets/upls",
 		URL:     "/upls",
 		MaxSize: 5242880,
+	},
+	Export: &exportOptions{
+		Dir: "/assets/devs/export",
+		Del: 600,
 	},
 	Illegal: &illegalOptions{
 		Enable:   false,
@@ -99,6 +104,7 @@ type conf struct {
 	Developer *staticOptions   // Developer static resource options
 	Operation *staticOptions   // Operation static resource options
 	Upload    *uploadOptions   // Upload options
+	Export    *exportOptions   // Export options
 	Illegal   *illegalOptions  // Illegal character options
 	Html      *htmlOptions     // Html resource options
 	Session   *sessionOptions  // the session TCP network address
@@ -127,6 +133,11 @@ type uploadOptions struct {
 	Dir     string // Upload directory
 	URL     string // Upload URL prefix
 	MaxSize int    // Max upload size
+}
+
+type exportOptions struct {
+	Dir string // Export directory
+	Del int    // Interval delete time(second)
 }
 
 type illegalOptions struct {

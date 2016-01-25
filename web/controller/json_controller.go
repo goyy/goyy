@@ -5,7 +5,12 @@
 package controller
 
 import (
+	"github.com/tealeg/xlsx"
+	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/service"
+	"gopkg.in/goyy/goyy.v0/util/errors"
+	"gopkg.in/goyy/goyy.v0/util/files"
+	"gopkg.in/goyy/goyy.v0/util/uuids"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
@@ -140,9 +145,97 @@ func (me *JSONController) Exp(c xhttp.Context) {
 		me.Error(c, err)
 		return
 	}
-	err = c.Text(xhttp.StatusOK, r.JSON())
+	f, err := me.excel(r)
 	if err != nil {
 		me.Error(c, err)
 		return
 	}
+	err = c.JSON(xhttp.StatusOK, me.Success(c, f))
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+}
+
+func (me *JSONController) excel(r entity.Interfaces) (string, error) {
+	var file *xlsx.File
+	var sheet *xlsx.Sheet
+	var row *xlsx.Row
+	var cell *xlsx.Cell
+	var err error
+
+	file = xlsx.NewFile()
+	sheet, err = file.AddSheet("Sheet1")
+	if err != nil {
+		return "", err
+	}
+	if r == nil && r.Len() == 0 {
+		return "", errors.NewNotBlank("r")
+	}
+	for i := 0; i < r.Len(); i++ {
+		e := r.Index(i)
+		if i == 0 { // header
+			row = sheet.AddRow()
+			cw := 0
+			for _, n := range e.ExcelColumns() {
+				if t, ok := e.Type(n); ok {
+					sheet.SetColWidth(cw, cw, float64(t.Field().Excel().Width()))
+					cw++
+					cell = row.AddCell()
+					cell.Value = t.Field().Excel().Title()
+					cell.SetStyle(me.excelHeaderStyle(t.Field().Excel().Align()))
+				}
+			}
+		}
+		row = sheet.AddRow()
+		for _, n := range e.ExcelColumns() { // body
+			if t, ok := e.Type(n); ok {
+				cell = row.AddCell()
+				cell.Value = t.String()
+				cell.SetStyle(me.excelBodyStyle(t.Field().Excel().Align()))
+			}
+		}
+	}
+	filename := uuids.New() + ".xlsx"
+	if !files.IsExist(xhttp.Conf.Export.Dir) {
+		if err = files.MkdirAll(xhttp.Conf.Export.Dir, 0751); err != nil {
+			return "", err
+		}
+	}
+	err = file.Save(xhttp.Conf.Export.Dir + "/" + filename)
+	return filename, err
+}
+
+func (me *JSONController) excelHeaderStyle(align int) *xlsx.Style {
+	style := xlsx.NewStyle()
+	fill := *xlsx.NewFill("solid", "00808080", "FF000000")
+	border := *xlsx.NewBorder("thin", "thin", "thin", "thin")
+	style.Alignment.Horizontal = me.excelAlignment(align)
+	style.Fill = fill
+	style.Border = border
+	style.ApplyAlignment = true
+	style.ApplyFill = true
+	style.ApplyBorder = true
+	return style
+}
+
+func (me *JSONController) excelBodyStyle(align int) *xlsx.Style {
+	style := xlsx.NewStyle()
+	border := *xlsx.NewBorder("thin", "thin", "thin", "thin")
+	style.Alignment.Horizontal = me.excelAlignment(align)
+	style.Border = border
+	style.ApplyAlignment = true
+	style.ApplyBorder = true
+	return style
+}
+
+func (me *JSONController) excelAlignment(align int) string {
+	a := "center"
+	switch align {
+	case 1:
+		a = "left"
+	case 3:
+		a = "right"
+	}
+	return a
 }

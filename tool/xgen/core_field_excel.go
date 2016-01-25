@@ -32,7 +32,7 @@ func newExcelField(f *field, tag string) (*excelField, bool) {
 	ef := &excelField{
 		Value: strings.ToUpperFirst(f.Name),
 		Title: f.GetComment(),
-		Width: 3000,
+		Width: 20,
 	}
 	ok := false
 	for _, v := range excelFields {

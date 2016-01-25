@@ -21,7 +21,7 @@ type Excel interface {
 }
 
 func NewExcel() Excel {
-	return &excel{width: 3000}
+	return &excel{width: 20}
 }
 
 func NewExcelBy(value, title string, genre, align, sort, width int) Excel {

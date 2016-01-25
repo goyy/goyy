@@ -20,12 +20,21 @@ import (
 type baseController struct {
 	sqlOfIndex   string
 	isSqlOfIndex bool
+	sqlOfExp     string
+	isSqlOfExp   bool
 }
 
 func (me *baseController) SetSqlOfIndex(sql string) {
 	if strings.IsNotBlank(sql) {
 		me.isSqlOfIndex = true
 		me.sqlOfIndex = sql
+	}
+}
+
+func (me *baseController) SetSqlOfExp(sql string) {
+	if strings.IsNotBlank(sql) {
+		me.isSqlOfExp = true
+		me.sqlOfExp = sql
 	}
 }
 
@@ -307,9 +316,17 @@ func (me *baseController) Exp(c xhttp.Context, mgr service.Service, pre func(c x
 	if err != nil {
 		return nil, err
 	}
-	err = mgr.SelectListBySift(out, sifts...)
-	if err != nil {
-		return
+	if me.isSqlOfExp {
+		params := domain.SiftsToMap(sifts...)
+		err = mgr.SelectListByNamed(out, me.sqlOfExp, params)
+		if err != nil {
+			return
+		}
+	} else {
+		err = mgr.SelectListBySift(out, sifts...)
+		if err != nil {
+			return
+		}
 	}
 	if post != nil {
 		if err = post(c, out); err != nil {
