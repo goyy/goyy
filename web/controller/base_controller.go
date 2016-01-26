@@ -18,10 +18,10 @@ import (
 )
 
 type baseController struct {
-	sqlOfIndex   string
-	isSqlOfIndex bool
-	sqlOfExp     string
-	isSqlOfExp   bool
+	sqlOfIndex    string
+	isSqlOfIndex  bool
+	sqlOfExport   string
+	isSqlOfExport bool
 }
 
 func (me *baseController) SetSqlOfIndex(sql string) {
@@ -31,10 +31,10 @@ func (me *baseController) SetSqlOfIndex(sql string) {
 	}
 }
 
-func (me *baseController) SetSqlOfExp(sql string) {
+func (me *baseController) SetSqlOfExport(sql string) {
 	if strings.IsNotBlank(sql) {
-		me.isSqlOfExp = true
-		me.sqlOfExp = sql
+		me.isSqlOfExport = true
+		me.sqlOfExport = sql
 	}
 }
 
@@ -300,7 +300,7 @@ func (me *baseController) Page(c xhttp.Context, mgr service.Service) (out *resul
 	}
 }
 
-func (me *baseController) Exp(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r entity.Interfaces) error) (out entity.Interfaces, err error) {
+func (me *baseController) Export(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r entity.Interfaces) error) (out entity.Interfaces, err error) {
 	if pre != nil {
 		if err = pre(c); err != nil {
 			return
@@ -316,9 +316,9 @@ func (me *baseController) Exp(c xhttp.Context, mgr service.Service, pre func(c x
 	if err != nil {
 		return nil, err
 	}
-	if me.isSqlOfExp {
+	if me.isSqlOfExport {
 		params := domain.SiftsToMap(sifts...)
-		err = mgr.SelectListByNamed(out, me.sqlOfExp, params)
+		err = mgr.SelectListByNamed(out, me.sqlOfExport, params)
 		if err != nil {
 			return
 		}

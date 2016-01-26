@@ -19,5 +19,5 @@ type post struct {
 	PostSaved    func(c xhttp.Context, r *result.Entity) error
 	PostDisable  func(c xhttp.Context, r *result.Page) error
 	PostDisabled func(c xhttp.Context, r *result.Entity) error
-	PostExp      func(c xhttp.Context, r entity.Interfaces) error
+	PostExport   func(c xhttp.Context, r entity.Interfaces) error
 }

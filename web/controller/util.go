@@ -6,6 +6,7 @@ package controller
 
 import (
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
@@ -21,7 +22,7 @@ const (
 	pDisabled = "disabled"
 	pTree     = "tree"
 	pBox      = "box"
-	pExp      = "export"
+	pExport   = "export"
 
 	vList = "list"
 	vForm = "form"
@@ -120,6 +121,10 @@ func PathBox(project, module string) string {
 	return PathBy(project, module, pBox)
 }
 
+func PathExport(project, module string) string {
+	return PathBy(project, module, pExport)
+}
+
 // ----------------------------------------------------------
 // api
 // ----------------------------------------------------------
@@ -179,8 +184,8 @@ func ApiBox(project, module string) string {
 	return ApiBy(project, module, pBox)
 }
 
-func ApiExp(project, module string) string {
-	return ApiBy(project, module, pExp)
+func ApiExport(project, module string) string {
+	return ApiBy(project, module, pExport)
 }
 
 // ----------------------------------------------------------
@@ -210,6 +215,6 @@ func PermitDisable(project, module string) string {
 	return PermitBy(project, module, pDisable)
 }
 
-func PermitExp(project, module string) string {
-	return PermitBy(project, module, pExp)
+func PermitExport(project, module string) string {
+	return PermitBy(project, module, pExport)
 }

@@ -139,8 +139,8 @@ func (me *JSONController) Box(c xhttp.Context) {
 	}
 }
 
-func (me *JSONController) Exp(c xhttp.Context) {
-	r, err := me.baseController.Exp(c, me.Mgr, me.PreExp, me.PostExp)
+func (me *JSONController) Export(c xhttp.Context) {
+	r, err := me.baseController.Export(c, me.Mgr, me.PreExport, me.PostExport)
 	if err != nil {
 		me.Error(c, err)
 		return
