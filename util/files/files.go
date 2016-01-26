@@ -6,13 +6,15 @@
 package files
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/errors"
-	"gopkg.in/goyy/goyy.v0/util/strings"
-	"gopkg.in/goyy/goyy.v0/util/uuids"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"time"
+
+	"gopkg.in/goyy/goyy.v0/util/errors"
+	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/util/uuids"
 )
 
 // Reports whether the specified file exists.
@@ -106,7 +108,16 @@ func Extension(fileName string) string {
 }
 
 // ModTime returns the file modification time
-func ModTime(file string) (int64, error) {
+func ModTime(file string) (out time.Time, err error) {
+	f, err := os.Stat(file)
+	if err != nil {
+		return
+	}
+	return f.ModTime(), nil
+}
+
+// ModTimeUnix returns the file modification time
+func ModTimeUnix(file string) (int64, error) {
 	f, e := os.Stat(file)
 	if e != nil {
 		return 0, e

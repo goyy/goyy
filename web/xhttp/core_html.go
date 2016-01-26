@@ -5,15 +5,16 @@
 package xhttp
 
 import (
-	"gopkg.in/goyy/goyy.v0/comm/profile"
-	"gopkg.in/goyy/goyy.v0/util/files"
-	"gopkg.in/goyy/goyy.v0/util/strings"
-	"gopkg.in/goyy/goyy.v0/util/times"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
 	"sync"
+
+	"gopkg.in/goyy/goyy.v0/comm/profile"
+	"gopkg.in/goyy/goyy.v0/util/files"
+	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/util/times"
 )
 
 type htmlServeMux struct {
@@ -105,7 +106,7 @@ func (me *htmlServeMux) compile(options *htmlOptions) error {
 			if ext == extension {
 				if c, err := files.Read(path); err == nil {
 					lm := times.NowUnix()
-					if modTime, err := files.ModTime(path); err == nil {
+					if modTime, err := files.ModTimeUnix(path); err == nil {
 						lm = modTime
 					} else {
 						logger.Error(err.Error())
@@ -259,7 +260,7 @@ func (me *htmlServeMux) hasUseBrowserCache(w http.ResponseWriter, r *http.Reques
 }
 
 func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request, filename string) bool {
-	if fileModTimeUnix, err := files.ModTime(filename); err == nil {
+	if fileModTimeUnix, err := files.ModTimeUnix(filename); err == nil {
 		var browserModTimeUnix int64
 		// Browser save file last modified time
 		browserModTime := r.Header.Get(ifModifiedSince)
@@ -304,7 +305,7 @@ func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request
 				directives := make([]directiveInfo, 0)
 				directives = me.buildDirectiveInfo(content, directiveIncludeBegin, directiveArgEnd, directiveIncludeEnd, directives)
 				for _, v := range directives {
-					if val, err := files.ModTime(v.argValue); err == nil {
+					if val, err := files.ModTimeUnix(v.argValue); err == nil {
 						if includeFileModTimeUnix < val {
 							includeFileModTimeUnix = val
 						}
@@ -366,7 +367,7 @@ func (me *htmlServeMux) parseIncludeFile(content string) (string, []string, int6
 			logger.Error(err.Error())
 			continue
 		}
-		if modTime, err := files.ModTime(filename); err == nil {
+		if modTime, err := files.ModTimeUnix(filename); err == nil {
 			if modTime > lastModified {
 				lastModified = modTime
 			}
