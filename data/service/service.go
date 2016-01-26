@@ -29,10 +29,12 @@ type Service interface {
 	SelectOneByNamed(out entity.Interface, query string, args map[string]interface{}) (err error)
 	SelectListByNamed(out entity.Interfaces, query string, args map[string]interface{}) (err error)
 	SelectPageByNamed(content entity.Interfaces, pageable domain.Pageable, dql string, args map[string]interface{}) (out domain.Page, err error)
+	SelectCountByNamed(dql string, args map[string]interface{}) (int, error)
 	SelectIntByNamed(dql string, args map[string]interface{}) (int, error)
 	SelectOneBySift(out entity.Interface, sifts ...domain.Sift) (err error)
 	SelectListBySift(out entity.Interfaces, sifts ...domain.Sift) (err error)
 	SelectPageBySift(content entity.Interfaces, pageable domain.Pageable, sifts ...domain.Sift) (out domain.Page, err error)
+	SelectCountBySift(sifts ...domain.Sift) (int, error)
 	Save(c xhttp.Context, e entity.Interface) error
 	Disable(c xhttp.Context, e entity.Interface) (int64, error)
 	Exec(dml string, args ...interface{}) (sql.Result, error)

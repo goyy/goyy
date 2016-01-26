@@ -12,6 +12,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/result"
 	"gopkg.in/goyy/goyy.v0/data/service"
+	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
@@ -318,14 +319,28 @@ func (me *baseController) Export(c xhttp.Context, mgr service.Service, pre func(
 	}
 	if me.isSqlOfExport {
 		params := domain.SiftsToMap(sifts...)
+		count, err := mgr.SelectCountByNamed(me.sqlOfExport, params)
+		if err != nil {
+			return nil, err
+		}
+		if count > expLimit {
+			return nil, errors.New(i18N.Message("exp.limit"))
+		}
 		err = mgr.SelectListByNamed(out, me.sqlOfExport, params)
 		if err != nil {
-			return
+			return nil, err
 		}
 	} else {
+		count, err := mgr.SelectCountBySift(sifts...)
+		if err != nil {
+			return nil, err
+		}
+		if count > expLimit {
+			return nil, errors.New(i18N.Message("exp.limit"))
+		}
 		err = mgr.SelectListBySift(out, sifts...)
 		if err != nil {
-			return
+			return nil, err
 		}
 	}
 	if post != nil {

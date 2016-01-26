@@ -12,6 +12,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/xsql"
+	"gopkg.in/goyy/goyy.v0/util/sqls"
 )
 
 type Repository struct {
@@ -216,6 +217,13 @@ func (me *Repository) SelectPageByNamed(content entity.Interfaces, pageable doma
 		return nil, err
 	}
 	return query.Page(content, pageable)
+}
+
+// select count(*) from...
+// Return value of int type.
+func (me *Repository) SelectCountByNamed(dql string, args map[string]interface{}) (int, error) {
+	countSql := sqls.ParseCountSql(dql)
+	return me.SelectIntByNamed(countSql, args)
 }
 
 // Query a single record by named query.

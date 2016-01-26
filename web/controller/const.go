@@ -33,4 +33,6 @@ const (
 
 	defaultTreeRoot = "root"
 	defaultParents  = "Parents"
+
+	expLimit = 10000
 )

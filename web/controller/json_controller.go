@@ -142,6 +142,14 @@ func (me *JSONController) Box(c xhttp.Context) {
 func (me *JSONController) Export(c xhttp.Context) {
 	r, err := me.baseController.Export(c, me.Mgr, me.PreExport, me.PostExport)
 	if err != nil {
+		if err.Error() == i18N.Message("exp.limit") {
+			err = c.JSON(xhttp.StatusOK, me.FaultMessage(c, err.Error()))
+			if err != nil {
+				me.Error(c, err)
+				return
+			}
+			return
+		}
 		me.Error(c, err)
 		return
 	}
@@ -170,7 +178,7 @@ func (me *JSONController) excel(r entity.Interfaces) (string, error) {
 		return "", err
 	}
 	if r == nil {
-		return "", errors.NewNotBlank("r")
+		return "", errors.New(i18N.Message("exp.data.blank"))
 	} else { // header
 		e := r.New()
 		row = sheet.AddRow()

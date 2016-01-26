@@ -125,6 +125,13 @@ func (me *Manager) SelectPageByNamed(content entity.Interfaces, pageable domain.
 	return me.Repository().SelectPageByNamed(content, pageable, dql, args)
 }
 
+func (me *Manager) SelectCountByNamed(dql string, args map[string]interface{}) (int, error) {
+	if me.Pre != nil {
+		me.Pre()
+	}
+	return me.Repository().SelectCountByNamed(dql, args)
+}
+
 func (me *Manager) SelectIntByNamed(dql string, args map[string]interface{}) (int, error) {
 	if me.Pre != nil {
 		me.Pre()
