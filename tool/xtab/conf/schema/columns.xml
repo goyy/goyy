@@ -8,6 +8,7 @@
 		<column id="nickname"     name="NICKNAME"     domain="code"   comment="nickname"/>
 		<column id="fullname"     name="FULLNAME"     domain="memo"   comment="fullname"/>
 		<column id="genre"        name="GENRE"        domain="code"   comment="genre"/>
+		<column id="content"      name="CONTENT"      domain="descr"  comment="content"/>
 		<column id="memo"         name="MEMO"         domain="memo"   comment="memo"/>
 		<column id="descr"        name="DESCR"        domain="descr"  comment="description"/>
 		<column id="remark"       name="REMARK"       domain="remark" comment="remark"/>
@@ -20,7 +21,7 @@
 		<column id="sex"          name="SEX"          domain="flag"   comment="sex"/>
 		<column id="receiver"     name="RECEIVER"     domain="code"   comment="receiver"/>
 		<column id="address"      name="ADDRESS"      domain="memo"   comment="address"/>
-		<column id="postcode"     name="POSTCODE"     domain="code"   comment="postcode"/>
+		<column id="zipcode"      name="ZIPCODE"      domain="code"   comment="zipcode"/>
 		<column id="intro"        name="INTRODUCTION" domain="remark" comment="introduction"/>
 		<column id="weight"       name="WEIGHT"       domain="int"    comment="weight"/>
 		<column id="city"         name="CITY"         domain="id"     comment="city"/>
@@ -40,14 +41,19 @@
 		<column id="org_id"       name="ORG_ID"       domain="id"     comment="the identity of the org table"/>
 		<column id="user_id"      name="USER_ID"      domain="id"     comment="the identity of the user table"/>
 		<column id="role_id"      name="ROLE_ID"      domain="id"     comment="the identity of the role table"/>
+		<column id="post_id"      name="POST_ID"      domain="id"     comment="the identity of the post table"/>
 		<column id="menu_id"      name="MENU_ID"      domain="id"     comment="the identity of the menu table"/>
 		<column id="parent_id"    name="PARENT_ID"    domain="id"     comment="the identity of the parent table"/>
 		<column id="parent_ids"   name="PARENT_IDS"   domain="memo"   comment="all the identity of the parent table"/>
+		<column id="parent_codes" name="PARENT_CODES" domain="memo"   comment="all the code of the parent table"/>
 		<column id="parent_names" name="PARENT_NAMES" domain="memo"   comment="all the name of the parent table"/>
-		<column id="creater"      name="CREATER"      domain="code"   comment="created user"/>
-		<column id="created"      name="CREATED"      domain="time"   comment="created time"/>
-		<column id="modifier"     name="MODIFIER"     domain="code"   comment="modified user"/>
-		<column id="modified"     name="MODIFIED"     domain="time"   comment="modified time"/>
+		<column id="leaf"         name="LEAF"         domain="int"    comment="whether is the leaf node of the tree"/>
+		<column id="grade"        name="GRADE"        domain="int"    comment="The level of the tree node"/>
+		<column id="creates"      name="CREATES"      domain="id"     comment="created org"/>
+		<column id="creater"      name="CREATER"      domain="id"     comment="created user"/>
+		<column id="created"      name="CREATED"      domain="long"   comment="created time"/>
+		<column id="modifier"     name="MODIFIER"     domain="id"     comment="modified user"/>
+		<column id="modified"     name="MODIFIED"     domain="long"   comment="modified time"/>
 		<column id="version"      name="VERSION"      domain="int"    comment="optimistic locking" default="0"/>
 		<column id="deletion"     name="DELETION"     domain="bool"   comment="logic delete flag"  default="0"/>
 		<column id="artifical"    name="ARTIFICAL"    domain="bool"   comment="artificial data"    default="0"/>
