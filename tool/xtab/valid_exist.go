@@ -182,13 +182,13 @@ func (me *valids) IsExistColumns() bool {
 		<column id="parent_ids"   name="PARENT_IDS"   domain="memo"   comment="all the identity of the parent table"/>
 		<column id="parent_codes" name="PARENT_CODES" domain="memo"   comment="all the code of the parent table"/>
 		<column id="parent_names" name="PARENT_NAMES" domain="memo"   comment="all the name of the parent table"/>
-		<column id="leaf"         name="LEAF"         domain="memo"   comment="whether is the leaf node of the tree"/>
-		<column id="grade"        name="GRADE"        domain="memo"   comment="The level of the tree node"/>
+		<column id="leaf"         name="LEAF"         domain="int"    comment="whether is the leaf node of the tree"/>
+		<column id="grade"        name="GRADE"        domain="int"    comment="The level of the tree node"/>
 		<column id="creates"      name="CREATES"      domain="id"     comment="created org"/>
 		<column id="creater"      name="CREATER"      domain="id"     comment="created user"/>
-		<column id="created"      name="CREATED"      domain="time"   comment="created time"/>
+		<column id="created"      name="CREATED"      domain="long"   comment="created time"/>
 		<column id="modifier"     name="MODIFIER"     domain="id"     comment="modified user"/>
-		<column id="modified"     name="MODIFIED"     domain="time"   comment="modified time"/>
+		<column id="modified"     name="MODIFIED"     domain="long"   comment="modified time"/>
 		<column id="version"      name="VERSION"      domain="int"    comment="optimistic locking" default="0"/>
 		<column id="deletion"     name="DELETION"     domain="bool"   comment="logic delete flag"  default="0"/>
 		<column id="artifical"    name="ARTIFICAL"    domain="bool"   comment="artificial data"    default="0"/>
