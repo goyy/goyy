@@ -313,3 +313,9 @@ func (me *Repository) Begin() (xsql.Tx, error) {
 	}
 	return tx, nil
 }
+
+// Ping verifies a connection to the database is still alive,
+// establishing a connection if necessary.
+func (me *Repository) Ping() error {
+	return me.factory.Ping()
+}

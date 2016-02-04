@@ -11,4 +11,5 @@ import (
 type Factory interface {
 	Session() (Session, error)
 	Dialect() dialect.Interface
+	Ping() error
 }
