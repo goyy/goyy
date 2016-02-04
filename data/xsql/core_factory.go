@@ -6,6 +6,7 @@ package xsql
 
 import (
 	"database/sql"
+
 	"gopkg.in/goyy/goyy.v0/comm/env"
 	"gopkg.in/goyy/goyy.v0/data/dialect"
 	"gopkg.in/goyy/goyy.v0/data/dml"
@@ -49,6 +50,10 @@ func (me *factory) Dialect() dialect.Interface {
 
 // New Session
 func (me *factory) Session() (Session, error) {
+	err := me.db.Ping()
+	if err != nil {
+		return nil, err
+	}
 	return &session{
 		db:      me.db,
 		dialect: me.dialect,
