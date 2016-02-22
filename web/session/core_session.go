@@ -5,18 +5,17 @@
 package session
 
 import (
+	"net/http"
+
 	"github.com/satori/go.uuid"
 	"gopkg.in/goyy/goyy.v0/data/cache"
 	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/strings"
-	"net/http"
 )
 
 func New(w http.ResponseWriter, r *http.Request, o *Options) Interface {
-	cookie, err := r.Cookie(cookieKey)
-	if err != nil {
-		logger.Error(err.Error())
-	}
+	// ignore error -> http: named cookie not present
+	cookie, _ := r.Cookie(cookieKey)
 	if cookie == nil {
 		sid := strings.Replace(uuid.NewV4().String(), "-", "", -1)
 		cookie = &http.Cookie{
