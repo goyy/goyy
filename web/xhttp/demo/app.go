@@ -7,7 +7,7 @@ package main
 import (
 	"gopkg.in/goyy/goyy.v0/comm/log"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
-	"gopkg.in/goyy/goyy.v0/web/xhttp.v0/demo/internal/controller"
+	"gopkg.in/goyy/goyy.v0/web/xhttp/demo/internal/controller"
 )
 
 func main() {
@@ -20,7 +20,7 @@ func main() {
 	xhttp.GET("/xml", controller.DemoCtl.XML)
 	xhttp.GET("/list", controller.DemoCtl.List)
 	xhttp.GET("/form", controller.DemoCtl.Form)
-	xhttp.Conf.Session = "10.105.99.81:6379"
+	xhttp.Conf.Session.Addr = "10.100.130.250:6379"
 	err := xhttp.Run()
 	if err != nil {
 		log.Error(err.Error())
