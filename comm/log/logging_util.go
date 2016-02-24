@@ -36,11 +36,23 @@ func (me *Logging) getDailyFileName() string {
 func (me *Logging) setDailyFileLogger() {
 	me.dailyfilename = me.getDailyFileName()
 	if me.isExist(me.dailyfilename) {
-		f, _ := os.OpenFile(me.dailyfilename, os.O_APPEND|os.O_RDWR, 0666)
+		f, err := os.OpenFile(me.dailyfilename, os.O_APPEND|os.O_RDWR, 0666)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 		me.dailyfile = NewLogger(f)
 	} else {
 		os.Mkdir(logDir, 0666)
-		f, _ := os.Create(me.dailyfilename)
+		f, err := os.Create(me.dailyfilename)
+		if err != nil {
+			fmt.Println(err.Error())
+		} else {
+			date := time.Now().Format("2006/01/02 15:04:05")
+			_, err = f.WriteString("[log] Print " + date + " Create file：time\r\n")
+			if err != nil {
+				fmt.Println(err.Error())
+			}
+		}
 		me.dailyfile = NewLogger(f)
 	}
 	me.dailyfile.SetPriority(me.priority)
