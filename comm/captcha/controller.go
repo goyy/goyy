@@ -6,10 +6,11 @@ package captcha
 
 import (
 	"bytes"
+	"strconv"
+
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/web/controller"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
-	"strconv"
 )
 
 const (
@@ -44,6 +45,7 @@ func (me *Controller) Build(c xhttp.Context) {
 		for _, val := range v {
 			b.WriteString(strconv.Itoa(int(val)))
 		}
+		logger.Println("{captcha:" + b.String() + "}")
 		c.Session().Set(sessionkey, b.String())
 	} else {
 		logger.Error(err.Error())
