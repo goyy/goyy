@@ -154,6 +154,7 @@ func (me *valids) IsExistColumns() bool {
 		<column id="tel"          name="TEL"          domain="code"   comment="telephone"/>
 		<column id="contact"      name="CONTACT"      domain="name"   comment="contact"/>
 		<column id="sex"          name="SEX"          domain="flag"   comment="sex"/>
+		<column id="birthday"     name="BIRTHDAY"     domain="long"   comment="birthday"/>
 		<column id="receiver"     name="RECEIVER"     domain="code"   comment="receiver"/>
 		<column id="address"      name="ADDRESS"      domain="memo"   comment="address"/>
 		<column id="zipcode"      name="ZIPCODE"      domain="code"   comment="zipcode"/>
