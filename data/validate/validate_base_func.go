@@ -5,11 +5,12 @@
 package validate
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/errors"
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"regexp"
 	"strconv"
 	"unicode/utf8"
+
+	"gopkg.in/goyy/goyy.v0/util/errors"
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 // Returns error if the provided input is empty, nil otherwise.
@@ -64,6 +65,54 @@ func Range(input string, min, max int) error {
 	}
 	if v < min || v > max {
 		return errors.Newf(Messages[typRange], min, max)
+	}
+	return nil
+}
+
+// Returns error if the provided input is greater than or equal to {min},
+// nil otherwise.
+func Minf(input string, min float64) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
+	v, err := strconv.ParseFloat(input, 64)
+	if err != nil {
+		return errors.Newf(Messages[typMinf], min)
+	}
+	if v < min {
+		return errors.Newf(Messages[typMinf], min)
+	}
+	return nil
+}
+
+// Returns error if the provided input is less than or equal to {max},
+// nil otherwise.
+func Maxf(input string, max float64) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
+	v, err := strconv.ParseFloat(input, 64)
+	if err != nil {
+		return errors.Newf(Messages[typMaxf], max)
+	}
+	if v > max {
+		return errors.Newf(Messages[typMaxf], max)
+	}
+	return nil
+}
+
+// Returns error if the provided input is between {min} and {max},
+// nil otherwise.
+func Rangef(input string, min, max float64) error {
+	if strings.IsBlank(input) {
+		return nil
+	}
+	v, err := strconv.ParseFloat(input, 64)
+	if err != nil {
+		return errors.Newf(Messages[typRangef], min, max)
+	}
+	if v < min || v > max {
+		return errors.Newf(Messages[typRangef], min, max)
 	}
 	return nil
 }
@@ -250,11 +299,11 @@ func Hanrod(input string) error {
 
 // Returns error if the provided input is not match {regexp} string,
 // nil otherwise.
-func Match(input string, regexp *regexp.Regexp) error {
+func Match(input, regexps string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if regexp.MatchString(input) == false {
+	if regexp.MustCompile(regexps).MatchString(input) == false {
 		return errors.New(Messages[typMatch])
 	}
 	return nil
@@ -262,11 +311,11 @@ func Match(input string, regexp *regexp.Regexp) error {
 
 // Returns error if the provided input is match {regexp} string,
 // nil otherwise.
-func Nomatch(input string, regexp *regexp.Regexp) error {
+func Nomatch(input, regexps string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if regexp.MatchString(input) == true {
+	if regexp.MustCompile(regexps).MatchString(input) == true {
 		return errors.New(Messages[typNomatch])
 	}
 	return nil

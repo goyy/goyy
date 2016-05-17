@@ -4,10 +4,6 @@
 
 package validate
 
-import (
-	"regexp"
-)
-
 type Validation struct {
 	Errors []*Error
 }
@@ -56,6 +52,24 @@ func (me *Validation) Max(field, input string, max int) *Error {
 // nil otherwise.
 func (me *Validation) Range(field, input string, min, max int) *Error {
 	return me.err(field, typRange, Range(input, min, max))
+}
+
+// Returns error if the provided input is greater than or equal to {min},
+// nil otherwise.
+func (me *Validation) Minf(field, input string, min float64) *Error {
+	return me.err(field, typMinf, Minf(input, min))
+}
+
+// Returns error if the provided input is less than or equal to {max},
+// nil otherwise.
+func (me *Validation) Maxf(field, input string, max float64) *Error {
+	return me.err(field, typMaxf, Maxf(input, max))
+}
+
+// Returns error if the provided input is between {min} and {max},
+// nil otherwise.
+func (me *Validation) Rangef(field, input string, min, max float64) *Error {
+	return me.err(field, typRangef, Rangef(input, min, max))
 }
 
 // Returns error if the provided input is least {min} characters,
@@ -149,14 +163,14 @@ func (me *Validation) Hanrod(field, input string) *Error {
 
 // Returns error if the provided input is not match {regexp} string,
 // nil otherwise.
-func (me *Validation) Match(field, input string, regex *regexp.Regexp) *Error {
-	return me.err(field, typMatch, Match(input, regex))
+func (me *Validation) Match(field, input, regexps string) *Error {
+	return me.err(field, typMatch, Match(input, regexps))
 }
 
 // Returns error if the provided input is match {regexp} string,
 // nil otherwise.
-func (me *Validation) Nomatch(field, input string, regex *regexp.Regexp) *Error {
-	return me.err(field, typNomatch, Nomatch(input, regex))
+func (me *Validation) Nomatch(field, input, regexps string) *Error {
+	return me.err(field, typNomatch, Nomatch(input, regexps))
 }
 
 // Returns error if the provided input is not an email, nil otherwise.

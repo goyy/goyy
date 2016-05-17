@@ -389,6 +389,15 @@ func (me *{{$e.Name}}) Validate() error {{"{"}}{{range $f := $e.Fields}}{{range 
 	}{{end}}{{if eq $v.Name "range"}}
 	if err := validate.Range(me.{{$f.Name}}.String(), {{$v.Value}}); err != nil {
 		return err
+	}{{end}}{{if eq $v.Name "minf"}}
+	if err := validate.Minf(me.{{$f.Name}}.String(), {{$v.Value}}); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "maxf"}}
+	if err := validate.Maxf(me.{{$f.Name}}.String(), {{$v.Value}}); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "rangef"}}
+	if err := validate.Rangef(me.{{$f.Name}}.String(), {{$v.Value}}); err != nil {
+		return err
 	}{{end}}{{if eq $v.Name "minlen"}}
 	if err := validate.Minlen(me.{{$f.Name}}.String(), {{$v.Value}}); err != nil {
 		return err
@@ -454,6 +463,12 @@ func (me *{{$e.Name}}) Validate() error {{"{"}}{{range $f := $e.Fields}}{{range 
 		return err
 	}{{end}}{{if eq $v.Name "hanrod"}}
 	if err := validate.Hanrod(me.{{$f.Name}}.String()); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "match"}}
+	if err := validate.Match(me.{{$f.Name}}.String(), ` + "`" + `{{$v.Value}}` + "`" + `); err != nil {
+		return err
+	}{{end}}{{if eq $v.Name "nomatch"}}
+	if err := validate.Nomatch(me.{{$f.Name}}.String(), ` + "`" + `{{$v.Value}}` + "`" + `); err != nil {
 		return err
 	}{{end}}{{end}}{{end}}
 	return nil

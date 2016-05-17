@@ -50,7 +50,8 @@ func newValidations(tag string) (validations, bool) {
 			case "min", "max", "range", "minlen", "maxlen", "rangelen",
 				"email", "url", "ip", "mobile", "tel", "phone", "zipcode",
 				"float", "integer", "alpha", "alrod", "alnum", "alnumrod",
-				"alnumhan", "alnumhanrod", "alhan", "alhanrod", "han", "hanrod":
+				"alnumhan", "alnumhanrod", "alhan", "alhanrod", "han", "hanrod",
+				"match", "nomatch", "minf", "maxf", "rangef":
 				if strings.IsBlank(value) {
 					continue
 				}
