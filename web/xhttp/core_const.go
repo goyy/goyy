@@ -46,6 +46,7 @@ const (
 	tagAttrPre          = ` go:`
 	tagAttrPost         = `="`
 	tagAttrEnd          = `"`
+	tagProfile          = `{{profile}}`
 	tagApis             = `{{apis}}`
 	tagAssets           = `{{assets}}`
 	tagAssetsStatics    = `{{statics}}`

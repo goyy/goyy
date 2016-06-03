@@ -7,12 +7,24 @@ package xhttp
 import (
 	"html/template"
 
+	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/web/session"
 )
 
+func getProfile() string {
+	if profile.Accepts(profile.PROD) {
+		return profile.PROD
+	}
+	if profile.Accepts(profile.TEST) {
+		return profile.TEST
+	}
+	return profile.DEV
+}
+
 var Conf = &conf{
-	Addr: ":9090",
+	Addr:    ":9090",
+	Profile: getProfile(),
 	Err: &errOptions{
 		Err403: "",
 		Err404: "",
@@ -97,6 +109,7 @@ var Conf = &conf{
 
 type conf struct {
 	Addr      string           // the TCP network address
+	Profile   string           // value:production|development|test
 	Err       *errOptions      // Error options
 	Api       *apiOptions      // Api options
 	Asset     *staticOptions   // Asset options

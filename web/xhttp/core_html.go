@@ -207,6 +207,7 @@ func (me *htmlServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool {
 }
 
 func (me *htmlServeMux) replaceAssets(content string) string {
+	content = strings.Replace(content, tagProfile, Conf.Profile, -1)
 	content = strings.Replace(content, tagApis, Conf.Api.URL, -1)
 	content = strings.Replace(content, tagAssets, Conf.Asset.URL, -1)
 	content = strings.Replace(content, tagAssetsStatics, Conf.Static.URL, -1)
