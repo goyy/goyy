@@ -22,12 +22,12 @@ func ParseCountSql(sql string) string {
 	ss := strings.Split(sql, " ")
 	p := 0
 	for _, v := range ss {
-		if strings.Contains(strings.ToLower(v), "select") {
+		if strings.Contains(strings.ToLower(v), "select ") {
 			p++
 			stack.Push(p)
 			continue
 		}
-		if strings.Contains(strings.ToLower(v), "from") {
+		if strings.Contains(strings.ToLower(v), " from ") {
 			if stack.Len() == 1 {
 				break
 			}
@@ -35,7 +35,7 @@ func ParseCountSql(sql string) string {
 			continue
 		}
 	}
-	pfrom := strings.IndexOrdinal(strings.ToLower(sql), "from", p)
+	pfrom := strings.IndexOrdinal(strings.ToLower(sql), " from ", p)
 	return "select count(*) " + sql[pfrom:]
 }
 
