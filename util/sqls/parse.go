@@ -22,12 +22,12 @@ func ParseCountSql(sql string) string {
 	ss := strings.Split(sql, " ")
 	p := 0
 	for _, v := range ss {
-		if strings.Contains(strings.ToLower(v), "select ") {
+		if strings.Contains(strings.ToLower(v), "select") {
 			p++
 			stack.Push(p)
 			continue
 		}
-		if strings.Contains(strings.ToLower(v), " from ") {
+		if strings.Contains(strings.ToLower(v), "from") {
 			if stack.Len() == 1 {
 				break
 			}
@@ -36,7 +36,7 @@ func ParseCountSql(sql string) string {
 		}
 	}
 	pfrom := strings.IndexOrdinal(strings.ToLower(sql), " from ", p)
-	return "select count(*) " + sql[pfrom:]
+	return "select count(*)" + sql[pfrom:]
 }
 
 // ParseNamedSql takes a query using named parameters and an argument and
