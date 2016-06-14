@@ -12,19 +12,20 @@ import (
 	"gopkg.in/goyy/goyy.v0/web/session"
 )
 
-func getProfile() string {
+func setConfProfile() {
 	if profile.Accepts(profile.PROD) {
-		return profile.PROD
+		Conf.Profile = profile.PROD
+		return
 	}
 	if profile.Accepts(profile.TEST) {
-		return profile.TEST
+		Conf.Profile = profile.TEST
+		return
 	}
-	return profile.DEV
 }
 
 var Conf = &conf{
 	Addr:    ":9090",
-	Profile: getProfile(),
+	Profile: profile.DEV,
 	Err: &errOptions{
 		Err403: "",
 		Err404: "",
@@ -206,4 +207,8 @@ type templateDelims struct {
 	Left string
 	// Right delimiter, defaults to }}
 	Right string
+}
+
+func init() {
+	RegisterPreRun(setConfProfile)
 }
