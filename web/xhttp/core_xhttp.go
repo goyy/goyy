@@ -71,6 +71,7 @@ func RegisterPostRun(postRun func()) {
 func Run() error {
 	cache.Init(cache.Conf{
 		Address:     Conf.Session.Addr,
+		Password:    Conf.Session.Password,
 		MaxIdle:     80,
 		MaxActive:   12000,
 		IdleTimeout: 240 * time.Second,

@@ -5,16 +5,19 @@
 		<environment id="development">
 			<session name="env">
 				<addr>:6379</addr>
+				<password>123456</password>
 			</session>
 		</environment>
 		<environment id="test">
 			<session name="env">
 				<addr>:6379</addr>
+				<password>123456</password>
 			</session>
 		</environment>
 		<environment id="production">
 			<session name="env">
 				<addr>:6379</addr>
+				<password>123456</password>
 			</session>
 		</environment>
 	</environments>

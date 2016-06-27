@@ -5,8 +5,9 @@
 package env_test
 
 import (
-	"gopkg.in/goyy/goyy.v0/comm/env"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/comm/env"
 )
 
 func TestDatabase(t *testing.T) {
@@ -29,5 +30,20 @@ func TestMail(t *testing.T) {
 	if m.Username != out {
 		format := "env.Mail(%s) = %s, _; want %s, _"
 		t.Errorf(format, in, m.Username, out)
+	}
+}
+
+func TestSession(t *testing.T) {
+	in := "env"
+	outAddr := ":6379"
+	outPassword := "123456"
+	s, _ := env.Session(in)
+	if s.Addr != outAddr {
+		format := "env.Session(%s) = %s, _; want %s, _"
+		t.Errorf(format, in, s.Addr, outAddr)
+	}
+	if s.Password != outPassword {
+		format := "env.Session(%s) = %s, _; want %s, _"
+		t.Errorf(format, in, s.Password, outPassword)
 	}
 }

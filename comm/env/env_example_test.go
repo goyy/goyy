@@ -6,6 +6,7 @@ package env_test
 
 import (
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/comm/env"
 )
 
@@ -39,4 +40,14 @@ func ExampleMail() {
 	// password
 	// mail.example.com
 	// 110
+}
+
+func ExampleSession() {
+	s, _ := env.Session("env")
+	fmt.Println(s.Addr)
+	fmt.Println(s.Password)
+
+	// Output:
+	// :6379
+	// 123456
 }

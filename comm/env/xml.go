@@ -45,8 +45,9 @@ type xMail struct {
 }
 
 type xSession struct {
-	Name string `xml:"name,attr"`
-	Addr string `xml:"addr"`
+	Name     string `xml:"name,attr"`
+	Addr     string `xml:"addr"`
+	Password string `xml:"password"`
 }
 
 type xApi struct {

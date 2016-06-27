@@ -173,7 +173,8 @@ type htmlOptions struct {
 type sessionOptions struct {
 	Enable bool // Whether service is enabled
 	*session.Options
-	Addr string
+	Addr     string
+	Password string
 }
 
 type secureOptions struct {
