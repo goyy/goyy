@@ -10,6 +10,8 @@ type Excel interface {
 	SetValue(v string)
 	Title() string // The title of the entity field displayed in Excel
 	SetTitle(v string)
+	Format() string // The format of the entity field displayed in Excel
+	SetFormat(v string)
 	Genre() int // Field type(0:export import;1:export only;2:import only)
 	SetGenre(v int)
 	Align() int // Excel alignment(0:automatic;1:left;2:middle;3:right)
@@ -24,13 +26,14 @@ func NewExcel() Excel {
 	return &excel{width: 20}
 }
 
-func NewExcelBy(value, title string, genre, align, sort, width int) Excel {
+func NewExcelBy(value, title, format string, genre, align, sort, width int) Excel {
 	return &excel{
-		value: value,
-		title: title,
-		genre: genre,
-		align: align,
-		sort:  sort,
-		width: width,
+		value:  value,
+		title:  title,
+		format: format,
+		genre:  genre,
+		align:  align,
+		sort:   sort,
+		width:  width,
 	}
 }

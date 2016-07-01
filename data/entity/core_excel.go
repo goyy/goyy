@@ -6,12 +6,13 @@ package entity
 
 // Excel import and export information for the field of the entity struct.
 type excel struct {
-	value string // Name of the way to get the value of a field
-	title string // The title of the entity field displayed in Excel
-	genre int    // Field type(0:export import;1:export only;2:import only)
-	align int    // Excel alignment(0:automatic;1:left;2:middle;3:right)
-	sort  int    // Display order of Excel field(asc)
-	width int    // Display width of Excel field
+	value  string // Name of the way to get the value of a field
+	title  string // The title of the entity field displayed in Excel
+	format string // The format of the entity field displayed in Excel
+	genre  int    // Field type(0:export import;1:export only;2:import only)
+	align  int    // Excel alignment(0:automatic;1:left;2:middle;3:right)
+	sort   int    // Display order of Excel field(asc)
+	width  int    // Display width of Excel field
 }
 
 func (me *excel) Value() string {
@@ -28,6 +29,14 @@ func (me *excel) Title() string {
 
 func (me *excel) SetTitle(v string) {
 	me.title = v
+}
+
+func (me *excel) Format() string {
+	return me.format
+}
+
+func (me *excel) SetFormat(v string) {
+	me.format = v
 }
 
 func (me *excel) Genre() int {

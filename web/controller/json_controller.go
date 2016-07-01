@@ -5,11 +5,15 @@
 package controller
 
 import (
+	"strconv"
+
 	"github.com/tealeg/xlsx"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/service"
 	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/files"
+	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/util/times"
 	"gopkg.in/goyy/goyy.v0/util/uuids"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
@@ -199,7 +203,20 @@ func (me *JSONController) excel(r entity.Interfaces) (string, error) {
 		for _, n := range e.ExcelColumns() {
 			if t, ok := e.Type(n); ok {
 				cell = row.AddCell()
-				cell.Value = t.String()
+				format := t.Field().Excel().Format()
+				val := t.String()
+				if strings.IsNotBlank(format) {
+					if strings.IsNotBlank(val) {
+						value, err := strconv.ParseInt(val, 10, 64)
+						if err != err {
+							logger.Errorln(err.Error())
+							continue
+						}
+						cell.Value = times.FormatUnix(format, value)
+					}
+				} else {
+					cell.Value = val
+				}
 				cell.SetStyle(me.excelBodyStyle(t.Field().Excel().Align()))
 			}
 		}

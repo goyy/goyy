@@ -227,7 +227,7 @@ func (me *{{$e.Name}}) initSetField() {
 }
 
 func (me *{{$e.Name}}) initSetExcel() {{"{"}}{{range $f := $e.Fields}}{{if $f.IsExcel}}
-	me.{{$f.Name}}.Field().SetExcel(entity.NewExcelBy("{{$f.Excel.Value}}", "{{$f.Excel.Title}}", {{$f.Excel.Genre}}, {{$f.Excel.Align}}, {{$f.Excel.Sort}}, {{$f.Excel.Width}})){{end}}{{end}}
+	me.{{$f.Name}}.Field().SetExcel(entity.NewExcelBy("{{$f.Excel.Value}}", "{{$f.Excel.Title}}", "{{$f.Excel.Format}}", {{$f.Excel.Genre}}, {{$f.Excel.Align}}, {{$f.Excel.Sort}}, {{$f.Excel.Width}})){{end}}{{end}}
 }
 
 func (me {{$e.Name}}) New() entity.Interface {
