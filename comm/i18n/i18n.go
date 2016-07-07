@@ -13,6 +13,8 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
+var defaultLocale string = Locale_en_US
+
 // I18n is the interface that wraps the operation i18n method.
 type I18n interface {
 	Message(key string) string
@@ -28,24 +30,19 @@ type I18n interface {
 // New creates a new I18n by map.
 func New(locales map[string]map[string]string, locale string) I18n {
 	if strings.IsBlank(locale) {
-		locale = Locale_en_US
+		locale = defaultLocale
 	}
 	if locales == nil {
 		log.Fatalln("i18n.New:the locales not be nil!")
 	}
-	return &i18N{locales: locales, locale: locale}
+	return &i18N{locales: locales, locale: transformLocale(locale)}
 }
 
 // New creates a new I18n by map.
 // locale value from the I18N_LOCALE of the environment variable.
 func NewByEnv(locales map[string]map[string]string) I18n {
 	locale := os.Getenv("I18N_LOCALE")
-	switch locale {
-	case "en_US":
-		return New(locales, Locale_en_US)
-	default:
-		return New(locales, Locale_zh_CN)
-	}
+	return New(locales, transformLocale(locale))
 }
 
 type i18N struct {
@@ -95,7 +92,7 @@ func (me *i18N) Panicf(key string, args ...interface{}) {
 // Gets the current locale for the i18n.
 func (me *i18N) Locale() string {
 	if strings.IsBlank(me.locale) {
-		me.locale = Locale_en_US
+		me.locale = defaultLocale
 	}
 	return me.locale
 }
@@ -103,6 +100,78 @@ func (me *i18N) Locale() string {
 // Sets the current locale for the i18n.
 func (me *i18N) SetLocale(locale string) {
 	if strings.IsNotBlank(locale) {
-		me.locale = locale
+		me.locale = transformLocale(locale)
+	}
+}
+
+// Sets the default locale.
+func SetDefaultLocale(locale string) {
+	if strings.IsNotBlank(locale) {
+		defaultLocale = transformLocale(locale)
+	}
+}
+
+func transformLocale(locale string) string {
+	switch locale {
+	case "cs_CZ":
+		return Locale_cs_CZ
+	case "da_DK":
+		return Locale_da_DK
+	case "de_DE":
+		return Locale_de_DE
+	case "en_GB":
+		return Locale_en_GB
+	case "en_US":
+		return Locale_en_US
+	case "en_XM":
+		return Locale_en_XM
+	case "es_ES":
+		return Locale_es_ES
+	case "es_LA":
+		return Locale_es_LA
+	case "es_MX":
+		return Locale_es_MX
+	case "es_NA":
+		return Locale_es_NA
+	case "fi_FI":
+		return Locale_fi_FI
+	case "fr_CA":
+		return Locale_fr_CA
+	case "fr_FR":
+		return Locale_fr_FR
+	case "fr_XM":
+		return Locale_fr_XM
+	case "hu_HU":
+		return Locale_hu_HU
+	case "it_IT":
+		return Locale_it_IT
+	case "ja_JP":
+		return Locale_ja_JP
+	case "ko_KR":
+		return Locale_ko_KR
+	case "nb_NO":
+		return Locale_nb_NO
+	case "nl_NL":
+		return Locale_nl_NL
+	case "pl_PL":
+		return Locale_pl_PL
+	case "pt_BR":
+		return Locale_pt_BR
+	case "ro_RO":
+		return Locale_ro_RO
+	case "ru_RU":
+		return Locale_ru_RU
+	case "sv_SE":
+		return Locale_sv_SE
+	case "tr_TR":
+		return Locale_tr_TR
+	case "uk_UA":
+		return Locale_uk_UA
+	case "zh_CN":
+		return Locale_zh_CN
+	case "zh_TW":
+		return Locale_zh_TW
+	default:
+		return defaultLocale
 	}
 }
