@@ -62,6 +62,18 @@ func (me *i18N) Message(key string) string {
 		if s, ok := v[key]; ok {
 			return s
 		}
+	} else {
+		if v, ok := me.locales[Locale_en_US]; ok {
+			if s, ok := v[key]; ok {
+				return s
+			}
+		} else {
+			if v, ok := me.locales[Locale_zh_CN]; ok {
+				if s, ok := v[key]; ok {
+					return s
+				}
+			}
+		}
 	}
 	return ""
 }
