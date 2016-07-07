@@ -28,21 +28,27 @@ type I18n interface {
 }
 
 // New creates a new I18n by map.
-func New(locales map[string]map[string]string, locale string) I18n {
-	if strings.IsBlank(locale) {
-		locale = defaultLocale
+// Get the latest default locale.
+func New(locales map[string]map[string]string) I18n {
+	if locales == nil {
+		log.Fatalln("i18n.New:the locales not be nil!")
 	}
+	return &i18N{locales: locales}
+}
+
+// NewBy creates a new I18n by map and locale.
+func NewBy(locales map[string]map[string]string, locale string) I18n {
 	if locales == nil {
 		log.Fatalln("i18n.New:the locales not be nil!")
 	}
 	return &i18N{locales: locales, locale: transformLocale(locale)}
 }
 
-// New creates a new I18n by map.
+// NewByEnv creates a new I18n by map.
 // locale value from the I18N_LOCALE of the environment variable.
 func NewByEnv(locales map[string]map[string]string) I18n {
 	locale := os.Getenv("I18N_LOCALE")
-	return New(locales, transformLocale(locale))
+	return NewBy(locales, transformLocale(locale))
 }
 
 type i18N struct {
@@ -104,10 +110,18 @@ func (me *i18N) SetLocale(locale string) {
 	}
 }
 
+// Gets the default locale.
+func DefaultLocale() string {
+	return defaultLocale
+}
+
 // Sets the default locale.
 func SetDefaultLocale(locale string) {
 	if strings.IsNotBlank(locale) {
 		defaultLocale = transformLocale(locale)
+		if strings.IsBlank(defaultLocale) {
+			defaultLocale = Locale_en_US
+		}
 	}
 }
 
@@ -172,6 +186,7 @@ func transformLocale(locale string) string {
 	case "zh_TW":
 		return Locale_zh_TW
 	default:
-		return defaultLocale
+		return "" // Get the latest default locale when the value is blank
+		//return defaultLocale
 	}
 }
