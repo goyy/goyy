@@ -8,6 +8,10 @@ import (
 	"gopkg.in/goyy/goyy.v0/comm/i18n"
 )
 
+func SetLocale(locale string) {
+	i18N.SetLocale(locale)
+}
+
 var i18N = i18n.New(locales, i18n.Locale_en_US)
 
 var locales = map[string]map[string]string{
