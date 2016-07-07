@@ -12,7 +12,7 @@ func SetLocale(locale string) {
 	i18N.SetLocale(locale)
 }
 
-var i18N = i18n.New(locales, i18n.Locale_zh_CN)
+var i18N = i18n.New(locales)
 
 var locales = map[string]map[string]string{
 	i18n.Locale_zh_CN: map[string]string{
