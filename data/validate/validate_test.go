@@ -5,8 +5,9 @@
 package validate_test
 
 import (
-	"gopkg.in/goyy/goyy.v0/data/validate"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/data/validate"
 )
 
 func TestValidateRequired(t *testing.T) {
@@ -83,7 +84,23 @@ func TestValidateMinlen(t *testing.T) {
 	if err := validate.Minlen(in, min); err != nil {
 		t.Errorf(`validate.Minlen(%s, %d) = %v, want %s`, in, min, err.Error(), "nil")
 	}
+	in = "ABc一二三"
+	if err := validate.Minlen(in, min); err != nil {
+		t.Errorf(`validate.Minlen(%s, %d) = %v, want %s`, in, min, err.Error(), "nil")
+	}
+	in = "ABc一二"
+	if err := validate.Minlen(in, min); err != nil {
+		t.Errorf(`validate.Minlen(%s, %d) = %v, want %s`, in, min, err.Error(), "nil")
+	}
 	in = "ABc"
+	if err := validate.Minlen(in, min); err == nil {
+		t.Errorf(`validate.Minlen(%s, %d) = %v, want %s`, in, min, "nil", "not nil")
+	}
+	in = "ABc1"
+	if err := validate.Minlen(in, min); err == nil {
+		t.Errorf(`validate.Minlen(%s, %d) = %v, want %s`, in, min, "nil", "not nil")
+	}
+	in = "ABc一"
 	if err := validate.Minlen(in, min); err == nil {
 		t.Errorf(`validate.Minlen(%s, %d) = %v, want %s`, in, min, "nil", "not nil")
 	}
@@ -99,7 +116,15 @@ func TestValidateMaxlen(t *testing.T) {
 	if err := validate.Maxlen(in, max); err != nil {
 		t.Errorf(`validate.Maxlen(%s, %d) = %v, want %s`, in, max, err.Error(), "nil")
 	}
+	in = "ABc一二"
+	if err := validate.Maxlen(in, max); err != nil {
+		t.Errorf(`validate.Maxlen(%s, %d) = %v, want %s`, in, max, err.Error(), "nil")
+	}
 	in = "ABc123"
+	if err := validate.Maxlen(in, max); err == nil {
+		t.Errorf(`validate.Maxlen(%s, %d) = %v, want %s`, in, max, "nil", "not nil")
+	}
+	in = "ABc一二三"
 	if err := validate.Maxlen(in, max); err == nil {
 		t.Errorf(`validate.Maxlen(%s, %d) = %v, want %s`, in, max, "nil", "not nil")
 	}

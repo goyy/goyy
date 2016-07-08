@@ -16,7 +16,7 @@ import (
 // Returns error if the provided input is empty, nil otherwise.
 func Required(input string) error {
 	if strings.IsBlank(input) {
-		return errors.New(Messages[typRequired])
+		return errors.New(i18N.Message(typRequired))
 	}
 	return nil
 }
@@ -29,10 +29,10 @@ func Min(input string, min int) error {
 	}
 	v, err := strconv.Atoi(input)
 	if err != nil {
-		return errors.Newf(Messages[typMin], min)
+		return errors.Newf(i18N.Message(typMin), min)
 	}
 	if v < min {
-		return errors.Newf(Messages[typMin], min)
+		return errors.Newf(i18N.Message(typMin), min)
 	}
 	return nil
 }
@@ -45,10 +45,10 @@ func Max(input string, max int) error {
 	}
 	v, err := strconv.Atoi(input)
 	if err != nil {
-		return errors.Newf(Messages[typMax], max)
+		return errors.Newf(i18N.Message(typMax), max)
 	}
 	if v > max {
-		return errors.Newf(Messages[typMax], max)
+		return errors.Newf(i18N.Message(typMax), max)
 	}
 	return nil
 }
@@ -61,10 +61,10 @@ func Range(input string, min, max int) error {
 	}
 	v, err := strconv.Atoi(input)
 	if err != nil {
-		return errors.Newf(Messages[typRange], min, max)
+		return errors.Newf(i18N.Message(typRange), min, max)
 	}
 	if v < min || v > max {
-		return errors.Newf(Messages[typRange], min, max)
+		return errors.Newf(i18N.Message(typRange), min, max)
 	}
 	return nil
 }
@@ -77,10 +77,10 @@ func Minf(input string, min float64) error {
 	}
 	v, err := strconv.ParseFloat(input, 64)
 	if err != nil {
-		return errors.Newf(Messages[typMinf], min)
+		return errors.Newf(i18N.Message(typMinf), min)
 	}
 	if v < min {
-		return errors.Newf(Messages[typMinf], min)
+		return errors.Newf(i18N.Message(typMinf), min)
 	}
 	return nil
 }
@@ -93,10 +93,10 @@ func Maxf(input string, max float64) error {
 	}
 	v, err := strconv.ParseFloat(input, 64)
 	if err != nil {
-		return errors.Newf(Messages[typMaxf], max)
+		return errors.Newf(i18N.Message(typMaxf), max)
 	}
 	if v > max {
-		return errors.Newf(Messages[typMaxf], max)
+		return errors.Newf(i18N.Message(typMaxf), max)
 	}
 	return nil
 }
@@ -109,10 +109,10 @@ func Rangef(input string, min, max float64) error {
 	}
 	v, err := strconv.ParseFloat(input, 64)
 	if err != nil {
-		return errors.Newf(Messages[typRangef], min, max)
+		return errors.Newf(i18N.Message(typRangef), min, max)
 	}
 	if v < min || v > max {
-		return errors.Newf(Messages[typRangef], min, max)
+		return errors.Newf(i18N.Message(typRangef), min, max)
 	}
 	return nil
 }
@@ -124,7 +124,7 @@ func Minlen(input string, min int) error {
 		return nil
 	}
 	if utf8.RuneCountInString(input) < min {
-		return errors.Newf(Messages[typMinlen], min)
+		return errors.Newf(i18N.Message(typMinlen), min)
 	}
 	return nil
 }
@@ -136,7 +136,7 @@ func Maxlen(input string, max int) error {
 		return nil
 	}
 	if utf8.RuneCountInString(input) > max {
-		return errors.Newf(Messages[typMaxlen], max)
+		return errors.Newf(i18N.Message(typMaxlen), max)
 	}
 	return nil
 }
@@ -149,7 +149,7 @@ func Rangelen(input string, min, max int) error {
 	}
 	l := utf8.RuneCountInString(input)
 	if l < min || l > max {
-		return errors.Newf(Messages[typRangelen], min, max)
+		return errors.Newf(i18N.Message(typRangelen), min, max)
 	}
 	return nil
 }
@@ -160,8 +160,8 @@ func Float(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typFloat].MatchString(input) == false {
-		return errors.New(Messages[typFloat])
+	if rules[typFloat].MatchString(input) == false {
+		return errors.New(i18N.Message(typFloat))
 	}
 	return nil
 }
@@ -171,8 +171,8 @@ func Integer(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typInteger].MatchString(input) == false {
-		return errors.New(Messages[typInteger])
+	if rules[typInteger].MatchString(input) == false {
+		return errors.New(i18N.Message(typInteger))
 	}
 	return nil
 }
@@ -183,8 +183,8 @@ func Alpha(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typAlpha].MatchString(input) == false {
-		return errors.New(Messages[typAlpha])
+	if rules[typAlpha].MatchString(input) == false {
+		return errors.New(i18N.Message(typAlpha))
 	}
 	return nil
 }
@@ -195,8 +195,8 @@ func Alrod(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typAlrod].MatchString(input) == false {
-		return errors.New(Messages[typAlrod])
+	if rules[typAlrod].MatchString(input) == false {
+		return errors.New(i18N.Message(typAlrod))
 	}
 	return nil
 }
@@ -207,8 +207,8 @@ func Alnum(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typAlnum].MatchString(input) == false {
-		return errors.New(Messages[typAlnum])
+	if rules[typAlnum].MatchString(input) == false {
+		return errors.New(i18N.Message(typAlnum))
 	}
 	return nil
 }
@@ -219,8 +219,8 @@ func Alnumrod(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typAlnumrod].MatchString(input) == false {
-		return errors.New(Messages[typAlnumrod])
+	if rules[typAlnumrod].MatchString(input) == false {
+		return errors.New(i18N.Message(typAlnumrod))
 	}
 	return nil
 }
@@ -231,8 +231,8 @@ func Alnumhan(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typAlnumhan].MatchString(input) == false {
-		return errors.New(Messages[typAlnumhan])
+	if rules[typAlnumhan].MatchString(input) == false {
+		return errors.New(i18N.Message(typAlnumhan))
 	}
 	return nil
 }
@@ -243,8 +243,8 @@ func Alnumhanrod(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typAlnumhanrod].MatchString(input) == false {
-		return errors.New(Messages[typAlnumhanrod])
+	if rules[typAlnumhanrod].MatchString(input) == false {
+		return errors.New(i18N.Message(typAlnumhanrod))
 	}
 	return nil
 }
@@ -255,8 +255,8 @@ func Alhan(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typAlhan].MatchString(input) == false {
-		return errors.New(Messages[typAlhan])
+	if rules[typAlhan].MatchString(input) == false {
+		return errors.New(i18N.Message(typAlhan))
 	}
 	return nil
 }
@@ -267,8 +267,8 @@ func Alhanrod(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typAlhanrod].MatchString(input) == false {
-		return errors.New(Messages[typAlhanrod])
+	if rules[typAlhanrod].MatchString(input) == false {
+		return errors.New(i18N.Message(typAlhanrod))
 	}
 	return nil
 }
@@ -279,8 +279,8 @@ func Han(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typHan].MatchString(input) == false {
-		return errors.New(Messages[typHan])
+	if rules[typHan].MatchString(input) == false {
+		return errors.New(i18N.Message(typHan))
 	}
 	return nil
 }
@@ -291,8 +291,8 @@ func Hanrod(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typHanrod].MatchString(input) == false {
-		return errors.New(Messages[typHanrod])
+	if rules[typHanrod].MatchString(input) == false {
+		return errors.New(i18N.Message(typHanrod))
 	}
 	return nil
 }
@@ -304,7 +304,7 @@ func Match(input, regexps string) error {
 		return nil
 	}
 	if regexp.MustCompile(regexps).MatchString(input) == false {
-		return errors.New(Messages[typMatch])
+		return errors.New(i18N.Message(typMatch))
 	}
 	return nil
 }
@@ -316,7 +316,7 @@ func Nomatch(input, regexps string) error {
 		return nil
 	}
 	if regexp.MustCompile(regexps).MatchString(input) == true {
-		return errors.New(Messages[typNomatch])
+		return errors.New(i18N.Message(typNomatch))
 	}
 	return nil
 }
@@ -326,8 +326,8 @@ func Email(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typEmail].MatchString(input) == false {
-		return errors.New(Messages[typEmail])
+	if rules[typEmail].MatchString(input) == false {
+		return errors.New(i18N.Message(typEmail))
 	}
 	return nil
 }
@@ -337,8 +337,8 @@ func URL(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typURL].MatchString(input) == false {
-		return errors.New(Messages[typURL])
+	if rules[typURL].MatchString(input) == false {
+		return errors.New(i18N.Message(typURL))
 	}
 	return nil
 }
@@ -348,8 +348,8 @@ func IP(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typIP].MatchString(input) == false {
-		return errors.New(Messages[typIP])
+	if rules[typIP].MatchString(input) == false {
+		return errors.New(i18N.Message(typIP))
 	}
 	return nil
 }
@@ -359,8 +359,8 @@ func Mobile(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typMobile].MatchString(input) == false {
-		return errors.New(Messages[typMobile])
+	if rules[typMobile].MatchString(input) == false {
+		return errors.New(i18N.Message(typMobile))
 	}
 	return nil
 }
@@ -370,8 +370,8 @@ func Tel(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typTel].MatchString(input) == false {
-		return errors.New(Messages[typTel])
+	if rules[typTel].MatchString(input) == false {
+		return errors.New(i18N.Message(typTel))
 	}
 	return nil
 }
@@ -381,8 +381,8 @@ func Phone(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typMobile].MatchString(input) == false && Rules[typTel].MatchString(input) == false {
-		return errors.New(Messages[typPhone])
+	if rules[typMobile].MatchString(input) == false && rules[typTel].MatchString(input) == false {
+		return errors.New(i18N.Message(typPhone))
 	}
 	return nil
 }
@@ -392,8 +392,8 @@ func Zipcode(input string) error {
 	if strings.IsBlank(input) {
 		return nil
 	}
-	if Rules[typZipcode].MatchString(input) == false {
-		return errors.New(Messages[typZipcode])
+	if rules[typZipcode].MatchString(input) == false {
+		return errors.New(i18N.Message(typZipcode))
 	}
 	return nil
 }
