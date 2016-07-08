@@ -15,5 +15,5 @@ type Error struct {
 }
 
 func (me *Error) Error() string {
-	return fmt.Sprintf("field:%s,typ:s%,message:%s", me.field, me.typ, me.message)
+	return fmt.Sprintf("field:%s,typ:%s,message:%s", me.field, me.typ, me.message)
 }
