@@ -14,6 +14,6 @@ type Error struct {
 	message string
 }
 
-func (me *Error) String() string {
+func (me *Error) Error() string {
 	return fmt.Sprintf("field:%s,typ:s%,message:%s", me.field, me.typ, me.message)
 }
