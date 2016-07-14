@@ -203,8 +203,8 @@ func (me *{{$e.Name}}) Columns() []schema.Column {
 func (me *{{$e.Name}}) Names() []string {
 	return []string{{"{"}}{{if eq $e.Extend "pk"}}
 		"id",{{else if eq $e.Extend "sys"}}{{range $c := $.SysColumns}}
-		"{{$c}}",{{end}}{{else if eq $e.Extend "tree"}}{{range $c := $.TreeColumns}}
-		"{{$c}}",{{end}}{{end}}{{range $f := $e.Fields}}
+		"{{camel $c|lower1}}",{{end}}{{else if eq $e.Extend "tree"}}{{range $c := $.TreeColumns}}
+		"{{camel $c|lower1}}",{{end}}{{end}}{{range $f := $e.Fields}}
 		"{{$f.Name}}",{{end}}
 	}
 }
@@ -326,12 +326,12 @@ func (me *{{$e.Name}}) JSON() string {
 	var b bytes.Buffer
 	b.WriteString("{"){{if eq $e.Extend "pk"}}
 	b.WriteString(fmt.Sprintf(` + "`" + `"id":%q` + "`" + `, me.Id())){{else if eq $e.Extend "sys"}}{{range $c := $.SysColumns}}
-	b.WriteString(fmt.Sprintf(` + "`" + `"{{$c}}":{{verbs $c}}` + "`" + `, me.{{upper1 $c}}())){{end}}{{else if eq $e.Extend "tree"}}{{range $c := $.TreeColumns}}
-	b.WriteString(fmt.Sprintf(` + "`" + `"{{$c}}":{{verbs $c}}` + "`" + `, me.{{upper1 $c}}())){{end}}{{end}}{{range $f := $e.Fields}}{{if not $f.Json.Ignored}}{{if $f.Json.Omitempty}}
+	b.WriteString(fmt.Sprintf(` + "`{{if (ne $c `id`)}},{{end}}" + `"{{camel $c|lower1}}":{{verbs $c}}` + "`" + `, me.{{camel $c}}())){{end}}{{else if eq $e.Extend "tree"}}{{range $c := $.TreeColumns}}
+	b.WriteString(fmt.Sprintf(` + "`{{if (ne $c `id`)}},{{end}}" + `"{{camel $c|lower1}}":{{verbs $c}}` + "`" + `, me.{{camel $c}}())){{end}}{{end}}{{range $f := $e.Fields}}{{if not $f.Json.Ignored}}{{if $f.Json.Omitempty}}
 	if strings.IsNotBlank(me.{{$f.Name}}.String()) {
-		b.WriteString(fmt.Sprintf(` + "`" + `"{{$f.Json.Name}}":{{verbsf $f}}` + "`" + `, me.{{upper1 $f.Name}}()))
+		b.WriteString(fmt.Sprintf(` + "`," + `"{{$f.Json.Name}}":{{verbsf $f}}` + "`" + `, me.{{upper1 $f.Name}}()))
 	}{{else}}
-	b.WriteString(fmt.Sprintf(` + "`" + `"{{$f.Json.Name}}":{{verbsf $f}}` + "`" + `, me.{{upper1 $f.Name}}())){{end}}{{end}}{{end}}
+	b.WriteString(fmt.Sprintf(` + "`," + `"{{$f.Json.Name}}":{{verbsf $f}}` + "`" + `, me.{{upper1 $f.Name}}())){{end}}{{end}}{{end}}
 	b.WriteString("}")
 	return b.String()
 }
