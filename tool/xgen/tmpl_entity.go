@@ -19,10 +19,10 @@ import (
 ){{range $e := .Entities}}
 
 var (
-	{{tname $e.Name $e.AllColumnMaxLen}} = schema.TABLE("{{lower $e.Table}}", "{{$e.GetComment}}"){{if eq $e.Extend "pk"}}
-	{{uncamel $e.Name|upper}}_{{cname "id" $e.AllColumnMaxLen}} = {{uncamel $e.Name|upper}}.PRIMARY("id", "{{message "col.comment.id"}}"){{else if eq $e.Extend "sys"}}{{range $c := $.SysColumns}}
-	{{uncamel $e.Name|upper}}_{{cname $c $e.AllColumnMaxLen}} = {{uncamel $e.Name|upper}}.{{coltype $c}}("{{$c}}", "{{message (printf "col.comment.%s" $c)}}"){{end}}{{else if eq $e.Extend "tree"}}{{range $c := $.TreeColumns}}
-	{{uncamel $e.Name|upper}}_{{cname $c $e.AllColumnMaxLen}} = {{uncamel $e.Name|upper}}.{{coltype $c}}("{{$c}}", "{{message (printf "col.comment.%s" $c)}}"){{end}}{{end}}{{range $f := $e.Fields}}
+	{{tname $e.Name $e.AllColumnMaxLen}} = schema.TABLE("{{lower $e.Table}}", "{{$e.GetComment}}"){{if eq $e.Extend "pk"}}{{if not (existcol $e "pk")}}
+	{{uncamel $e.Name|upper}}_{{cname "id" $e.AllColumnMaxLen}} = {{uncamel $e.Name|upper}}.PRIMARY("id", "{{message "col.comment.id"}}"){{end}}{{else if eq $e.Extend "sys"}}{{range $c := $.SysColumns}}{{if not (existcol $e $c)}}
+	{{uncamel $e.Name|upper}}_{{cname $c $e.AllColumnMaxLen}} = {{uncamel $e.Name|upper}}.{{coltype $c}}("{{$c}}", "{{message (printf "col.comment.%s" $c)}}"){{end}}{{end}}{{else if eq $e.Extend "tree"}}{{range $c := $.TreeColumns}}{{if not (existcol $e $c)}}
+	{{uncamel $e.Name|upper}}_{{cname $c $e.AllColumnMaxLen}} = {{uncamel $e.Name|upper}}.{{coltype $c}}("{{$c}}", "{{message (printf "col.comment.%s" $c)}}"){{end}}{{end}}{{end}}{{range $f := $e.Fields}}
 	{{uncamel $e.Name|upper}}_{{cname $f.Column $e.AllColumnMaxLen}} = {{uncamel $e.Name|upper}}.{{coltypef $f}}("{{lower $f.Column}}", "{{$f.GetComment}}"){{end}}
 )
 
@@ -55,16 +55,16 @@ func (me *{{$e.Name}}) initSetDict() {{"{"}}{{range $f := $e.Fields}}{{if notbla
 	{{uncamel $e.Name|upper}}_{{upper $f.Column}}.SetDict("{{$f.Dict}}"){{end}}{{end}}
 }
 
-func (me *{{$e.Name}}) initSetColumn() {{"{"}}{{if eq $e.Extend "pk"}}
+func (me *{{$e.Name}}) initSetColumn() {{"{"}}{{if eq $e.Extend "pk"}}{{if not (existcol $e "pk")}}
 	if t, ok := me.Pk.Type("id"); ok {
 		t.SetColumn({{uncamel $e.Name|upper}}_{{upper "id"}})
-	}{{else if eq $e.Extend "sys"}}{{range $c := $.SysColumns}}
+	}{{end}}{{else if eq $e.Extend "sys"}}{{range $c := $.SysColumns}}{{if not (existcol $e $c)}}
 	if t, ok := me.Sys.Type("{{$c}}"); ok {
 		t.SetColumn({{uncamel $e.Name|upper}}_{{upper $c}})
-	}{{end}}{{else if eq $e.Extend "tree"}}{{range $c := $.TreeColumns}}
+	}{{end}}{{end}}{{else if eq $e.Extend "tree"}}{{range $c := $.TreeColumns}}{{if not (existcol $e $c)}}
 	if t, ok := me.Tree.Type("{{$c}}"); ok {
 		t.SetColumn({{uncamel $e.Name|upper}}_{{upper $c}})
-	}{{end}}{{end}}{{range $f := $e.Fields}}
+	}{{end}}{{end}}{{end}}{{range $f := $e.Fields}}
 	me.{{$f.Name}}.SetColumn({{uncamel $e.Name|upper}}_{{upper $f.Column}}){{end}}
 }
 
@@ -192,19 +192,19 @@ func (me *{{$e.Name}}) Column(field string) (schema.Column, bool) {
 }
 
 func (me *{{$e.Name}}) Columns() []schema.Column {
-	return []schema.Column{{"{"}}{{if eq $e.Extend "pk"}}
-		{{uncamel $e.Name|upper}}_ID,{{else if eq $e.Extend "sys"}}{{range $c := $.SysColumns}}
-		{{uncamel $e.Name|upper}}_{{upper $c}},{{end}}{{else if eq $e.Extend "tree"}}{{range $c := $.TreeColumns}}
-		{{uncamel $e.Name|upper}}_{{upper $c}},{{end}}{{end}}{{range $f := $e.Fields}}
+	return []schema.Column{{"{"}}{{if eq $e.Extend "pk"}}{{if not (existcol $e "pk")}}
+		{{uncamel $e.Name|upper}}_ID,{{end}}{{else if eq $e.Extend "sys"}}{{range $c := $.SysColumns}}{{if not (existcol $e $c)}}
+		{{uncamel $e.Name|upper}}_{{upper $c}},{{end}}{{end}}{{else if eq $e.Extend "tree"}}{{range $c := $.TreeColumns}}{{if not (existcol $e $c)}}
+		{{uncamel $e.Name|upper}}_{{upper $c}},{{end}}{{end}}{{end}}{{range $f := $e.Fields}}
 		{{uncamel $e.Name|upper}}_{{uncamel $f.Column|upper}},{{end}}
 	}
 }
 
 func (me *{{$e.Name}}) Names() []string {
-	return []string{{"{"}}{{if eq $e.Extend "pk"}}
-		"id",{{else if eq $e.Extend "sys"}}{{range $c := $.SysColumns}}
-		"{{camel $c|lower1}}",{{end}}{{else if eq $e.Extend "tree"}}{{range $c := $.TreeColumns}}
-		"{{camel $c|lower1}}",{{end}}{{end}}{{range $f := $e.Fields}}
+	return []string{{"{"}}{{if eq $e.Extend "pk"}}{{if not (existcol $e "pk")}}
+		"id",{{end}}{{else if eq $e.Extend "sys"}}{{range $c := $.SysColumns}}{{if not (existcol $e $c)}}
+		"{{camel $c|lower1}}",{{end}}{{end}}{{else if eq $e.Extend "tree"}}{{range $c := $.TreeColumns}}{{if not (existcol $e $c)}}
+		"{{camel $c|lower1}}",{{end}}{{end}}{{end}}{{range $f := $e.Fields}}
 		"{{$f.Name}}",{{end}}
 	}
 }
@@ -324,10 +324,10 @@ func (me *{{$e.Name}}) Validate() error {{"{"}}{{if $.IsValidationField}}
 
 func (me *{{$e.Name}}) JSON() string {
 	var b bytes.Buffer
-	b.WriteString("{"){{if eq $e.Extend "pk"}}
-	b.WriteString(fmt.Sprintf(` + "`" + `"id":%q` + "`" + `, me.Id())){{else if eq $e.Extend "sys"}}{{range $c := $.SysColumns}}
-	b.WriteString(fmt.Sprintf(` + "`{{if (ne $c `id`)}},{{end}}" + `"{{camel $c|lower1}}":{{verbs $c}}` + "`" + `, me.{{camel $c}}())){{end}}{{else if eq $e.Extend "tree"}}{{range $c := $.TreeColumns}}
-	b.WriteString(fmt.Sprintf(` + "`{{if (ne $c `id`)}},{{end}}" + `"{{camel $c|lower1}}":{{verbs $c}}` + "`" + `, me.{{camel $c}}())){{end}}{{end}}{{range $f := $e.Fields}}{{if not $f.Json.Ignored}}{{if $f.Json.Omitempty}}
+	b.WriteString("{"){{if eq $e.Extend "pk"}}{{if not (existcol $e "pk")}}
+	b.WriteString(fmt.Sprintf(` + "`" + `"id":%q` + "`" + `, me.Id())){{end}}{{else if eq $e.Extend "sys"}}{{range $c := $.SysColumns}}{{if not (existcol $e $c)}}
+	b.WriteString(fmt.Sprintf(` + "`{{if (ne $c `id`)}},{{end}}" + `"{{camel $c|lower1}}":{{verbs $c}}` + "`" + `, me.{{camel $c}}())){{end}}{{end}}{{else if eq $e.Extend "tree"}}{{range $c := $.TreeColumns}}{{if not (existcol $e $c)}}
+	b.WriteString(fmt.Sprintf(` + "`{{if (ne $c `id`)}},{{end}}" + `"{{camel $c|lower1}}":{{verbs $c}}` + "`" + `, me.{{camel $c}}())){{end}}{{end}}{{end}}{{range $f := $e.Fields}}{{if not $f.Json.Ignored}}{{if $f.Json.Omitempty}}
 	if strings.IsNotBlank(me.{{$f.Name}}.String()) {
 		b.WriteString(fmt.Sprintf(` + "`," + `"{{$f.Json.Name}}":{{verbsf $f}}` + "`" + `, me.{{upper1 $f.Name}}()))
 	}{{else}}

@@ -182,6 +182,14 @@ var (
 				return "%d"
 			}
 		},
+		"existcol": func(e *entity, colname string) bool { // Whether there is a name in the entity
+			for _, f := range e.Fields {
+				if f.Column == colname {
+					return true
+				}
+			}
+			return false
+		},
 	}
 )
 
