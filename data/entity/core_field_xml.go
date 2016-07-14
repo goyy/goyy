@@ -10,23 +10,37 @@ import (
 
 // xml information for the field of the entity struct.
 type xml struct {
+	tag       string
 	name      string
 	omitempty bool
 	ignored   bool
 }
 
-func (me *xml) Name() string {
-	return me.name
+func (me *xml) Tag() string {
+	return me.tag
 }
 
-func (me *xml) SetName(v string) {
+func (me *xml) SetTag(v string) {
+	me.tag = v
+	if v == "-" {
+		me.ignored = true
+		return
+	}
 	vs := strings.Split(v, ",")
 	if len(vs) == 2 && vs[1] == "omitempty" {
 		me.omitempty = true
 		me.name = vs[0]
 	} else {
-		me.name = v
+		if v == "omitempty" {
+			me.omitempty = true
+		} else {
+			me.name = v
+		}
 	}
+}
+
+func (me *xml) Name() string {
+	return me.name
 }
 
 func (me *xml) Omitempty() bool {
@@ -34,5 +48,5 @@ func (me *xml) Omitempty() bool {
 }
 
 func (me *xml) Ignored() bool {
-	return me.name == "-"
+	return me.ignored
 }

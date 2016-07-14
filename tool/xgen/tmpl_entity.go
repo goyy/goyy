@@ -86,6 +86,8 @@ func (me *{{$e.Name}}) init() {
 	me.initSetDefault()
 	me.initSetField()
 	me.initSetExcel()
+	me.initSetJson()
+	me.initSetXml()
 }
 
 func (me *{{$e.Name}}) initSetDict() {{"{"}}{{range $f := $e.Fields}}{{if notblank $f.Dict}}
@@ -228,6 +230,40 @@ func (me *{{$e.Name}}) initSetField() {
 
 func (me *{{$e.Name}}) initSetExcel() {{"{"}}{{range $f := $e.Fields}}{{if $f.IsExcel}}
 	me.{{$f.Name}}.Field().SetExcel(entity.NewExcelBy("{{$f.Excel.Value}}", "{{$f.Excel.Title}}", "{{$f.Excel.Format}}", {{$f.Excel.Genre}}, {{$f.Excel.Align}}, {{$f.Excel.Sort}}, {{$f.Excel.Width}})){{end}}{{end}}
+}
+
+func (me *{{$e.Name}}) initSetJson() {{"{"}}{{if eq $e.Extend "pk"}}
+	if t, ok := me.Pk.Type("id"); ok {
+		t.Field().SetJson(entity.NewJsonBy(c))
+	}{{else if eq $e.Extend "sys"}}
+	for _, c := range entity.SysColumns {
+		if t, ok := me.Sys.Type(c); ok {
+			t.Field().SetJson(entity.NewJsonBy(c))
+		}
+	}{{else if eq $e.Extend "tree"}}
+	for _, c := range entity.TreeColumns {
+		if t, ok := me.Tree.Type(c); ok {
+			t.Field().SetJson(entity.NewJsonBy(c))
+		}
+	}{{end}}{{range $f := $e.Fields}}{{if $f.IsJson}}
+	me.{{$f.Name}}.Field().SetJson(entity.NewJsonBy("{{$f.Json.Tag}}")){{end}}{{end}}
+}
+
+func (me *{{$e.Name}}) initSetXml() {{"{"}}{{if eq $e.Extend "pk"}}
+	if t, ok := me.Pk.Type("id"); ok {
+		t.Field().SetXml(entity.NewXmlBy(c))
+	}{{else if eq $e.Extend "sys"}}
+	for _, c := range entity.SysColumns {
+		if t, ok := me.Sys.Type(c); ok {
+			t.Field().SetXml(entity.NewXmlBy(c))
+		}
+	}{{else if eq $e.Extend "tree"}}
+	for _, c := range entity.TreeColumns {
+		if t, ok := me.Tree.Type(c); ok {
+			t.Field().SetXml(entity.NewXmlBy(c))
+		}
+	}{{end}}{{range $f := $e.Fields}}{{if $f.IsXml}}
+	me.{{$f.Name}}.Field().SetXml(entity.NewXmlBy("{{$f.Xml.Tag}}")){{end}}{{end}}
 }
 
 func (me {{$e.Name}}) New() entity.Interface {

@@ -11,6 +11,7 @@ import (
 
 // xmlField information for the field of the entity struct.
 type xmlField struct {
+	Tag       string // Tag
 	Name      string // Field appears in XML as key name
 	Omitempty bool   // The field is omitted from the object if its value is empty
 	Ignored   bool   // Field is ignored by this package
@@ -23,6 +24,7 @@ func newXmlField(f *field, tag string) (*xmlField, bool) {
 	}
 	v := e.NewXmlBy(tag)
 	xf := &xmlField{
+		Tag:       v.Tag(),
 		Name:      v.Name(),
 		Omitempty: v.Omitempty(),
 		Ignored:   v.Ignored(),

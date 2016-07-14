@@ -11,6 +11,7 @@ import (
 
 // jsonField information for the field of the entity struct.
 type jsonField struct {
+	Tag       string // Tag
 	Name      string // Field appears in JSON as key name
 	Omitempty bool   // The field is omitted from the object if its value is empty
 	Ignored   bool   // Field is ignored by this package
@@ -23,6 +24,7 @@ func newJsonField(f *field, tag string) (*jsonField, bool) {
 	}
 	v := e.NewJsonBy(tag)
 	jf := &jsonField{
+		Tag:       v.Tag(),
 		Name:      v.Name(),
 		Omitempty: v.Omitempty(),
 		Ignored:   v.Ignored(),
