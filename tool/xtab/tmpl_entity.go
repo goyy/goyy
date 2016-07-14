@@ -15,7 +15,7 @@ import (
 
 // {{.Name}}` + i18N.Message("domain.title") + `.
 // @entity(project:"{{.Module.Id}}"{{if notblank .Slave}} relationship:"slave"{{end}})
-type {{if notblank .Master}}{{upper1 .Slave}}{{end}}Entity struct {
+type {{if notblank .Master}}{{camel .Slave}}{{end}}Entity struct {
 	{{if eq .Super "pk"}}entity.Pk{{end}}{{if eq .Super "sys"}}entity.Sys{{end}}{{if eq .Super "tree"}}entity.Tree{{end}}
 	{{padname "table" $.FieldMaxLen}} {{padname "schema.Table" $.TypeMaxLen}} ` + "`" + `db:"table={{.Module.Prefix}}_{{.Id}}&comment={{.Name}}"` + "`" + `{{range $column := .Columns}}{{if not (supercol $column.Id $.Super)}}
 	{{padname $column.Field $.FieldMaxLen}} {{padname $column.Etype $.TypeMaxLen}} ` + "`" + `db:"column={{$column.Id}}&comment={{$column.Name}}"` + "`" + `{{end}}{{end}}
