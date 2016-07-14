@@ -14,6 +14,7 @@ import (
 	"io/ioutil"
 	"path/filepath"
 
+	e "gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/files"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
@@ -39,10 +40,16 @@ type factory struct {
 	IsValidationField bool
 	IsExtend          bool
 	Entities          []*entity
+	SysColumns        []string // goyy>data>entity:SysColumns
+	TreeColumns       []string // goyy>data>entity:TreeColumns
 }
 
 // Init initializes an File from a path.
 func (me *factory) Init(path string) error {
+	// Set up the inheritance list of column names
+	me.SysColumns = e.SysColumns[:]
+	me.TreeColumns = e.TreeColumns[:]
+
 	// set the path
 	if strings.HasSuffix(path, ".go") {
 		me.Epath = strings.TrimSuffix(path, ".go")

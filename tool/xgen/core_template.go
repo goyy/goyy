@@ -5,8 +5,9 @@
 package main
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"text/template"
+
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 var (
@@ -113,6 +114,72 @@ var (
 					name = strings.Before(name, "Entity")
 				}
 				return name + "Entities"
+			}
+		},
+		"message": func(key string) string { // get message for i18n
+			return i18N.Message(key)
+		},
+		"coltype": func(name string) string { // get column type by name
+			switch name {
+			case "id":
+				return "PRIMARY"
+			case "creater":
+				return "CREATER"
+			case "created":
+				return "CREATED"
+			case "modifier":
+				return "MODIFIER"
+			case "modified":
+				return "MODIFIED"
+			case "version":
+				return "VERSION"
+			case "deletion":
+				return "DELETION"
+			default:
+				return "COLUMN"
+			}
+		},
+		"coltypef": func(f *field) string { // get column type by name
+			if f.IsPrimary {
+				return "PRIMARY"
+			}
+			if f.IsCreater {
+				return "CREATER"
+			}
+			if f.IsCreated {
+				return "CREATED"
+			}
+			if f.IsModifier {
+				return "MODIFIER"
+			}
+			if f.IsModified {
+				return "MODIFIED"
+			}
+			if f.IsVersion {
+				return "VERSION"
+			}
+			if f.IsDeletion {
+				return "DELETION"
+			}
+			if f.IsTransient {
+				return "TRANSIENT"
+			}
+			return "COLUMN"
+		},
+		"verbs": func(name string) string { // The format verbs
+			switch name {
+			case "created", "modified", "version", "deletion", "artifical",
+				"history", "leaf", "grade":
+				return "%d"
+			default:
+				return "%q"
+			}
+		},
+		"verbsf": func(f *field) string { // The format verbs
+			if f.Type == "string" {
+				return "%q"
+			} else {
+				return "%d"
 			}
 		},
 	}
