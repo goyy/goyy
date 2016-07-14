@@ -9,6 +9,8 @@ type field struct {
 	updateable bool
 	modified   bool
 	excel      Excel
+	json       Json
+	xml        Xml
 }
 
 func (me *field) Insertable() bool {
@@ -41,6 +43,22 @@ func (me *field) Excel() Excel {
 
 func (me *field) SetExcel(v Excel) {
 	me.excel = v
+}
+
+func (me *field) Json() Json {
+	return me.json
+}
+
+func (me *field) SetJson(v Json) {
+	me.json = v
+}
+
+func (me *field) Xml() Xml {
+	return me.xml
+}
+
+func (me *field) SetXml(v Xml) {
+	me.xml = v
 }
 
 func DefaultField() Field {

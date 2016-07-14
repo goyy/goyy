@@ -235,6 +235,44 @@ func (me *factory) Init(path string) error {
 						}
 					}
 				}
+				// json init
+				if f.Tag != nil && strings.IsNotBlank(f.Tag.Value) {
+					items = tagItemValue(f.Tag.Value, "json")
+					if strings.IsBlank(items) {
+						items = col.Name
+					}
+					if v, ok := newJsonField(col, items); ok {
+						col.Json = v
+						col.IsJson = true
+					} else {
+						return fmt.Errorf(
+							"Unable to parse tag '%s' from entity '%s' in '%s': %v",
+							items,
+							e.Name,
+							path,
+							err,
+						)
+					}
+				}
+				// xml init
+				if f.Tag != nil && strings.IsNotBlank(f.Tag.Value) {
+					items = tagItemValue(f.Tag.Value, "xml")
+					if strings.IsBlank(items) {
+						items = col.Name
+					}
+					if v, ok := newXmlField(col, items); ok {
+						col.Xml = v
+						col.IsXml = true
+					} else {
+						return fmt.Errorf(
+							"Unable to parse tag '%s' from entity '%s' in '%s': %v",
+							items,
+							e.Name,
+							path,
+							err,
+						)
+					}
+				}
 				e.Fields = append(e.Fields, col)
 				if col.IsPrimary {
 					e.PrimaryKeys = append(e.PrimaryKeys, col)

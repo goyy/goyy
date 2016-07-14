@@ -511,8 +511,11 @@ func (me *{{$e.Name}}) JSON() string {
 	b.WriteString(fmt.Sprintf(` + "`," + `"parentId":%q` + "`" + `, me.Tree.ParentId()))
 	b.WriteString(fmt.Sprintf(` + "`," + `"parentIds":%q` + "`" + `, me.Tree.ParentIds()))
 	b.WriteString(fmt.Sprintf(` + "`," + `"parentCodes":%q` + "`" + `, me.Tree.ParentCodes()))
-	b.WriteString(fmt.Sprintf(` + "`," + `"parentNames":%q` + "`" + `, me.Tree.ParentNames())){{end}}{{range $f := $e.Fields}}
-	b.WriteString(fmt.Sprintf(` + "`," + `"{{$f.Name}}":%q` + "`" + `, me.{{$f.Name}}.String())){{end}}
+	b.WriteString(fmt.Sprintf(` + "`," + `"parentNames":%q` + "`" + `, me.Tree.ParentNames())){{end}}{{range $f := $e.Fields}}{{if not $f.Json.Ignored}}{{if $f.Json.Omitempty}}
+	if strings.IsNotBlank(me.{{$f.Name}}.String()) {
+		b.WriteString(fmt.Sprintf(` + "`," + `"{{$f.Name}}":%q` + "`" + `, me.{{$f.Name}}.String()))
+	}{{else}}
+	b.WriteString(fmt.Sprintf(` + "`," + `"{{$f.Name}}":%q` + "`" + `, me.{{$f.Name}}.String())){{end}}{{end}}{{end}}
 	b.WriteString("}")
 	return b.String()
 }

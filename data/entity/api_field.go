@@ -13,4 +13,8 @@ type Field interface {
 	SetModified(v bool)
 	Excel() Excel
 	SetExcel(v Excel)
+	Json() Json
+	SetJson(v Json)
+	Xml() Xml
+	SetXml(v Xml)
 }

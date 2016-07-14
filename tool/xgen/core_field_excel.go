@@ -26,8 +26,8 @@ func newExcelField(f *field, tag string) (*excelField, bool) {
 	if strings.IsBlank(tag) {
 		return nil, false
 	}
-	excelFields := strings.Split(tag, "&")
-	if excelFields == nil || len(excelFields) == 0 {
+	fields := strings.Split(tag, "&")
+	if fields == nil || len(fields) == 0 {
 		return nil, false
 	}
 	ef := &excelField{
@@ -36,7 +36,7 @@ func newExcelField(f *field, tag string) (*excelField, bool) {
 		Width: 20,
 	}
 	ok := false
-	for _, v := range excelFields {
+	for _, v := range fields {
 		vs := strings.Split(v, "=")
 		if len(vs) == 2 {
 			name := strings.TrimSpace(vs[0])
