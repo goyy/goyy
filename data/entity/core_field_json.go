@@ -29,7 +29,9 @@ func (me *json) SetTag(v string) {
 	vs := strings.Split(v, ",")
 	if len(vs) == 2 && vs[1] == "omitempty" {
 		me.omitempty = true
-		me.name = vs[0]
+		if vs[0] != "-" {
+			me.name = vs[0]
+		}
 	} else {
 		if v == "omitempty" {
 			me.omitempty = true

@@ -178,10 +178,14 @@ var (
 			}
 		},
 		"jsonmf": func(f *field) string { // The format verbs
+			name := f.Json.Name
+			if strings.IsBlank(name) {
+				name = f.Name
+			}
 			if f.Type == "string" || f.Type == "time" {
-				return "`,\"" + f.Json.Name + "\":\"` + jsons.Format(me.GetString(\"" + f.Json.Name + "\")) + `\"`"
+				return "`,\"" + name + "\":\"` + jsons.Format(me.GetString(\"" + f.Name + "\")) + `\"`"
 			} else {
-				return "`,\"" + f.Json.Name + "\":` + me.GetString(\"" + f.Json.Name + "\")"
+				return "`,\"" + name + "\":` + me.GetString(\"" + f.Name + "\")"
 			}
 		},
 		"existcol": func(e *entity, colname string) bool { // Whether there is a name in the entity
