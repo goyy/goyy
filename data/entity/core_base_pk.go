@@ -38,6 +38,22 @@ func (me *Pk) GetPtr(column string) interface{} {
 	return nil
 }
 
+func (me *Pk) GetString(field string) string {
+	switch strings.ToLowerFirst(field) {
+	case "id":
+		return me.id.String()
+	}
+	return ""
+}
+
+func (me *Pk) SetString(field, value string) error {
+	switch strings.ToLowerFirst(field) {
+	case "id":
+		return me.id.SetString(value)
+	}
+	return nil
+}
+
 func (me *Pk) Type(column string) (Type, bool) {
 	switch column {
 	case "id":
@@ -52,12 +68,4 @@ func (me *Pk) Column(field string) (schema.Column, bool) {
 		return me.id.Column(), true
 	}
 	return nil, false
-}
-
-func (me *Pk) SetString(field, value string) error {
-	switch strings.ToLowerFirst(field) {
-	case "id":
-		return me.id.SetString(value)
-	}
-	return nil
 }

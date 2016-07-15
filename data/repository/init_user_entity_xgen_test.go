@@ -3,10 +3,10 @@ package repository_test
 
 import (
 	"bytes"
-	"fmt"
 
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
+	"gopkg.in/goyy/goyy.v0/util/jsons"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
@@ -180,13 +180,14 @@ func (me *User) init() {
 	me.initSetDefault()
 	me.initSetField()
 	me.initSetExcel()
+	me.initSetJson()
+	me.initSetXml()
 }
 
 func (me *User) initSetDict() {
 }
 
 func (me *User) initSetColumn() {
-	
 	me.id.SetColumn(USER_ID)
 	me.code.SetColumn(USER_CODE)
 	me.name.SetColumn(USER_NAME)
@@ -207,11 +208,9 @@ func (me *User) initSetColumn() {
 }
 
 func (me *User) initSetDefault() {
-	
 }
 
 func (me *User) initSetField() {
-	
 	me.id.SetField(entity.DefaultField())
 	me.code.SetField(entity.DefaultField())
 	me.name.SetField(entity.DefaultField())
@@ -232,6 +231,46 @@ func (me *User) initSetField() {
 }
 
 func (me *User) initSetExcel() {
+}
+
+func (me *User) initSetJson() {
+	me.id.Field().SetJson(entity.NewJsonBy("id"))
+	me.code.Field().SetJson(entity.NewJsonBy("code"))
+	me.name.Field().SetJson(entity.NewJsonBy("name"))
+	me.password.Field().SetJson(entity.NewJsonBy("password"))
+	me.memo.Field().SetJson(entity.NewJsonBy("memo"))
+	me.genre.Field().SetJson(entity.NewJsonBy("genre"))
+	me.status.Field().SetJson(entity.NewJsonBy("status"))
+	me.roles.Field().SetJson(entity.NewJsonBy("roles"))
+	me.posts.Field().SetJson(entity.NewJsonBy("posts"))
+	me.org.Field().SetJson(entity.NewJsonBy("org"))
+	me.area.Field().SetJson(entity.NewJsonBy("area"))
+	me.creater.Field().SetJson(entity.NewJsonBy("creater"))
+	me.created.Field().SetJson(entity.NewJsonBy("created"))
+	me.modifier.Field().SetJson(entity.NewJsonBy("modifier"))
+	me.modified.Field().SetJson(entity.NewJsonBy("modified"))
+	me.version.Field().SetJson(entity.NewJsonBy("version"))
+	me.deletion.Field().SetJson(entity.NewJsonBy("deletion"))
+}
+
+func (me *User) initSetXml() {
+	me.id.Field().SetXml(entity.NewXmlBy("id"))
+	me.code.Field().SetXml(entity.NewXmlBy("code"))
+	me.name.Field().SetXml(entity.NewXmlBy("name"))
+	me.password.Field().SetXml(entity.NewXmlBy("password"))
+	me.memo.Field().SetXml(entity.NewXmlBy("memo"))
+	me.genre.Field().SetXml(entity.NewXmlBy("genre"))
+	me.status.Field().SetXml(entity.NewXmlBy("status"))
+	me.roles.Field().SetXml(entity.NewXmlBy("roles"))
+	me.posts.Field().SetXml(entity.NewXmlBy("posts"))
+	me.org.Field().SetXml(entity.NewXmlBy("org"))
+	me.area.Field().SetXml(entity.NewXmlBy("area"))
+	me.creater.Field().SetXml(entity.NewXmlBy("creater"))
+	me.created.Field().SetXml(entity.NewXmlBy("created"))
+	me.modifier.Field().SetXml(entity.NewXmlBy("modifier"))
+	me.modified.Field().SetXml(entity.NewXmlBy("modified"))
+	me.version.Field().SetXml(entity.NewXmlBy("version"))
+	me.deletion.Field().SetXml(entity.NewXmlBy("deletion"))
 }
 
 func (me User) New() entity.Interface {
@@ -314,6 +353,86 @@ func (me *User) GetPtr(column string) interface{} {
 		return me.version.ValuePtr()
 	case USER_DELETION.Name():
 		return me.deletion.ValuePtr()
+	}
+	return nil
+}
+
+func (me *User) GetString(field string) string {
+	switch strings.ToLowerFirst(field) {
+	case "id":
+		return me.id.String()
+	case "code":
+		return me.code.String()
+	case "name":
+		return me.name.String()
+	case "password":
+		return me.password.String()
+	case "memo":
+		return me.memo.String()
+	case "genre":
+		return me.genre.String()
+	case "status":
+		return me.status.String()
+	case "roles":
+		return me.roles.String()
+	case "posts":
+		return me.posts.String()
+	case "org":
+		return me.org.String()
+	case "area":
+		return me.area.String()
+	case "creater":
+		return me.creater.String()
+	case "created":
+		return me.created.String()
+	case "modifier":
+		return me.modifier.String()
+	case "modified":
+		return me.modified.String()
+	case "version":
+		return me.version.String()
+	case "deletion":
+		return me.deletion.String()
+	}
+	return ""
+}
+
+func (me *User) SetString(field, value string) error {
+	switch strings.ToLowerFirst(field) {
+	case "id":
+		return me.id.SetString(value)
+	case "code":
+		return me.code.SetString(value)
+	case "name":
+		return me.name.SetString(value)
+	case "password":
+		return me.password.SetString(value)
+	case "memo":
+		return me.memo.SetString(value)
+	case "genre":
+		return me.genre.SetString(value)
+	case "status":
+		return me.status.SetString(value)
+	case "roles":
+		return me.roles.SetString(value)
+	case "posts":
+		return me.posts.SetString(value)
+	case "org":
+		return me.org.SetString(value)
+	case "area":
+		return me.area.SetString(value)
+	case "creater":
+		return me.creater.SetString(value)
+	case "created":
+		return me.created.SetString(value)
+	case "modifier":
+		return me.modifier.SetString(value)
+	case "modified":
+		return me.modified.SetString(value)
+	case "version":
+		return me.version.SetString(value)
+	case "deletion":
+		return me.deletion.SetString(value)
 	}
 	return nil
 }
@@ -450,46 +569,6 @@ func (me *User) Value() *User {
 	return me
 }
 
-func (me *User) SetString(field, value string) error {
-	switch strings.ToLowerFirst(field) {
-	case "id":
-		return me.id.SetString(value)
-	case "code":
-		return me.code.SetString(value)
-	case "name":
-		return me.name.SetString(value)
-	case "password":
-		return me.password.SetString(value)
-	case "memo":
-		return me.memo.SetString(value)
-	case "genre":
-		return me.genre.SetString(value)
-	case "status":
-		return me.status.SetString(value)
-	case "roles":
-		return me.roles.SetString(value)
-	case "posts":
-		return me.posts.SetString(value)
-	case "org":
-		return me.org.SetString(value)
-	case "area":
-		return me.area.SetString(value)
-	case "creater":
-		return me.creater.SetString(value)
-	case "created":
-		return me.created.SetString(value)
-	case "modifier":
-		return me.modifier.SetString(value)
-	case "modified":
-		return me.modified.SetString(value)
-	case "version":
-		return me.version.SetString(value)
-	case "deletion":
-		return me.deletion.SetString(value)
-	}
-	return nil
-}
-
 func (me *User) Validate() error {
 	return nil
 }
@@ -497,23 +576,23 @@ func (me *User) Validate() error {
 func (me *User) JSON() string {
 	var b bytes.Buffer
 	b.WriteString("{")
-	b.WriteString(fmt.Sprintf(`,"id":%q`, me.id.String()))
-	b.WriteString(fmt.Sprintf(`,"code":%q`, me.code.String()))
-	b.WriteString(fmt.Sprintf(`,"name":%q`, me.name.String()))
-	b.WriteString(fmt.Sprintf(`,"password":%q`, me.password.String()))
-	b.WriteString(fmt.Sprintf(`,"memo":%q`, me.memo.String()))
-	b.WriteString(fmt.Sprintf(`,"genre":%q`, me.genre.String()))
-	b.WriteString(fmt.Sprintf(`,"status":%q`, me.status.String()))
-	b.WriteString(fmt.Sprintf(`,"roles":%q`, me.roles.String()))
-	b.WriteString(fmt.Sprintf(`,"posts":%q`, me.posts.String()))
-	b.WriteString(fmt.Sprintf(`,"org":%q`, me.org.String()))
-	b.WriteString(fmt.Sprintf(`,"area":%q`, me.area.String()))
-	b.WriteString(fmt.Sprintf(`,"creater":%q`, me.creater.String()))
-	b.WriteString(fmt.Sprintf(`,"created":%q`, me.created.String()))
-	b.WriteString(fmt.Sprintf(`,"modifier":%q`, me.modifier.String()))
-	b.WriteString(fmt.Sprintf(`,"modified":%q`, me.modified.String()))
-	b.WriteString(fmt.Sprintf(`,"version":%q`, me.version.String()))
-	b.WriteString(fmt.Sprintf(`,"deletion":%q`, me.deletion.String()))
+	b.WriteString(`,"id":"` + jsons.Format(me.GetString("id")) + `"`)
+	b.WriteString(`,"code":"` + jsons.Format(me.GetString("code")) + `"`)
+	b.WriteString(`,"name":"` + jsons.Format(me.GetString("name")) + `"`)
+	b.WriteString(`,"password":"` + jsons.Format(me.GetString("password")) + `"`)
+	b.WriteString(`,"memo":"` + jsons.Format(me.GetString("memo")) + `"`)
+	b.WriteString(`,"genre":"` + jsons.Format(me.GetString("genre")) + `"`)
+	b.WriteString(`,"status":"` + jsons.Format(me.GetString("status")) + `"`)
+	b.WriteString(`,"roles":"` + jsons.Format(me.GetString("roles")) + `"`)
+	b.WriteString(`,"posts":"` + jsons.Format(me.GetString("posts")) + `"`)
+	b.WriteString(`,"org":"` + jsons.Format(me.GetString("org")) + `"`)
+	b.WriteString(`,"area":"` + jsons.Format(me.GetString("area")) + `"`)
+	b.WriteString(`,"creater":"` + jsons.Format(me.GetString("creater")) + `"`)
+	b.WriteString(`,"created":` + me.GetString("created"))
+	b.WriteString(`,"modifier":"` + jsons.Format(me.GetString("modifier")) + `"`)
+	b.WriteString(`,"modified":` + me.GetString("modified"))
+	b.WriteString(`,"version":` + me.GetString("version"))
+	b.WriteString(`,"deletion":` + me.GetString("deletion"))
 	b.WriteString("}")
 	return b.String()
 }

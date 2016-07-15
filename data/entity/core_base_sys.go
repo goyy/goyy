@@ -169,6 +169,58 @@ func (me *Sys) GetPtr(column string) interface{} {
 	return me.Pk.GetPtr(column)
 }
 
+func (me *Sys) GetString(field string) string {
+	switch strings.ToLowerFirst(field) {
+	case "memo":
+		return me.memo.String()
+	case "creates":
+		return me.creates.String()
+	case "creater":
+		return me.creater.String()
+	case "created":
+		return me.created.String()
+	case "modifier":
+		return me.modifier.String()
+	case "modified":
+		return me.modified.String()
+	case "version":
+		return me.version.String()
+	case "deletion":
+		return me.deletion.String()
+	case "artifical":
+		return me.artifical.String()
+	case "history":
+		return me.history.String()
+	}
+	return me.Pk.GetString(field)
+}
+
+func (me *Sys) SetString(field, value string) error {
+	switch strings.ToLowerFirst(field) {
+	case "memo":
+		return me.memo.SetString(value)
+	case "creates":
+		return me.creates.SetString(value)
+	case "creater":
+		return me.creater.SetString(value)
+	case "created":
+		return me.created.SetString(value)
+	case "modifier":
+		return me.modifier.SetString(value)
+	case "modified":
+		return me.modified.SetString(value)
+	case "version":
+		return me.version.SetString(value)
+	case "deletion":
+		return me.deletion.SetString(value)
+	case "artifical":
+		return me.artifical.SetString(value)
+	case "history":
+		return me.history.SetString(value)
+	}
+	return me.Pk.SetString(field, value)
+}
+
 func (me *Sys) Type(column string) (Type, bool) {
 	switch column {
 	case "memo":
@@ -219,30 +271,4 @@ func (me *Sys) Column(field string) (schema.Column, bool) {
 		return me.history.Column(), true
 	}
 	return me.Pk.Column(field)
-}
-
-func (me *Sys) SetString(field, value string) error {
-	switch strings.ToLowerFirst(field) {
-	case "memo":
-		return me.memo.SetString(value)
-	case "creates":
-		return me.creates.SetString(value)
-	case "creater":
-		return me.creater.SetString(value)
-	case "created":
-		return me.created.SetString(value)
-	case "modifier":
-		return me.modifier.SetString(value)
-	case "modified":
-		return me.modified.SetString(value)
-	case "version":
-		return me.version.SetString(value)
-	case "deletion":
-		return me.deletion.SetString(value)
-	case "artifical":
-		return me.artifical.SetString(value)
-	case "history":
-		return me.history.SetString(value)
-	}
-	return me.Pk.SetString(field, value)
 }

@@ -3,10 +3,10 @@ package user
 
 import (
 	"bytes"
-	"fmt"
 
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
+	"gopkg.in/goyy/goyy.v0/util/jsons"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
@@ -56,6 +56,8 @@ func (me *RoleEntity) init() {
 	me.initSetDefault()
 	me.initSetField()
 	me.initSetExcel()
+	me.initSetJson()
+	me.initSetXml()
 }
 
 func (me *RoleEntity) initSetDict() {
@@ -121,6 +123,26 @@ func (me *RoleEntity) initSetField() {
 func (me *RoleEntity) initSetExcel() {
 }
 
+func (me *RoleEntity) initSetJson() {
+	for _, c := range entity.SysColumns {
+		if t, ok := me.Sys.Type(c); ok {
+			t.Field().SetJson(entity.NewJsonBy(c))
+		}
+	}
+	me.userId.Field().SetJson(entity.NewJsonBy("userId"))
+	me.roleId.Field().SetJson(entity.NewJsonBy("roleId"))
+}
+
+func (me *RoleEntity) initSetXml() {
+	for _, c := range entity.SysColumns {
+		if t, ok := me.Sys.Type(c); ok {
+			t.Field().SetXml(entity.NewXmlBy(c))
+		}
+	}
+	me.userId.Field().SetXml(entity.NewXmlBy("userId"))
+	me.roleId.Field().SetXml(entity.NewXmlBy("roleId"))
+}
+
 func (me RoleEntity) New() entity.Interface {
 	return NewRoleEntity()
 }
@@ -143,6 +165,26 @@ func (me *RoleEntity) GetPtr(column string) interface{} {
 		return me.roleId.ValuePtr()
 	}
 	return me.Sys.GetPtr(column)
+}
+
+func (me *RoleEntity) GetString(field string) string {
+	switch strings.ToLowerFirst(field) {
+	case "userId":
+		return me.userId.String()
+	case "roleId":
+		return me.roleId.String()
+	}
+	return me.Sys.GetString(field)
+}
+
+func (me *RoleEntity) SetString(field, value string) error {
+	switch strings.ToLowerFirst(field) {
+	case "userId":
+		return me.userId.SetString(value)
+	case "roleId":
+		return me.roleId.SetString(value)
+	}
+	return me.Sys.SetString(field, value)
 }
 
 func (me *RoleEntity) Table() schema.Table {
@@ -209,16 +251,6 @@ func (me *RoleEntity) Value() *RoleEntity {
 	return me
 }
 
-func (me *RoleEntity) SetString(field, value string) error {
-	switch strings.ToLowerFirst(field) {
-	case "userId":
-		return me.userId.SetString(value)
-	case "roleId":
-		return me.roleId.SetString(value)
-	}
-	return me.Sys.SetString(field, value)
-}
-
 func (me *RoleEntity) Validate() error {
 	return nil
 }
@@ -226,19 +258,19 @@ func (me *RoleEntity) Validate() error {
 func (me *RoleEntity) JSON() string {
 	var b bytes.Buffer
 	b.WriteString("{")
-	b.WriteString(fmt.Sprintf(`"id":%q`, me.Sys.Pk.Id()))
-	b.WriteString(fmt.Sprintf(`,"memo":%q`, me.Sys.Memo()))
-	b.WriteString(fmt.Sprintf(`,"creates":%q`, me.Sys.Creates()))
-	b.WriteString(fmt.Sprintf(`,"creater":%q`, me.Sys.Creater()))
-	b.WriteString(fmt.Sprintf(`,"created":%d`, me.Sys.Created()))
-	b.WriteString(fmt.Sprintf(`,"modifier":%q`, me.Sys.Modifier()))
-	b.WriteString(fmt.Sprintf(`,"modified":%d`, me.Sys.Modified()))
-	b.WriteString(fmt.Sprintf(`,"version":%d`, me.Sys.Version()))
-	b.WriteString(fmt.Sprintf(`,"deletion":%d`, me.Sys.Deletion()))
-	b.WriteString(fmt.Sprintf(`,"artifical":%d`, me.Sys.Artifical()))
-	b.WriteString(fmt.Sprintf(`,"history":%d`, me.Sys.History()))
-	b.WriteString(fmt.Sprintf(`,"userId":%q`, me.userId.String()))
-	b.WriteString(fmt.Sprintf(`,"roleId":%q`, me.roleId.String()))
+	b.WriteString(`"id":"` + jsons.Format(me.GetString("id")) + `"`)
+	b.WriteString(`,"memo":"` + jsons.Format(me.GetString("memo")) + `"`)
+	b.WriteString(`,"creates":"` + jsons.Format(me.GetString("creates")) + `"`)
+	b.WriteString(`,"creater":"` + jsons.Format(me.GetString("creater")) + `"`)
+	b.WriteString(`,"created":` + me.GetString("created"))
+	b.WriteString(`,"modifier":"` + jsons.Format(me.GetString("modifier")) + `"`)
+	b.WriteString(`,"modified":` + me.GetString("modified"))
+	b.WriteString(`,"version":` + me.GetString("version"))
+	b.WriteString(`,"deletion":` + me.GetString("deletion"))
+	b.WriteString(`,"artifical":` + me.GetString("artifical"))
+	b.WriteString(`,"history":` + me.GetString("history"))
+	b.WriteString(`,"userId":"` + jsons.Format(me.GetString("userId")) + `"`)
+	b.WriteString(`,"roleId":"` + jsons.Format(me.GetString("roleId")) + `"`)
 	b.WriteString("}")
 	return b.String()
 }

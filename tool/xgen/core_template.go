@@ -166,20 +166,22 @@ var (
 			}
 			return "COLUMN"
 		},
-		"verbs": func(name string) string { // The format verbs
+		"jsonm": func(name string) string { // The format verbs
 			switch name {
+			case "id":
+				return "`\"" + name + "\":\"` + jsons.Format(me.GetString(\"" + name + "\")) + `\"`"
 			case "created", "modified", "version", "deletion", "artifical",
 				"history", "leaf", "grade":
-				return "%d"
+				return "`,\"" + name + "\":` + me.GetString(\"" + name + "\")"
 			default:
-				return "%q"
+				return "`,\"" + name + "\":\"` + jsons.Format(me.GetString(\"" + name + "\")) + `\"`"
 			}
 		},
-		"verbsf": func(f *field) string { // The format verbs
-			if f.Type == "string" {
-				return "%q"
+		"jsonmf": func(f *field) string { // The format verbs
+			if f.Type == "string" || f.Type == "time" {
+				return "`,\"" + f.Json.Name + "\":\"` + jsons.Format(me.GetString(\"" + f.Json.Name + "\")) + `\"`"
 			} else {
-				return "%d"
+				return "`,\"" + f.Json.Name + "\":` + me.GetString(\"" + f.Json.Name + "\")"
 			}
 		},
 		"existcol": func(e *entity, colname string) bool { // Whether there is a name in the entity

@@ -3,10 +3,10 @@ package internal
 
 import (
 	"bytes"
-	"fmt"
 
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
+	"gopkg.in/goyy/goyy.v0/util/jsons"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
@@ -54,30 +54,41 @@ func (me *User) init() {
 	me.initSetDefault()
 	me.initSetField()
 	me.initSetExcel()
+	me.initSetJson()
+	me.initSetXml()
 }
 
 func (me *User) initSetDict() {
 }
 
 func (me *User) initSetColumn() {
-	
 	me.id.SetColumn(USER_ID)
 	me.name.SetColumn(USER_NAME)
 	me.loginName.SetColumn(USER_LOGIN_NAME)
 }
 
 func (me *User) initSetDefault() {
-	
 }
 
 func (me *User) initSetField() {
-	
 	me.id.SetField(entity.DefaultField())
 	me.name.SetField(entity.DefaultField())
 	me.loginName.SetField(entity.DefaultField())
 }
 
 func (me *User) initSetExcel() {
+}
+
+func (me *User) initSetJson() {
+	me.id.Field().SetJson(entity.NewJsonBy("id"))
+	me.name.Field().SetJson(entity.NewJsonBy("name"))
+	me.loginName.Field().SetJson(entity.NewJsonBy("loginName"))
+}
+
+func (me *User) initSetXml() {
+	me.id.Field().SetXml(entity.NewXmlBy("id"))
+	me.name.Field().SetXml(entity.NewXmlBy("name"))
+	me.loginName.Field().SetXml(entity.NewXmlBy("loginName"))
 }
 
 func (me User) New() entity.Interface {
@@ -104,6 +115,30 @@ func (me *User) GetPtr(column string) interface{} {
 		return me.name.ValuePtr()
 	case USER_LOGIN_NAME.Name():
 		return me.loginName.ValuePtr()
+	}
+	return nil
+}
+
+func (me *User) GetString(field string) string {
+	switch strings.ToLowerFirst(field) {
+	case "id":
+		return me.id.String()
+	case "name":
+		return me.name.String()
+	case "loginName":
+		return me.loginName.String()
+	}
+	return ""
+}
+
+func (me *User) SetString(field, value string) error {
+	switch strings.ToLowerFirst(field) {
+	case "id":
+		return me.id.SetString(value)
+	case "name":
+		return me.name.SetString(value)
+	case "loginName":
+		return me.loginName.SetString(value)
 	}
 	return nil
 }
@@ -156,18 +191,6 @@ func (me *User) Value() *User {
 	return me
 }
 
-func (me *User) SetString(field, value string) error {
-	switch strings.ToLowerFirst(field) {
-	case "id":
-		return me.id.SetString(value)
-	case "name":
-		return me.name.SetString(value)
-	case "loginName":
-		return me.loginName.SetString(value)
-	}
-	return nil
-}
-
 func (me *User) Validate() error {
 	return nil
 }
@@ -175,9 +198,9 @@ func (me *User) Validate() error {
 func (me *User) JSON() string {
 	var b bytes.Buffer
 	b.WriteString("{")
-	b.WriteString(fmt.Sprintf(`,"id":%q`, me.id.String()))
-	b.WriteString(fmt.Sprintf(`,"name":%q`, me.name.String()))
-	b.WriteString(fmt.Sprintf(`,"loginName":%q`, me.loginName.String()))
+	b.WriteString(`,"id":"` + jsons.Format(me.GetString("id")) + `"`)
+	b.WriteString(`,"name":"` + jsons.Format(me.GetString("name")) + `"`)
+	b.WriteString(`,"loginName":"` + jsons.Format(me.GetString("loginName")) + `"`)
 	b.WriteString("}")
 	return b.String()
 }

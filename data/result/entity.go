@@ -6,11 +6,12 @@ package result
 
 import (
 	"bytes"
+	"strconv"
+
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/jsons"
 	"gopkg.in/goyy/goyy.v0/util/strings"
-	"strconv"
 )
 
 type Entity struct {

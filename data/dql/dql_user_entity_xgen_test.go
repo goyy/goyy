@@ -3,10 +3,10 @@ package dql_test
 
 import (
 	"bytes"
-	"fmt"
 
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
+	"gopkg.in/goyy/goyy.v0/util/jsons"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
@@ -63,13 +63,14 @@ func (me *User) init() {
 	me.initSetDefault()
 	me.initSetField()
 	me.initSetExcel()
+	me.initSetJson()
+	me.initSetXml()
 }
 
 func (me *User) initSetDict() {
 }
 
 func (me *User) initSetColumn() {
-	
 	me.id.SetColumn(USER_ID)
 	me.name.SetColumn(USER_NAME)
 	me.passwd.SetColumn(USER_PASSWD)
@@ -77,11 +78,9 @@ func (me *User) initSetColumn() {
 }
 
 func (me *User) initSetDefault() {
-	
 }
 
 func (me *User) initSetField() {
-	
 	me.id.SetField(entity.DefaultField())
 	me.name.SetField(entity.DefaultField())
 	me.passwd.SetField(entity.DefaultField())
@@ -89,6 +88,20 @@ func (me *User) initSetField() {
 }
 
 func (me *User) initSetExcel() {
+}
+
+func (me *User) initSetJson() {
+	me.id.Field().SetJson(entity.NewJsonBy("id"))
+	me.name.Field().SetJson(entity.NewJsonBy("name"))
+	me.passwd.Field().SetJson(entity.NewJsonBy("passwd"))
+	me.email.Field().SetJson(entity.NewJsonBy("email"))
+}
+
+func (me *User) initSetXml() {
+	me.id.Field().SetXml(entity.NewXmlBy("id"))
+	me.name.Field().SetXml(entity.NewXmlBy("name"))
+	me.passwd.Field().SetXml(entity.NewXmlBy("passwd"))
+	me.email.Field().SetXml(entity.NewXmlBy("email"))
 }
 
 func (me User) New() entity.Interface {
@@ -119,6 +132,34 @@ func (me *User) GetPtr(column string) interface{} {
 		return me.passwd.ValuePtr()
 	case USER_EMAIL.Name():
 		return me.email.ValuePtr()
+	}
+	return nil
+}
+
+func (me *User) GetString(field string) string {
+	switch strings.ToLowerFirst(field) {
+	case "id":
+		return me.id.String()
+	case "name":
+		return me.name.String()
+	case "passwd":
+		return me.passwd.String()
+	case "email":
+		return me.email.String()
+	}
+	return ""
+}
+
+func (me *User) SetString(field, value string) error {
+	switch strings.ToLowerFirst(field) {
+	case "id":
+		return me.id.SetString(value)
+	case "name":
+		return me.name.SetString(value)
+	case "passwd":
+		return me.passwd.SetString(value)
+	case "email":
+		return me.email.SetString(value)
 	}
 	return nil
 }
@@ -177,20 +218,6 @@ func (me *User) Value() *User {
 	return me
 }
 
-func (me *User) SetString(field, value string) error {
-	switch strings.ToLowerFirst(field) {
-	case "id":
-		return me.id.SetString(value)
-	case "name":
-		return me.name.SetString(value)
-	case "passwd":
-		return me.passwd.SetString(value)
-	case "email":
-		return me.email.SetString(value)
-	}
-	return nil
-}
-
 func (me *User) Validate() error {
 	return nil
 }
@@ -198,10 +225,10 @@ func (me *User) Validate() error {
 func (me *User) JSON() string {
 	var b bytes.Buffer
 	b.WriteString("{")
-	b.WriteString(fmt.Sprintf(`,"id":%q`, me.id.String()))
-	b.WriteString(fmt.Sprintf(`,"name":%q`, me.name.String()))
-	b.WriteString(fmt.Sprintf(`,"passwd":%q`, me.passwd.String()))
-	b.WriteString(fmt.Sprintf(`,"email":%q`, me.email.String()))
+	b.WriteString(`,"id":"` + jsons.Format(me.GetString("id")) + `"`)
+	b.WriteString(`,"name":"` + jsons.Format(me.GetString("name")) + `"`)
+	b.WriteString(`,"passwd":"` + jsons.Format(me.GetString("passwd")) + `"`)
+	b.WriteString(`,"email":"` + jsons.Format(me.GetString("email")) + `"`)
 	b.WriteString("}")
 	return b.String()
 }

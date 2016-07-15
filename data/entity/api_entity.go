@@ -12,12 +12,13 @@ type Interface interface {
 	New() Interface
 	Get(column string) interface{}
 	GetPtr(column string) interface{}
+	GetString(field string) string
+	SetString(field, value string) error
 	Type(column string) (Type, bool)
 	Table() schema.Table
 	Column(field string) (schema.Column, bool)
 	Columns() []schema.Column
 	Names() []string
-	SetString(field, value string) error
 	Validate() error
 	JSON() string
 	ExcelColumns() []string

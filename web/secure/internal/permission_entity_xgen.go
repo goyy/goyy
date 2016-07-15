@@ -3,10 +3,10 @@ package internal
 
 import (
 	"bytes"
-	"fmt"
 
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
+	"gopkg.in/goyy/goyy.v0/util/jsons"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
@@ -45,28 +45,37 @@ func (me *Permission) init() {
 	me.initSetDefault()
 	me.initSetField()
 	me.initSetExcel()
+	me.initSetJson()
+	me.initSetXml()
 }
 
 func (me *Permission) initSetDict() {
 }
 
 func (me *Permission) initSetColumn() {
-	
 	me.id.SetColumn(PERMISSION_ID)
 	me.permission.SetColumn(PERMISSION_PERMISSION)
 }
 
 func (me *Permission) initSetDefault() {
-	
 }
 
 func (me *Permission) initSetField() {
-	
 	me.id.SetField(entity.DefaultField())
 	me.permission.SetField(entity.DefaultField())
 }
 
 func (me *Permission) initSetExcel() {
+}
+
+func (me *Permission) initSetJson() {
+	me.id.Field().SetJson(entity.NewJsonBy("id"))
+	me.permission.Field().SetJson(entity.NewJsonBy("permission"))
+}
+
+func (me *Permission) initSetXml() {
+	me.id.Field().SetXml(entity.NewXmlBy("id"))
+	me.permission.Field().SetXml(entity.NewXmlBy("permission"))
 }
 
 func (me Permission) New() entity.Interface {
@@ -89,6 +98,26 @@ func (me *Permission) GetPtr(column string) interface{} {
 		return me.id.ValuePtr()
 	case PERMISSION_PERMISSION.Name():
 		return me.permission.ValuePtr()
+	}
+	return nil
+}
+
+func (me *Permission) GetString(field string) string {
+	switch strings.ToLowerFirst(field) {
+	case "id":
+		return me.id.String()
+	case "permission":
+		return me.permission.String()
+	}
+	return ""
+}
+
+func (me *Permission) SetString(field, value string) error {
+	switch strings.ToLowerFirst(field) {
+	case "id":
+		return me.id.SetString(value)
+	case "permission":
+		return me.permission.SetString(value)
 	}
 	return nil
 }
@@ -135,16 +164,6 @@ func (me *Permission) Value() *Permission {
 	return me
 }
 
-func (me *Permission) SetString(field, value string) error {
-	switch strings.ToLowerFirst(field) {
-	case "id":
-		return me.id.SetString(value)
-	case "permission":
-		return me.permission.SetString(value)
-	}
-	return nil
-}
-
 func (me *Permission) Validate() error {
 	return nil
 }
@@ -152,8 +171,8 @@ func (me *Permission) Validate() error {
 func (me *Permission) JSON() string {
 	var b bytes.Buffer
 	b.WriteString("{")
-	b.WriteString(fmt.Sprintf(`,"id":%q`, me.id.String()))
-	b.WriteString(fmt.Sprintf(`,"permission":%q`, me.permission.String()))
+	b.WriteString(`,"id":"` + jsons.Format(me.GetString("id")) + `"`)
+	b.WriteString(`,"permission":"` + jsons.Format(me.GetString("permission")) + `"`)
 	b.WriteString("}")
 	return b.String()
 }

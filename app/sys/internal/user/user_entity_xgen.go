@@ -3,10 +3,10 @@ package user
 
 import (
 	"bytes"
-	"fmt"
 
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
+	"gopkg.in/goyy/goyy.v0/util/jsons"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
@@ -146,6 +146,8 @@ func (me *Entity) init() {
 	me.initSetDefault()
 	me.initSetField()
 	me.initSetExcel()
+	me.initSetJson()
+	me.initSetXml()
 }
 
 func (me *Entity) initSetDict() {
@@ -231,6 +233,46 @@ func (me *Entity) initSetField() {
 func (me *Entity) initSetExcel() {
 }
 
+func (me *Entity) initSetJson() {
+	for _, c := range entity.SysColumns {
+		if t, ok := me.Sys.Type(c); ok {
+			t.Field().SetJson(entity.NewJsonBy(c))
+		}
+	}
+	me.name.Field().SetJson(entity.NewJsonBy("name"))
+	me.code.Field().SetJson(entity.NewJsonBy("code"))
+	me.passwd.Field().SetJson(entity.NewJsonBy("passwd"))
+	me.genre.Field().SetJson(entity.NewJsonBy("genre"))
+	me.email.Field().SetJson(entity.NewJsonBy("email"))
+	me.tel.Field().SetJson(entity.NewJsonBy("tel"))
+	me.mobile.Field().SetJson(entity.NewJsonBy("mobile"))
+	me.areaId.Field().SetJson(entity.NewJsonBy("areaId"))
+	me.orgId.Field().SetJson(entity.NewJsonBy("orgId"))
+	me.loginName.Field().SetJson(entity.NewJsonBy("loginName"))
+	me.loginIp.Field().SetJson(entity.NewJsonBy("loginIp"))
+	me.loginTime.Field().SetJson(entity.NewJsonBy("loginTime"))
+}
+
+func (me *Entity) initSetXml() {
+	for _, c := range entity.SysColumns {
+		if t, ok := me.Sys.Type(c); ok {
+			t.Field().SetXml(entity.NewXmlBy(c))
+		}
+	}
+	me.name.Field().SetXml(entity.NewXmlBy("name"))
+	me.code.Field().SetXml(entity.NewXmlBy("code"))
+	me.passwd.Field().SetXml(entity.NewXmlBy("passwd"))
+	me.genre.Field().SetXml(entity.NewXmlBy("genre"))
+	me.email.Field().SetXml(entity.NewXmlBy("email"))
+	me.tel.Field().SetXml(entity.NewXmlBy("tel"))
+	me.mobile.Field().SetXml(entity.NewXmlBy("mobile"))
+	me.areaId.Field().SetXml(entity.NewXmlBy("areaId"))
+	me.orgId.Field().SetXml(entity.NewXmlBy("orgId"))
+	me.loginName.Field().SetXml(entity.NewXmlBy("loginName"))
+	me.loginIp.Field().SetXml(entity.NewXmlBy("loginIp"))
+	me.loginTime.Field().SetXml(entity.NewXmlBy("loginTime"))
+}
+
 func (me Entity) New() entity.Interface {
 	return NewEntity()
 }
@@ -293,6 +335,66 @@ func (me *Entity) GetPtr(column string) interface{} {
 		return me.loginTime.ValuePtr()
 	}
 	return me.Sys.GetPtr(column)
+}
+
+func (me *Entity) GetString(field string) string {
+	switch strings.ToLowerFirst(field) {
+	case "name":
+		return me.name.String()
+	case "code":
+		return me.code.String()
+	case "passwd":
+		return me.passwd.String()
+	case "genre":
+		return me.genre.String()
+	case "email":
+		return me.email.String()
+	case "tel":
+		return me.tel.String()
+	case "mobile":
+		return me.mobile.String()
+	case "areaId":
+		return me.areaId.String()
+	case "orgId":
+		return me.orgId.String()
+	case "loginName":
+		return me.loginName.String()
+	case "loginIp":
+		return me.loginIp.String()
+	case "loginTime":
+		return me.loginTime.String()
+	}
+	return me.Sys.GetString(field)
+}
+
+func (me *Entity) SetString(field, value string) error {
+	switch strings.ToLowerFirst(field) {
+	case "name":
+		return me.name.SetString(value)
+	case "code":
+		return me.code.SetString(value)
+	case "passwd":
+		return me.passwd.SetString(value)
+	case "genre":
+		return me.genre.SetString(value)
+	case "email":
+		return me.email.SetString(value)
+	case "tel":
+		return me.tel.SetString(value)
+	case "mobile":
+		return me.mobile.SetString(value)
+	case "areaId":
+		return me.areaId.SetString(value)
+	case "orgId":
+		return me.orgId.SetString(value)
+	case "loginName":
+		return me.loginName.SetString(value)
+	case "loginIp":
+		return me.loginIp.SetString(value)
+	case "loginTime":
+		return me.loginTime.SetString(value)
+	}
+	return me.Sys.SetString(field, value)
 }
 
 func (me *Entity) Table() schema.Table {
@@ -419,36 +521,6 @@ func (me *Entity) Value() *Entity {
 	return me
 }
 
-func (me *Entity) SetString(field, value string) error {
-	switch strings.ToLowerFirst(field) {
-	case "name":
-		return me.name.SetString(value)
-	case "code":
-		return me.code.SetString(value)
-	case "passwd":
-		return me.passwd.SetString(value)
-	case "genre":
-		return me.genre.SetString(value)
-	case "email":
-		return me.email.SetString(value)
-	case "tel":
-		return me.tel.SetString(value)
-	case "mobile":
-		return me.mobile.SetString(value)
-	case "areaId":
-		return me.areaId.SetString(value)
-	case "orgId":
-		return me.orgId.SetString(value)
-	case "loginName":
-		return me.loginName.SetString(value)
-	case "loginIp":
-		return me.loginIp.SetString(value)
-	case "loginTime":
-		return me.loginTime.SetString(value)
-	}
-	return me.Sys.SetString(field, value)
-}
-
 func (me *Entity) Validate() error {
 	return nil
 }
@@ -456,29 +528,29 @@ func (me *Entity) Validate() error {
 func (me *Entity) JSON() string {
 	var b bytes.Buffer
 	b.WriteString("{")
-	b.WriteString(fmt.Sprintf(`"id":%q`, me.Sys.Pk.Id()))
-	b.WriteString(fmt.Sprintf(`,"memo":%q`, me.Sys.Memo()))
-	b.WriteString(fmt.Sprintf(`,"creates":%q`, me.Sys.Creates()))
-	b.WriteString(fmt.Sprintf(`,"creater":%q`, me.Sys.Creater()))
-	b.WriteString(fmt.Sprintf(`,"created":%d`, me.Sys.Created()))
-	b.WriteString(fmt.Sprintf(`,"modifier":%q`, me.Sys.Modifier()))
-	b.WriteString(fmt.Sprintf(`,"modified":%d`, me.Sys.Modified()))
-	b.WriteString(fmt.Sprintf(`,"version":%d`, me.Sys.Version()))
-	b.WriteString(fmt.Sprintf(`,"deletion":%d`, me.Sys.Deletion()))
-	b.WriteString(fmt.Sprintf(`,"artifical":%d`, me.Sys.Artifical()))
-	b.WriteString(fmt.Sprintf(`,"history":%d`, me.Sys.History()))
-	b.WriteString(fmt.Sprintf(`,"name":%q`, me.name.String()))
-	b.WriteString(fmt.Sprintf(`,"code":%q`, me.code.String()))
-	b.WriteString(fmt.Sprintf(`,"passwd":%q`, me.passwd.String()))
-	b.WriteString(fmt.Sprintf(`,"genre":%q`, me.genre.String()))
-	b.WriteString(fmt.Sprintf(`,"email":%q`, me.email.String()))
-	b.WriteString(fmt.Sprintf(`,"tel":%q`, me.tel.String()))
-	b.WriteString(fmt.Sprintf(`,"mobile":%q`, me.mobile.String()))
-	b.WriteString(fmt.Sprintf(`,"areaId":%q`, me.areaId.String()))
-	b.WriteString(fmt.Sprintf(`,"orgId":%q`, me.orgId.String()))
-	b.WriteString(fmt.Sprintf(`,"loginName":%q`, me.loginName.String()))
-	b.WriteString(fmt.Sprintf(`,"loginIp":%q`, me.loginIp.String()))
-	b.WriteString(fmt.Sprintf(`,"loginTime":%q`, me.loginTime.String()))
+	b.WriteString(`"id":"` + jsons.Format(me.GetString("id")) + `"`)
+	b.WriteString(`,"memo":"` + jsons.Format(me.GetString("memo")) + `"`)
+	b.WriteString(`,"creates":"` + jsons.Format(me.GetString("creates")) + `"`)
+	b.WriteString(`,"creater":"` + jsons.Format(me.GetString("creater")) + `"`)
+	b.WriteString(`,"created":` + me.GetString("created"))
+	b.WriteString(`,"modifier":"` + jsons.Format(me.GetString("modifier")) + `"`)
+	b.WriteString(`,"modified":` + me.GetString("modified"))
+	b.WriteString(`,"version":` + me.GetString("version"))
+	b.WriteString(`,"deletion":` + me.GetString("deletion"))
+	b.WriteString(`,"artifical":` + me.GetString("artifical"))
+	b.WriteString(`,"history":` + me.GetString("history"))
+	b.WriteString(`,"name":"` + jsons.Format(me.GetString("name")) + `"`)
+	b.WriteString(`,"code":"` + jsons.Format(me.GetString("code")) + `"`)
+	b.WriteString(`,"passwd":"` + jsons.Format(me.GetString("passwd")) + `"`)
+	b.WriteString(`,"genre":"` + jsons.Format(me.GetString("genre")) + `"`)
+	b.WriteString(`,"email":"` + jsons.Format(me.GetString("email")) + `"`)
+	b.WriteString(`,"tel":"` + jsons.Format(me.GetString("tel")) + `"`)
+	b.WriteString(`,"mobile":"` + jsons.Format(me.GetString("mobile")) + `"`)
+	b.WriteString(`,"areaId":"` + jsons.Format(me.GetString("areaId")) + `"`)
+	b.WriteString(`,"orgId":"` + jsons.Format(me.GetString("orgId")) + `"`)
+	b.WriteString(`,"loginName":"` + jsons.Format(me.GetString("loginName")) + `"`)
+	b.WriteString(`,"loginIp":"` + jsons.Format(me.GetString("loginIp")) + `"`)
+	b.WriteString(`,"loginTime":` + me.GetString("loginTime"))
 	b.WriteString("}")
 	return b.String()
 }

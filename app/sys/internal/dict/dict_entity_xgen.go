@@ -3,10 +3,10 @@ package dict
 
 import (
 	"bytes"
-	"fmt"
 
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
+	"gopkg.in/goyy/goyy.v0/util/jsons"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
@@ -92,6 +92,8 @@ func (me *Entity) init() {
 	me.initSetDefault()
 	me.initSetField()
 	me.initSetExcel()
+	me.initSetJson()
+	me.initSetXml()
 }
 
 func (me *Entity) initSetDict() {
@@ -165,6 +167,34 @@ func (me *Entity) initSetField() {
 func (me *Entity) initSetExcel() {
 }
 
+func (me *Entity) initSetJson() {
+	for _, c := range entity.SysColumns {
+		if t, ok := me.Sys.Type(c); ok {
+			t.Field().SetJson(entity.NewJsonBy(c))
+		}
+	}
+	me.genre.Field().SetJson(entity.NewJsonBy("genre"))
+	me.descr.Field().SetJson(entity.NewJsonBy("descr"))
+	me.mkey.Field().SetJson(entity.NewJsonBy("mkey"))
+	me.mval.Field().SetJson(entity.NewJsonBy("mval"))
+	me.filters.Field().SetJson(entity.NewJsonBy("filters"))
+	me.ordinal.Field().SetJson(entity.NewJsonBy("ordinal"))
+}
+
+func (me *Entity) initSetXml() {
+	for _, c := range entity.SysColumns {
+		if t, ok := me.Sys.Type(c); ok {
+			t.Field().SetXml(entity.NewXmlBy(c))
+		}
+	}
+	me.genre.Field().SetXml(entity.NewXmlBy("genre"))
+	me.descr.Field().SetXml(entity.NewXmlBy("descr"))
+	me.mkey.Field().SetXml(entity.NewXmlBy("mkey"))
+	me.mval.Field().SetXml(entity.NewXmlBy("mval"))
+	me.filters.Field().SetXml(entity.NewXmlBy("filters"))
+	me.ordinal.Field().SetXml(entity.NewXmlBy("ordinal"))
+}
+
 func (me Entity) New() entity.Interface {
 	return NewEntity()
 }
@@ -203,6 +233,42 @@ func (me *Entity) GetPtr(column string) interface{} {
 		return me.ordinal.ValuePtr()
 	}
 	return me.Sys.GetPtr(column)
+}
+
+func (me *Entity) GetString(field string) string {
+	switch strings.ToLowerFirst(field) {
+	case "genre":
+		return me.genre.String()
+	case "descr":
+		return me.descr.String()
+	case "mkey":
+		return me.mkey.String()
+	case "mval":
+		return me.mval.String()
+	case "filters":
+		return me.filters.String()
+	case "ordinal":
+		return me.ordinal.String()
+	}
+	return me.Sys.GetString(field)
+}
+
+func (me *Entity) SetString(field, value string) error {
+	switch strings.ToLowerFirst(field) {
+	case "genre":
+		return me.genre.SetString(value)
+	case "descr":
+		return me.descr.SetString(value)
+	case "mkey":
+		return me.mkey.SetString(value)
+	case "mval":
+		return me.mval.SetString(value)
+	case "filters":
+		return me.filters.SetString(value)
+	case "ordinal":
+		return me.ordinal.SetString(value)
+	}
+	return me.Sys.SetString(field, value)
 }
 
 func (me *Entity) Table() schema.Table {
@@ -293,24 +359,6 @@ func (me *Entity) Value() *Entity {
 	return me
 }
 
-func (me *Entity) SetString(field, value string) error {
-	switch strings.ToLowerFirst(field) {
-	case "genre":
-		return me.genre.SetString(value)
-	case "descr":
-		return me.descr.SetString(value)
-	case "mkey":
-		return me.mkey.SetString(value)
-	case "mval":
-		return me.mval.SetString(value)
-	case "filters":
-		return me.filters.SetString(value)
-	case "ordinal":
-		return me.ordinal.SetString(value)
-	}
-	return me.Sys.SetString(field, value)
-}
-
 func (me *Entity) Validate() error {
 	return nil
 }
@@ -318,23 +366,23 @@ func (me *Entity) Validate() error {
 func (me *Entity) JSON() string {
 	var b bytes.Buffer
 	b.WriteString("{")
-	b.WriteString(fmt.Sprintf(`"id":%q`, me.Sys.Pk.Id()))
-	b.WriteString(fmt.Sprintf(`,"memo":%q`, me.Sys.Memo()))
-	b.WriteString(fmt.Sprintf(`,"creates":%q`, me.Sys.Creates()))
-	b.WriteString(fmt.Sprintf(`,"creater":%q`, me.Sys.Creater()))
-	b.WriteString(fmt.Sprintf(`,"created":%d`, me.Sys.Created()))
-	b.WriteString(fmt.Sprintf(`,"modifier":%q`, me.Sys.Modifier()))
-	b.WriteString(fmt.Sprintf(`,"modified":%d`, me.Sys.Modified()))
-	b.WriteString(fmt.Sprintf(`,"version":%d`, me.Sys.Version()))
-	b.WriteString(fmt.Sprintf(`,"deletion":%d`, me.Sys.Deletion()))
-	b.WriteString(fmt.Sprintf(`,"artifical":%d`, me.Sys.Artifical()))
-	b.WriteString(fmt.Sprintf(`,"history":%d`, me.Sys.History()))
-	b.WriteString(fmt.Sprintf(`,"genre":%q`, me.genre.String()))
-	b.WriteString(fmt.Sprintf(`,"descr":%q`, me.descr.String()))
-	b.WriteString(fmt.Sprintf(`,"mkey":%q`, me.mkey.String()))
-	b.WriteString(fmt.Sprintf(`,"mval":%q`, me.mval.String()))
-	b.WriteString(fmt.Sprintf(`,"filters":%q`, me.filters.String()))
-	b.WriteString(fmt.Sprintf(`,"ordinal":%q`, me.ordinal.String()))
+	b.WriteString(`"id":"` + jsons.Format(me.GetString("id")) + `"`)
+	b.WriteString(`,"memo":"` + jsons.Format(me.GetString("memo")) + `"`)
+	b.WriteString(`,"creates":"` + jsons.Format(me.GetString("creates")) + `"`)
+	b.WriteString(`,"creater":"` + jsons.Format(me.GetString("creater")) + `"`)
+	b.WriteString(`,"created":` + me.GetString("created"))
+	b.WriteString(`,"modifier":"` + jsons.Format(me.GetString("modifier")) + `"`)
+	b.WriteString(`,"modified":` + me.GetString("modified"))
+	b.WriteString(`,"version":` + me.GetString("version"))
+	b.WriteString(`,"deletion":` + me.GetString("deletion"))
+	b.WriteString(`,"artifical":` + me.GetString("artifical"))
+	b.WriteString(`,"history":` + me.GetString("history"))
+	b.WriteString(`,"genre":"` + jsons.Format(me.GetString("genre")) + `"`)
+	b.WriteString(`,"descr":"` + jsons.Format(me.GetString("descr")) + `"`)
+	b.WriteString(`,"mkey":"` + jsons.Format(me.GetString("mkey")) + `"`)
+	b.WriteString(`,"mval":"` + jsons.Format(me.GetString("mval")) + `"`)
+	b.WriteString(`,"filters":"` + jsons.Format(me.GetString("filters")) + `"`)
+	b.WriteString(`,"ordinal":"` + jsons.Format(me.GetString("ordinal")) + `"`)
 	b.WriteString("}")
 	return b.String()
 }

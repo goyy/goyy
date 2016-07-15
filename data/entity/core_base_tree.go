@@ -193,6 +193,62 @@ func (me *Tree) GetPtr(column string) interface{} {
 	return me.Sys.GetPtr(column)
 }
 
+func (me *Tree) GetString(field string) string {
+	switch strings.ToLowerFirst(field) {
+	case "code":
+		return me.code.String()
+	case "name":
+		return me.name.String()
+	case "fullname":
+		return me.fullname.String()
+	case "genre":
+		return me.genre.String()
+	case "leaf":
+		return me.leaf.String()
+	case "grade":
+		return me.grade.String()
+	case "ordinal":
+		return me.ordinal.String()
+	case "parentId":
+		return me.parentId.String()
+	case "parentIds":
+		return me.parentIds.String()
+	case "parentCodes":
+		return me.parentCodes.String()
+	case "parentNames":
+		return me.parentNames.String()
+	}
+	return me.Sys.GetString(field)
+}
+
+func (me *Tree) SetString(field, value string) error {
+	switch strings.ToLowerFirst(field) {
+	case "code":
+		return me.code.SetString(value)
+	case "name":
+		return me.name.SetString(value)
+	case "fullname":
+		return me.fullname.SetString(value)
+	case "genre":
+		return me.genre.SetString(value)
+	case "leaf":
+		return me.leaf.SetString(value)
+	case "grade":
+		return me.grade.SetString(value)
+	case "ordinal":
+		return me.ordinal.SetString(value)
+	case "parentId":
+		return me.parentId.SetString(value)
+	case "parentIds":
+		return me.parentIds.SetString(value)
+	case "parentCodes":
+		return me.parentCodes.SetString(value)
+	case "parentNames":
+		return me.parentNames.SetString(value)
+	}
+	return me.Sys.SetString(field, value)
+}
+
 func (me *Tree) Type(column string) (Type, bool) {
 	switch column {
 	case "code":
@@ -247,32 +303,4 @@ func (me *Tree) Column(field string) (schema.Column, bool) {
 		return me.parentNames.Column(), true
 	}
 	return me.Sys.Column(field)
-}
-
-func (me *Tree) SetString(field, value string) error {
-	switch strings.ToLowerFirst(field) {
-	case "code":
-		return me.code.SetString(value)
-	case "name":
-		return me.name.SetString(value)
-	case "fullname":
-		return me.fullname.SetString(value)
-	case "genre":
-		return me.genre.SetString(value)
-	case "leaf":
-		return me.leaf.SetString(value)
-	case "grade":
-		return me.grade.SetString(value)
-	case "ordinal":
-		return me.ordinal.SetString(value)
-	case "parentId":
-		return me.parentId.SetString(value)
-	case "parentIds":
-		return me.parentIds.SetString(value)
-	case "parentCodes":
-		return me.parentCodes.SetString(value)
-	case "parentNames":
-		return me.parentNames.SetString(value)
-	}
-	return me.Sys.SetString(field, value)
 }

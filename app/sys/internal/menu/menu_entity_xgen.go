@@ -3,10 +3,10 @@ package menu
 
 import (
 	"bytes"
-	"fmt"
 
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/schema"
+	"gopkg.in/goyy/goyy.v0/util/jsons"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
@@ -94,6 +94,8 @@ func (me *Entity) init() {
 	me.initSetDefault()
 	me.initSetField()
 	me.initSetExcel()
+	me.initSetJson()
+	me.initSetXml()
 }
 
 func (me *Entity) initSetDict() {
@@ -198,6 +200,32 @@ func (me *Entity) initSetField() {
 func (me *Entity) initSetExcel() {
 }
 
+func (me *Entity) initSetJson() {
+	for _, c := range entity.TreeColumns {
+		if t, ok := me.Tree.Type(c); ok {
+			t.Field().SetJson(entity.NewJsonBy(c))
+		}
+	}
+	me.href.Field().SetJson(entity.NewJsonBy("href"))
+	me.target.Field().SetJson(entity.NewJsonBy("target"))
+	me.icon.Field().SetJson(entity.NewJsonBy("icon"))
+	me.hidden.Field().SetJson(entity.NewJsonBy("hidden"))
+	me.permission.Field().SetJson(entity.NewJsonBy("permission"))
+}
+
+func (me *Entity) initSetXml() {
+	for _, c := range entity.TreeColumns {
+		if t, ok := me.Tree.Type(c); ok {
+			t.Field().SetXml(entity.NewXmlBy(c))
+		}
+	}
+	me.href.Field().SetXml(entity.NewXmlBy("href"))
+	me.target.Field().SetXml(entity.NewXmlBy("target"))
+	me.icon.Field().SetXml(entity.NewXmlBy("icon"))
+	me.hidden.Field().SetXml(entity.NewXmlBy("hidden"))
+	me.permission.Field().SetXml(entity.NewXmlBy("permission"))
+}
+
 func (me Entity) New() entity.Interface {
 	return NewEntity()
 }
@@ -232,6 +260,38 @@ func (me *Entity) GetPtr(column string) interface{} {
 		return me.permission.ValuePtr()
 	}
 	return me.Tree.GetPtr(column)
+}
+
+func (me *Entity) GetString(field string) string {
+	switch strings.ToLowerFirst(field) {
+	case "href":
+		return me.href.String()
+	case "target":
+		return me.target.String()
+	case "icon":
+		return me.icon.String()
+	case "hidden":
+		return me.hidden.String()
+	case "permission":
+		return me.permission.String()
+	}
+	return me.Tree.GetString(field)
+}
+
+func (me *Entity) SetString(field, value string) error {
+	switch strings.ToLowerFirst(field) {
+	case "href":
+		return me.href.SetString(value)
+	case "target":
+		return me.target.SetString(value)
+	case "icon":
+		return me.icon.SetString(value)
+	case "hidden":
+		return me.hidden.SetString(value)
+	case "permission":
+		return me.permission.SetString(value)
+	}
+	return me.Tree.SetString(field, value)
 }
 
 func (me *Entity) Table() schema.Table {
@@ -338,22 +398,6 @@ func (me *Entity) Value() *Entity {
 	return me
 }
 
-func (me *Entity) SetString(field, value string) error {
-	switch strings.ToLowerFirst(field) {
-	case "href":
-		return me.href.SetString(value)
-	case "target":
-		return me.target.SetString(value)
-	case "icon":
-		return me.icon.SetString(value)
-	case "hidden":
-		return me.hidden.SetString(value)
-	case "permission":
-		return me.permission.SetString(value)
-	}
-	return me.Tree.SetString(field, value)
-}
-
 func (me *Entity) Validate() error {
 	return nil
 }
@@ -361,33 +405,33 @@ func (me *Entity) Validate() error {
 func (me *Entity) JSON() string {
 	var b bytes.Buffer
 	b.WriteString("{")
-	b.WriteString(fmt.Sprintf(`"id":%q`, me.Tree.Sys.Pk.Id()))
-	b.WriteString(fmt.Sprintf(`,"memo":%q`, me.Tree.Sys.Memo()))
-	b.WriteString(fmt.Sprintf(`,"creates":%q`, me.Tree.Sys.Creates()))
-	b.WriteString(fmt.Sprintf(`,"creater":%q`, me.Tree.Sys.Creater()))
-	b.WriteString(fmt.Sprintf(`,"created":%d`, me.Tree.Sys.Created()))
-	b.WriteString(fmt.Sprintf(`,"modifier":%q`, me.Tree.Sys.Modifier()))
-	b.WriteString(fmt.Sprintf(`,"modified":%d`, me.Tree.Sys.Modified()))
-	b.WriteString(fmt.Sprintf(`,"version":%d`, me.Tree.Sys.Version()))
-	b.WriteString(fmt.Sprintf(`,"deletion":%d`, me.Tree.Sys.Deletion()))
-	b.WriteString(fmt.Sprintf(`,"artifical":%d`, me.Tree.Sys.Artifical()))
-	b.WriteString(fmt.Sprintf(`,"history":%d`, me.Tree.Sys.History()))
-	b.WriteString(fmt.Sprintf(`,"code":%q`, me.Tree.Code()))
-	b.WriteString(fmt.Sprintf(`,"name":%q`, me.Tree.Name()))
-	b.WriteString(fmt.Sprintf(`,"fullname":%q`, me.Tree.Fullname()))
-	b.WriteString(fmt.Sprintf(`,"genre":%q`, me.Tree.Genre()))
-	b.WriteString(fmt.Sprintf(`,"leaf":%d`, me.Tree.Leaf()))
-	b.WriteString(fmt.Sprintf(`,"grade":%d`, me.Tree.Grade()))
-	b.WriteString(fmt.Sprintf(`,"ordinal":%q`, me.Tree.Ordinal()))
-	b.WriteString(fmt.Sprintf(`,"parentId":%q`, me.Tree.ParentId()))
-	b.WriteString(fmt.Sprintf(`,"parentIds":%q`, me.Tree.ParentIds()))
-	b.WriteString(fmt.Sprintf(`,"parentCodes":%q`, me.Tree.ParentCodes()))
-	b.WriteString(fmt.Sprintf(`,"parentNames":%q`, me.Tree.ParentNames()))
-	b.WriteString(fmt.Sprintf(`,"href":%q`, me.href.String()))
-	b.WriteString(fmt.Sprintf(`,"target":%q`, me.target.String()))
-	b.WriteString(fmt.Sprintf(`,"icon":%q`, me.icon.String()))
-	b.WriteString(fmt.Sprintf(`,"hidden":%q`, me.hidden.String()))
-	b.WriteString(fmt.Sprintf(`,"permission":%q`, me.permission.String()))
+	b.WriteString(`"id":"` + jsons.Format(me.GetString("id")) + `"`)
+	b.WriteString(`,"code":"` + jsons.Format(me.GetString("code")) + `"`)
+	b.WriteString(`,"name":"` + jsons.Format(me.GetString("name")) + `"`)
+	b.WriteString(`,"fullname":"` + jsons.Format(me.GetString("fullname")) + `"`)
+	b.WriteString(`,"genre":"` + jsons.Format(me.GetString("genre")) + `"`)
+	b.WriteString(`,"leaf":` + me.GetString("leaf"))
+	b.WriteString(`,"grade":` + me.GetString("grade"))
+	b.WriteString(`,"ordinal":"` + jsons.Format(me.GetString("ordinal")) + `"`)
+	b.WriteString(`,"parent_id":"` + jsons.Format(me.GetString("parent_id")) + `"`)
+	b.WriteString(`,"parent_ids":"` + jsons.Format(me.GetString("parent_ids")) + `"`)
+	b.WriteString(`,"parent_codes":"` + jsons.Format(me.GetString("parent_codes")) + `"`)
+	b.WriteString(`,"parent_names":"` + jsons.Format(me.GetString("parent_names")) + `"`)
+	b.WriteString(`,"memo":"` + jsons.Format(me.GetString("memo")) + `"`)
+	b.WriteString(`,"creates":"` + jsons.Format(me.GetString("creates")) + `"`)
+	b.WriteString(`,"creater":"` + jsons.Format(me.GetString("creater")) + `"`)
+	b.WriteString(`,"created":` + me.GetString("created"))
+	b.WriteString(`,"modifier":"` + jsons.Format(me.GetString("modifier")) + `"`)
+	b.WriteString(`,"modified":` + me.GetString("modified"))
+	b.WriteString(`,"version":` + me.GetString("version"))
+	b.WriteString(`,"deletion":` + me.GetString("deletion"))
+	b.WriteString(`,"artifical":` + me.GetString("artifical"))
+	b.WriteString(`,"history":` + me.GetString("history"))
+	b.WriteString(`,"href":"` + jsons.Format(me.GetString("href")) + `"`)
+	b.WriteString(`,"target":"` + jsons.Format(me.GetString("target")) + `"`)
+	b.WriteString(`,"icon":"` + jsons.Format(me.GetString("icon")) + `"`)
+	b.WriteString(`,"hidden":` + me.GetString("hidden"))
+	b.WriteString(`,"permission":"` + jsons.Format(me.GetString("permission")) + `"`)
 	b.WriteString("}")
 	return b.String()
 }
