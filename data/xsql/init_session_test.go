@@ -5,8 +5,8 @@
 package xsql_test
 
 import (
+	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/mattn/go-oci8"
-	_ "github.com/ziutek/mymysql/godrv"
 	"gopkg.in/goyy/goyy.v0/data/dialect"
 	"gopkg.in/goyy/goyy.v0/data/xsql"
 )

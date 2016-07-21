@@ -4,8 +4,8 @@
 	<environments default="development">
 		<environment id="development">
 			<database name="db">
-				<driverName>mymysql</driverName>
-				<dataSourceName>db_development/root/root</dataSourceName>
+				<driverName>mysql</driverName>
+				<dataSourceName>root:root@/db_development</dataSourceName>
 				<maxIdleConns>10</maxIdleConns>
 				<maxOpenConns>100</maxOpenConns>
 			</database>
@@ -20,8 +20,8 @@
 		</environment>
 		<environment id="production">
 			<database name="db">
-				<driverName>mymysql</driverName>
-				<dataSourceName>tcp:localhost:3306*db_production/db/db</dataSourceName>
+				<driverName>mysql</driverName>
+				<dataSourceName>root:root@tcp(localhost:3306)/db_production</dataSourceName>
 				<maxIdleConns>10</maxIdleConns>
 				<maxOpenConns>100</maxOpenConns>
 			</database>
