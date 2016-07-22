@@ -25,7 +25,7 @@ var rules = map[string]*regexp.Regexp{
 	typEmail:       regexp.MustCompile(`^[a-zA-Z0-9\+\-\.]+@[a-zA-Z0-9\.\-]+$`),
 	typURL:         regexp.MustCompile(`^[a-zA-Z0-9]+:\/\/.+`),
 	typIP:          regexp.MustCompile(`^(([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])(\.([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])){3}|([0-9a-fA-F]{1,4}:)+:?([0-9a-fA-F]{1,4}:)*[0-9a-fA-F]{1,4})$`),
-	typMobile:      regexp.MustCompile(`^((\+86)|(86))?(1[3,5,7,8]\d{9})$`),
+	typMobile:      regexp.MustCompile(`^((\+86)|(86))?(1[3,4,5,7,8]\d{9})$`),
 	typTel:         regexp.MustCompile(`^(0\d{2,3}(\-)?)?\d{7,8}$`),
 	typZipcode:     regexp.MustCompile(`^\d{6}$`),
 }
