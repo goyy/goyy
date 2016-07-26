@@ -6,7 +6,7 @@ package db_test
 
 import (
 	"../db"
-	_ "github.com/ziutek/mymysql/godrv"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type User struct {

@@ -5,8 +5,7 @@
 package repository_test
 
 import (
-	_ "github.com/mattn/go-oci8"
-	_ "github.com/ziutek/mymysql/godrv"
+	_ "github.com/go-sql-driver/mysql"
 	"gopkg.in/goyy/goyy.v0/data/dialect"
 	"gopkg.in/goyy/goyy.v0/data/repository"
 )

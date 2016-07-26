@@ -1,7 +1,7 @@
 package conf
 
 import (
-	_ "github.com/ziutek/mymysql/godrv"
+	_ "github.com/go-sql-driver/mysql"
 	"gopkg.in/goyy/goyy.v0/comm/log"
 	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/data/dialect"
