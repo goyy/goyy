@@ -20,3 +20,5 @@ type Column interface {
 	IsTransient() bool
 	String() string
 }
+
+var ParseDict func(genre, mkey string) string

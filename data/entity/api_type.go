@@ -9,13 +9,14 @@ import (
 )
 
 type Type interface {
+	Name() string
 	Column() schema.Column
 	SetColumn(v schema.Column)
 	Field() Field
 	SetField(v Field)
+	String() string
+	SetString(v string) error
 	SetDefault(v string) error
 	HasUpdate() bool
 	HasInsert() bool
-	String() string
-	Name() string
 }
