@@ -41,14 +41,18 @@ type factory struct {
 	IsExtend          bool
 	Entities          []*entity
 	SysColumns        []string // goyy>data>entity:SysColumns
+	SysFields         []string // goyy>data>entity:SysFields
 	TreeColumns       []string // goyy>data>entity:TreeColumns
+	TreeFields        []string // goyy>data>entity:TreeFields
 }
 
 // Init initializes an File from a path.
 func (me *factory) Init(path string) error {
 	// Set up the inheritance list of column names
 	me.SysColumns = e.SysColumns[:]
+	me.SysFields = e.SysFields[:]
 	me.TreeColumns = e.TreeColumns[:]
+	me.TreeFields = e.TreeFields[:]
 
 	// set the path
 	if strings.HasSuffix(path, ".go") {

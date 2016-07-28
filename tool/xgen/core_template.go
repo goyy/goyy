@@ -196,6 +196,14 @@ var (
 			}
 			return false
 		},
+		"existfld": func(e *entity, filedname string) bool { // Whether there is a name in the entity
+			for _, f := range e.Fields {
+				if f.Name == filedname {
+					return true
+				}
+			}
+			return false
+		},
 	}
 )
 

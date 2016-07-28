@@ -34,6 +34,31 @@ var TreeColumns = [...]string{
 	"history",
 }
 
+var TreeFields = [...]string{
+	"id",
+	"code",
+	"name",
+	"fullname",
+	"genre",
+	"leaf",
+	"grade",
+	"ordinal",
+	"parentId",
+	"parentIds",
+	"parentCodes",
+	"parentNames",
+	"memo",
+	"creates",
+	"creater",
+	"created",
+	"modifier",
+	"modified",
+	"version",
+	"deletion",
+	"artifical",
+	"history",
+}
+
 type Tree struct {
 	Sys
 	code        String `db:"column=code"`

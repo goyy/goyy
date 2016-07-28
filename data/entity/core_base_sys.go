@@ -23,6 +23,20 @@ var SysColumns = [...]string{
 	"history",
 }
 
+var SysFields = [...]string{
+	"id",
+	"memo",
+	"creates",
+	"creater",
+	"created",
+	"modifier",
+	"modified",
+	"version",
+	"deletion",
+	"artifical",
+	"history",
+}
+
 type Sys struct {
 	Pk
 	memo      String `db:"column=memo"`
