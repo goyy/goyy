@@ -6,6 +6,7 @@ package controller
 
 import (
 	"encoding/json"
+
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
@@ -36,6 +37,19 @@ func (me *JSONTreeController) Index(c xhttp.Context) {
 
 func (me *JSONTreeController) Save(c xhttp.Context) {
 	r, err := me.baseTreeController.Save(c, me.Mgr, me.PreSave, me.PostSave)
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+	err = c.Text(xhttp.StatusOK, r.JSON())
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+}
+
+func (me *JSONTreeController) Saved(c xhttp.Context) {
+	r, err := me.baseTreeController.Saved(c, me.Mgr, me.PreSaved, me.PostSaved)
 	if err != nil {
 		me.Error(c, err)
 		return
