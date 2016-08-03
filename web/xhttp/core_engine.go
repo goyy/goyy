@@ -25,8 +25,9 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				http.Redirect(w, r, Conf.Err.Err500, http.StatusFound)
 				return
 			} else {
+				msg := i18N.Message("err.500")
 				w.WriteHeader(500)
-				w.Write([]byte(default500Body))
+				w.Write([]byte(msg))
 			}
 		}
 	}()

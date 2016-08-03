@@ -27,6 +27,7 @@ var Conf = &conf{
 	Addr:    ":9090",
 	Profile: profile.DEV,
 	Err: &errOptions{
+		Err401: "",
 		Err403: "",
 		Err404: "",
 		Err500: "",
@@ -127,6 +128,7 @@ type conf struct {
 }
 
 type errOptions struct {
+	Err401 string // 401 URL prefix
 	Err403 string // 403 URL prefix
 	Err404 string // 404 URL prefix
 	Err500 string // 500 URL prefix

@@ -5,7 +5,6 @@
 package xhttp
 
 import (
-	"fmt"
 	"net/http"
 	"net/url"
 	"sync"
@@ -72,14 +71,15 @@ func (me *illegalServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) boo
 }
 
 func (me *illegalServeMux) write(w http.ResponseWriter, r *http.Request) {
+	msg := i18N.Message("err.illegal")
 	reqType := r.Header.Get("X-Requested-With")
 	if "XMLHttpRequest" == reqType { // AJAX
-		f := `{"success":false,"message":"%s"}`
-		c := fmt.Sprintf(f, i18N.Message("err.illegal"))
+		c := `{"success":false,"message":"` + msg + `"}`
+		w.WriteHeader(403)
 		w.Write([]byte(c))
 	} else {
-		f := `<script language="javascript">alert("%s");window.history.go(-1);</script>`
-		c := fmt.Sprintf(f, i18N.Message("err.illegal"))
+		c := `<script language="javascript">alert("` + msg + `");window.history.go(-1);</script>`
+		w.WriteHeader(403)
 		w.Write([]byte(c))
 	}
 }

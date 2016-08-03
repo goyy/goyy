@@ -9,11 +9,7 @@ import (
 )
 
 const (
-	defaultStatus  = 200
-	default404Body = "404 page not found"
-	default403Body = "403 Forbidden"
-	default405Body = "405 method not allowed"
-	default500Body = "500 Internal Server Error"
+	defaultStatus = 200
 
 	ifModifiedSince = "If-Modified-Since"
 	lastModified    = "Last-Modified"

@@ -5,9 +5,10 @@
 package xhttp
 
 import (
+	"net/http"
+
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/webs"
-	"net/http"
 )
 
 type router struct {
@@ -85,13 +86,22 @@ func (me *router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					}
 				}
 				if !isPermission {
-					if strings.IsNotBlank(Conf.Err.Err403) {
-						http.Redirect(w, r, Conf.Err.Err403, http.StatusFound)
+					msg := i18N.Message("err.401")
+					reqType := r.Header.Get("X-Requested-With")
+					if "XMLHttpRequest" == reqType { // AJAX
+						c := `{"success":false,"message":"` + msg + `"}`
+						w.WriteHeader(401)
+						w.Write([]byte(c))
 						return
 					} else {
-						w.WriteHeader(403)
-						w.Write([]byte(default403Body))
-						return
+						if strings.IsNotBlank(Conf.Err.Err401) {
+							http.Redirect(w, r, Conf.Err.Err401, http.StatusFound)
+							return
+						} else {
+							w.WriteHeader(401)
+							w.Write([]byte(msg))
+							return
+						}
 					}
 				}
 			}
@@ -105,7 +115,8 @@ func (me *router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				http.Redirect(w, r, Conf.Err.Err404, http.StatusFound)
 				return
 			} else {
-				serveError(c, 404, []byte(default404Body))
+				msg := i18N.Message("err.404")
+				serveError(c, 404, []byte(msg))
 			}
 		}
 	} else {
@@ -116,7 +127,8 @@ func (me *router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, Conf.Err.Err404, http.StatusFound)
 			return
 		} else {
-			serveError(c, 404, []byte(default404Body))
+			msg := i18N.Message("err.404")
+			serveError(c, 404, []byte(msg))
 		}
 	}
 }

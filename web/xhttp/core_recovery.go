@@ -33,8 +33,9 @@ func Recovery() Handler {
 					http.Redirect(c.ResponseWriter(), c.Request(), Conf.Err.Err500, http.StatusFound)
 					return
 				} else {
+					msg := i18N.Message("err.500")
 					c.ResponseWriter().WriteHeader(500)
-					c.ResponseWriter().Write([]byte(default500Body))
+					c.ResponseWriter().Write([]byte(msg))
 				}
 			}
 		}()
