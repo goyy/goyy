@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strconv"
 	"sync"
 
 	"gopkg.in/goyy/goyy.v0/comm/profile"
@@ -25,10 +24,9 @@ type htmlServeMux struct {
 type templateInfo struct {
 	id              string
 	content         string
-	isSec           bool
 	includes        []string
 	lastModified    int64
-	maxLastModified int64
+	maxLastModified int64 // include file:lastModified
 }
 
 type directiveInfo struct {
@@ -124,9 +122,6 @@ func (me *htmlServeMux) compile(options *htmlOptions) error {
 						lastModified:    lm,
 						maxLastModified: mls,
 					}
-					if me.isSec(c) {
-						ti.isSec = true
-					}
 					if _, ok := me.templates[id]; !ok {
 						me.templates[id] = ti
 					}
@@ -169,33 +164,8 @@ func (me *htmlServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool {
 				}
 			} else {
 				if ti, ok := me.templates[r.URL.Path]; ok {
-					if ti.isSec {
-						lm := ti.maxLastModified
-						var lastLoginTimeUnix int64
-						s := newSession4Redis(w, r)
-						if p, err := s.Principal(); err == nil {
-							if strings.IsNotBlank(p.LoginTime) {
-								if i, err := strconv.Atoi(p.LoginTime); err == nil {
-									lastLoginTimeUnix = int64(i)
-								}
-							}
-						} else {
-							logger.Error(err.Error())
-						}
-						if lastLoginTimeUnix > lm {
-							lm = lastLoginTimeUnix
-						}
-						if me.hasUseBrowserCache(w, r, lm) {
-							return true
-						} else {
-							c := me.parseSec(w, r, ti.content)
-							w.Write([]byte(c))
-							return true
-						}
-					} else {
-						if me.hasUseBrowserCache(w, r, ti.maxLastModified) {
-							return true
-						}
+					if me.hasUseBrowserCache(w, r, ti.maxLastModified) {
+						return true
 					}
 					w.Write([]byte(ti.content))
 				}
@@ -217,21 +187,16 @@ func (me *htmlServeMux) replaceAssets(content string) string {
 }
 
 func (me *htmlServeMux) isHtml(path string) bool {
-	if strings.HasSuffix(path, ".html") {
-		return true
+	for _, extension := range Conf.Html.Extensions {
+		if strings.HasSuffix(path, "."+extension) {
+			return true
+		}
 	}
 	return false
 }
 
 func (me *htmlServeMux) isInclude(content string) bool {
 	if strings.Index(content, directiveIncludeEnd) > 0 {
-		return true
-	}
-	return false
-}
-
-func (me *htmlServeMux) isSec(content string) bool {
-	if strings.Index(content, directiveSecEnd) > 0 {
 		return true
 	}
 	return false
@@ -283,24 +248,6 @@ func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request
 			if c, err := files.Read(filename); err == nil {
 				content = c
 			}
-			if me.isSec(content) {
-				var lastLoginTimeUnix int64
-				s := newSession4Redis(w, r)
-				if p, err := s.Principal(); err == nil {
-					if strings.IsNotBlank(p.LoginTime) {
-						if i, err := strconv.Atoi(p.LoginTime); err == nil {
-							lastLoginTimeUnix = int64(i)
-						}
-					}
-				}
-				if browserModTimeUnix < lastLoginTimeUnix {
-					// Actual last login time
-					lastLoginTime := times.FormatUnixGMT(lastLoginTimeUnix)
-					// Tell the browser not to use cache
-					w.Header().Set(lastModified, lastLoginTime)
-					return false
-				}
-			}
 			if me.isInclude(content) {
 				var includeFileModTimeUnix int64
 				directives := make([]directiveInfo, 0)
@@ -340,19 +287,8 @@ func (me *htmlServeMux) parseContent(content string) (string, []string, int64) {
 	return content, i, m
 }
 
-func (me *htmlServeMux) parseSec(w http.ResponseWriter, r *http.Request, content string) string {
-	content = me.parseSecUserFile(w, r, content)
-	content = me.parseSecLoginFile(w, r, content)
-	content = me.parseSecIsPermissionFile(w, r, content)
-	content = me.parseSecIsAnyPermissionFile(w, r, content)
-	return content
-}
-
 func (me *htmlServeMux) parseFile(w http.ResponseWriter, r *http.Request, content string) string {
 	content, _, _ = me.parseContent(content)
-	if me.isSec(content) {
-		content = me.parseSec(w, r, content)
-	}
 	return content
 }
 
@@ -433,96 +369,6 @@ func (me *htmlServeMux) parseTagTextFile(content, attr string) string {
 	return content
 }
 
-func (me *htmlServeMux) parseSecLoginFile(w http.ResponseWriter, r *http.Request, content string) string {
-	directives := make([]directiveInfo, 0)
-	directives = me.buildDirectiveInfo(content, directiveSecLoginBegin, directiveArgEnd, directiveSecEnd, directives)
-	for i := len(directives) - 1; i >= 0; i-- {
-		isLogin := false
-		s := newSession4Redis(w, r)
-		if p, err := s.Principal(); err == nil {
-			if strings.IsNotBlank(p.Id) {
-				isLogin = true
-			}
-		}
-		if directives[i].argValue == "true" && !isLogin {
-			content = strings.Replace(content, directives[i].statement, "", -1)
-		}
-		if directives[i].argValue == "false" && isLogin {
-			content = strings.Replace(content, directives[i].statement, "", -1)
-		}
-	}
-	return content
-}
-
-func (me *htmlServeMux) parseSecUserFile(w http.ResponseWriter, r *http.Request, content string) string {
-	directives := make([]directiveInfo, 0)
-	directives = me.buildDirectiveInfo(content, directiveSecUserBegin, directiveArgEnd, directiveSecEnd, directives)
-	for i := len(directives) - 1; i >= 0; i-- {
-		if directives[i].argValue == "name" {
-			s := newSession4Redis(w, r)
-			p, err := s.Principal()
-			if err != nil {
-				logger.Error(err.Error())
-				break
-			}
-			content = strings.Replace(content, directives[i].statement, p.LoginName, -1)
-			break
-		}
-	}
-	return content
-}
-
-func (me *htmlServeMux) parseSecIsPermissionFile(w http.ResponseWriter, r *http.Request, content string) string {
-	directives := make([]directiveInfo, 0)
-	directives = me.buildDirectiveInfo(content, directiveSecIsPermissionBegin, directiveArgEnd, directiveSecEnd, directives)
-	for i := len(directives) - 1; i >= 0; i-- {
-		if strings.IsNotBlank(directives[i].argValue) {
-			isLogin := false
-			isContains := false
-			s := newSession4Redis(w, r)
-			if p, err := s.Principal(); err == nil {
-				if strings.IsNotBlank(p.Id) {
-					isLogin = true
-				}
-				if strings.Contains(p.Permissions, directives[i].argValue) {
-					isContains = true
-				}
-			}
-			if !isLogin || !isContains {
-				content = strings.Replace(content, directives[i].statement, "", -1)
-			}
-			break
-		}
-	}
-	return content
-}
-
-func (me *htmlServeMux) parseSecIsAnyPermissionFile(w http.ResponseWriter, r *http.Request, content string) string {
-	directives := make([]directiveInfo, 0)
-	directives = me.buildDirectiveInfo(content, directiveSecIsAnyPermissionBegin, directiveArgEnd, directiveSecEnd, directives)
-	for i := len(directives) - 1; i >= 0; i-- {
-		if strings.IsNotBlank(directives[i].argValue) {
-			isLogin := false
-			isContains := false
-			s := newSession4Redis(w, r)
-			if p, err := s.Principal(); err == nil {
-				if strings.IsNotBlank(p.Id) {
-					isLogin = true
-				}
-				avs := strings.Split(directives[i].argValue, ",")
-				if strings.ContainsSliceAny(p.Permissions, avs) {
-					isContains = true
-				}
-			}
-			if !isLogin || !isContains {
-				content = strings.Replace(content, directives[i].statement, "", -1)
-			}
-			break
-		}
-	}
-	return content
-}
-
 func (me *htmlServeMux) buildDirectiveInfo(content, directiveBegin, argEnd, directiveEnd string, directives []directiveInfo) []directiveInfo {
 	pos := 0
 	for {
@@ -569,15 +415,6 @@ func (me *htmlServeMux) buildDirectiveInfo(content, directiveBegin, argEnd, dire
 		case directiveIfBegin:
 			directive = "if"
 			argKey = "expr"
-		case directiveSecUserBegin:
-			directive = "sec"
-			argKey = "user"
-		case directiveSecIsPermissionBegin:
-			directive = "sec"
-			argKey = "isPermission"
-		case directiveSecIsAnyPermissionBegin:
-			directive = "sec"
-			argKey = "isAnyPermission"
 		}
 		ii := directiveInfo{
 			statement:  statement,

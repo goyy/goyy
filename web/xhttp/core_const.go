@@ -14,19 +14,14 @@ const (
 	ifModifiedSince = "If-Modified-Since"
 	lastModified    = "Last-Modified"
 
-	directiveArgEnd                  = `"-->`
-	directiveIncludeBegin            = `<!--#include file="`
-	directiveIncludeParamBegin       = `" param="`
-	directiveIncludeEnd              = `<!--#endinclude-->`
-	directiveIfBegin                 = `<!--#if expr="`
-	directiveIfEnd                   = `<!--#endif-->`
-	directiveProfileBegin            = `<!--#profile accepts="`
-	directiveProfileEnd              = `<!--#endprofile-->`
-	directiveSecLoginBegin           = `<!--#sec login="`
-	directiveSecUserBegin            = `<!--#sec user="`
-	directiveSecIsPermissionBegin    = `<!--#sec isPermission="`
-	directiveSecIsAnyPermissionBegin = `<!--#sec isAnyPermission="`
-	directiveSecEnd                  = `<!--#endsec-->`
+	directiveArgEnd            = `"-->`
+	directiveIncludeBegin      = `<!--#include file="`
+	directiveIncludeParamBegin = `" param="`
+	directiveIncludeEnd        = `<!--#endinclude-->`
+	directiveIfBegin           = `<!--#if expr="`
+	directiveIfEnd             = `<!--#endif-->`
+	directiveProfileBegin      = `<!--#profile accepts="`
+	directiveProfileEnd        = `<!--#endprofile-->`
 
 	tplBegin  = "{{if param `"
 	tplArgEnd = "`}}"
