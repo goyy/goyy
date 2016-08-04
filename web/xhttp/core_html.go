@@ -277,13 +277,17 @@ func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request
 
 func (me *htmlServeMux) parseContent(content string) (string, []string, int64) {
 	content, i, m := me.parseIncludeFile(content)
-	content = me.replaceAssets(content)
+	//content = me.replaceAssets(content)
 	content = me.parseIfFile(content)
 	content = me.parseProfileFile(content)
+	content = me.parseTagAttrFile(content, tagAttrClass)
 	content = me.parseTagAttrFile(content, tagAttrHref)
 	content = me.parseTagAttrFile(content, tagAttrSrc)
 	content = me.parseTagAttrFile(content, tagAttrAction)
+	content = me.parseTagAttrFile(content, tagAttrOnerror)
+	content = me.parseTagAttrFile(content, tagAttrOnclick)
 	content = me.parseTagTextFile(content, tagTextTitle)
+	content = me.parseTagTextFile(content, tagTextType)
 	return content, i, m
 }
 
@@ -353,7 +357,7 @@ func (me *htmlServeMux) parseProfileFile(content string) string {
 
 func (me *htmlServeMux) parseTagAttrFile(content, attr string) string {
 	tags := make([]tagInfo, 0)
-	tags = me.buildTagInfo(content, attr, tags)
+	tags = me.buildTagAttrInfo(content, attr, tags)
 	for i := len(tags) - 1; i >= 0; i-- {
 		content = strings.Replace(content, tags[i].statement, tags[i].newstmt, -1)
 	}
@@ -433,7 +437,7 @@ func (me *htmlServeMux) buildDirectiveInfo(content, directiveBegin, argEnd, dire
 	return directives
 }
 
-func (me *htmlServeMux) buildTagInfo(content, attr string, tags []tagInfo) []tagInfo {
+func (me *htmlServeMux) buildTagAttrInfo(content, attr string, tags []tagInfo) []tagInfo {
 	pos := 0
 	srcBeginPre := " " + attr + tagAttrPost
 	dstBeginPre := tagAttrPre + attr + tagAttrPost
@@ -477,7 +481,7 @@ func (me *htmlServeMux) buildTagInfo(content, attr string, tags []tagInfo) []tag
 			newstmt = strings.Overlay(newstmt, "", srcBegin, srcEnd+len(tagAttrEnd))
 		}
 		newstmt = strings.Replace(newstmt, dstBeginPre, srcBeginPre, -1)
-
+		newstmt = me.replaceAssets(newstmt)
 		ti := tagInfo{
 			statement: statement,
 			newstmt:   newstmt,
@@ -541,17 +545,24 @@ func (me *htmlServeMux) buildTagTextInfo(content, attr string, tags []tagTextInf
 		newstmt := statement
 		dstVal := strings.Slice(content, dstBegin+len(dstBeginPre), dstEnd)
 		if strings.IsNotBlank(dstVal) {
-			filename := Conf.Html.Dir + dstVal
-			if files.IsExist(filename) {
-				if c, err := files.Read(filename); err == nil {
-					title := strings.Slice(content, srcBegin+len(tagBeginPre), srcEnd)
-					newstmt = strings.Replace(newstmt, title, title+c, 1)
-					dst := dstBeginPre + dstVal + tagAttrEnd
-					newstmt = strings.Replace(newstmt, dst, "", 1)
+			switch attr {
+			case tagTextTitle:
+				filename := Conf.Html.Dir + dstVal
+				if files.IsExist(filename) {
+					if c, err := files.Read(filename); err == nil {
+						title := strings.Slice(content, srcBegin+len(tagBeginPre), srcEnd)
+						newstmt = strings.Replace(newstmt, title, title+c, 1)
+						dst := dstBeginPre + dstVal + tagAttrEnd
+						newstmt = strings.Replace(newstmt, dst, "", 1)
+					}
 				}
+			case tagTextType:
+				dst := tagAttrPre + tagTextType
+				newstmt = strings.Replace(newstmt, dst, " "+tagTextType, 1)
 			}
 		}
 
+		newstmt = me.replaceAssets(newstmt)
 		tti := tagTextInfo{
 			statement: statement,
 			newstmt:   newstmt,

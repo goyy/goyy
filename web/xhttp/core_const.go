@@ -23,27 +23,31 @@ const (
 	directiveProfileBegin      = `<!--#profile accepts="`
 	directiveProfileEnd        = `<!--#endprofile-->`
 
-	tplBegin  = "{{if param `"
-	tplArgEnd = "`}}"
-	tplEnd    = "{{end}}"
+	tplBegin  = "{%if param `"
+	tplArgEnd = "`%}"
+	tplEnd    = "{%end%}"
 
 	tagBeginPre         = `<`
 	tagEndPre           = `>`
 	tagTextEndPre       = `</`
 	tagTextTitle        = `title`
+	tagTextType         = `type`
+	tagAttrClass        = `class`
 	tagAttrHref         = `href`
 	tagAttrSrc          = `src`
 	tagAttrAction       = `action`
+	tagAttrOnerror      = `onerror`
+	tagAttrOnclick      = `onclick`
 	tagAttrPre          = ` go:`
 	tagAttrPost         = `="`
 	tagAttrEnd          = `"`
-	tagProfile          = `{{profile}}`
-	tagApis             = `{{apis}}`
-	tagAssets           = `{{assets}}`
-	tagAssetsStatics    = `{{statics}}`
-	tagAssetsDevelopers = `{{developers}}`
-	tagAssetsOperations = `{{operations}}`
-	tagAssetsUploads    = `{{uploads}}`
+	tagProfile          = `{%profile%}`
+	tagApis             = `{%apis%}`
+	tagAssets           = `{%assets%}`
+	tagAssetsStatics    = `{%statics%}`
+	tagAssetsDevelopers = `{%developers%}`
+	tagAssetsOperations = `{%operations%}`
+	tagAssetsUploads    = `{%uploads%}`
 
 	noWritten = -1
 
