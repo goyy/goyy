@@ -9,15 +9,16 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
-	"gopkg.in/goyy/goyy.v0/util/files"
-	"gopkg.in/goyy/goyy.v0/util/strings"
-	"gopkg.in/goyy/goyy.v0/util/templates"
 	"html/template"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
 	"sync"
+
+	"gopkg.in/goyy/goyy.v0/util/files"
+	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/util/templates"
 )
 
 var (
@@ -32,7 +33,7 @@ type renderer struct {
 func (me *renderer) HTML(w http.ResponseWriter, status int, name string, v interface{}) error {
 	mutex.Lock()
 	if Conf.Template.Reloaded || me.t == nil {
-		err := me.compile(Conf.Template)
+		err := me.compile()
 		if err != nil {
 			mutex.Unlock()
 			return err
@@ -100,7 +101,8 @@ func (me *renderer) writeHeader(w http.ResponseWriter, status int, contentType s
 	w.WriteHeader(status)
 }
 
-func (me *renderer) compile(options *templateOptions) error {
+func (me *renderer) compile() error {
+	options := Conf.Template
 	dir := options.Dir
 	me.t = template.New(dir)
 	me.t.Delims(options.Delims.Left, options.Delims.Right)

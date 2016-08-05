@@ -44,14 +44,14 @@ type directiveInfo struct {
 
 /*
 type directiveInfo struct {
-	statement string // {{if param `home`}}cur{{end}}
+	statement string // {%if eq .param `home`%}cur{%end%}
 	directive string // if
-	argKey    string // param
+	argKey    string // eq .param
 	argValue  string // home
 	content   string // cur
-	begin     int    // postion:{{if
-	center    int    // postion:}}
-	end       int    // postion:{{end}}
+	begin     int    // postion:{%if
+	center    int    // postion:%}
+	end       int    // postion:{%end%}
 }
 */
 
@@ -88,7 +88,8 @@ var hsm = &htmlServeMux{
 
 var htmlMutex sync.Mutex
 
-func (me *htmlServeMux) compile(options *htmlOptions) error {
+func (me *htmlServeMux) compile() error {
+	options := Conf.Html
 	filepath.Walk(options.Dir, func(path string, info os.FileInfo, err error) error {
 		r, err := filepath.Rel(options.Dir, path)
 		if err != nil {
@@ -144,7 +145,7 @@ func (me *htmlServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool {
 			if me.isCompiled == false {
 				htmlMutex.Lock()
 				if me.isCompiled == false {
-					if err := me.compile(Conf.Html); err != nil {
+					if err := me.compile(); err != nil {
 						htmlMutex.Unlock()
 						logger.Error(err.Error())
 						return true
@@ -317,6 +318,8 @@ func (me *htmlServeMux) parseIncludeFile(content string) (string, []string, int6
 		}
 		f := strings.After(filename, Conf.Html.Dir)
 		includes = append(includes, f)
+
+		v = strings.Replace(v, tagParam, directives[i].paramValue, -1)
 
 		ifparams := make([]directiveInfo, 0)
 		ifparams = me.buildDirectiveInfo(v, tplBegin, tplArgEnd, tplEnd, ifparams)

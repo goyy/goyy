@@ -5,10 +5,12 @@
 package templates
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/strings"
-	"gopkg.in/goyy/goyy.v0/util/times"
 	htmpl "html/template"
 	ttmpl "text/template"
+
+	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/util/times"
+	"gopkg.in/goyy/goyy.v0/web/conf"
 )
 
 var Text = text{funcMapText}
@@ -52,6 +54,14 @@ var funcMapText = ttmpl.FuncMap{
 	"neshow":    neshow,
 	"neadd":     neadd,
 	"needit":    needit,
+
+	"profile":    getProfile,    // profile[production|development|test]
+	"apis":       getApis,       // The URL of the apis.
+	"assets":     getAssets,     // The URL of the static file.
+	"statics":    getStatics,    // static file[web|wap|bms]
+	"developers": getDevelopers, // The URL of the development of relevant documents
+	"operations": getOperations, // The URL of the operation related documents.
+	"uploads":    getUploads,    // The URL of the uploaded file.
 }
 
 var funcMapHtml = htmpl.FuncMap{
@@ -80,6 +90,14 @@ var funcMapHtml = htmpl.FuncMap{
 	"neshow":    neshow,
 	"neadd":     neadd,
 	"needit":    needit,
+
+	"profile":    getProfile,    // profile[production|development|test]
+	"apis":       getApis,       // The URL of the apis.
+	"assets":     getAssets,     // The URL of the static file.
+	"statics":    getStatics,    // static file[web|wap|bms]
+	"developers": getDevelopers, // The URL of the development of relevant documents
+	"operations": getOperations, // The URL of the operation related documents.
+	"uploads":    getUploads,    // The URL of the uploaded file.
 }
 
 ////////////////////////////////////////////////////////////
@@ -163,4 +181,36 @@ var neadd = func(t string) bool {
 
 var needit = func(t string) bool {
 	return !eqedit(t)
+}
+
+////////////////////////////////////////////////////////////
+// static state
+////////////////////////////////////////////////////////////
+
+func getProfile() string {
+	return conf.Conf.Profile
+}
+
+func getApis() string {
+	return conf.Conf.Api.URL
+}
+
+func getAssets() string {
+	return conf.Conf.Asset.URL
+}
+
+func getStatics() string {
+	return conf.Conf.Static.URL
+}
+
+func getDevelopers() string {
+	return conf.Conf.Developer.URL
+}
+
+func getOperations() string {
+	return conf.Conf.Operation.URL
+}
+
+func getUploads() string {
+	return conf.Conf.Upload.URL
 }

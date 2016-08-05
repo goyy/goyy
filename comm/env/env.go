@@ -7,8 +7,9 @@ package env
 import (
 	"encoding/xml"
 	"errors"
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"os"
+
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 var conf = "./conf"

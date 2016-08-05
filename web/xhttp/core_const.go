@@ -23,7 +23,7 @@ const (
 	directiveProfileBegin      = `<!--#profile accepts="`
 	directiveProfileEnd        = `<!--#endprofile-->`
 
-	tplBegin  = "{%if param `"
+	tplBegin  = "{%if eq .param `"
 	tplArgEnd = "`%}"
 	tplEnd    = "{%end%}"
 
@@ -41,6 +41,7 @@ const (
 	tagAttrPre          = ` go:`
 	tagAttrPost         = `="`
 	tagAttrEnd          = `"`
+	tagParam            = `{%param%}`
 	tagProfile          = `{%profile%}`
 	tagApis             = `{%apis%}`
 	tagAssets           = `{%assets%}`
