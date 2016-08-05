@@ -14,18 +14,25 @@ const (
 	ifModifiedSince = "If-Modified-Since"
 	lastModified    = "Last-Modified"
 
-	directiveArgEnd            = `"-->`
-	directiveIncludeBegin      = `<!--#include file="`
-	directiveIncludeParamBegin = `" param="`
-	directiveIncludeEnd        = `<!--#endinclude-->`
-	directiveIfBegin           = `<!--#if expr="`
-	directiveIfEnd             = `<!--#endif-->`
-	directiveProfileBegin      = `<!--#profile accepts="`
-	directiveProfileEnd        = `<!--#endprofile-->`
+	drtBegin    = "<!--#"
+	drtEnd      = `-->`
+	drtEndKey   = "end"
+	drtIf       = "if"
+	drtProfile  = "profile"
+	drtInclude  = "include"
+	drtSettings = "settings"
 
-	tplBegin  = "{%if eq .param `"
-	tplArgEnd = "`%}"
-	tplEnd    = "{%end%}"
+	tplBegin   = "{%"
+	tplEnd     = "%}"
+	tplEqParam = "eq .param"
+
+	attrExpr    = "expr"
+	attrAccepts = "accepts"
+	attrFile    = "file"
+	attrParam   = "param"
+	attrProject = "project"
+	attrModule  = "module"
+	attrTitle   = "title"
 
 	tagBeginPre         = `<`
 	tagEndPre           = `>`

@@ -30,28 +30,34 @@ type templateInfo struct {
 }
 
 type directiveInfo struct {
-	statement  string // <!--#include file="/footer.html" param="home"-->content<!--#endinclude"-->
-	directive  string // include
-	argKey     string // file
-	argValue   string // /footer.html
-	paramKey   string // param
-	paramValue string // home
-	content    string // content
-	begin      int    // postion:<!--#include file="
-	center     int    // postion:"-->
-	end        int    // postion:<!--#endinclude"-->
+	statement string            // <!--#include file="/footer.html" param="home"-->test<!--#endinclude"-->
+	directive string            // include
+	attr      map[string]string // file="/footer.html" param="home"
+	body      string            // test
+	begin     string            // <!--#include
+	mid       string            // -->
+	end       string            // <!--#endinclude"-->
 }
 
 /*
 type directiveInfo struct {
 	statement string // {%if eq .param `home`%}cur{%end%}
 	directive string // if
-	argKey    string // eq .param
-	argValue  string // home
-	content   string // cur
-	begin     int    // postion:{%if
-	center    int    // postion:%}
-	end       int    // postion:{%end%}
+	attr      string // eq .param `home`
+	body      string // cur
+	begin     string // {%if
+	mid       string // %}
+	end       string // {%end%}
+}
+
+type directiveInfo struct {
+	statement  string // <!--#settings project="sys" module="user" title="User"-->test<!--#endsettings"-->
+	directive  string // settings
+	attr       string // project="sys" module="user" title="User"
+	body       string // test
+	begin      string // <!--#settings
+	mid        string // -->
+	end        string // <!--#endsettings"-->
 }
 */
 
@@ -187,6 +193,15 @@ func (me *htmlServeMux) replaceAssets(content string) string {
 	return strings.Replace(content, tagAssetsUploads, Conf.Upload.URL, -1)
 }
 
+func (me *htmlServeMux) replaceSettings(content string, settings map[string]string) string {
+	if settings != nil {
+		content = strings.Replace(content, tplBegin+attrProject+tplEnd, settings[attrProject], -1)
+		content = strings.Replace(content, tplBegin+attrModule+tplEnd, settings[attrModule], -1)
+		content = strings.Replace(content, tplBegin+attrTitle+tplEnd, settings[attrTitle], -1)
+	}
+	return content
+}
+
 func (me *htmlServeMux) isHtml(path string) bool {
 	for _, extension := range Conf.Html.Extensions {
 		if strings.HasSuffix(path, "."+extension) {
@@ -197,7 +212,21 @@ func (me *htmlServeMux) isHtml(path string) bool {
 }
 
 func (me *htmlServeMux) isInclude(content string) bool {
-	if strings.Index(content, directiveIncludeEnd) > 0 {
+	if strings.Index(content, drtBegin+drtInclude) > 0 {
+		return true
+	}
+	return false
+}
+
+func (me *htmlServeMux) isSettings(content string) bool {
+	if strings.Index(content, drtBegin+drtSettings) > 0 {
+		return true
+	}
+	return false
+}
+
+func (me *htmlServeMux) isTplIf(content string) bool {
+	if strings.Index(content, tplBegin+drtIf) > 0 {
 		return true
 	}
 	return false
@@ -252,9 +281,9 @@ func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request
 			if me.isInclude(content) {
 				var includeFileModTimeUnix int64
 				directives := make([]directiveInfo, 0)
-				directives = me.buildDirectiveInfo(content, directiveIncludeBegin, directiveArgEnd, directiveIncludeEnd, directives)
+				directives = me.buildDirectiveInfo(content, drtInclude, directives)
 				for _, v := range directives {
-					if val, err := files.ModTimeUnix(v.argValue); err == nil {
+					if val, err := files.ModTimeUnix(v.attr[attrFile]); err == nil {
 						if includeFileModTimeUnix < val {
 							includeFileModTimeUnix = val
 						}
@@ -277,7 +306,8 @@ func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request
 }
 
 func (me *htmlServeMux) parseContent(content string) (string, []string, int64) {
-	content, i, m := me.parseIncludeFile(content)
+	content, settings := me.parseSettingsFile(content)
+	content, i, m := me.parseIncludeFile(content, settings)
 	//content = me.replaceAssets(content)
 	content = me.parseIfFile(content)
 	content = me.parseProfileFile(content)
@@ -297,13 +327,30 @@ func (me *htmlServeMux) parseFile(w http.ResponseWriter, r *http.Request, conten
 	return content
 }
 
-func (me *htmlServeMux) parseIncludeFile(content string) (string, []string, int64) {
+func (me *htmlServeMux) parseSettingsFile(content string) (string, map[string]string) {
+	if me.isSettings(content) {
+		directives := make([]directiveInfo, 0)
+		directives = me.buildDirectiveInfo(content, drtSettings, directives)
+		if len(directives) > 0 {
+			settings := map[string]string{
+				attrProject: directives[0].attr[attrProject],
+				attrModule:  directives[0].attr[attrModule],
+				attrTitle:   directives[0].attr[attrTitle],
+			}
+			content = me.replaceSettings(content, settings)
+			return content, settings
+		}
+	}
+	return content, nil
+}
+
+func (me *htmlServeMux) parseIncludeFile(content string, settings map[string]string) (string, []string, int64) {
 	includes := []string{}
 	lastModified := int64(0)
 	directives := make([]directiveInfo, 0)
-	directives = me.buildDirectiveInfo(content, directiveIncludeBegin, directiveArgEnd, directiveIncludeEnd, directives)
+	directives = me.buildDirectiveInfo(content, drtInclude, directives)
 	for i := len(directives) - 1; i >= 0; i-- {
-		filename := directives[i].argValue
+		filename := directives[i].attr[attrFile]
 		v, err := files.Read(filename)
 		if err != nil {
 			logger.Error(err.Error())
@@ -319,15 +366,18 @@ func (me *htmlServeMux) parseIncludeFile(content string) (string, []string, int6
 		f := strings.After(filename, Conf.Html.Dir)
 		includes = append(includes, f)
 
-		v = strings.Replace(v, tagParam, directives[i].paramValue, -1)
+		v = strings.Replace(v, tagParam, directives[i].attr[attrParam], -1)
+		v = me.replaceSettings(v, settings)
 
-		ifparams := make([]directiveInfo, 0)
-		ifparams = me.buildDirectiveInfo(v, tplBegin, tplArgEnd, tplEnd, ifparams)
-		for p := len(ifparams) - 1; p >= 0; p-- {
-			if directives[i].paramValue == ifparams[p].argValue {
-				v = strings.Replace(v, ifparams[p].statement, ifparams[p].content, -1)
-			} else {
-				v = strings.Replace(v, ifparams[p].statement, "", -1)
+		if me.isTplIf(v) {
+			ifparams := make([]directiveInfo, 0)
+			ifparams = me.buildTplDirectiveInfo(v, drtIf, ifparams)
+			for p := len(ifparams) - 1; p >= 0; p-- {
+				if directives[i].attr[attrParam] == ifparams[p].attr[tplEqParam] {
+					v = strings.Replace(v, ifparams[p].statement, ifparams[p].body, -1)
+				} else {
+					v = strings.Replace(v, ifparams[p].statement, "", -1)
+				}
 			}
 		}
 
@@ -338,9 +388,9 @@ func (me *htmlServeMux) parseIncludeFile(content string) (string, []string, int6
 
 func (me *htmlServeMux) parseIfFile(content string) string {
 	directives := make([]directiveInfo, 0)
-	directives = me.buildDirectiveInfo(content, directiveIfBegin, directiveArgEnd, directiveIfEnd, directives)
+	directives = me.buildDirectiveInfo(content, drtIf, directives)
 	for i := len(directives) - 1; i >= 0; i-- {
-		if directives[i].argValue == "false" {
+		if directives[i].attr[attrExpr] == "false" {
 			content = strings.Replace(content, directives[i].statement, "", -1)
 		}
 	}
@@ -349,9 +399,9 @@ func (me *htmlServeMux) parseIfFile(content string) string {
 
 func (me *htmlServeMux) parseProfileFile(content string) string {
 	directives := make([]directiveInfo, 0)
-	directives = me.buildDirectiveInfo(content, directiveProfileBegin, directiveArgEnd, directiveProfileEnd, directives)
+	directives = me.buildDirectiveInfo(content, drtProfile, directives)
 	for i := len(directives) - 1; i >= 0; i-- {
-		if !profile.Accepts(directives[i].argValue) {
+		if !profile.Accepts(directives[i].attr[attrAccepts]) {
 			content = strings.Replace(content, directives[i].statement, "", -1)
 		}
 	}
@@ -376,66 +426,75 @@ func (me *htmlServeMux) parseTagTextFile(content, attr string) string {
 	return content
 }
 
-func (me *htmlServeMux) buildDirectiveInfo(content, directiveBegin, argEnd, directiveEnd string, directives []directiveInfo) []directiveInfo {
-	pos := 0
-	for {
-		begin := strings.IndexStart(content, directiveBegin, pos)
-		if begin == -1 {
-			if pos == 0 {
-				return directives
-			}
-			break
+func (me *htmlServeMux) buildDirectiveInfo(content, directive string, directives []directiveInfo) []directiveInfo {
+	dBegin := drtBegin + directive                    // <!--#include
+	dEnd := drtBegin + drtEndKey + directive + drtEnd // <!--#endprofile-->
+	outs := strings.Betweens(content, dBegin, dEnd)
+	for _, out := range outs {
+		statement := dBegin + out + dEnd
+		di := directiveInfo{
+			statement: statement,
+			directive: directive,
+			attr:      make(map[string]string, 0),
+			begin:     dBegin,
+			mid:       drtEnd,
+			end:       dEnd,
 		}
-		center := strings.IndexStart(content, argEnd, begin)
-		if center == -1 {
-			if pos == 0 {
-				return directives
-			}
-			break
-		}
-		end := strings.IndexStart(content, directiveEnd, center)
-		if end == -1 {
-			if pos == 0 {
-				return directives
-			}
-			break
-		}
-		contents := strings.Slice(content, center+len(argEnd), end)
-		pos = end
-		paramKey := "param"
-		paramValue := ""
-		argValue := strings.Slice(content, begin+len(directiveBegin), center)
-		if directiveBegin == directiveIncludeBegin {
-			if strings.Contains(argValue, directiveIncludeParamBegin) {
-				paramValue = strings.After(argValue, directiveIncludeParamBegin)
-				argValue = strings.Before(argValue, directiveIncludeParamBegin)
-			}
-			argValue = Conf.Html.Dir + argValue
-			if !files.IsExist(argValue) {
+		di.body = strings.Between(statement, di.mid, di.end)
+		switch directive {
+		case drtIf:
+			di.attr[attrExpr] = me.getAttrVal(statement, attrExpr)
+		case drtProfile:
+			di.attr[attrAccepts] = me.getAttrVal(statement, attrAccepts)
+		case drtInclude:
+			di.attr[attrFile] = me.getAttrVal(statement, attrFile)
+			di.attr[attrParam] = me.getAttrVal(statement, attrParam)
+			if strings.IsBlank(di.attr[attrFile]) {
 				continue
 			}
+			di.attr[attrFile] = Conf.Html.Dir + di.attr[attrFile]
+			if !files.IsExist(di.attr[attrFile]) {
+				continue
+			}
+		case drtSettings:
+			di.attr[attrProject] = me.getAttrVal(statement, attrProject)
+			di.attr[attrModule] = me.getAttrVal(statement, attrModule)
+			di.attr[attrTitle] = me.getAttrVal(statement, attrTitle)
 		}
-		statement := strings.Slice(content, begin, end+len(directiveEnd))
-		directive := "include"
-		argKey := "file"
-		switch directiveBegin {
-		case directiveIfBegin:
-			directive = "if"
-			argKey = "expr"
+		directives = append(directives, di)
+	}
+	return directives
+}
+
+func (me *htmlServeMux) getAttrVal(statement, attr string) string {
+	return strings.Between(statement, attr+`="`, `"`)
+}
+
+func (me *htmlServeMux) getArgVal(statement, attr string) string {
+	return strings.Between(statement, attr+" `", "`")
+}
+
+func (me *htmlServeMux) buildTplDirectiveInfo(content, directive string, directives []directiveInfo) []directiveInfo {
+
+	dBegin := tplBegin + directive        // {%if
+	dEnd := tplBegin + drtEndKey + tplEnd // {%end%}
+	outs := strings.Betweens(content, dBegin, dEnd)
+	for _, out := range outs {
+		statement := dBegin + out + dEnd
+		di := directiveInfo{
+			statement: statement,
+			directive: directive,
+			attr:      make(map[string]string, 0),
+			begin:     dBegin,
+			mid:       tplEnd,
+			end:       dEnd,
 		}
-		ii := directiveInfo{
-			statement:  statement,
-			directive:  directive,
-			argKey:     argKey,
-			argValue:   argValue,
-			content:    contents,
-			paramKey:   paramKey,
-			paramValue: paramValue,
-			begin:      begin,
-			center:     center,
-			end:        end,
+		di.body = strings.Between(statement, di.mid, di.end)
+		switch directive {
+		case drtIf:
+			di.attr[tplEqParam] = me.getArgVal(statement, tplEqParam)
 		}
-		directives = append(directives, ii)
+		directives = append(directives, di)
 	}
 	return directives
 }

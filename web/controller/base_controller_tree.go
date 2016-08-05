@@ -134,6 +134,8 @@ func (me *baseTreeController) Tree(c xhttp.Context, mgr service.Service) (out []
 		treeName = datas.Index(i).Get(colName).(string)
 		if treeId == defaultTreeRoot {
 			isOpen = true
+		} else {
+			isOpen = false
 		}
 		out = append(out, xtype.Tree{
 			Id:       treeId,
