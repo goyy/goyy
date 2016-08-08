@@ -5,6 +5,9 @@
 package secure
 
 import (
+	"net/http"
+	"strconv"
+
 	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
@@ -35,11 +38,55 @@ func Login(c xhttp.Context, loginName, passwd string) error {
 			LoginTime:   times.NowUnixStr(),
 			Permissions: ps,
 		}
+		setCookies(c, p)
 		return c.Session().SetPrincipal(p)
 	} else {
 		return errors.New(i18N.Message("err.login"))
 	}
 	return nil
+}
+
+func setCookies(c xhttp.Context, p session.Principal) {
+	// GSESSIONUSER
+	ucookie := &http.Cookie{
+		Name:     "GSESSIONUSER",
+		Value:    p.LoginName,
+		Path:     xhttp.Conf.Session.Path,
+		Domain:   xhttp.Conf.Session.Domain,
+		Secure:   xhttp.Conf.Session.Secure,
+		HttpOnly: xhttp.Conf.Session.HttpOnly,
+	}
+	http.SetCookie(c.ResponseWriter(), ucookie)
+	// GSESSIONPERMISSIONSN
+	pslen := len(p.Permissions)
+	pstimes := pslen / 4000
+	loop := int(pstimes)
+	ncookie := &http.Cookie{
+		Name:     "GSESSIONPERMISSIONSN",
+		Value:    strconv.Itoa(loop),
+		Path:     xhttp.Conf.Session.Path,
+		Domain:   xhttp.Conf.Session.Domain,
+		Secure:   xhttp.Conf.Session.Secure,
+		HttpOnly: xhttp.Conf.Session.HttpOnly,
+	}
+	http.SetCookie(c.ResponseWriter(), ncookie)
+	// GSESSIONPERMISSIONS*
+	for i := 0; i <= loop; i++ {
+		logger.Println(i, loop, 4000*i, 4000*(i+1))
+		psmax := 4000 * (i + 1)
+		if psmax > pslen {
+			psmax = pslen
+		}
+		pcookie := &http.Cookie{
+			Name:     "GSESSIONPERMISSIONS" + strconv.Itoa(i),
+			Value:    p.Permissions[4000*i : psmax],
+			Path:     xhttp.Conf.Session.Path,
+			Domain:   xhttp.Conf.Session.Domain,
+			Secure:   xhttp.Conf.Session.Secure,
+			HttpOnly: xhttp.Conf.Session.HttpOnly,
+		}
+		http.SetCookie(c.ResponseWriter(), pcookie)
+	}
 }
 
 func Logout(c xhttp.Context) error {
