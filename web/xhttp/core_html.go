@@ -422,7 +422,7 @@ func (me *htmlServeMux) parseTagDataAttrFile(content string) string {
 	tags := make([]tagInfo, 0)
 	tags = me.buildTagDataAttrInfo(content, tags)
 	for i := len(tags) - 1; i >= 0; i-- {
-		content = strings.Replace(content, tags[i].statement, tags[i].newstmt, -1)
+		content = me.parseTagAttrFile(content, tags[i].attr)
 	}
 	return content
 }
