@@ -62,7 +62,7 @@ type directiveInfo struct {
 */
 
 type tagInfo struct {
-	statement string // <link rel="shortcut icon" href="/favicon.ico" go:href="{{assets}}/favicon.ico">
+	statement string // <link rel="shortcut icon" href="/favicon.ico" go:href="{%assets%}/favicon.ico">
 	newstmt   string // <link rel="shortcut icon" href="/static/favicon.ico">
 	attr      string // href
 	tagBegin  int    // postion:<
@@ -71,7 +71,7 @@ type tagInfo struct {
 	srcEnd    int    // postion:"
 	dstBegin  int    // postion: go:href="
 	dstEnd    int    // postion:"
-	dstVal    string // {{assets}}/favicon.ico
+	dstVal    string // {%assets%}/favicon.ico
 }
 
 type tagTextInfo struct {
@@ -311,6 +311,7 @@ func (me *htmlServeMux) parseContent(content string) (string, []string, int64) {
 	//content = me.replaceAssets(content)
 	content = me.parseIfFile(content)
 	content = me.parseProfileFile(content)
+	content = me.parseTagDataAttrFile(content)
 	content = me.parseTagAttrFile(content, tagAttrClass)
 	content = me.parseTagAttrFile(content, tagAttrHref)
 	content = me.parseTagAttrFile(content, tagAttrSrc)
@@ -417,6 +418,15 @@ func (me *htmlServeMux) parseTagAttrFile(content, attr string) string {
 	return content
 }
 
+func (me *htmlServeMux) parseTagDataAttrFile(content string) string {
+	tags := make([]tagInfo, 0)
+	tags = me.buildTagDataAttrInfo(content, tags)
+	for i := len(tags) - 1; i >= 0; i-- {
+		content = strings.Replace(content, tags[i].statement, tags[i].newstmt, -1)
+	}
+	return content
+}
+
 func (me *htmlServeMux) parseTagTextFile(content, attr string) string {
 	tags := make([]tagTextInfo, 0)
 	tags = me.buildTagTextInfo(content, attr, tags)
@@ -499,10 +509,20 @@ func (me *htmlServeMux) buildTplDirectiveInfo(content, directive string, directi
 	return directives
 }
 
+func (me *htmlServeMux) buildTagDataAttrInfo(content string, tags []tagInfo) []tagInfo {
+	dataBeginPre := tagAttrPre + tagAttrData // go:data-
+	outs := strings.Betweens(content, dataBeginPre, tagAttrPost)
+	for _, out := range outs {
+		attr := tagAttrData + out // data-permissions
+		tags = me.buildTagAttrInfo(content, attr, tags)
+	}
+	return tags
+}
+
 func (me *htmlServeMux) buildTagAttrInfo(content, attr string, tags []tagInfo) []tagInfo {
 	pos := 0
-	srcBeginPre := " " + attr + tagAttrPost
-	dstBeginPre := tagAttrPre + attr + tagAttrPost
+	srcBeginPre := " " + attr + tagAttrPost        // href="
+	dstBeginPre := tagAttrPre + attr + tagAttrPost // go:href="
 	for {
 		dstBegin := strings.IndexStart(content, dstBeginPre, pos)
 		if dstBegin == -1 {

@@ -45,6 +45,7 @@ const (
 	tagAttrAction       = `action`
 	tagAttrOnerror      = `onerror`
 	tagAttrOnclick      = `onclick`
+	tagAttrData         = "data-"
 	tagAttrPre          = ` go:`
 	tagAttrPost         = `="`
 	tagAttrEnd          = `"`
