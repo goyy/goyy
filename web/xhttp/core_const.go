@@ -57,6 +57,7 @@ const (
 	tagAssetsDevelopers = `{%developers%}`
 	tagAssetsOperations = `{%operations%}`
 	tagAssetsUploads    = `{%uploads%}`
+	tagAssetsVer        = `{%ver%}`
 
 	noWritten = -1
 

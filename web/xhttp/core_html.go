@@ -94,8 +94,16 @@ var hsm = &htmlServeMux{
 
 var htmlMutex sync.Mutex
 
+var ver string = "ver=1"
+
 func (me *htmlServeMux) compile() error {
 	options := Conf.Html
+	fver := options.Dir + "/version.html"
+	if files.IsExist(fver) {
+		if c, err := files.Read(fver); err == nil {
+			ver = c
+		}
+	}
 	filepath.Walk(options.Dir, func(path string, info os.FileInfo, err error) error {
 		r, err := filepath.Rel(options.Dir, path)
 		if err != nil {
@@ -190,6 +198,7 @@ func (me *htmlServeMux) replaceAssets(content string) string {
 	content = strings.Replace(content, tagAssetsStatics, Conf.Static.URL, -1)
 	content = strings.Replace(content, tagAssetsDevelopers, Conf.Developer.URL, -1)
 	content = strings.Replace(content, tagAssetsOperations, Conf.Operation.URL, -1)
+	content = strings.Replace(content, tagAssetsVer, ver, -1)
 	return strings.Replace(content, tagAssetsUploads, Conf.Upload.URL, -1)
 }
 
