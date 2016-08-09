@@ -5,6 +5,7 @@
 package secure
 
 import (
+	"encoding/base64"
 	"net/http"
 	"strconv"
 
@@ -47,6 +48,7 @@ func Login(c xhttp.Context, loginName, passwd string) error {
 }
 
 func setCookies(c xhttp.Context, p session.Principal) {
+	ps := base64.StdEncoding.EncodeToString([]byte(p.Permissions))
 	// GSESSIONUSER
 	ucookie := &http.Cookie{
 		Name:     "GSESSIONUSER",
@@ -57,12 +59,12 @@ func setCookies(c xhttp.Context, p session.Principal) {
 		HttpOnly: xhttp.Conf.Session.HttpOnly,
 	}
 	http.SetCookie(c.ResponseWriter(), ucookie)
-	// GSESSIONPERMISSIONSN
-	pslen := len(p.Permissions)
+	// GSESSIONN
+	pslen := len(ps)
 	pstimes := pslen / 4000
 	loop := int(pstimes)
 	ncookie := &http.Cookie{
-		Name:     "GSESSIONPERMISSIONSN",
+		Name:     "GSESSIONN",
 		Value:    strconv.Itoa(loop),
 		Path:     xhttp.Conf.Session.Path,
 		Domain:   xhttp.Conf.Session.Domain,
@@ -70,7 +72,7 @@ func setCookies(c xhttp.Context, p session.Principal) {
 		HttpOnly: xhttp.Conf.Session.HttpOnly,
 	}
 	http.SetCookie(c.ResponseWriter(), ncookie)
-	// GSESSIONPERMISSIONS*
+	// GSESSION*
 	for i := 0; i <= loop; i++ {
 		logger.Println(i, loop, 4000*i, 4000*(i+1))
 		psmax := 4000 * (i + 1)
@@ -78,8 +80,8 @@ func setCookies(c xhttp.Context, p session.Principal) {
 			psmax = pslen
 		}
 		pcookie := &http.Cookie{
-			Name:     "GSESSIONPERMISSIONS" + strconv.Itoa(i),
-			Value:    p.Permissions[4000*i : psmax],
+			Name:     "GSESSION" + strconv.Itoa(i),
+			Value:    ps[4000*i : psmax],
 			Path:     xhttp.Conf.Session.Path,
 			Domain:   xhttp.Conf.Session.Domain,
 			Secure:   xhttp.Conf.Session.Secure,
