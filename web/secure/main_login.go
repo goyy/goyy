@@ -56,7 +56,7 @@ func setCookies(c xhttp.Context, p session.Principal) {
 		Path:     xhttp.Conf.Session.Path,
 		Domain:   xhttp.Conf.Session.Domain,
 		Secure:   xhttp.Conf.Session.Secure,
-		HttpOnly: xhttp.Conf.Session.HttpOnly,
+		HttpOnly: false,
 	}
 	http.SetCookie(c.ResponseWriter(), ucookie)
 	// GSESSIONN
@@ -69,7 +69,7 @@ func setCookies(c xhttp.Context, p session.Principal) {
 		Path:     xhttp.Conf.Session.Path,
 		Domain:   xhttp.Conf.Session.Domain,
 		Secure:   xhttp.Conf.Session.Secure,
-		HttpOnly: xhttp.Conf.Session.HttpOnly,
+		HttpOnly: false,
 	}
 	http.SetCookie(c.ResponseWriter(), ncookie)
 	// GSESSION*
@@ -84,7 +84,7 @@ func setCookies(c xhttp.Context, p session.Principal) {
 			Path:     xhttp.Conf.Session.Path,
 			Domain:   xhttp.Conf.Session.Domain,
 			Secure:   xhttp.Conf.Session.Secure,
-			HttpOnly: xhttp.Conf.Session.HttpOnly,
+			HttpOnly: false,
 		}
 		http.SetCookie(c.ResponseWriter(), pcookie)
 	}
