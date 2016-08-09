@@ -74,7 +74,6 @@ func setCookies(c xhttp.Context, p session.Principal) {
 	http.SetCookie(c.ResponseWriter(), ncookie)
 	// GSESSION*
 	for i := 0; i <= loop; i++ {
-		logger.Println(i, loop, 4000*i, 4000*(i+1))
 		psmax := 4000 * (i + 1)
 		if psmax > pslen {
 			psmax = pslen
