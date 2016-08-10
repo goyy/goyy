@@ -5,6 +5,8 @@
 package controller
 
 import (
+	"strconv"
+
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/result"
@@ -33,63 +35,15 @@ func (me *baseTreeController) Save(c xhttp.Context, mgr service.Service, pre fun
 	} else {
 		logger.Error(err.Error())
 	}
-	sId := c.Param(siftIdTR)
-	eId := c.Param(entityId)
-	eParentId := c.Param(entityParentId)
-	if strings.IsBlank(eParentId) && strings.IsBlank(eId) && strings.IsNotBlank(sId) {
-		eParentId = sId
-	}
-	if strings.IsBlank(eParentId) {
-		eParentId = defaultTreeRoot
-	}
-	p := mgr.NewEntity()
-	p.SetString(entityId, eParentId)
-	if err = mgr.Get(p); err != nil {
+	if err = me.setTreeInfo(c, mgr); err != nil {
 		return
-	} else {
-		c.Params().Set(entityParentId, eParentId)
-		if eParentId == defaultTreeRoot {
-			c.Params().Set(entityFullname, c.Param(entityName))
-			c.Params().Set(entityParentIds, eParentId)
-			c.Params().Set(entityParentNames, p.Get(colName).(string))
-			c.Params().Set(entityParentCodes, p.Get(colCode).(string))
-		} else {
-			c.Params().Set(entityFullname, p.Get(colFullname).(string)+" - "+c.Param(entityName))
-			c.Params().Set(entityParentIds, p.Get(colParentIds).(string)+","+eParentId)
-			c.Params().Set(entityParentNames, p.Get(colParentNames).(string)+","+p.Get(colName).(string))
-			c.Params().Set(entityParentCodes, p.Get(colParentCodes).(string)+","+p.Get(colCode).(string))
-		}
 	}
 	return me.baseController.Save(c, mgr, pre, post)
 }
 
 func (me *baseTreeController) Saved(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r *result.Entity) error) (out *result.Entity, err error) {
-	sId := c.Param(siftIdTR)
-	eId := c.Param(entityId)
-	eParentId := c.Param(entityParentId)
-	if strings.IsBlank(eParentId) && strings.IsBlank(eId) && strings.IsNotBlank(sId) {
-		eParentId = sId
-	}
-	if strings.IsBlank(eParentId) {
-		eParentId = defaultTreeRoot
-	}
-	p := mgr.NewEntity()
-	p.SetString(entityId, eParentId)
-	if err = mgr.Get(p); err != nil {
+	if err = me.setTreeInfo(c, mgr); err != nil {
 		return
-	} else {
-		c.Params().Set(entityParentId, eParentId)
-		if eParentId == defaultTreeRoot {
-			c.Params().Set(entityFullname, c.Param(entityName))
-			c.Params().Set(entityParentIds, eParentId)
-			c.Params().Set(entityParentNames, p.Get(colName).(string))
-			c.Params().Set(entityParentCodes, p.Get(colCode).(string))
-		} else {
-			c.Params().Set(entityFullname, p.Get(colFullname).(string)+" - "+c.Param(entityName))
-			c.Params().Set(entityParentIds, p.Get(colParentIds).(string)+","+eParentId)
-			c.Params().Set(entityParentNames, p.Get(colParentNames).(string)+","+p.Get(colName).(string))
-			c.Params().Set(entityParentCodes, p.Get(colParentCodes).(string)+","+p.Get(colCode).(string))
-		}
 	}
 	return me.baseController.Saved(c, mgr, pre, post)
 }
@@ -98,7 +52,11 @@ func (me *baseTreeController) Disable(c xhttp.Context, mgr service.Service, pre 
 	if ts, err := me.Breadcrumb(c, mgr); err == nil {
 		c.SetAttribute(defaultParents, ts)
 	} else {
-		logger.Error(err.Error())
+		logger.Errorln(err)
+	}
+	if err = me.setLeafOfDisable(c, mgr); err != nil {
+		logger.Errorln(err)
+		return
 	}
 	return me.baseController.Disable(c, mgr, pre, post)
 }
@@ -199,4 +157,88 @@ func (me *baseTreeController) Breadcrumb(c xhttp.Context, mgr service.Service) (
 		}
 	}
 	return nil, errors.Newf("'%s' does not match the parent node information", parentId)
+}
+
+func (me *baseTreeController) setTreeInfo(c xhttp.Context, mgr service.Service) error {
+	sId := c.Param(siftIdTR)
+	eId := c.Param(entityId)
+	eParentId := c.Param(entityParentId)
+	if strings.IsBlank(eParentId) && strings.IsBlank(eId) && strings.IsNotBlank(sId) {
+		eParentId = sId
+	}
+	if strings.IsBlank(eParentId) {
+		eParentId = defaultTreeRoot
+	}
+	p := mgr.NewEntity()
+	p.SetString(entityId, eParentId)
+	if err := mgr.Get(p); err != nil {
+		logger.Errorln(err)
+		return err
+	} else {
+		c.Params().Set(entityParentId, eParentId)
+		if eParentId == defaultTreeRoot {
+			if strings.IsBlank(eId) {
+				c.Params().Set(entityLeaf, "1")
+			}
+			c.Params().Set(entityGrade, "2")
+			c.Params().Set(entityFullname, c.Param(entityName))
+			c.Params().Set(entityParentIds, eParentId)
+			c.Params().Set(entityParentNames, p.GetString(entityName))
+			c.Params().Set(entityParentCodes, p.GetString(entityCode))
+		} else {
+			if strings.IsBlank(eId) {
+				c.Params().Set(entityLeaf, "1")
+			}
+			grade := p.GetString(entityGrade)
+			if strings.IsNotBlank(grade) {
+				if v, err := strconv.Atoi(grade); err == nil {
+					c.Params().Set(entityGrade, strconv.Itoa(v+1))
+				} else {
+					logger.Errorln(err)
+					return err
+				}
+			}
+			c.Params().Set(entityFullname, p.Get(colFullname).(string)+" - "+c.Param(entityName))
+			c.Params().Set(entityParentIds, p.Get(colParentIds).(string)+","+eParentId)
+			c.Params().Set(entityParentNames, p.Get(colParentNames).(string)+","+p.Get(colName).(string))
+			c.Params().Set(entityParentCodes, p.Get(colParentCodes).(string)+","+p.Get(colCode).(string))
+		}
+		leaf := p.GetString(entityLeaf)
+		if leaf != "0" {
+			p.SetString(entityLeaf, "0")
+			mgr.Save(c, p)
+		}
+	}
+	return nil
+}
+
+func (me *baseTreeController) setLeafOfDisable(c xhttp.Context, mgr service.Service) error {
+	id := c.Param(siftIdTR)
+	sId, _ := domain.NewSift(siftId, id)
+	data := mgr.NewEntity()
+	if err := mgr.SelectOneBySift(data, sId); err != nil {
+		return err
+	}
+	if data.GetString(entityLeaf) == "0" {
+		return i18N.Error("msg.disable.leaf")
+	}
+	parentId := data.GetString(entityParentId)
+	if strings.IsNotBlank(parentId) {
+		sParentId, _ := domain.NewSift(siftParentId, parentId)
+		sIdNE, _ := domain.NewSift(siftIdNE, id)
+		sDeletion, _ := domain.NewSift(siftDeletion, "0")
+		if count, err := mgr.SelectCountBySift(sParentId, sIdNE, sDeletion); err == nil {
+			if count == 0 {
+				sIdParent, _ := domain.NewSift(siftId, parentId)
+				pEntity := mgr.NewEntity()
+				if err := mgr.SelectOneBySift(pEntity, sIdParent); err == nil {
+					pEntity.SetString(entityLeaf, "1")
+					mgr.Save(c, pEntity)
+				} else {
+					return err
+				}
+			}
+		}
+	}
+	return nil
 }
