@@ -7,6 +7,6 @@ package log
 // Default settings.
 var (
 	DefaultPriority = Perror
-	DefaultLayout   = LstdFlags | Lpriority
+	DefaultLayout   = LstdFlags | Lpriority | Llongfile
 	DefaultOutput   = Ostd
 )

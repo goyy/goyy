@@ -4,6 +4,10 @@
 
 package log
 
+import (
+	"fmt"
+)
+
 // Sets the output prefix for the logger.
 func (me *Logger) setPrefix(priority int) {
 	prefix := ""
@@ -38,7 +42,7 @@ func (me *Logger) setPrefix(priority int) {
 func (me *Logger) print(priority int, v ...interface{}) {
 	if priority >= me.priority {
 		me.setPrefix(priority)
-		me.logger.Print(v...)
+		me.logger.Output(me.calldepth(), fmt.Sprint(v...))
 	}
 }
 
@@ -46,7 +50,7 @@ func (me *Logger) print(priority int, v ...interface{}) {
 func (me *Logger) printf(priority int, format string, v ...interface{}) {
 	if priority >= me.priority {
 		me.setPrefix(priority)
-		me.logger.Printf(format, v...)
+		me.logger.Output(me.calldepth(), fmt.Sprintf(format, v...))
 	}
 }
 
@@ -54,6 +58,14 @@ func (me *Logger) printf(priority int, format string, v ...interface{}) {
 func (me *Logger) println(priority int, v ...interface{}) {
 	if priority >= me.priority {
 		me.setPrefix(priority)
-		me.logger.Println(v...)
+		me.logger.Output(me.calldepth(), fmt.Sprintln(v...))
 	}
+}
+
+func (me *Logger) calldepth() int {
+	calldepth := 4
+	if me.isConsole {
+		calldepth++
+	}
+	return calldepth
 }

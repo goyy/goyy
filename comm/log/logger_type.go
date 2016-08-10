@@ -10,9 +10,10 @@ import (
 )
 
 type Logger struct {
-	prefix   string
-	priority int
-	logger   *log.Logger
+	isConsole bool
+	prefix    string
+	priority  int
+	logger    *log.Logger
 }
 
 // New creates a new Logger.
