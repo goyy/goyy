@@ -8,10 +8,12 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"sync"
 
 	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/util/files"
+	"gopkg.in/goyy/goyy.v0/util/maps"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
 )
@@ -30,20 +32,20 @@ type templateInfo struct {
 }
 
 type directiveInfo struct {
-	statement string            // <!--#include file="/footer.html" param="home"-->test<!--#endinclude"-->
+	statement string            // <!--#include file="/footer.html" params="home"-->test<!--#endinclude-->
 	directive string            // include
-	attr      map[string]string // file="/footer.html" param="home"
+	attr      map[string]string // file="/footer.html" params="home"
 	body      string            // test
 	begin     string            // <!--#include
 	mid       string            // -->
-	end       string            // <!--#endinclude"-->
+	end       string            // <!--#endinclude-->
 }
 
 /*
 type directiveInfo struct {
-	statement string // {%if eq .param `home`%}cur{%end%}
+	statement string // {%if eq .params `home`%}cur{%end%}
 	directive string // if
-	attr      string // eq .param `home`
+	attr      string // eq .params `home`
 	body      string // cur
 	begin     string // {%if
 	mid       string // %}
@@ -51,13 +53,13 @@ type directiveInfo struct {
 }
 
 type directiveInfo struct {
-	statement  string // <!--#settings project="sys" module="user" title="User"-->test<!--#endsettings"-->
+	statement  string // <!--#settings project="sys" module="user" title="User"-->test<!--#endsettings-->
 	directive  string // settings
 	attr       string // project="sys" module="user" title="User"
 	body       string // test
 	begin      string // <!--#settings
 	mid        string // -->
-	end        string // <!--#endsettings"-->
+	end        string // <!--#endsettings-->
 }
 */
 
@@ -376,17 +378,42 @@ func (me *htmlServeMux) parseIncludeFile(content string, settings map[string]str
 		f := strings.After(filename, Conf.Html.Dir)
 		includes = append(includes, f)
 
-		v = strings.Replace(v, tagParam, directives[i].attr[attrParam], -1)
 		v = me.replaceSettings(v, settings)
+
+		params := directives[i].attr[attrParams]
+		paramsMap := maps.ParseURLQuery(params)
+		if len(paramsMap) > 0 {
+			for key, value := range paramsMap {
+				s := tplBegin + "." + attrParams + "." + key + tplEnd
+				v = strings.Replace(v, s, value, -1)
+			}
+		} else {
+			v = strings.Replace(v, tagParams, params, -1)
+			v = strings.Replace(v, tagParams2, params, -1)
+		}
 
 		if me.isTplIf(v) {
 			ifparams := make([]directiveInfo, 0)
 			ifparams = me.buildTplDirectiveInfo(v, drtIf, ifparams)
 			for p := len(ifparams) - 1; p >= 0; p-- {
-				if directives[i].attr[attrParam] == ifparams[p].attr[tplEqParam] {
-					v = strings.Replace(v, ifparams[p].statement, ifparams[p].body, -1)
+				if len(paramsMap) > 0 {
+					for key, value := range paramsMap {
+						pKey := ifparams[p].attr["0"] + " " + ifparams[p].attr["1"]
+						pVal := "`" + value + "`"
+						if pKey == tplEqParams+"."+key && pVal == ifparams[p].attr["2"] {
+							v = strings.Replace(v, ifparams[p].statement, ifparams[p].body, -1)
+						} else {
+							v = strings.Replace(v, ifparams[p].statement, "", -1)
+						}
+					}
 				} else {
-					v = strings.Replace(v, ifparams[p].statement, "", -1)
+					pKey := ifparams[p].attr["0"] + " " + ifparams[p].attr["1"]
+					pVal := "`" + directives[i].attr[attrParams] + "`"
+					if pKey == tplEqParams && pVal == ifparams[p].attr["2"] {
+						v = strings.Replace(v, ifparams[p].statement, ifparams[p].body, -1)
+					} else {
+						v = strings.Replace(v, ifparams[p].statement, "", -1)
+					}
 				}
 			}
 		}
@@ -447,7 +474,7 @@ func (me *htmlServeMux) parseTagTextFile(content, attr string) string {
 
 func (me *htmlServeMux) buildDirectiveInfo(content, directive string, directives []directiveInfo) []directiveInfo {
 	dBegin := drtBegin + directive                    // <!--#include
-	dEnd := drtBegin + drtEndKey + directive + drtEnd // <!--#endprofile-->
+	dEnd := drtBegin + drtEndKey + directive + drtEnd // <!--#endinclude-->
 	outs := strings.Betweens(content, dBegin, dEnd)
 	for _, out := range outs {
 		statement := dBegin + out + dEnd
@@ -467,7 +494,7 @@ func (me *htmlServeMux) buildDirectiveInfo(content, directive string, directives
 			di.attr[attrAccepts] = me.getAttrVal(statement, attrAccepts)
 		case drtInclude:
 			di.attr[attrFile] = me.getAttrVal(statement, attrFile)
-			di.attr[attrParam] = me.getAttrVal(statement, attrParam)
+			di.attr[attrParams] = me.getAttrVal(statement, attrParams)
 			if strings.IsBlank(di.attr[attrFile]) {
 				continue
 			}
@@ -489,12 +516,7 @@ func (me *htmlServeMux) getAttrVal(statement, attr string) string {
 	return strings.Between(statement, attr+`="`, `"`)
 }
 
-func (me *htmlServeMux) getArgVal(statement, attr string) string {
-	return strings.Between(statement, attr+" `", "`")
-}
-
 func (me *htmlServeMux) buildTplDirectiveInfo(content, directive string, directives []directiveInfo) []directiveInfo {
-
 	dBegin := tplBegin + directive        // {%if
 	dEnd := tplBegin + drtEndKey + tplEnd // {%end%}
 	outs := strings.Betweens(content, dBegin, dEnd)
@@ -511,7 +533,16 @@ func (me *htmlServeMux) buildTplDirectiveInfo(content, directive string, directi
 		di.body = strings.Between(statement, di.mid, di.end)
 		switch directive {
 		case drtIf:
-			di.attr[tplEqParam] = me.getArgVal(statement, tplEqParam)
+			attr := strings.Before(out, tplEnd)
+			attr = strings.TrimSpace(attr)
+			attrs := strings.Split(attr, " ")
+			i := 0
+			for _, v := range attrs {
+				if strings.IsNotBlank(v) {
+					di.attr[strconv.Itoa(i)] = v
+					i++
+				}
+			}
 		}
 		directives = append(directives, di)
 	}

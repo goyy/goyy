@@ -11,13 +11,14 @@ import (
 )
 
 func init() {{"{"}}{{range $i, $e := .Entities}}{{with $name := ctlvar $e.Name $e.Relationship}}
-	xhttp.GET({{$name}}.ApiIndex(), {{$name}}.Index)
-	xhttp.POST({{$name}}.ApiIndex(), {{$name}}.Index)
-	xhttp.GET({{$name}}.ApiShow(), {{$name}}.Show)
-	xhttp.POST({{$name}}.ApiAdd(), {{$name}}.Add)
-	xhttp.POST({{$name}}.ApiEdit(), {{$name}}.Edit)
-	xhttp.POST({{$name}}.ApiSave(), {{$name}}.Save)
-	xhttp.POST({{$name}}.ApiDisable(), {{$name}}.Disable){{if eq "tree" $e.Extend}}
-	xhttp.GET({{$name}}.ApiTree(), {{$name}}.Tree){{end}}{{end}}{{end}}
+	xhttp.GET({{$name}}.ApiIndex(), {{$name}}.Index, {{$name}}.PermitView())
+	xhttp.POST({{$name}}.ApiIndex(), {{$name}}.Index, {{$name}}.PermitView())
+	xhttp.GET({{$name}}.ApiShow(), {{$name}}.Show, {{$name}}.PermitView())
+	xhttp.POST({{$name}}.ApiShow(), {{$name}}.Show, {{$name}}.PermitView())
+	xhttp.POST({{$name}}.ApiAdd(), {{$name}}.Add, {{$name}}.PermitAdd())
+	xhttp.POST({{$name}}.ApiEdit(), {{$name}}.Edit, {{$name}}.PermitEdit())
+	xhttp.POST({{$name}}.ApiSave(), {{$name}}.Save, {{$name}}.PermitAdd(), {{$name}}.PermitEdit())
+	xhttp.POST({{$name}}.ApiDisable(), {{$name}}.Disable, {{$name}}.PermitDisable()){{if eq "tree" $e.Extend}}
+	xhttp.GET({{$name}}.ApiTree(), {{$name}}.Tree, {{$name}}.PermitView()){{end}}{{end}}{{end}}
 }
 `
