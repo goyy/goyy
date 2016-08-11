@@ -15,12 +15,14 @@ func ExampleContains() {
 	fmt.Println(strings.Contains("seafood", "bar"))
 	fmt.Println(strings.Contains("seafood", ""))
 	fmt.Println(strings.Contains("", ""))
+	fmt.Println(strings.Contains("", "foo"))
 
 	// Output:
 	// true
 	// false
 	// true
 	// true
+	// false
 }
 
 func ExampleContainsAny() {
