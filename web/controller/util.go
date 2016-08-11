@@ -7,7 +7,6 @@ package controller
 import (
 	"fmt"
 
-	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
@@ -199,9 +198,6 @@ func PermitBy(project, module, name string, profiles ...string) *xtype.Permissio
 		module = strings.Replace(module, ".", ":", -1)
 	}
 	id := fmt.Sprintf("%s:%s:%s", project, module, name)
-	if profiles == nil {
-		profiles = []string{profile.BMS}
-	}
 	return &xtype.Permission{Id: id, Profiles: profiles}
 }
 

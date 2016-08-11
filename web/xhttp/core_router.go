@@ -57,11 +57,14 @@ func (me *router) isPermission(c Context, permission *xtype.Permission) bool {
 	if permission == nil || strings.IsBlank(permission.Id) {
 		return false
 	}
+	if permission.Profiles != nil && len(permission.Profiles) > 0 && !profile.Accepts(permission.Profiles...) {
+		return true
+	}
 	if c == nil || !c.Session().IsLogin() {
 		return false
 	}
 	if p, err := c.Session().Principal(); err == nil {
-		if profile.Accepts(permission.Profiles...) {
+		if permission.Profiles == nil || len(permission.Profiles) == 0 || profile.Accepts(permission.Profiles...) {
 			if strings.Contains(p.Permissions, permission.Id) {
 				return true
 			}
