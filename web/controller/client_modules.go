@@ -116,22 +116,26 @@ func (me *ClientController) PathBox() string {
 // permission
 // ----------------------------------------------------------
 
-func (me *ClientController) PermitBy(name string) *xtype.Permission {
-	return PermitBy(me.Project, me.Module, name)
+func (me *ClientController) Permit(id string, profiles ...string) *xtype.Permission {
+	return Permit(id, profiles...)
 }
 
-func (me *ClientController) PermitView() *xtype.Permission {
-	return PermitView(me.Project, me.Module)
+func (me *ClientController) PermitBy(name string, profiles ...string) *xtype.Permission {
+	return PermitBy(me.Project, me.Module, name, profiles...)
 }
 
-func (me *ClientController) PermitAdd() *xtype.Permission {
-	return PermitAdd(me.Project, me.Module)
+func (me *ClientController) PermitView(profiles ...string) *xtype.Permission {
+	return PermitView(me.Project, me.Module, profiles...)
 }
 
-func (me *ClientController) PermitEdit() *xtype.Permission {
-	return PermitEdit(me.Project, me.Module)
+func (me *ClientController) PermitAdd(profiles ...string) *xtype.Permission {
+	return PermitAdd(me.Project, me.Module, profiles...)
 }
 
-func (me *ClientController) PermitDisable() *xtype.Permission {
-	return PermitDisable(me.Project, me.Module)
+func (me *ClientController) PermitEdit(profiles ...string) *xtype.Permission {
+	return PermitEdit(me.Project, me.Module, profiles...)
+}
+
+func (me *ClientController) PermitDisable(profiles ...string) *xtype.Permission {
+	return PermitDisable(me.Project, me.Module, profiles...)
 }

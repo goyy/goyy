@@ -60,22 +60,26 @@ func (me *HTMLController) PathEdit() string {
 // permission
 // ----------------------------------------------------------
 
-func (me *HTMLController) PermitBy(name string) *xtype.Permission {
-	return PermitBy(me.Project, me.Module, name)
+func (me *HTMLController) Permit(id string, profiles ...string) *xtype.Permission {
+	return Permit(id, profiles...)
 }
 
-func (me *HTMLController) PermitView() *xtype.Permission {
-	return PermitView(me.Project, me.Module)
+func (me *HTMLController) PermitBy(name string, profiles ...string) *xtype.Permission {
+	return PermitBy(me.Project, me.Module, name, profiles...)
 }
 
-func (me *HTMLController) PermitAdd() *xtype.Permission {
-	return PermitAdd(me.Project, me.Module)
+func (me *HTMLController) PermitView(profiles ...string) *xtype.Permission {
+	return PermitView(me.Project, me.Module, profiles...)
 }
 
-func (me *HTMLController) PermitEdit() *xtype.Permission {
-	return PermitEdit(me.Project, me.Module)
+func (me *HTMLController) PermitAdd(profiles ...string) *xtype.Permission {
+	return PermitAdd(me.Project, me.Module, profiles...)
 }
 
-func (me *HTMLController) PermitDisable() *xtype.Permission {
-	return PermitDisable(me.Project, me.Module)
+func (me *HTMLController) PermitEdit(profiles ...string) *xtype.Permission {
+	return PermitEdit(me.Project, me.Module, profiles...)
+}
+
+func (me *HTMLController) PermitDisable(profiles ...string) *xtype.Permission {
+	return PermitDisable(me.Project, me.Module, profiles...)
 }

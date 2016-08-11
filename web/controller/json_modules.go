@@ -64,26 +64,30 @@ func (me *JSONController) ApiExport() string {
 // permission
 // ----------------------------------------------------------
 
-func (me *JSONController) PermitBy(name string) *xtype.Permission {
-	return PermitBy(me.Project, me.Module, name)
+func (me *JSONController) Permit(id string, profiles ...string) *xtype.Permission {
+	return Permit(id, profiles...)
 }
 
-func (me *JSONController) PermitView() *xtype.Permission {
-	return PermitView(me.Project, me.Module)
+func (me *JSONController) PermitBy(name string, profiles ...string) *xtype.Permission {
+	return PermitBy(me.Project, me.Module, name, profiles...)
 }
 
-func (me *JSONController) PermitAdd() *xtype.Permission {
-	return PermitAdd(me.Project, me.Module)
+func (me *JSONController) PermitView(profiles ...string) *xtype.Permission {
+	return PermitView(me.Project, me.Module, profiles...)
 }
 
-func (me *JSONController) PermitEdit() *xtype.Permission {
-	return PermitEdit(me.Project, me.Module)
+func (me *JSONController) PermitAdd(profiles ...string) *xtype.Permission {
+	return PermitAdd(me.Project, me.Module, profiles...)
 }
 
-func (me *JSONController) PermitDisable() *xtype.Permission {
-	return PermitDisable(me.Project, me.Module)
+func (me *JSONController) PermitEdit(profiles ...string) *xtype.Permission {
+	return PermitEdit(me.Project, me.Module, profiles...)
 }
 
-func (me *JSONController) PermitExport() *xtype.Permission {
-	return PermitExport(me.Project, me.Module)
+func (me *JSONController) PermitDisable(profiles ...string) *xtype.Permission {
+	return PermitDisable(me.Project, me.Module, profiles...)
+}
+
+func (me *JSONController) PermitExport(profiles ...string) *xtype.Permission {
+	return PermitExport(me.Project, me.Module, profiles...)
 }

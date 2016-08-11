@@ -193,12 +193,16 @@ func ApiExport(project, module string) string {
 // permission
 // ----------------------------------------------------------
 
+func Permit(id string, profiles ...string) *xtype.Permission {
+	return &xtype.Permission{Id: id, Profiles: profiles}
+}
+
 func PermitBy(project, module, name string, profiles ...string) *xtype.Permission {
 	if strings.Contains(module, ".") {
 		module = strings.Replace(module, ".", ":", -1)
 	}
 	id := fmt.Sprintf("%s:%s:%s", project, module, name)
-	return &xtype.Permission{Id: id, Profiles: profiles}
+	return Permit(id, profiles...)
 }
 
 func PermitView(project, module string, profiles ...string) *xtype.Permission {
