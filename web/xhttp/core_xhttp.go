@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"time"
 
+	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/data/cache"
 )
 
@@ -15,37 +16,37 @@ var preRuns []func() = make([]func(), 10)
 var postRuns []func() = make([]func(), 10)
 
 // GET adds a route for a HTTP GET request to the specified matching pattern.
-func GET(path string, handle Handle, permissions ...string) {
+func GET(path string, handle Handle, permissions ...*xtype.Permission) {
 	defaultEngine.Router.GET(path, handle, permissions...)
 }
 
 // POST adds a route for a HTTP POST request to the specified matching pattern.
-func POST(path string, handle Handle, permissions ...string) {
+func POST(path string, handle Handle, permissions ...*xtype.Permission) {
 	defaultEngine.Router.POST(path, handle, permissions...)
 }
 
 // PUT adds a route for a HTTP PUT request to the specified matching pattern.
-func PUT(path string, handle Handle, permissions ...string) {
+func PUT(path string, handle Handle, permissions ...*xtype.Permission) {
 	defaultEngine.Router.PUT(path, handle, permissions...)
 }
 
 // DELETE adds a route for a HTTP DELETE request to the specified matching pattern.
-func DELETE(path string, handle Handle, permissions ...string) {
+func DELETE(path string, handle Handle, permissions ...*xtype.Permission) {
 	defaultEngine.Router.DELETE(path, handle, permissions...)
 }
 
 // PATCH adds a route for a HTTP PATCH request to the specified matching pattern.
-func PATCH(path string, handle Handle, permissions ...string) {
+func PATCH(path string, handle Handle, permissions ...*xtype.Permission) {
 	defaultEngine.Router.PATCH(path, handle, permissions...)
 }
 
 // HEAD adds a route for a HTTP HEAD request to the specified matching pattern.
-func HEAD(path string, handle Handle, permissions ...string) {
+func HEAD(path string, handle Handle, permissions ...*xtype.Permission) {
 	defaultEngine.Router.HEAD(path, handle, permissions...)
 }
 
 // OPTIONS adds a route for a HTTP OPTIONS request to the specified matching pattern.
-func OPTIONS(path string, handle Handle, permissions ...string) {
+func OPTIONS(path string, handle Handle, permissions ...*xtype.Permission) {
 	defaultEngine.Router.OPTIONS(path, handle, permissions...)
 }
 

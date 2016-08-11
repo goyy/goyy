@@ -7,6 +7,8 @@ package controller
 import (
 	"fmt"
 
+	"gopkg.in/goyy/goyy.v0/comm/profile"
+	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
@@ -192,29 +194,33 @@ func ApiExport(project, module string) string {
 // permission
 // ----------------------------------------------------------
 
-func PermitBy(project, module, name string) string {
+func PermitBy(project, module, name string, profiles ...string) *xtype.Permission {
 	if strings.Contains(module, ".") {
 		module = strings.Replace(module, ".", ":", -1)
 	}
-	return fmt.Sprintf("%s:%s:%s", project, module, name)
+	id := fmt.Sprintf("%s:%s:%s", project, module, name)
+	if profiles == nil {
+		profiles = []string{profile.BMS}
+	}
+	return &xtype.Permission{Id: id, Profiles: profiles}
 }
 
-func PermitView(project, module string) string {
-	return PermitBy(project, module, pView)
+func PermitView(project, module string, profiles ...string) *xtype.Permission {
+	return PermitBy(project, module, pView, profiles...)
 }
 
-func PermitAdd(project, module string) string {
-	return PermitBy(project, module, pAdd)
+func PermitAdd(project, module string, profiles ...string) *xtype.Permission {
+	return PermitBy(project, module, pAdd, profiles...)
 }
 
-func PermitEdit(project, module string) string {
-	return PermitBy(project, module, pEdit)
+func PermitEdit(project, module string, profiles ...string) *xtype.Permission {
+	return PermitBy(project, module, pEdit, profiles...)
 }
 
-func PermitDisable(project, module string) string {
-	return PermitBy(project, module, pDisable)
+func PermitDisable(project, module string, profiles ...string) *xtype.Permission {
+	return PermitBy(project, module, pDisable, profiles...)
 }
 
-func PermitExport(project, module string) string {
-	return PermitBy(project, module, pExport)
+func PermitExport(project, module string, profiles ...string) *xtype.Permission {
+	return PermitBy(project, module, pExport, profiles...)
 }

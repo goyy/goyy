@@ -7,6 +7,8 @@ package xhttp
 import (
 	"net/http"
 
+	"gopkg.in/goyy/goyy.v0/comm/profile"
+	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/webs"
 )
@@ -16,31 +18,31 @@ type router struct {
 	handlers Handlers
 }
 
-func (me *router) GET(pattern string, handle Handle, permissions ...string) {
+func (me *router) GET(pattern string, handle Handle, permissions ...*xtype.Permission) {
 	me.addRouter(httpMethodGet, pattern, handle, permissions...)
 }
 
-func (me *router) POST(pattern string, handle Handle, permissions ...string) {
+func (me *router) POST(pattern string, handle Handle, permissions ...*xtype.Permission) {
 	me.addRouter(httpMethodPost, pattern, handle, permissions...)
 }
 
-func (me *router) PUT(pattern string, handle Handle, permissions ...string) {
+func (me *router) PUT(pattern string, handle Handle, permissions ...*xtype.Permission) {
 	me.addRouter(httpMethodPut, pattern, handle, permissions...)
 }
 
-func (me *router) DELETE(pattern string, handle Handle, permissions ...string) {
+func (me *router) DELETE(pattern string, handle Handle, permissions ...*xtype.Permission) {
 	me.addRouter(httpMethodDelete, pattern, handle, permissions...)
 }
 
-func (me *router) PATCH(pattern string, handle Handle, permissions ...string) {
+func (me *router) PATCH(pattern string, handle Handle, permissions ...*xtype.Permission) {
 	me.addRouter(httpMethodPatch, pattern, handle, permissions...)
 }
 
-func (me *router) HEAD(pattern string, handle Handle, permissions ...string) {
+func (me *router) HEAD(pattern string, handle Handle, permissions ...*xtype.Permission) {
 	me.addRouter(httpMethodHead, pattern, handle, permissions...)
 }
 
-func (me *router) OPTIONS(pattern string, handle Handle, permissions ...string) {
+func (me *router) OPTIONS(pattern string, handle Handle, permissions ...*xtype.Permission) {
 	me.addRouter(httpMethodOptions, pattern, handle, permissions...)
 }
 
@@ -51,16 +53,18 @@ func (me *router) Use(middlewares ...Handler) Router {
 	return me
 }
 
-func (me *router) isPermission(c Context, permission string) bool {
-	if strings.IsBlank(permission) {
+func (me *router) isPermission(c Context, permission *xtype.Permission) bool {
+	if permission == nil || strings.IsBlank(permission.Id) {
 		return false
 	}
 	if c == nil || !c.Session().IsLogin() {
 		return false
 	}
 	if p, err := c.Session().Principal(); err == nil {
-		if strings.Contains(p.Permissions, permission) {
-			return true
+		if profile.Accepts(permission.Profiles...) {
+			if strings.Contains(p.Permissions, permission.Id) {
+				return true
+			}
 		}
 	} else {
 		logger.Error(err.Error())
@@ -133,7 +137,7 @@ func (me *router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (me *router) addRouter(method httpMethod, pattern string, handle Handle, permissions ...string) {
+func (me *router) addRouter(method httpMethod, pattern string, handle Handle, permissions ...*xtype.Permission) {
 	if me.methods == nil {
 		me.methods = make(map[httpMethod]map[string]action)
 	}
@@ -143,7 +147,7 @@ func (me *router) addRouter(method httpMethod, pattern string, handle Handle, pe
 	me.addAction(method, pattern, handle, permissions...)
 }
 
-func (me *router) addAction(method httpMethod, pattern string, handle Handle, permissions ...string) {
+func (me *router) addAction(method httpMethod, pattern string, handle Handle, permissions ...*xtype.Permission) {
 	actions := me.methods[method]
 	if _, ok := actions[pattern]; !ok {
 		a := action{

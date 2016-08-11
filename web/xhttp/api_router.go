@@ -6,18 +6,20 @@ package xhttp
 
 import (
 	"net/http"
+
+	"gopkg.in/goyy/goyy.v0/comm/xtype"
 )
 
 type Router interface {
 	Use(middlewares ...Handler) Router
 
-	GET(pattern string, handle Handle, permissions ...string)
-	POST(pattern string, handle Handle, permissions ...string)
-	PUT(pattern string, handle Handle, permissions ...string)
-	DELETE(pattern string, handle Handle, permissions ...string)
-	PATCH(pattern string, handle Handle, permissions ...string)
-	HEAD(pattern string, handle Handle, permissions ...string)
-	OPTIONS(pattern string, handle Handle, permissions ...string)
+	GET(pattern string, handle Handle, permissions ...*xtype.Permission)
+	POST(pattern string, handle Handle, permissions ...*xtype.Permission)
+	PUT(pattern string, handle Handle, permissions ...*xtype.Permission)
+	DELETE(pattern string, handle Handle, permissions ...*xtype.Permission)
+	PATCH(pattern string, handle Handle, permissions ...*xtype.Permission)
+	HEAD(pattern string, handle Handle, permissions ...*xtype.Permission)
+	OPTIONS(pattern string, handle Handle, permissions ...*xtype.Permission)
 
 	ServeHTTP(w http.ResponseWriter, req *http.Request)
 }

@@ -10,6 +10,10 @@ const (
 	DEV     = "development"
 	TEST    = "test"
 	UNIT    = "unit"
+	BMS     = "bms"
+	WEB     = "web"
+	WAP     = "wap"
+	APIS    = "apis"
 )
 
 const (

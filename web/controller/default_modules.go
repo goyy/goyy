@@ -4,6 +4,10 @@
 
 package controller
 
+import (
+	"gopkg.in/goyy/goyy.v0/comm/xtype"
+)
+
 // ----------------------------------------------------------
 // template
 // ----------------------------------------------------------
@@ -80,22 +84,22 @@ func (me *Controller) PathBox() string {
 // permission
 // ----------------------------------------------------------
 
-func (me *Controller) PermitBy(name string) string {
+func (me *Controller) PermitBy(name string) *xtype.Permission {
 	return PermitBy(me.Project, me.Module, name)
 }
 
-func (me *Controller) PermitView() string {
+func (me *Controller) PermitView() *xtype.Permission {
 	return PermitView(me.Project, me.Module)
 }
 
-func (me *Controller) PermitAdd() string {
+func (me *Controller) PermitAdd() *xtype.Permission {
 	return PermitAdd(me.Project, me.Module)
 }
 
-func (me *Controller) PermitEdit() string {
+func (me *Controller) PermitEdit() *xtype.Permission {
 	return PermitEdit(me.Project, me.Module)
 }
 
-func (me *Controller) PermitDisable() string {
+func (me *Controller) PermitDisable() *xtype.Permission {
 	return PermitDisable(me.Project, me.Module)
 }

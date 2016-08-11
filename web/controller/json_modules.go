@@ -4,6 +4,10 @@
 
 package controller
 
+import (
+	"gopkg.in/goyy/goyy.v0/comm/xtype"
+)
+
 // ----------------------------------------------------------
 // api
 // ----------------------------------------------------------
@@ -60,26 +64,26 @@ func (me *JSONController) ApiExport() string {
 // permission
 // ----------------------------------------------------------
 
-func (me *JSONController) PermitBy(name string) string {
+func (me *JSONController) PermitBy(name string) *xtype.Permission {
 	return PermitBy(me.Project, me.Module, name)
 }
 
-func (me *JSONController) PermitView() string {
+func (me *JSONController) PermitView() *xtype.Permission {
 	return PermitView(me.Project, me.Module)
 }
 
-func (me *JSONController) PermitAdd() string {
+func (me *JSONController) PermitAdd() *xtype.Permission {
 	return PermitAdd(me.Project, me.Module)
 }
 
-func (me *JSONController) PermitEdit() string {
+func (me *JSONController) PermitEdit() *xtype.Permission {
 	return PermitEdit(me.Project, me.Module)
 }
 
-func (me *JSONController) PermitDisable() string {
+func (me *JSONController) PermitDisable() *xtype.Permission {
 	return PermitDisable(me.Project, me.Module)
 }
 
-func (me *JSONController) PermitExport() string {
+func (me *JSONController) PermitExport() *xtype.Permission {
 	return PermitExport(me.Project, me.Module)
 }
