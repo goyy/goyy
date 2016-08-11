@@ -65,7 +65,8 @@ func (me *router) isPermission(c Context, permission *xtype.Permission) bool {
 	}
 	if p, err := c.Session().Principal(); err == nil {
 		if permission.Profiles == nil || len(permission.Profiles) == 0 || profile.Accepts(permission.Profiles...) {
-			if strings.Contains(p.Permissions, permission.Id) {
+			ps := strings.Split(permission.Id, ",")
+			if strings.ContainsSliceAny(p.Permissions, ps) {
 				return true
 			}
 		}
