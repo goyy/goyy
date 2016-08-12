@@ -13,7 +13,7 @@ import (
 
 func TestParseURLQuery(t *testing.T) {
 	s := []struct {
-		src      string
+		in       string
 		expected string
 	}{
 		{"key1=value1&key2=value2", "map[key1:value1 key2:value2]"},
@@ -25,8 +25,8 @@ func TestParseURLQuery(t *testing.T) {
 		{" ", "map[]"},
 	}
 	for _, v := range s {
-		if out := maps.ParseURLQuery(v.src); fmt.Sprint(out) != v.expected {
-			t.Errorf(`maps.ParseURLQuery("%s") = %v, want %v`, v.src, out, v.expected)
+		if out := maps.ParseURLQuery(v.in); fmt.Sprint(out) != v.expected {
+			t.Errorf(`maps.ParseURLQuery("%s") = %v, want %v`, v.in, out, v.expected)
 		}
 	}
 }
