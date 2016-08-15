@@ -46,9 +46,8 @@ const (
 	tagAttrOnerror      = `onerror`
 	tagAttrOnclick      = `onclick`
 	tagAttrData         = "data-"
-	tagAttrPre          = ` go:`
-	tagAttrPost         = `="`
-	tagAttrEnd          = `"`
+	tagAttrPre          = `go:`
+	tagAttrPost         = `=`
 	tagParams           = `{%params%}`
 	tagParams2          = `{%.params%}`
 	tagProfile          = `{%profile%}`

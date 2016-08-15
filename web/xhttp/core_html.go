@@ -64,30 +64,25 @@ type directiveInfo struct {
 */
 
 type tagInfo struct {
-	statement string // <link rel="shortcut icon" href="/favicon.ico" go:href="{%assets%}/favicon.ico">
-	newstmt   string // <link rel="shortcut icon" href="/static/favicon.ico">
-	attr      string // href
-	tagBegin  int    // postion:<
-	tagEnd    int    // postion:>
-	srcBegin  int    // postion: href="
-	srcEnd    int    // postion:"
-	dstBegin  int    // postion: go:href="
-	dstEnd    int    // postion:"
-	dstVal    string // {%assets%}/favicon.ico
+	statement string   // <link rel="shortcut icon" href="/favicon.ico" go:href="{%assets%}/favicon.ico">
+	newstmt   string   // <link rel="shortcut icon" href="/static/favicon.ico">
+	tag       string   // link
+	goattr    string   // href
+	attr      []string // rel="shortcut icon" href="/favicon.ico" go:href="{%assets%}/favicon.ico"
+	begin     int      // postion:<
+	end       int      // postion: href="
 }
 
 type tagTextInfo struct {
-	statement string // <title go:title="/title.html">login</title>
-	newstmt   string // <title>login-appendTitle</title>
-	attr      string // title
-	tagBegin  int    // postion:<
-	tagEnd    int    // postion:</
-	srcBegin  int    // postion:>
-	srcEnd    int    // postion:</
-	srcVal    string // login
-	dstBegin  int    // postion: go:title="
-	dstEnd    int    // postion:"
-	dstVal    string // /title.html
+	statement string   // <title go:title="/title.html">login</title>
+	newstmt   string   // <title>login-appendTitle</title>
+	tag       string   // title
+	goattr    string   // title
+	attr      []string // go:title="/title.html"
+	body      string   // login
+	begin     int      // postion:<
+	mid       int      // postion:>
+	end       int      // postion:</
 }
 
 var hsm = &htmlServeMux{
@@ -458,7 +453,7 @@ func (me *htmlServeMux) parseTagDataAttrFile(content string) string {
 	tags := make([]tagInfo, 0)
 	tags = me.buildTagDataAttrInfo(content, tags)
 	for i := len(tags) - 1; i >= 0; i-- {
-		content = me.parseTagAttrFile(content, tags[i].attr)
+		content = me.parseTagAttrFile(content, tags[i].goattr)
 	}
 	return content
 }
@@ -534,8 +529,7 @@ func (me *htmlServeMux) buildTplDirectiveInfo(content, directive string, directi
 		switch directive {
 		case drtIf:
 			attr := strings.Before(out, tplEnd)
-			attr = strings.TrimSpace(attr)
-			attrs := strings.Split(attr, " ")
+			attrs := strings.FieldsSpace(attr)
 			i := 0
 			for _, v := range attrs {
 				if strings.IsNotBlank(v) {
@@ -561,60 +555,61 @@ func (me *htmlServeMux) buildTagDataAttrInfo(content string, tags []tagInfo) []t
 
 func (me *htmlServeMux) buildTagAttrInfo(content, attr string, tags []tagInfo) []tagInfo {
 	pos := 0
-	srcBeginPre := " " + attr + tagAttrPost        // href="
-	dstBeginPre := tagAttrPre + attr + tagAttrPost // go:href="
+	goAttr := tagAttrPre + attr + tagAttrPost // go:href=
 	for {
-		dstBegin := strings.IndexStart(content, dstBeginPre, pos)
-		if dstBegin == -1 {
+		goAttrBegin := strings.IndexStart(content, goAttr, pos)
+		if goAttrBegin == -1 {
 			if pos == 0 {
 				return tags
 			}
 			break
 		}
-		dstEnd := strings.IndexStart(content, tagAttrEnd, dstBegin+len(dstBeginPre))
-		if dstEnd == -1 {
+		begin := strings.IndexForward(content, tagBeginPre, goAttrBegin)
+		if begin == -1 {
 			if pos == 0 {
 				return tags
 			}
 			break
 		}
-		tagBegin := strings.IndexForward(content, tagBeginPre, dstBegin)
-		if tagBegin == -1 {
+		end := strings.IndexStart(content, tagEndPre, goAttrBegin)
+		if end == -1 {
 			if pos == 0 {
 				return tags
 			}
 			break
 		}
-		tagEnd := strings.IndexStart(content, tagEndPre, dstEnd)
-		if tagEnd == -1 {
-			if pos == 0 {
-				return tags
-			}
-			break
-		}
-		pos = tagEnd
-		statement := strings.Slice(content, tagBegin, tagEnd+len(tagEndPre))
+		pos = end
+		statement := strings.Slice(content, begin, end+len(tagEndPre))
 		newstmt := statement
-		dstVal := strings.Slice(content, dstBegin+len(dstBeginPre), dstEnd)
-		srcBegin := strings.Index(newstmt, srcBeginPre)
-		var srcEnd int
-		if srcBegin > 0 {
-			srcEnd = strings.IndexStart(newstmt, tagAttrEnd, srcBegin+len(srcBeginPre))
-			newstmt = strings.Overlay(newstmt, "", srcBegin, srcEnd+len(tagAttrEnd))
+		tag := ""
+		attrs := []string{}
+		statements := strings.FieldsSpace(statement)
+		for i, v := range statements {
+			if i == 0 {
+				tag = v
+			}
+			if strings.Contains(v, tagAttrPost) {
+				attrs = append(attrs, v)
+			}
+			if strings.HasPrefix(v, attr+tagAttrPost) {
+				newstmt = strings.Replace(newstmt, v, "", 1)
+			}
 		}
-		newstmt = strings.Replace(newstmt, dstBeginPre, srcBeginPre, -1)
-		newstmt = me.replaceAssets(newstmt)
+		for _, v := range statements {
+			if strings.HasPrefix(v, goAttr) {
+				val := strings.After(v, tagAttrPre)
+				val = me.replaceAssets(val)
+				newstmt = strings.Replace(newstmt, v, val, 1)
+			}
+		}
 		ti := tagInfo{
 			statement: statement,
 			newstmt:   newstmt,
-			attr:      attr,
-			tagBegin:  tagBegin,
-			tagEnd:    tagEnd,
-			srcBegin:  srcBegin,
-			srcEnd:    srcEnd,
-			dstBegin:  dstBegin,
-			dstEnd:    dstEnd,
-			dstVal:    dstVal,
+			tag:       tag,
+			goattr:    attr,
+			attr:      attrs,
+			begin:     begin,
+			end:       end,
 		}
 		tags = append(tags, ti)
 	}
@@ -623,64 +618,72 @@ func (me *htmlServeMux) buildTagAttrInfo(content, attr string, tags []tagInfo) [
 
 func (me *htmlServeMux) buildTagTextInfo(content, attr string, tags []tagTextInfo) []tagTextInfo {
 	pos := 0
-	dstBeginPre := tagAttrPre + attr + tagAttrPost
+	goAttr := tagAttrPre + attr + tagAttrPost // go:text=
 	for {
-		dstBegin := strings.IndexStart(content, dstBeginPre, pos)
-		if dstBegin == -1 {
+		goAttrBegin := strings.IndexStart(content, goAttr, pos)
+		if goAttrBegin == -1 {
 			if pos == 0 {
 				return tags
 			}
 			break
 		}
-		dstEnd := strings.IndexStart(content, tagAttrEnd, dstBegin+len(dstBeginPre))
-		if dstEnd == -1 {
+		begin := strings.IndexForward(content, tagBeginPre, goAttrBegin)
+		if begin == -1 {
 			if pos == 0 {
 				return tags
 			}
 			break
 		}
-		tagBegin := strings.IndexForward(content, tagBeginPre, dstBegin)
-		if tagBegin == -1 {
+		mid := strings.IndexStart(content, tagEndPre, goAttrBegin)
+		if mid == -1 {
 			if pos == 0 {
 				return tags
 			}
 			break
 		}
-		tagEnd := strings.IndexStart(content, tagTextEndPre, dstEnd)
-		if tagEnd == -1 {
+		end := strings.IndexStart(content, tagTextEndPre, mid)
+		if end == -1 {
 			if pos == 0 {
 				return tags
 			}
 			break
 		}
-		srcBegin := strings.IndexStart(content, tagEndPre, dstEnd)
-		if srcBegin == -1 {
-			if pos == 0 {
-				return tags
-			}
-			break
-		}
-		srcEnd := tagEnd
-		srcVal := strings.Slice(content, srcBegin+len(tagEndPre), srcEnd)
-		pos = tagEnd
-		statement := strings.Slice(content, tagBegin, tagEnd+len(tagTextEndPre))
+		pos = end
+		statement := strings.Slice(content, begin, end+len(tagTextEndPre))
 		newstmt := statement
-		dstVal := strings.Slice(content, dstBegin+len(dstBeginPre), dstEnd)
-		if strings.IsNotBlank(dstVal) {
+		body := strings.Slice(content, mid+len(tagEndPre), end)
+		tag := ""
+		attrVal := ""
+		attrs := []string{}
+		as := strings.Slice(content, begin, mid+len(tagEndPre))
+		statements := strings.FieldsSpace(as)
+		for i, v := range statements {
+			if i == 0 {
+				tag = v
+			}
+			if strings.Contains(v, tagAttrPost) {
+				attrs = append(attrs, v)
+			}
+			if strings.HasPrefix(v, attr+tagAttrPost) {
+				newstmt = strings.Replace(newstmt, v, "", 1)
+			}
+		}
+		for _, v := range statements {
+			if strings.HasPrefix(v, goAttr) {
+				attrVal = strings.Slice(v, len(goAttr), len(v)-1)
+				val := strings.After(v, tagAttrPre)
+				newstmt = strings.Replace(newstmt, v, val, 1)
+			}
+		}
+		if strings.IsNotBlank(attrVal) {
 			switch attr {
 			case tagTextTitle:
-				filename := Conf.Html.Dir + dstVal
+				filename := Conf.Html.Dir + attrVal
 				if files.IsExist(filename) {
 					if c, err := files.Read(filename); err == nil {
-						title := strings.Slice(content, srcBegin+len(tagBeginPre), srcEnd)
-						newstmt = strings.Replace(newstmt, title, title+c, 1)
-						dst := dstBeginPre + dstVal + tagAttrEnd
-						newstmt = strings.Replace(newstmt, dst, "", 1)
+						newstmt = strings.Replace(newstmt, body, body+c, 1)
 					}
 				}
-			case tagTextType:
-				dst := tagAttrPre + tagTextType
-				newstmt = strings.Replace(newstmt, dst, " "+tagTextType, 1)
 			}
 		}
 
@@ -688,15 +691,13 @@ func (me *htmlServeMux) buildTagTextInfo(content, attr string, tags []tagTextInf
 		tti := tagTextInfo{
 			statement: statement,
 			newstmt:   newstmt,
-			attr:      attr,
-			tagBegin:  tagBegin,
-			tagEnd:    tagEnd,
-			srcBegin:  srcBegin,
-			srcEnd:    srcEnd,
-			srcVal:    srcVal,
-			dstBegin:  dstBegin,
-			dstEnd:    dstEnd,
-			dstVal:    dstVal,
+			tag:       tag,
+			goattr:    attr,
+			attr:      attrs,
+			body:      body,
+			begin:     begin,
+			mid:       mid,
+			end:       end,
 		}
 		tags = append(tags, tti)
 	}
