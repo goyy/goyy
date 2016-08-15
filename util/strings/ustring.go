@@ -20,15 +20,6 @@ func NewReplacer(oldnew ...string) *strings.Replacer { return strings.NewReplace
 // Count counts the number of non-overlapping instances of sep in s.
 func Count(s, sep string) int { return strings.Count(s, sep) }
 
-// Fields splits the string s around each instance of one or more consecutive white space
-// characters, returning an array of substrings of s or an empty list if s contains only white space.
-func Fields(s string) []string { return strings.Fields(s) }
-
-// FieldsFunc splits the string s at each run of Unicode code points c satisfying f(c)
-// and returns an array of slices of s. If all code points in s satisfy f(c) or the
-// string is empty, an empty slice is returned.
-func FieldsFunc(s string, f func(rune) bool) []string { return strings.FieldsFunc(s, f) }
-
 // HasPrefix tests whether the string s begins with prefix.
 func HasPrefix(s, prefix string) bool { return strings.HasPrefix(s, prefix) }
 

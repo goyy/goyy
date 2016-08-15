@@ -6,6 +6,9 @@ package strings
 
 import (
 	"strings"
+	"unicode"
+
+	"gopkg.in/goyy/goyy.v0/util/unicodes"
 )
 
 // Split slices s into all substrings separated by sep and returns a slice of
@@ -37,3 +40,75 @@ func SplitAfterN(s, sep string, n int) []string { return strings.SplitAfterN(s, 
 //   n == 0: the result is nil (zero substrings)
 //   n < 0: all substrings
 func SplitN(s, sep string, n int) []string { return strings.SplitN(s, sep, n) }
+
+// Fields splits the string s around each instance of one or more consecutive white space
+// characters, returning an array of substrings of s or an empty list if s contains only white space.
+func Fields(s string) []string { return strings.Fields(s) }
+
+// FieldsFunc splits the string s at each run of Unicode code points c satisfying f(c)
+// and returns an array of slices of s. If all code points in s satisfy f(c) or the
+// string is empty, an empty slice is returned.
+func FieldsFunc(s string, f func(rune) bool) []string { return strings.FieldsFunc(s, f) }
+
+// FieldsSpace splits the string s around each instance of one or more consecutive white space
+// characters, returning an array of substrings of s or an empty list if s contains only white space.
+func FieldsSpace(s string) []string {
+	// First count the fields.
+	n := 0
+	inField := false
+	isQuote := false
+	var quote rune
+	isContiue := func(r rune) bool {
+		if unicodes.IsQuote(r) {
+			if isQuote {
+				if quote == r {
+					isQuote = false
+					return true
+				}
+			} else {
+				isQuote = true
+				quote = r
+				return false
+			}
+		}
+		if isQuote {
+			return true
+		}
+		return false
+	}
+	for _, r := range s {
+		if isContiue(r) {
+			continue
+		}
+		wasInField := inField
+		inField = !unicode.IsSpace(r)
+		if inField && !wasInField {
+			n++
+		}
+	}
+
+	// Now create them.
+	a := make([]string, n)
+	na := 0
+	fieldStart := -1 // Set to -1 when looking for start of field.
+	isQuote = false
+	quote = ' '
+	for i, r := range s {
+		if isContiue(r) {
+			continue
+		}
+		if unicode.IsSpace(r) {
+			if fieldStart >= 0 {
+				a[na] = s[fieldStart:i]
+				na++
+				fieldStart = -1
+			}
+		} else if fieldStart == -1 {
+			fieldStart = i
+		}
+	}
+	if fieldStart >= 0 { // Last field might end at EOF.
+		a[na] = s[fieldStart:]
+	}
+	return a
+}
