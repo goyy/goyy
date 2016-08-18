@@ -5,10 +5,11 @@
 package cookies
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/errors"
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"net/http"
 	"time"
+
+	"gopkg.in/goyy/goyy.v0/util/errors"
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 // Cookie returns the named cookie provided in the request or
@@ -117,6 +118,8 @@ func Remove(w http.ResponseWriter, r *http.Request, name string) error {
 	}
 	c.MaxAge = 0
 	c.Path = "/"
+	c.Value = ""
+	c.HttpOnly = true
 	http.SetCookie(w, c)
 	return nil
 }
