@@ -13,7 +13,6 @@ import (
 
 	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/util/files"
-	"gopkg.in/goyy/goyy.v0/util/maps"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
 )
@@ -43,16 +42,6 @@ type directiveInfo struct {
 
 /*
 type directiveInfo struct {
-	statement string // {%if eq .params `home`%}cur{%end%}
-	directive string // if
-	attr      string // eq .params `home`
-	body      string // cur
-	begin     string // {%if
-	mid       string // %}
-	end       string // {%end%}
-}
-
-type directiveInfo struct {
 	statement  string // <!--#settings project="sys" module="user" title="User"-->test<!--#endsettings-->
 	directive  string // settings
 	attr       string // project="sys" module="user" title="User"
@@ -60,6 +49,26 @@ type directiveInfo struct {
 	begin      string // <!--#settings
 	mid        string // -->
 	end        string // <!--#endsettings-->
+}
+
+type directiveInfo struct {
+	statement  string // <!--#with var1="value1" var2="value2"-->test<!--#endwith-->
+	directive  string // with
+	attr       string // var1="value1" var2="value2"
+	body       string // test
+	begin      string // <!--#with
+	mid        string // -->
+	end        string // <!--#endwith-->
+}
+
+type directiveInfo struct {
+	statement string // {%if eq .params `home`%}cur{%end%}
+	directive string // if
+	attr      string // eq .params `home`
+	body      string // cur
+	begin     string // {%if
+	mid       string // %}
+	end       string // {%end%}
 }
 */
 
@@ -375,40 +384,24 @@ func (me *htmlServeMux) parseIncludeFile(content string, settings map[string]str
 
 		v = me.replaceSettings(v, settings)
 
-		params := directives[i].attr[attrParams]
-		paramsMap := maps.ParseURLQuery(params)
-		if len(paramsMap) > 0 {
-			for key, value := range paramsMap {
-				s := tplBegin + "." + attrParams + "." + key + tplEnd
-				v = strings.Replace(v, s, value, -1)
-			}
-		} else {
-			v = strings.Replace(v, tagParams, params, -1)
-			v = strings.Replace(v, tagParams2, params, -1)
+		for key, value := range directives[i].attr {
+			src := tplBegin + tplVar + key + tplEnd // {%.param%}
+			v = strings.Replace(v, src, value, -1)
 		}
 
 		if me.isTplIf(v) {
 			ifparams := make([]directiveInfo, 0)
 			ifparams = me.buildTplDirectiveInfo(v, drtIf, ifparams)
 			for p := len(ifparams) - 1; p >= 0; p-- {
-				if len(paramsMap) > 0 {
-					for key, value := range paramsMap {
-						pKey := ifparams[p].attr["0"] + " " + ifparams[p].attr["1"]
-						pVal := "`" + value + "`"
-						if pKey == tplEqParams+"."+key && pVal == ifparams[p].attr["2"] {
-							v = strings.Replace(v, ifparams[p].statement, ifparams[p].body, -1)
-						} else {
-							v = strings.Replace(v, ifparams[p].statement, "", -1)
-						}
-					}
+				key := ifparams[p].attr["1"]
+				if len(key) > 0 {
+					key = key[1:]
+				}
+				value := strings.TrimSpaceNQuote1(ifparams[p].attr["2"])
+				if ifparams[p].attr["0"] == tplEq && value == directives[i].attr[key] {
+					v = strings.Replace(v, ifparams[p].statement, ifparams[p].body, -1)
 				} else {
-					pKey := ifparams[p].attr["0"] + " " + ifparams[p].attr["1"]
-					pVal := "`" + directives[i].attr[attrParams] + "`"
-					if pKey == tplEqParams && pVal == ifparams[p].attr["2"] {
-						v = strings.Replace(v, ifparams[p].statement, ifparams[p].body, -1)
-					} else {
-						v = strings.Replace(v, ifparams[p].statement, "", -1)
-					}
+					v = strings.Replace(v, ifparams[p].statement, "", -1)
 				}
 			}
 		}
@@ -482,33 +475,30 @@ func (me *htmlServeMux) buildDirectiveInfo(content, directive string, directives
 			end:       dEnd,
 		}
 		di.body = strings.Between(statement, di.mid, di.end)
-		switch directive {
-		case drtIf:
-			di.attr[attrExpr] = me.getAttrVal(statement, attrExpr)
-		case drtProfile:
-			di.attr[attrAccepts] = me.getAttrVal(statement, attrAccepts)
-		case drtInclude:
-			di.attr[attrFile] = me.getAttrVal(statement, attrFile)
-			di.attr[attrParams] = me.getAttrVal(statement, attrParams)
-			if strings.IsBlank(di.attr[attrFile]) {
-				continue
+		stmt := strings.Before(out, drtEnd)
+		fields := strings.FieldsSpace(stmt)
+		for _, field := range fields {
+			attrs := strings.SplitN(field, "=", 2)
+			if len(attrs) == 2 {
+				k := attrs[0]
+				if strings.IsNotBlank(k) {
+					v := strings.TrimSpaceNQuote1(attrs[1])
+					if strings.IsNotBlank(v) {
+						if directive == drtInclude && k == attrFile {
+							f := Conf.Html.Dir + v
+							if files.IsExist(f) {
+								di.attr[k] = f
+							}
+						} else {
+							di.attr[k] = v
+						}
+					}
+				}
 			}
-			di.attr[attrFile] = Conf.Html.Dir + di.attr[attrFile]
-			if !files.IsExist(di.attr[attrFile]) {
-				continue
-			}
-		case drtSettings:
-			di.attr[attrProject] = me.getAttrVal(statement, attrProject)
-			di.attr[attrModule] = me.getAttrVal(statement, attrModule)
-			di.attr[attrTitle] = me.getAttrVal(statement, attrTitle)
 		}
 		directives = append(directives, di)
 	}
 	return directives
-}
-
-func (me *htmlServeMux) getAttrVal(statement, attr string) string {
-	return strings.Between(statement, attr+`="`, `"`)
 }
 
 func (me *htmlServeMux) buildTplDirectiveInfo(content, directive string, directives []directiveInfo) []directiveInfo {
@@ -618,7 +608,7 @@ func (me *htmlServeMux) buildTagAttrInfo(content, attr string, tags []tagInfo) [
 
 func (me *htmlServeMux) buildTagTextInfo(content, attr string, tags []tagTextInfo) []tagTextInfo {
 	pos := 0
-	goAttr := tagAttrPre + attr + tagAttrPost // go:text=
+	goAttr := tagAttrPre + attr + tagAttrPost // go:title=
 	for {
 		goAttrBegin := strings.IndexStart(content, goAttr, pos)
 		if goAttrBegin == -1 {
@@ -653,7 +643,7 @@ func (me *htmlServeMux) buildTagTextInfo(content, attr string, tags []tagTextInf
 		newstmt := statement
 		body := strings.Slice(content, mid+len(tagEndPre), end)
 		tag := ""
-		attrVal := ""
+		goAttrVal := ""
 		attrs := []string{}
 		as := strings.Slice(content, begin, mid+len(tagEndPre))
 		statements := strings.FieldsSpace(as)
@@ -670,15 +660,16 @@ func (me *htmlServeMux) buildTagTextInfo(content, attr string, tags []tagTextInf
 		}
 		for _, v := range statements {
 			if strings.HasPrefix(v, goAttr) {
-				attrVal = strings.Slice(v, len(goAttr), len(v)-1)
+				goAttrVal = strings.Slice(v, len(goAttr), len(v)-1)
+				goAttrVal = strings.TrimSpaceNQuote1(goAttrVal)
 				val := strings.After(v, tagAttrPre)
 				newstmt = strings.Replace(newstmt, v, val, 1)
 			}
 		}
-		if strings.IsNotBlank(attrVal) {
+		if strings.IsNotBlank(goAttrVal) {
 			switch attr {
 			case tagTextTitle:
-				filename := Conf.Html.Dir + attrVal
+				filename := Conf.Html.Dir + goAttrVal
 				if files.IsExist(filename) {
 					if c, err := files.Read(filename); err == nil {
 						newstmt = strings.Replace(newstmt, body, body+c, 1)

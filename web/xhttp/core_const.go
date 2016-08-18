@@ -21,15 +21,16 @@ const (
 	drtProfile  = "profile"
 	drtInclude  = "include"
 	drtSettings = "settings"
+	drtWith     = "with"
 
-	tplBegin    = "{%"
-	tplEnd      = "%}"
-	tplEqParams = "eq .params"
+	tplBegin = "{%"
+	tplEnd   = "%}"
+	tplVar   = "."
+	tplEq    = "eq"
 
 	attrExpr    = "expr"
 	attrAccepts = "accepts"
 	attrFile    = "file"
-	attrParams  = "params"
 	attrProject = "project"
 	attrModule  = "module"
 	attrTitle   = "title"
@@ -48,8 +49,6 @@ const (
 	tagAttrData         = "data-"
 	tagAttrPre          = `go:`
 	tagAttrPost         = `=`
-	tagParams           = `{%params%}`
-	tagParams2          = `{%.params%}`
 	tagProfile          = `{%profile%}`
 	tagApis             = `{%apis%}`
 	tagAssets           = `{%assets%}`

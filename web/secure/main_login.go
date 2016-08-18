@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"gopkg.in/goyy/goyy.v0/util/cookies"
 	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
@@ -90,6 +91,29 @@ func setCookies(c xhttp.Context, p session.Principal) {
 	}
 }
 
+func clearCookies(c xhttp.Context) {
+	if v, err := cookies.Value(c.Request(), "GSESSIONN"); err == nil {
+		if count, err := strconv.Atoi(v); err == nil {
+			for i := 0; i <= count; i++ {
+				if err := cookies.Remove(c.ResponseWriter(), c.Request(), "GSESSION"+strconv.Itoa(i)); err != nil {
+					logger.Error(err)
+				}
+			}
+		} else {
+			logger.Error(err)
+		}
+	} else {
+		logger.Error(err)
+	}
+	if err := cookies.Remove(c.ResponseWriter(), c.Request(), "GSESSIONN"); err != nil {
+		logger.Error(err)
+	}
+	if err := cookies.Remove(c.ResponseWriter(), c.Request(), "GSESSIONUSER"); err != nil {
+		logger.Error(err)
+	}
+}
+
 func Logout(c xhttp.Context) error {
+	clearCookies(c)
 	return c.Session().ResetPrincipal()
 }
