@@ -31,9 +31,9 @@ type templateInfo struct {
 }
 
 type directiveInfo struct {
-	statement string            // <!--#include file="/footer.html" params="home"-->test<!--#endinclude-->
+	statement string            // <!--#include file="/footer.html" param="home"-->test<!--#endinclude-->
 	directive string            // include
-	attr      map[string]string // file="/footer.html" params="home"
+	attr      map[string]string // file="/footer.html" param="home"
 	body      string            // test
 	begin     string            // <!--#include
 	mid       string            // -->
@@ -42,33 +42,41 @@ type directiveInfo struct {
 
 /*
 type directiveInfo struct {
-	statement  string // <!--#settings project="sys" module="user" title="User"-->test<!--#endsettings-->
-	directive  string // settings
-	attr       string // project="sys" module="user" title="User"
-	body       string // test
-	begin      string // <!--#settings
-	mid        string // -->
-	end        string // <!--#endsettings-->
+	statement  string            // <!--#settings project="sys" module="user" title="User"-->test<!--#endsettings-->
+	directive  string            // settings
+	attr       map[string]string // project="sys" module="user" title="User"
+	body       string            // test
+	begin      string            // <!--#settings
+	mid        string            // -->
+	end        string            // <!--#endsettings-->
 }
 
 type directiveInfo struct {
-	statement  string // <!--#with var1="value1" var2="value2"-->test<!--#endwith-->
-	directive  string // with
-	attr       string // var1="value1" var2="value2"
-	body       string // test
-	begin      string // <!--#with
-	mid        string // -->
-	end        string // <!--#endwith-->
+	statement  string            // <!--#with var1="value1" var2="value2"-->test<!--#endwith-->
+	directive  string            // with
+	attr       map[string]string // var1="value1" var2="value2"
+	body       string            // test
+	begin      string            // <!--#with
+	mid        string            // -->
+	end        string            // <!--#endwith-->
 }
 
 type directiveInfo struct {
-	statement string // {%if eq .params `home`%}cur{%end%}
-	directive string // if
-	attr      string // eq .params `home`
-	body      string // cur
-	begin     string // {%if
-	mid       string // %}
-	end       string // {%end%}
+	statement string            // {%if eq .param `home`%}cur{%end%}
+	directive string            // if
+	attr      map[string]string // eq .param `home`
+	body      string            // cur
+	begin     string            // {%if
+	mid       string            // %}
+	end       string            // {%end%}
+}
+
+type directiveInfo struct {
+	statement string            // {%nvl .param `home`%}
+	directive string            // nvl
+	attr      map[string]string // .param `home`
+	begin     string            // {%nvl
+	end       string            // %}
 }
 */
 
@@ -240,8 +248,22 @@ func (me *htmlServeMux) isSettings(content string) bool {
 	return false
 }
 
+func (me *htmlServeMux) isWith(content string) bool {
+	if strings.Index(content, drtBegin+drtWith) > 0 {
+		return true
+	}
+	return false
+}
+
 func (me *htmlServeMux) isTplIf(content string) bool {
 	if strings.Index(content, tplBegin+drtIf) > 0 {
+		return true
+	}
+	return false
+}
+
+func (me *htmlServeMux) isTplNvl(content string) bool {
+	if strings.Index(content, tplBegin+drtNvl) > 0 {
 		return true
 	}
 	return false
@@ -324,6 +346,7 @@ func (me *htmlServeMux) parseContent(content string) (string, []string, int64) {
 	content, settings := me.parseSettingsFile(content)
 	content, i, m := me.parseIncludeFile(content, settings)
 	//content = me.replaceAssets(content)
+	content = me.parseWithFile(content)
 	content = me.parseIfFile(content)
 	content = me.parseProfileFile(content)
 	content = me.parseTagDataAttrFile(content)
@@ -358,6 +381,22 @@ func (me *htmlServeMux) parseSettingsFile(content string) (string, map[string]st
 		}
 	}
 	return content, nil
+}
+
+func (me *htmlServeMux) parseWithFile(content string) string {
+	if me.isWith(content) {
+		directives := make([]directiveInfo, 0)
+		directives = me.buildDirectiveInfo(content, drtWith, directives)
+		if len(directives) > 0 {
+			for i := len(directives) - 1; i >= 0; i-- {
+				for key, value := range directives[i].attr {
+					src := tplBegin + tplVar + key + tplEnd // {%.param%}
+					content = strings.Replace(content, src, value, -1)
+				}
+			}
+		}
+	}
+	return content
 }
 
 func (me *htmlServeMux) parseIncludeFile(content string, settings map[string]string) (string, []string, int64) {
@@ -402,6 +441,24 @@ func (me *htmlServeMux) parseIncludeFile(content string, settings map[string]str
 					v = strings.Replace(v, ifparams[p].statement, ifparams[p].body, -1)
 				} else {
 					v = strings.Replace(v, ifparams[p].statement, "", -1)
+				}
+			}
+		}
+
+		if me.isTplNvl(v) {
+			nvlparams := make([]directiveInfo, 0)
+			nvlparams = me.buildDirectiveFnInfo(v, drtNvl, nvlparams)
+			for p := len(nvlparams) - 1; p >= 0; p-- {
+				key := nvlparams[p].attr["0"]
+				if len(key) > 0 {
+					key = key[1:]
+				}
+				value := strings.TrimSpaceNQuote1(nvlparams[p].attr["1"])
+				val := directives[i].attr[key]
+				if strings.IsBlank(val) {
+					v = strings.Replace(v, nvlparams[p].statement, value, -1)
+				} else {
+					v = strings.Replace(v, nvlparams[p].statement, val, -1)
 				}
 			}
 		}
@@ -476,23 +533,61 @@ func (me *htmlServeMux) buildDirectiveInfo(content, directive string, directives
 		}
 		di.body = strings.Between(statement, di.mid, di.end)
 		stmt := strings.Before(out, drtEnd)
-		fields := strings.FieldsSpace(stmt)
-		for _, field := range fields {
-			attrs := strings.SplitN(field, "=", 2)
-			if len(attrs) == 2 {
-				k := attrs[0]
-				if strings.IsNotBlank(k) {
-					v := strings.TrimSpaceNQuote1(attrs[1])
-					if strings.IsNotBlank(v) {
-						if directive == drtInclude && k == attrFile {
-							f := Conf.Html.Dir + v
-							if files.IsExist(f) {
-								di.attr[k] = f
-							}
-						} else {
-							di.attr[k] = v
-						}
+		me.setDirectiveAttr(stmt, di.attr)
+		if directive == drtInclude {
+			if v, ok := di.attr[attrFile]; ok {
+				if strings.IsNotBlank(v) {
+					f := Conf.Html.Dir + v
+					if files.IsExist(f) {
+						di.attr[attrFile] = f
+					} else {
+						di.attr[attrFile] = ""
 					}
+				}
+			}
+		}
+		directives = append(directives, di)
+	}
+	return directives
+}
+
+func (me *htmlServeMux) setDirectiveAttr(in string, attr map[string]string) {
+	fields := strings.FieldsSpace(in)
+	for _, field := range fields {
+		attrs := strings.SplitN(field, "=", 2)
+		if len(attrs) == 2 {
+			k := attrs[0]
+			if strings.IsNotBlank(k) {
+				v := strings.TrimSpaceNQuote1(attrs[1])
+				if strings.IsNotBlank(v) {
+					attr[k] = v
+				}
+			}
+		}
+	}
+}
+
+func (me *htmlServeMux) buildDirectiveFnInfo(content, directive string, directives []directiveInfo) []directiveInfo {
+	dBegin := tplBegin + directive // {%nvl
+	dEnd := tplEnd                 // %}
+	outs := strings.Betweens(content, dBegin, dEnd)
+	for _, out := range outs {
+		statement := dBegin + out + dEnd
+		di := directiveInfo{
+			statement: statement,
+			directive: directive,
+			attr:      make(map[string]string, 0),
+			begin:     dBegin,
+			end:       dEnd,
+		}
+		switch directive {
+		case drtNvl:
+			attrs := strings.FieldsSpace(out)
+			i := 0
+			for _, v := range attrs {
+				if strings.IsNotBlank(v) {
+					di.attr[strconv.Itoa(i)] = v
+					i++
 				}
 			}
 		}

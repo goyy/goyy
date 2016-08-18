@@ -18,6 +18,7 @@ const (
 	drtEnd      = `-->`
 	drtEndKey   = "end"
 	drtIf       = "if"
+	drtNvl      = "nvl"
 	drtProfile  = "profile"
 	drtInclude  = "include"
 	drtSettings = "settings"
