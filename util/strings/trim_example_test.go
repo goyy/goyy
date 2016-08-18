@@ -6,6 +6,7 @@ package strings_test
 
 import (
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
@@ -36,4 +37,32 @@ func ExampleTrimRight() {
 func ExampleTrimSpace() {
 	fmt.Println(strings.TrimSpace(" \t\n a lone gopher \n\t\r\n"))
 	// Output: a lone gopher
+}
+
+func ExampleTrimSpaceNQuote1() {
+	fmt.Println(strings.TrimSpaceNQuote1("     "))
+	fmt.Println(strings.TrimSpaceNQuote1(" `  `  "))
+	fmt.Println(strings.TrimSpaceNQuote1(" '  '  "))
+	fmt.Println(strings.TrimSpaceNQuote1("aaa"))
+	fmt.Println(strings.TrimSpaceNQuote1("  aaa   "))
+	fmt.Println(strings.TrimSpaceNQuote1("`aaa`"))
+	fmt.Println(strings.TrimSpaceNQuote1("'aaa'"))
+	fmt.Println(strings.TrimSpaceNQuote1("  ` aaa `  "))
+	fmt.Println(strings.TrimSpaceNQuote1("  `' aaa '`  "))
+	fmt.Println(strings.TrimSpaceNQuote1("  `  ' aaa '  `  "))
+	fmt.Println(strings.TrimSpaceNQuote1(" \t\n '  a lone gopher   ' \n\t\r\n"))
+	fmt.Println(strings.TrimSpaceNQuote1(" \t\n '`  a lone gopher  `' \n\t\r\n"))
+	// Output:
+	//
+	//
+	//
+	// aaa
+	// aaa
+	// aaa
+	// aaa
+	// aaa
+	// ' aaa '
+	// ' aaa '
+	// a lone gopher
+	// `  a lone gopher  `
 }
