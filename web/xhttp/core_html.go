@@ -377,6 +377,7 @@ func (me *htmlServeMux) parseSettingsFile(content string) (string, map[string]st
 				attrTitle:   directives[0].attr[attrTitle],
 			}
 			content = me.replaceSettings(content, settings)
+			content = strings.Replace(content, directives[0].statement, "", -1)
 			return content, settings
 		}
 	}
@@ -393,6 +394,7 @@ func (me *htmlServeMux) parseWithFile(content string) string {
 					src := tplBegin + tplVar + key + tplEnd // {%.param%}
 					content = strings.Replace(content, src, value, -1)
 				}
+				content = strings.Replace(content, directives[i].statement, "", -1)
 			}
 		}
 	}
