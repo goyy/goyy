@@ -7,11 +7,12 @@ package dql
 import (
 	"bytes"
 	"fmt"
+	"sort"
+	"strconv"
+
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/strings"
-	"sort"
-	"strconv"
 )
 
 type oracle struct {
@@ -35,7 +36,7 @@ func (me *oracle) SelectListBySift(e entity.Interface, sifts ...domain.Sift) (dq
 }
 
 func (me *oracle) SelectCountBySift(e entity.Interface, sifts ...domain.Sift) (dql string, args []interface{}, err error) {
-	return me.selectBySift(e, "select count(*) from ", sifts...)
+	return me.selectBySift(e, "select count(1) from ", sifts...)
 }
 
 func (me *oracle) selectBySift(e entity.Interface, begin string, sifts ...domain.Sift) (dql string, args []interface{}, err error) {

@@ -16,7 +16,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/templates"
 )
 
-// select ... from ... -> select count(*) from ...
+// select ... from ... -> select count(1) from ...
 func ParseCountSql(sql string) string {
 	stack := &xtype.Stack{}
 	ss := strings.Split(sql, " ")
@@ -36,7 +36,7 @@ func ParseCountSql(sql string) string {
 		}
 	}
 	pfrom := strings.IndexOrdinal(strings.ToLower(sql), " from ", p)
-	return "select count(*)" + sql[pfrom:]
+	return "select count(1)" + sql[pfrom:]
 }
 
 // ParseNamedSql takes a query using named parameters and an argument and

@@ -5,10 +5,11 @@
 package xhttp
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/crypto/aes"
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"net/http"
 	"regexp"
+
+	"gopkg.in/goyy/goyy.v0/util/crypto/aes"
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 type secureServeMux struct {

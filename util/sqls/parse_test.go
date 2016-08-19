@@ -6,9 +6,10 @@ package sqls_test
 
 import (
 	"fmt"
+	"testing"
+
 	"gopkg.in/goyy/goyy.v0/data/dialect"
 	"gopkg.in/goyy/goyy.v0/util/sqls"
-	"testing"
 )
 
 func TestParseCountSql(t *testing.T) {
@@ -17,19 +18,19 @@ func TestParseCountSql(t *testing.T) {
 	}{
 		{
 			"select id, name from table where id = 1",
-			"select count(*) from table where id = 1",
+			"select count(1) from table where id = 1",
 		},
 		{
 			"SELECT id, name FROM table where id = 1",
-			"select count(*) FROM table where id = 1",
+			"select count(1) FROM table where id = 1",
 		},
 		{
 			"select id, name,(select count(*) from table2) count from table where id = 1 and exists (select 1 from table3)",
-			"select count(*) from table where id = 1 and exists (select 1 from table3)",
+			"select count(1) from table where id = 1 and exists (select 1 from table3)",
 		},
 		{
 			"SELECT id, name,(SELECT count(*) FROM table2) count FROM table where id = 1 and exists (SELECT 1 FROM table3)",
-			"select count(*) FROM table where id = 1 and exists (SELECT 1 FROM table3)",
+			"select count(1) FROM table where id = 1 and exists (SELECT 1 FROM table3)",
 		},
 	}
 	for _, v := range s {

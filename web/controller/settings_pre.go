@@ -9,13 +9,11 @@ import (
 )
 
 type pre struct {
-	PreIndex    func(c xhttp.Context) error
-	PreShow     func(c xhttp.Context) error
-	PreAdd      func(c xhttp.Context) error
-	PreEdit     func(c xhttp.Context) error
-	PreSave     func(c xhttp.Context) error
-	PreSaved    func(c xhttp.Context) error
-	PreDisable  func(c xhttp.Context) error
-	PreDisabled func(c xhttp.Context) error
-	PreExport   func(c xhttp.Context) error
+	PreIndex   func(c xhttp.Context) error
+	PreShow    func(c xhttp.Context) error
+	PreAdd     func(c xhttp.Context) error
+	PreEdit    func(c xhttp.Context) error
+	PreSave    func(c xhttp.Context) error
+	PreDisable func(c xhttp.Context) error
+	PreExport  func(c xhttp.Context) error
 }

@@ -83,34 +83,8 @@ func (me *Controller) Save(c xhttp.Context) {
 	}
 }
 
-func (me *Controller) Saved(c xhttp.Context) {
-	out, err := me.baseController.Saved(c, me.Mgr, me.PreSaved, me.PostSaved)
-	if err != nil {
-		me.Error(c, err)
-		return
-	}
-	err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.SuccessMsg(c, i18N.Message("msg.save"), templates.EnIndex, out.Data))
-	if err != nil {
-		me.Error(c, err)
-		return
-	}
-}
-
 func (me *Controller) Disable(c xhttp.Context) {
 	out, err := me.baseController.Disable(c, me.Mgr, me.PreDisable, me.PostDisable)
-	if err != nil {
-		me.Error(c, err)
-		return
-	}
-	err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.SuccessMsg(c, i18N.Message("msg.disable"), templates.EnIndex, out.Data))
-	if err != nil {
-		me.Error(c, err)
-		return
-	}
-}
-
-func (me *Controller) Disabled(c xhttp.Context) {
-	out, err := me.baseController.Disabled(c, me.Mgr, me.PreDisabled, me.PostDisabled)
 	if err != nil {
 		me.Error(c, err)
 		return

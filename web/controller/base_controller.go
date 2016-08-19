@@ -127,40 +127,7 @@ func (me *baseController) Edit(c xhttp.Context, mgr service.Service, pre func(c 
 	return
 }
 
-func (me *baseController) Save(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r *result.Page) error) (out *result.Page, err error) {
-	if pre != nil {
-		if err = pre(c); err != nil {
-			return
-		}
-	}
-	e := mgr.NewEntity()
-	err = c.Bind(e)
-	if err != nil {
-		return
-	}
-	err = mgr.Save(c, e)
-	if err != nil {
-		return
-	}
-	// Page query
-	out, err = me.Page(c, mgr)
-	// Save after setting Id
-	pk := e.Table().Primary().Name()
-	if _, ok := e.Column(pk); ok {
-		out.Id = e.Get(pk).(string)
-	}
-	if err != nil {
-		return
-	}
-	if post != nil {
-		if err = post(c, out); err != nil {
-			return
-		}
-	}
-	return
-}
-
-func (me *baseController) Saved(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r *result.Entity) error) (out *result.Entity, err error) {
+func (me *baseController) Save(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r *result.Entity) error) (out *result.Entity, err error) {
 	if pre != nil {
 		if err = pre(c); err != nil {
 			return
@@ -184,37 +151,7 @@ func (me *baseController) Saved(c xhttp.Context, mgr service.Service, pre func(c
 	return
 }
 
-func (me *baseController) Disable(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r *result.Page) error) (out *result.Page, err error) {
-	if pre != nil {
-		if err = pre(c); err != nil {
-			return
-		}
-	}
-	// Disable data
-	sift, _ := domain.NewSift(siftId, c.Param(siftIdTR))
-	e := mgr.NewEntity()
-	err = mgr.SelectOneBySift(e, sift)
-	if err != nil {
-		return
-	}
-	_, err = mgr.Disable(c, e)
-	if err != nil {
-		return
-	}
-	// Page query
-	out, err = me.Page(c, mgr)
-	if err != nil {
-		return
-	}
-	if post != nil {
-		if err = post(c, out); err != nil {
-			return
-		}
-	}
-	return
-}
-
-func (me *baseController) Disabled(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r *result.Entity) error) (out *result.Entity, err error) {
+func (me *baseController) Disable(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r *result.Entity) error) (out *result.Entity, err error) {
 	if pre != nil {
 		if err = pre(c); err != nil {
 			return

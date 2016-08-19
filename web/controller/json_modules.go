@@ -36,16 +36,8 @@ func (me *JSONController) ApiSave() string {
 	return ApiSave(me.Project, me.Module)
 }
 
-func (me *JSONController) ApiSaved() string {
-	return ApiSaved(me.Project, me.Module)
-}
-
 func (me *JSONController) ApiDisable() string {
 	return ApiDisable(me.Project, me.Module)
-}
-
-func (me *JSONController) ApiDisabled() string {
-	return ApiDisabled(me.Project, me.Module)
 }
 
 func (me *JSONController) ApiTree() string {

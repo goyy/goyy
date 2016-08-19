@@ -19,6 +19,6 @@ var op map[string]string = map[string]string{
 	"IN": " in ",
 	"NU": " is null ",
 	"NN": " is not null ",
-	"OA": " asc ",
-	"OD": " desc ",
+	"OA": " asc",
+	"OD": " desc",
 }

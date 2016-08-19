@@ -7,10 +7,11 @@ package dql
 import (
 	"bytes"
 	"fmt"
+	"sort"
+
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/strings"
-	"sort"
 )
 
 type mysql struct {
@@ -34,7 +35,7 @@ func (me *mysql) SelectListBySift(e entity.Interface, sifts ...domain.Sift) (dql
 }
 
 func (me *mysql) SelectCountBySift(e entity.Interface, sifts ...domain.Sift) (dql string, args []interface{}, err error) {
-	return me.selectBySift(e, "select count(*) from ", sifts...)
+	return me.selectBySift(e, "select count(1) from ", sifts...)
 }
 
 func (me *mysql) selectBySift(e entity.Interface, begin string, sifts ...domain.Sift) (dql string, args []interface{}, err error) {

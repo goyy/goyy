@@ -60,16 +60,8 @@ func (me *Controller) PathSave() string {
 	return PathSave(me.Project, me.Module)
 }
 
-func (me *Controller) PathSaved() string {
-	return PathSaved(me.Project, me.Module)
-}
-
 func (me *Controller) PathDisable() string {
 	return PathDisable(me.Project, me.Module)
-}
-
-func (me *Controller) PathDisabled() string {
-	return PathDisabled(me.Project, me.Module)
 }
 
 func (me *Controller) PathTree() string {
