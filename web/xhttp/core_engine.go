@@ -90,13 +90,13 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	if Conf.Html.Enable {
-		if hsm.ServeHTTP(w, r) { // htmlServeMux
+	if Conf.Secure.Enable { // secureServeMux
+		if sec.ServeHTTP(w, r) {
 			return
 		}
 	}
-	if Conf.Secure.Enable { // secureServeMux
-		if sec.ServeHTTP(w, r) {
+	if Conf.Html.Enable {
+		if hsm.ServeHTTP(w, r) { // htmlServeMux
 			return
 		}
 	}
