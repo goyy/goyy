@@ -10,6 +10,7 @@ import (
 
 	"gopkg.in/goyy/goyy.v0/util/crypto/aes"
 	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/util/webs"
 )
 
 type secureServeMux struct {
@@ -28,25 +29,41 @@ func (me *secureServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool
 	path := r.URL.Path
 	s := newSession4Redis(w, r)
 	if me.isForbidden(path) {
-		http.Redirect(w, r, Conf.Secure.ForbidUrl, http.StatusFound)
-		return true
+		if webs.IsXMLHttpRequest(r) { // AJAX
+			msg := i18N.Message("err.403")
+			c := `{"success":false,"message":"` + msg + `"}`
+			w.WriteHeader(StatusForbidden)
+			w.Write([]byte(c))
+			return true
+		} else {
+			http.Redirect(w, r, Conf.Secure.ForbidUrl, http.StatusFound)
+			return true
+		}
 	}
 	if !s.IsLogin() {
 		if me.isRedirectLogin(path) {
-			loginUrl := me.loginUrl
-			if strings.IsBlank(loginUrl) {
-				loginUrl = Conf.Secure.LoginUrl
-			}
-			// After login support to redirect to the URL before
-			if url, err := aes.EncryptHex(r.URL.String(), aes.DefaultKey); err == nil {
-				if strings.Index(loginUrl, "?") > 0 {
-					loginUrl = loginUrl + "&redirect=" + url
-				} else {
-					loginUrl = loginUrl + "?redirect=" + url
+			if webs.IsXMLHttpRequest(r) { // AJAX
+				msg := i18N.Message("err.401")
+				c := `{"success":false,"message":"` + msg + `"}`
+				w.WriteHeader(StatusUnauthorized)
+				w.Write([]byte(c))
+				return true
+			} else {
+				loginUrl := me.loginUrl
+				if strings.IsBlank(loginUrl) {
+					loginUrl = Conf.Secure.LoginUrl
 				}
+				// After login support to redirect to the URL before
+				if url, err := aes.EncryptHex(r.URL.String(), aes.DefaultKey); err == nil {
+					if strings.Index(loginUrl, "?") > 0 {
+						loginUrl = loginUrl + "&redirect=" + url
+					} else {
+						loginUrl = loginUrl + "?redirect=" + url
+					}
+				}
+				http.Redirect(w, r, loginUrl, http.StatusFound)
+				return true
 			}
-			http.Redirect(w, r, loginUrl, http.StatusFound)
-			return true
 		}
 	}
 	return false

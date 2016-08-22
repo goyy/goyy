@@ -72,14 +72,13 @@ func (me *illegalServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) boo
 
 func (me *illegalServeMux) write(w http.ResponseWriter, r *http.Request) {
 	msg := i18N.Message("err.illegal")
-	reqType := r.Header.Get("X-Requested-With")
-	if "XMLHttpRequest" == reqType { // AJAX
+	if webs.IsXMLHttpRequest(r) { // AJAX
 		c := `{"success":false,"message":"` + msg + `"}`
-		w.WriteHeader(403)
+		w.WriteHeader(451)
 		w.Write([]byte(c))
 	} else {
 		c := `<script language="javascript">alert("` + msg + `");window.history.go(-1);</script>`
-		w.WriteHeader(403)
+		w.WriteHeader(451)
 		w.Write([]byte(c))
 	}
 }

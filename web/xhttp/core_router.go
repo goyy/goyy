@@ -94,11 +94,10 @@ func (me *router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					}
 				}
 				if !isPermission {
-					msg := i18N.Message("err.401")
-					reqType := r.Header.Get("X-Requested-With")
-					if "XMLHttpRequest" == reqType { // AJAX
+					msg := i18N.Message("err.407")
+					if webs.IsXMLHttpRequest(r) { // AJAX
 						c := `{"success":false,"message":"` + msg + `"}`
-						w.WriteHeader(401)
+						w.WriteHeader(StatusProxyAuthRequired)
 						w.Write([]byte(c))
 						return
 					} else {
@@ -106,7 +105,7 @@ func (me *router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 							http.Redirect(w, r, Conf.Err.Err401, http.StatusFound)
 							return
 						} else {
-							w.WriteHeader(401)
+							w.WriteHeader(StatusProxyAuthRequired)
 							w.Write([]byte(msg))
 							return
 						}
@@ -124,7 +123,7 @@ func (me *router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				return
 			} else {
 				msg := i18N.Message("err.404")
-				serveError(c, 404, []byte(msg))
+				serveError(c, StatusNotFound, []byte(msg))
 			}
 		}
 	} else {
@@ -136,7 +135,7 @@ func (me *router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		} else {
 			msg := i18N.Message("err.404")
-			serveError(c, 404, []byte(msg))
+			serveError(c, StatusNotFound, []byte(msg))
 		}
 	}
 }

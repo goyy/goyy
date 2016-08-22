@@ -170,3 +170,12 @@ func ParseUrlSpecialChars(s string) string {
 	}
 	return b.String()
 }
+
+// IsXMLHttpRequest reports whether the request is a Ajax Request.
+func IsXMLHttpRequest(r *http.Request) bool {
+	reqType := r.Header.Get("X-Requested-With")
+	if "XMLHttpRequest" == reqType { // AJAX
+		return true
+	}
+	return false
+}
