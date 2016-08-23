@@ -41,12 +41,14 @@ const (
 	tagTextEndPre       = `</`
 	tagTextTitle        = `title`
 	tagTextType         = `type`
+	tagAttrId           = `id`
+	tagAttrName         = `name`
 	tagAttrClass        = `class`
 	tagAttrHref         = `href`
 	tagAttrSrc          = `src`
 	tagAttrAction       = `action`
-	tagAttrOnerror      = `onerror`
 	tagAttrOnclick      = `onclick`
+	tagAttrOnerror      = `onerror`
 	tagAttrData         = "data-"
 	tagAttrPre          = `go:`
 	tagAttrPost         = `=`
