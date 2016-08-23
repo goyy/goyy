@@ -13,7 +13,6 @@ import (
 )
 
 var preRuns []func() = make([]func(), 10)
-var postRuns []func() = make([]func(), 10)
 
 // GET adds a route for a HTTP GET request to the specified matching pattern.
 func GET(path string, handle Handle, permissions ...*xtype.Permission) {
@@ -62,12 +61,6 @@ func RegisterPreRun(preRun func()) {
 	}
 }
 
-func RegisterPostRun(postRun func()) {
-	if postRun != nil {
-		postRuns = append(postRuns, postRun)
-	}
-}
-
 // Run the http server. Listening on Conf.Addr or 9090 by default.
 func Run() error {
 	cache.Init(cache.Conf{
@@ -84,12 +77,5 @@ func Run() error {
 	}
 	logger.Printf("Listening and serving HTTP on %s\n", Conf.Addr)
 	err := http.ListenAndServe(Conf.Addr, defaultEngine)
-	if err == nil {
-		for _, postRun := range postRuns {
-			if postRun != nil {
-				postRun()
-			}
-		}
-	}
 	return err
 }
