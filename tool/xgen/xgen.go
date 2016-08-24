@@ -19,7 +19,7 @@ func main() {
 	hasService := flag.Bool("service", false, "is generated service")
 	hasController := flag.Bool("controller", false, "is generated controller")
 	hasDto := flag.Bool("dto", false, "is generated dto")
-	hasApi := flag.Bool("api", false, "is generated dto")
+	hasApi := flag.Bool("api", false, "is generated api")
 	hasSql := flag.Bool("sql", false, "is generated sql")
 	hasLog := flag.Bool("log", false, "is generated log")
 	hasUtil := flag.Bool("util", false, "is generated util")
@@ -42,7 +42,7 @@ func main() {
 	if *hasScaffold {
 		f.HasGenService = true
 		f.HasGenController = true
-		f.HasGenDto = true
+		f.HasGenDto = false
 		f.HasGenApi = true
 		f.HasGenSql = true
 		f.HasGenLog = true

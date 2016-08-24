@@ -396,15 +396,6 @@ func (me factory) Write() error {
 			if err := me.writeControllerJsonReg(); err != nil {
 				return err
 			}
-			if err := me.writeControllerClientXgen(); err != nil {
-				return err
-			}
-			if err := me.writeControllerClientMain(); err != nil {
-				return err
-			}
-			if err := me.writeControllerClientReg(); err != nil {
-				return err
-			}
 		}
 	}
 	if me.HasGenDto {
@@ -427,11 +418,6 @@ func (me factory) Write() error {
 	if me.HasGenLog {
 		if err := me.writeLogJsonXgen(); err != nil {
 			return err
-		}
-		if strings.IsNotBlank(me.Clidir) {
-			if err := me.writeLogClientXgen(); err != nil {
-				return err
-			}
 		}
 		if strings.IsNotBlank(me.Apipath) {
 			if err := me.writeLogApiXgen(); err != nil {
@@ -533,22 +519,6 @@ func (me factory) writeControllerJsonReg() error {
 	return me.writeBy("reg.controller.json", tmplControllerJsonReg)
 }
 
-func (me factory) writeControllerClientXgen() error {
-	return me.writeBy("xgen.controller.client", tmplControllerClientXgen)
-}
-
-func (me factory) writeControllerClientMain() error {
-	return me.writeBy("main.controller.client", tmplControllerClientMain)
-}
-
-func (me factory) writeControllerClientReg() error {
-	err := me.writeBy("reg.controller.client", tmplControllerClientReg)
-	if err != nil {
-		return err
-	}
-	return me.writeBy("reg.proj.controller.client", tmplControllerClientRegProj)
-}
-
 func (me factory) writeSqlMain() error {
 	return me.writeBy("main.sql", tmplSqlMain)
 }
@@ -559,10 +529,6 @@ func (me factory) writeLogJsonXgen() error {
 
 func (me factory) writeLogApiXgen() error {
 	return me.writeBy("xgen.log.api", tmplLogXgen)
-}
-
-func (me factory) writeLogClientXgen() error {
-	return me.writeBy("xgen.log.client", tmplLogXgen)
 }
 
 func (me factory) writeUtilMain() error {
