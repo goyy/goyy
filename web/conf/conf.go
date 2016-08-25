@@ -91,8 +91,8 @@ var Conf = &conf{
 		Extensions: []string{"html"},
 		Funcs:      []template.FuncMap{},
 		Delims: templateDelims{
-			Left:  "{{",
-			Right: "}}",
+			Left:  "<%",
+			Right: "%>",
 		},
 		Reloaded: true,
 	},
