@@ -51,7 +51,7 @@ const (
 	ot_f6 = "F6" // float64
 	ot_td = "TD" // time.Time:2006-01-02
 	ot_tt = "TT" // time.Time:2006-01-02 15:04:05
-	ot_ts = "TS" // time.Time:2006-01-02 15:04
+	ot_tm = "TM" // time.Time:2006-01-02 15:04
 	ot_t2 = "T2" // time.Time.Unix():2006-01-02
 	ot_t5 = "T5" // time.Time.Unix():2006-01-02 15:04:05
 	ot_t4 = "T4" // time.Time.Unix():2006-01-02 15:04
