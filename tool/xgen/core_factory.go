@@ -396,6 +396,7 @@ func (me factory) Write() error {
 func (me factory) writeBy(typ, content string) error {
 	// get the destination file
 	dir, file := filepath.Split(me.Epath)
+	f, name := me.genFileName(typ, file)
 	if typ == xgenDto {
 		dir = me.Clidir + "/internal/" + me.Project + "/" + me.PackageName
 	}
@@ -403,12 +404,12 @@ func (me factory) writeBy(typ, content string) error {
 		dir = "../../api/" + me.PackageName
 	}
 	if typ == mainHtml {
-		dir = me.Clidir + "/templates/" + me.Project
+		dir = me.Clidir + "/templates/" + me.Project + "/" + name
 	}
 	if typ == xgenCtlReg {
 		dir = "../../"
 	}
-	dstfile := filepath.Join(dir, me.genFileName(typ, file))
+	dstfile := filepath.Join(dir, f)
 	if files.IsExist(dstfile) {
 		if strings.HasPrefix(typ, typMain) {
 			return nil
@@ -563,18 +564,18 @@ func (me factory) printerType(e ast.Expr) string {
 	}
 }
 
-func (me factory) genFileName(typ, name string) string {
+func (me factory) genFileName(typ, name string) (string, string) {
 	switch typ {
 	case xgenLogJson, xgenLogApi:
-		return "log_xgen.go"
+		return "log_xgen.go", name
 	case mainApi:
-		return me.PackageName + ".go"
+		return me.PackageName + ".go", name
 	case mainUtil:
-		return me.PackageName + "_util.go"
+		return me.PackageName + "_util.go", name
 	case mainConst:
-		return me.PackageName + "_const.go"
+		return me.PackageName + "_const.go", name
 	case xgenCtlReg:
-		return me.PackageName + "_register_xgen.go"
+		return me.PackageName + "_register_xgen.go", name
 	}
 	if strings.HasPrefix(name, typMain) {
 		name = strings.After(name, typMain)
@@ -585,7 +586,7 @@ func (me factory) genFileName(typ, name string) string {
 	if name == "domain" || name == "entity" || name == "main.domain" || name == "main.entity" {
 		name = ""
 	} else {
-		if strings.IsNotBlank(name) {
+		if strings.IsNotBlank(name) && typ != mainHtml {
 			name = name + "_"
 		}
 	}
@@ -607,7 +608,11 @@ func (me factory) genFileName(typ, name string) string {
 	case xgenDto:
 		typ, name = me.resetTypAndName("dto_xgen", name)
 	}
-	return fmt.Sprintf("%s%s.go", name, typ)
+	if typ == mainHtml {
+		return fmt.Sprintf("%s.html", name), name
+	} else {
+		return fmt.Sprintf("%s%s.go", name, typ), name
+	}
 }
 
 func (me factory) resetTypAndName(typ, name string) (string, string) {

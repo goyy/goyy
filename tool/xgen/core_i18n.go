@@ -34,6 +34,11 @@ var locales = map[string]map[string]string{
 		"col.comment.parent_ids":   "父ID集",
 		"col.comment.parent_codes": "父编号集",
 		"col.comment.parent_names": "父名称集",
+		"html.list.sid":            "序号",
+		"html.list.sbtn":           "查询",
+		"html.list.created":        "创建时间",
+		"html.list.opr":            "操作",
+		"html.list.del":            "删除",
 	},
 	i18n.Locale_en_US: map[string]string{
 		"col.comment.id":           "ID",
@@ -58,5 +63,9 @@ var locales = map[string]map[string]string{
 		"col.comment.parent_ids":   "PARENT_IDS",
 		"col.comment.parent_codes": "PARENT_CODES",
 		"col.comment.parent_names": "PARENT_NAMES",
+		"html.list.sid":            "id",
+		"html.list.sbtn":           "search",
+		"html.list.created":        "created",
+		"html.list.opr":            "operate",
 	},
 }

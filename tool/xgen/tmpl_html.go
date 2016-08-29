@@ -34,20 +34,20 @@ var tmplHtmlMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 						<input type="hidden" id="sPageNoTR" name="sPageNoTR" value="1" />
 						<input type="hidden" id="sPageSizeTR" name="sPageSizeTR" value="" />
 						<div class="form-group">
-							<label class="control-label">序号</label>
+							<label class="control-label"><%message "html.list.sid"%></label>
 							<input class="form-control" id="sIdEQ" name="sIdEQ">
 						</div>
-						<button type="button" id="{%.prefix%}ListSbtn" class="btn btn-primary">查询</button>
+						<button type="button" id="{%.prefix%}ListSbtn" class="btn btn-primary"><%message "html.list.sbtn"%></button>
 					</form>
 				</div>
 				<!--#include file="/core/comm/alert.html" param="{%.prefix%}List"--><!--#endinclude-->
 				<table class="table table-bordered table-condensed">
 					<thead>
 						<tr>
-							<th class="f-w50">序号</th><%range $f := $e.Fields%>
+							<th class="f-w50"><%message "html.list.sid"%></th><%range $f := $e.Fields%>
 							<th><%$f.Comment%></th><%end%>
-							<th class="f-w150">创建时间</th>
-							<th>操作</th>
+							<th class="f-w150"><%message "html.list.created"%></th>
+							<th><%message "html.list.opr"%></th>
 						</tr>
 					</thead>
 					<tbody id="{%.prefix%}ListData"></tbody>
@@ -58,13 +58,13 @@ var tmplHtmlMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 							<td>{{<%$f.Name%>}}</td><%end%>
 							<td>{{uyymdhms created}}</td>
 							<td>
-								<a href="#disable" go:data-state="disable" go:data-url="{%apis%}/{%project%}/{%module%}/disable" onclick="disable(this,'{{id}}',{%.prefix%}Page)" go:data-permissions="{%project%}:{%module%}:disable">删除</a>
+								<a href="#disable" go:data-state="disable" go:data-url="{%apis%}/{%project%}/{%module%}/disable" onclick="disable(this,'{{id}}',{%.prefix%}Page)" go:data-permissions="{%project%}:{%module%}:disable"><%message "html.list.del"%></a>
 							</td>
 						</tr>
 					{{/each}}
 					</script>
 				</table>
-                <ul id="{%.prefix%}ListPagination" class="pagination"></ul>
+				<ul id="{%.prefix%}ListPagination" class="pagination"></ul>
 			</div>
 		</div>
 	</div>
