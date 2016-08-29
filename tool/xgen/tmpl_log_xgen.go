@@ -4,13 +4,13 @@
 
 package main
 
-var tmplLogXgen = `package {{.PackageName}}
+var tmplLogXgen = `package <%.PackageName%>
 
 import (
 	"gopkg.in/goyy/goyy.v0/comm/log"
 )
 
-var logger = log.New("[{{.Project}}-{{.PackageName}}]")
+var logger = log.New("[<%.Project%>-<%.PackageName%>]")
 
 func SetPriority(value int) {
 	logger.SetPriority(value)

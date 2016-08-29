@@ -4,5 +4,5 @@
 
 package main
 
-var tmplApiMain = `package {{.PackageName}}
+var tmplApiMain = `package <%.PackageName%>
 `

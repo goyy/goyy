@@ -4,5 +4,5 @@
 
 package main
 
-var tmplSqlMain = `package {{.PackageName}}
+var tmplSqlMain = `package <%.PackageName%>
 `

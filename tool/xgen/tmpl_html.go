@@ -4,12 +4,12 @@
 
 package main
 
-var tmplHtmlMain = `{{range $i, $e := .Entities}}<!DOCTYPE html>
+var tmplHtmlMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta name="description" content="">
 <meta name="author" content="">
-<!--#settings project="{{$e.Project}}" module="{{$e.Name}}" title="{{$e.Comment}}"--><!--#endsettings-->
+<!--#settings project="<%$e.Project%>" module="<%$e.Name%>" title="<%$e.Comment%>"--><!--#endsettings-->
 <!--#with prefix="e" --><!--#endwith-->
 <title go:title="/title.html">{%title%}</title>
 <!--#include file="/core/include/head.html"--><!--#endinclude-->
@@ -44,8 +44,8 @@ var tmplHtmlMain = `{{range $i, $e := .Entities}}<!DOCTYPE html>
 				<table class="table table-bordered table-condensed">
 					<thead>
 						<tr>
-							<th class="f-w50">序号</th>{{range $f := $e.Fields}}
-							<th>{{$f.Comment}}</th>{{end}}
+							<th class="f-w50">序号</th><%range $f := $e.Fields%>
+							<th><%$f.Comment%></th><%end%>
 							<th class="f-w150">创建时间</th>
 							<th>操作</th>
 						</tr>
@@ -54,17 +54,10 @@ var tmplHtmlMain = `{{range $i, $e := .Entities}}<!DOCTYPE html>
 					<script id="{%.prefix%}ListTemplate" type="text/x-handlebars-template">
 					{{#each slice}}
 						<tr{{#if (divisible @index 2)}} class="active"{{/if}}>
-							<td title="{{id}}">{{abbr id 5}}</td>
-							<td>{{dictval "sys_log.genre" genre}}</td>
-							<td>{{remoteIp}}</td>
-							<td>{{userAgent}}</td>
-							<td>{{requestMethod}}</td>
-							<td>{{requestUri}}</td>
-							<td>{{requestParams}}</td>
-							<td>{{location}}</td>
-							<td>{{message}}</td>
+							<td title="{{id}}">{{abbr id 5}}</td><%range $f := $e.Fields%>
+							<td>{{<%$f.Name%>}}</td><%end%>
 							<td>{{uyymdhms created}}</td>
-							<td>								
+							<td>
 								<a href="#disable" go:data-state="disable" go:data-url="{%apis%}/{%project%}/{%module%}/disable" onclick="disable(this,'{{id}}',{%.prefix%}Page)" go:data-permissions="{%project%}:{%module%}:disable">删除</a>
 							</td>
 						</tr>
@@ -79,5 +72,5 @@ var tmplHtmlMain = `{{range $i, $e := .Entities}}<!DOCTYPE html>
 <!--#include file="/core/include/footer.html"--><!--#endinclude-->
 </div>
 </body>
-</html>{{end}}
+</html><%end%>
 `
