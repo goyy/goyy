@@ -4,7 +4,7 @@
 
 package main
 
-var tmplControllerJsonMain = `package {{.PackageName}}
+var tmplControllerMain = `package {{.PackageName}}
 
 import (
 	"gopkg.in/goyy/goyy.v0/web/xhttp"

@@ -12,7 +12,6 @@ import (
 func main() {
 	epath := flag.String("entity", "", "entity file path")
 	clidir := flag.String("clidir", "", "client project path")
-	htmpath := flag.String("htmpath", "", "import path for html project")
 	clipath := flag.String("clipath", "", "import path for client project")
 	apipath := flag.String("apipath", "", "import path for api project")
 	hasScaffold := flag.Bool("scaffold", false, "is generated service and controller")
@@ -24,10 +23,10 @@ func main() {
 	hasLog := flag.Bool("log", false, "is generated log")
 	hasUtil := flag.Bool("util", false, "is generated util")
 	hasConst := flag.Bool("const", false, "is generated const")
+	hasHtml := flag.Bool("html", false, "is generated html")
 	flag.Parse()
 	f := factory{
 		Clidir:           *clidir,
-		Htmpath:          *htmpath,
 		Clipath:          *clipath,
 		Apipath:          *apipath,
 		HasGenService:    *hasService,
@@ -38,6 +37,7 @@ func main() {
 		HasGenLog:        *hasLog,
 		HasGenUtil:       *hasUtil,
 		HasGenConst:      *hasConst,
+		HasGenHtml:       *hasHtml,
 	}
 	if *hasScaffold {
 		f.HasGenService = true
@@ -48,6 +48,7 @@ func main() {
 		f.HasGenLog = true
 		f.HasGenUtil = true
 		f.HasGenConst = true
+		f.HasGenHtml = true
 	}
 	if err := f.Init(*epath); err != nil {
 		log.Printf("%v", err)

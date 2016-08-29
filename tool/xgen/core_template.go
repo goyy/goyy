@@ -208,5 +208,7 @@ var (
 )
 
 func newTmpl(s string) *template.Template {
-	return template.Must(template.New("T").Funcs(filters).Parse(s))
+	t := template.New("T")
+	t = t.Delims("<%", "%>")
+	return template.Must(t.Funcs(filters).Parse(s))
 }

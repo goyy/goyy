@@ -24,7 +24,6 @@ type factory struct {
 	Project           string
 	PackageName       string
 	Epath             string
-	Htmpath           string
 	Clidir            string
 	Clipath           string
 	Apipath           string
@@ -36,6 +35,7 @@ type factory struct {
 	HasGenLog         bool
 	HasGenUtil        bool
 	HasGenConst       bool
+	HasGenHtml        bool
 	IsTimeField       bool
 	IsValidationField bool
 	IsExtend          bool
@@ -320,34 +320,6 @@ func (me *factory) Init(path string) error {
 	return nil
 }
 
-func (me *factory) isTimeField() {
-	for _, e := range me.Entities {
-		for _, f := range e.Fields {
-			if f.Type == "time.Time" {
-				me.IsTimeField = true
-			}
-		}
-	}
-}
-
-func (me *factory) isValidationField() {
-	for _, e := range me.Entities {
-		for _, f := range e.Fields {
-			if len(f.Validations) > 0 {
-				me.IsValidationField = true
-			}
-		}
-	}
-}
-
-func (me *factory) isExtend() {
-	for _, e := range me.Entities {
-		if strings.IsNotBlank(e.Extend) {
-			me.IsExtend = true
-		}
-	}
-}
-
 func (me factory) Write() error {
 	if err := me.writeEntityXgen(); err != nil {
 		return err
@@ -364,36 +336,14 @@ func (me factory) Write() error {
 		}
 	}
 	if me.HasGenController {
-		if strings.IsBlank(me.Clidir) {
-			if strings.IsBlank(me.Apipath) {
-				if err := me.writeControllerHtmlXgen(); err != nil {
-					return err
-				}
-				if err := me.writeControllerHtmlMain(); err != nil {
-					return err
-				}
-				if err := me.writeControllerHtmlReg(); err != nil {
-					return err
-				}
-			} else {
-				if err := me.writeControllerJsonXgen(); err != nil {
-					return err
-				}
-				if err := me.writeControllerJsonMain(); err != nil {
-					return err
-				}
-				if err := me.writeControllerJsonReg(); err != nil {
-					return err
-				}
-			}
-		} else {
-			if err := me.writeControllerJsonXgen(); err != nil {
+		if strings.IsNotBlank(me.Apipath) {
+			if err := me.writeControllerXgen(); err != nil {
 				return err
 			}
-			if err := me.writeControllerJsonMain(); err != nil {
+			if err := me.writeControllerMain(); err != nil {
 				return err
 			}
-			if err := me.writeControllerJsonReg(); err != nil {
+			if err := me.writeControllerReg(); err != nil {
 				return err
 			}
 		}
@@ -435,29 +385,28 @@ func (me factory) Write() error {
 			return err
 		}
 	}
+	if me.HasGenHtml {
+		if err := me.writeHtmlMain(); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
 func (me factory) writeBy(typ, content string) error {
 	// get the destination file
 	dir, file := filepath.Split(me.Epath)
-	if typ == "xgen.dto" || typ == "xgen.controller.client" || typ == "main.controller.client" || typ == "xgen.log.client" {
+	if typ == xgenDto {
 		dir = me.Clidir + "/internal/" + me.Project + "/" + me.PackageName
 	}
-	if typ == "main.api" || typ == "xgen.log.api" {
+	if typ == mainApi || typ == xgenLogApi {
 		dir = "../../api/" + me.PackageName
 	}
-	if typ == "reg.controller.client" {
-		dir = me.Clidir + "/internal/" + me.Project
+	if typ == mainHtml {
+		dir = me.Clidir + "/templates/" + me.Project
 	}
-	if typ == "reg.proj.controller.client" {
-		dir = me.Clidir + "/internal"
-	}
-	if typ == "reg.controller.json" {
+	if typ == xgenCtlReg {
 		dir = "../../"
-	}
-	if typ == "reg.controller.html" {
-		dir = ".."
 	}
 	dstfile := filepath.Join(dir, me.genFileName(typ, file))
 	if files.IsExist(dstfile) {
@@ -477,77 +426,94 @@ func (me factory) writeBy(typ, content string) error {
 }
 
 func (me factory) writeEntityXgen() error {
-	return me.writeBy("xgen.entity", tmplEntity)
+	return me.writeBy(xgenEntity, tmplEntity)
 }
 
 func (me factory) writeEntitiesXgen() error {
-	return me.writeBy("xgen.entities", tmplEntities)
+	return me.writeBy(xgenEntities, tmplEntities)
 }
 
 func (me factory) writeServiceXgen() error {
-	return me.writeBy("xgen.service", tmplServiceXgen)
+	return me.writeBy(xgenService, tmplServiceXgen)
 }
 
 func (me factory) writeServiceMain() error {
-	return me.writeBy("main.service", tmplServiceMain)
+	return me.writeBy(mainService, tmplServiceMain)
 }
 
-func (me factory) writeControllerHtmlXgen() error {
-	return me.writeBy("xgen.controller.html", tmplControllerHtmlXgen)
+func (me factory) writeControllerXgen() error {
+	return me.writeBy(xgenCtl, tmplControllerXgen)
 }
 
-func (me factory) writeControllerHtmlMain() error {
-	return me.writeBy("main.controller.html", tmplControllerHtmlMain)
+func (me factory) writeControllerMain() error {
+	return me.writeBy(mainCtl, tmplControllerMain)
 }
 
-func (me factory) writeControllerHtmlReg() error {
-	if strings.IsBlank(me.Htmpath) {
-		return nil
-	}
-	return me.writeBy("reg.controller.html", tmplControllerHtmlReg)
-}
-
-func (me factory) writeControllerJsonXgen() error {
-	return me.writeBy("xgen.controller.json", tmplControllerJsonXgen)
-}
-
-func (me factory) writeControllerJsonMain() error {
-	return me.writeBy("main.controller.json", tmplControllerJsonMain)
-}
-
-func (me factory) writeControllerJsonReg() error {
-	return me.writeBy("reg.controller.json", tmplControllerJsonReg)
+func (me factory) writeControllerReg() error {
+	return me.writeBy(xgenCtlReg, tmplControllerReg)
 }
 
 func (me factory) writeSqlMain() error {
-	return me.writeBy("main.sql", tmplSqlMain)
+	return me.writeBy(mainSql, tmplSqlMain)
 }
 
 func (me factory) writeLogJsonXgen() error {
-	return me.writeBy("xgen.log.json", tmplLogXgen)
+	return me.writeBy(xgenLogJson, tmplLogXgen)
 }
 
 func (me factory) writeLogApiXgen() error {
-	return me.writeBy("xgen.log.api", tmplLogXgen)
+	return me.writeBy(xgenLogApi, tmplLogXgen)
 }
 
 func (me factory) writeUtilMain() error {
-	return me.writeBy("main.util", tmplUtilMain)
+	return me.writeBy(mainUtil, tmplUtilMain)
 }
 
 func (me factory) writeConstMain() error {
-	return me.writeBy("main.const", tmplConstMain)
+	return me.writeBy(mainConst, tmplConstMain)
+}
+
+func (me factory) writeHtmlMain() error {
+	return me.writeBy(mainHtml, tmplHtmlMain)
 }
 
 func (me factory) writeDtoXgen() error {
 	if strings.IsBlank(me.Clidir) {
 		return nil
 	}
-	return me.writeBy("xgen.dto", tmplDtoXgen)
+	return me.writeBy(xgenDto, tmplDtoXgen)
 }
 
 func (me factory) writeApiMain() error {
-	return me.writeBy("main.api", tmplApiMain)
+	return me.writeBy(mainApi, tmplApiMain)
+}
+
+func (me *factory) isTimeField() {
+	for _, e := range me.Entities {
+		for _, f := range e.Fields {
+			if f.Type == "time.Time" {
+				me.IsTimeField = true
+			}
+		}
+	}
+}
+
+func (me *factory) isValidationField() {
+	for _, e := range me.Entities {
+		for _, f := range e.Fields {
+			if len(f.Validations) > 0 {
+				me.IsValidationField = true
+			}
+		}
+	}
+}
+
+func (me *factory) isExtend() {
+	for _, e := range me.Entities {
+		if strings.IsNotBlank(e.Extend) {
+			me.IsExtend = true
+		}
+	}
 }
 
 func (me factory) printerType(e ast.Expr) string {
@@ -599,18 +565,16 @@ func (me factory) printerType(e ast.Expr) string {
 
 func (me factory) genFileName(typ, name string) string {
 	switch typ {
-	case "xgen.log.json", "xgen.log.client", "xgen.log.api":
+	case xgenLogJson, xgenLogApi:
 		return "log_xgen.go"
-	case "main.api":
+	case mainApi:
 		return me.PackageName + ".go"
-	case "main.util":
+	case mainUtil:
 		return me.PackageName + "_util.go"
-	case "main.const":
+	case mainConst:
 		return me.PackageName + "_const.go"
-	case "reg.controller.html", "reg.controller.client", "reg.controller.json":
+	case xgenCtlReg:
 		return me.PackageName + "_register_xgen.go"
-	case "reg.proj.controller.client":
-		return me.Project + "_register_xgen.go"
 	}
 	if strings.HasPrefix(name, typMain) {
 		name = strings.After(name, typMain)
@@ -625,28 +589,22 @@ func (me factory) genFileName(typ, name string) string {
 			name = name + "_"
 		}
 	}
-	if strings.HasPrefix(typ, "main.controller") {
+	switch typ {
+	case mainCtl:
 		typ = "controller"
-	}
-	if strings.HasPrefix(typ, "main.service") {
+	case mainService:
 		typ = "manager"
-	}
-	if strings.HasPrefix(typ, "main.sql") {
+	case mainSql:
 		typ = "sql"
-	}
-	if strings.HasPrefix(typ, "xgen.controller") {
+	case xgenCtl:
 		typ, name = me.resetTypAndName("controller_xgen", name)
-	}
-	if strings.HasPrefix(typ, "xgen.service") {
+	case xgenService:
 		typ, name = me.resetTypAndName("manager_xgen", name)
-	}
-	if strings.HasPrefix(typ, "xgen.entity") {
+	case xgenEntity:
 		typ, name = me.resetTypAndName("entity_xgen", name)
-	}
-	if strings.HasPrefix(typ, "xgen.entities") {
+	case xgenEntities:
 		typ, name = me.resetTypAndName("entities_xgen", name)
-	}
-	if strings.HasPrefix(typ, "xgen.dto") {
+	case xgenDto:
 		typ, name = me.resetTypAndName("dto_xgen", name)
 	}
 	return fmt.Sprintf("%s%s.go", name, typ)
