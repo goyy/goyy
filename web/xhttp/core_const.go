@@ -19,6 +19,7 @@ const (
 	drtEndKey   = "end"
 	drtIf       = "if"
 	drtNvl      = "nvl"
+	drtMd5      = "md5"
 	drtProfile  = "profile"
 	drtInclude  = "include"
 	drtSettings = "settings"

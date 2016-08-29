@@ -12,6 +12,7 @@ import (
 	"sync"
 
 	"gopkg.in/goyy/goyy.v0/comm/profile"
+	"gopkg.in/goyy/goyy.v0/util/crypto/md5"
 	"gopkg.in/goyy/goyy.v0/util/files"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
@@ -76,6 +77,14 @@ type directiveInfo struct {
 	directive string            // nvl
 	attr      map[string]string // .param `home`
 	begin     string            // {%nvl
+	end       string            // %}
+}
+
+type directiveInfo struct {
+	statement string            // {%md5 `home`%}
+	directive string            // md5
+	attr      map[string]string // `home`
+	begin     string            // {%md5
 	end       string            // %}
 }
 */
@@ -269,6 +278,13 @@ func (me *htmlServeMux) isTplNvl(content string) bool {
 	return false
 }
 
+func (me *htmlServeMux) isTplMd5(content string) bool {
+	if strings.Index(content, tplBegin+drtMd5) > 0 {
+		return true
+	}
+	return false
+}
+
 func (me *htmlServeMux) hasUseBrowserCache(w http.ResponseWriter, r *http.Request, fileModTime int64) bool {
 	// Browser save file last modified time
 	browserModTime := r.Header.Get(ifModifiedSince)
@@ -349,6 +365,7 @@ func (me *htmlServeMux) parseContent(content string) (string, []string, int64) {
 	content = me.parseWithFile(content)
 	content = me.parseIfFile(content)
 	content = me.parseProfileFile(content)
+	content = me.parseMd5File(content)
 	content = me.parseTagDataAttrFile(content)
 	content = me.parseTagAttrFile(content, tagAttrId)
 	content = me.parseTagAttrFile(content, tagAttrName)
@@ -494,6 +511,29 @@ func (me *htmlServeMux) parseProfileFile(content string) string {
 	return content
 }
 
+func (me *htmlServeMux) parseMd5File(content string) string {
+	if me.isTplMd5(content) {
+		params := make([]directiveInfo, 0)
+		params = me.buildDirectiveFnInfo(content, drtMd5, params)
+		for p := len(params) - 1; p >= 0; p-- {
+			value := params[p].attr["0"]
+			if strings.IsNotBlank(value) {
+				val := strings.TrimSpaceNQuote1(value)
+				v, err := md5.DigestHex(val)
+				if err == nil {
+					content = strings.Replace(content, params[p].statement, v, -1)
+				} else {
+					logger.Error(err)
+				}
+			} else {
+				content = strings.Replace(content, params[p].statement, "", -1)
+			}
+		}
+	}
+
+	return content
+}
+
 func (me *htmlServeMux) parseTagAttrFile(content, attr string) string {
 	tags := make([]tagInfo, 0)
 	tags = me.buildTagAttrInfo(content, attr, tags)
@@ -585,7 +625,7 @@ func (me *htmlServeMux) buildDirectiveFnInfo(content, directive string, directiv
 			end:       dEnd,
 		}
 		switch directive {
-		case drtNvl:
+		case drtNvl, drtMd5:
 			attrs := strings.FieldsSpace(out)
 			i := 0
 			for _, v := range attrs {
