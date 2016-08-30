@@ -91,6 +91,7 @@ func (me *factory) Init(path string) error {
 		// find the @entity decorator
 		isEntity = false
 		project := ""
+		module := ""
 		extend := ""
 		relationship := ""
 		for _, comment := range tdecl.Doc.List {
@@ -102,6 +103,7 @@ func (me *factory) Init(path string) error {
 					val := convertUTF8(c)
 					if strings.IsNotBlank(val) {
 						project = tagItemValue(val, "project")
+						module = tagItemValue(val, "module")
 						relationship = tagItemValue(val, "relationship")
 						if relationship != "slave" {
 							relationship = "master"
@@ -115,7 +117,7 @@ func (me *factory) Init(path string) error {
 			continue
 		}
 
-		e := &entity{Project: project, Relationship: relationship}
+		e := &entity{Project: project, Module: module, Relationship: relationship}
 		if strings.IsBlank(me.Project) {
 			me.Project = project
 		}

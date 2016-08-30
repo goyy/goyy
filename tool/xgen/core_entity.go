@@ -14,6 +14,7 @@ import (
 // entity is an SQL table.
 type entity struct {
 	Project         string
+	Module          string
 	Extend          string // value:[tree,sys,pk]
 	Relationship    string // value:[master,slave]
 	Name            string

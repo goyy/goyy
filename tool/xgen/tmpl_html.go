@@ -9,7 +9,7 @@ var tmplHtmlMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 <head>
 <meta name="description" content="">
 <meta name="author" content="">
-<!--#settings project="<%$e.Project%>" module="<%$e.Name%>" title="<%$e.Comment%>"--><!--#endsettings-->
+<!--#settings project="<%$e.Project%>" module="<%$e.Module%>" title="<%$e.Comment%>"--><!--#endsettings-->
 <!--#with prefix="e" --><!--#endwith-->
 <title go:title="/title.html">{%title%}</title>
 <!--#include file="/core/include/head.html"--><!--#endinclude-->

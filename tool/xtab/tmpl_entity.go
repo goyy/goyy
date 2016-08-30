@@ -14,7 +14,7 @@ import (
 //go:generate xgen -entity=$GOFILE -scaffold{{if notblank .Module.Clidir}} -clidir={{.Module.Clidir}}{{end}}{{if notblank .Module.Clipath}} -clipath={{.Module.Clipath}}{{end}} -apipath={{.Module.Apipath}}
 
 // {{.Name}}` + i18N.Message("domain.title") + `.
-// @entity(project:"{{.Module.Id}}"{{if notblank .Slave}} relationship:"slave"{{end}})
+// @entity(module:"{{.Id}}" project:"{{.Module.Id}}"{{if notblank .Slave}} relationship:"slave"{{end}})
 type {{if notblank .Master}}{{camel .Slave}}{{end}}Entity struct {
 	{{if eq .Super "pk"}}entity.Pk{{end}}{{if eq .Super "sys"}}entity.Sys{{end}}{{if eq .Super "tree"}}entity.Tree{{end}}
 	{{padname "table" $.FieldMaxLen}} {{padname "schema.Table" $.TypeMaxLen}} ` + "`" + `db:"table={{.Module.Prefix}}_{{.Id}}&comment={{.Name}}"` + "`" + `{{range $column := .Columns}}{{if not (supercol $column.Id $.Super)}}
