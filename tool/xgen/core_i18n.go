@@ -38,7 +38,9 @@ var locales = map[string]map[string]string{
 		"html.list.sbtn":           "查询",
 		"html.list.created":        "创建时间",
 		"html.list.opr":            "操作",
+		"html.list.edit":           "修改",
 		"html.list.del":            "删除",
+		"html.form.save":           "保存",
 	},
 	i18n.Locale_en_US: map[string]string{
 		"col.comment.id":           "ID",
@@ -67,5 +69,8 @@ var locales = map[string]map[string]string{
 		"html.list.sbtn":           "search",
 		"html.list.created":        "created",
 		"html.list.opr":            "operate",
+		"html.list.edit":           "edit",
+		"html.list.del":            "delete",
+		"html.form.save":           "save",
 	},
 }

@@ -24,7 +24,7 @@ var tmplHtmlMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 	<!--#include file="/core/comm/action.html" param="{%.prefix%}"--><!--#endinclude-->
 	<!--#include file="/core/comm/disable.html" param="{%.prefix%}"--><!--#endinclude-->
 	<div class="tabbable">
-		<!--#include file="/core/comm/navtabs.list.html" param="{%.prefix%}"--><!--#endinclude-->
+		<!--#include file="/core/comm/navtabs.html" param="{%.prefix%}"--><!--#endinclude-->
 		<div class="tab-content">
 			<div id="{%.prefix%}ListContent" class="tab-pane active">
 				<br/>
@@ -58,6 +58,7 @@ var tmplHtmlMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 							<td>{{<%$f.Name%>}}</td><%end%>
 							<td>{{uyymdhms created}}</td>
 							<td>
+								<a href="#eFormContent" go:data-state="edit" go:data-template="{%.prefix%}FormTemplate" go:data-url="{%apis%}/{%project%}/{%module%}/edit" onclick="{%.prefix%}Action(this,'{{id}}',{%.prefix%}PostLoadForm)" go:data-permissions="{%project%}:{%module%}:edit"><%message "html.list.edit"%></a>
 								<a href="#disable" go:data-state="disable" go:data-url="{%apis%}/{%project%}/{%module%}/disable" onclick="disable(this,'{{id}}',{%.prefix%}Page)" go:data-permissions="{%project%}:{%module%}:disable"><%message "html.list.del"%></a>
 							</td>
 						</tr>
@@ -66,6 +67,23 @@ var tmplHtmlMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 				</table>
 				<ul id="{%.prefix%}ListPagination" class="pagination"></ul>
 			</div>
+			<div id="{%.prefix%}FormContent" class="tab-pane"></div>
+			<script id="{%.prefix%}FormTemplate" type="text/x-handlebars-template">
+				<form id="{%.prefix%}Form" method="post" go:action="{%apis%}/{%project%}/{%module%}/save">
+					<br/>
+					<!--#include file="/core/comm/alert.html" param="{%.prefix%}Form"--><!--#endinclude-->
+					<input type="hidden" id="id" name="id" value="{{id}}" /><%range $f := $e.Fields%>
+					<div class="form-group">
+						<label class="control-label"><%$f.Comment%></label>
+						<div>
+							<input class="form-control required" id="<%$f.Name%>" name="<%$f.Name%>" value="{{<%$f.Name%>}}"/>
+						</div>
+					</div><%end%>
+					{{#if (ne state 'show')}}
+					<button type="submit" class="btn btn-primary" go:data-permissions="{%project%}:{%module%}:edit,{%project%}:{%module%}:add"><%message "html.form.save"%></button>
+					{{/if}}
+				</form>
+			</script>
 		</div>
 	</div>
 </div>
