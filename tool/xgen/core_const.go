@@ -22,6 +22,7 @@ const (
 	mainConst    = "main.const"
 	mainCtl      = "main.controller"
 	mainHtml     = "main.html"
+	mainJs       = "main.js"
 	mainUtil     = "main.util"
 	mainService  = "main.service"
 	mainSql      = "main.sql"

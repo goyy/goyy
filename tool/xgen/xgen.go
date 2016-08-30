@@ -24,6 +24,7 @@ func main() {
 	hasUtil := flag.Bool("util", false, "is generated util")
 	hasConst := flag.Bool("const", false, "is generated const")
 	hasHtml := flag.Bool("html", false, "is generated html")
+	hasJs := flag.Bool("js", false, "is generated js")
 	flag.Parse()
 	f := factory{
 		Clidir:           *clidir,
@@ -38,6 +39,7 @@ func main() {
 		HasGenUtil:       *hasUtil,
 		HasGenConst:      *hasConst,
 		HasGenHtml:       *hasHtml,
+		HasGenJs:         *hasJs,
 	}
 	if *hasScaffold {
 		f.HasGenService = true
@@ -49,6 +51,7 @@ func main() {
 		f.HasGenUtil = true
 		f.HasGenConst = true
 		f.HasGenHtml = true
+		f.HasGenJs = true
 	}
 	if err := f.Init(*epath); err != nil {
 		log.Printf("%v", err)

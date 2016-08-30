@@ -36,6 +36,7 @@ type factory struct {
 	HasGenUtil        bool
 	HasGenConst       bool
 	HasGenHtml        bool
+	HasGenJs          bool
 	IsTimeField       bool
 	IsValidationField bool
 	IsExtend          bool
@@ -392,6 +393,11 @@ func (me factory) Write() error {
 			return err
 		}
 	}
+	if me.HasGenJs {
+		if err := me.writeJsMain(); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
@@ -399,16 +405,16 @@ func (me factory) writeBy(typ, content string) error {
 	// get the destination file
 	dir, file := filepath.Split(me.Epath)
 	f, name := me.genFileName(typ, file)
-	if typ == xgenDto {
+	switch typ {
+	case xgenDto:
 		dir = me.Clidir + "/internal/" + me.Project + "/" + me.PackageName
-	}
-	if typ == mainApi || typ == xgenLogApi {
+	case mainApi, xgenLogApi:
 		dir = "../../api/" + me.PackageName
-	}
-	if typ == mainHtml {
+	case mainHtml:
 		dir = me.Clidir + "/templates/" + me.Project + "/" + name
-	}
-	if typ == xgenCtlReg {
+	case mainJs:
+		dir = me.Clidir + "/static/js/" + me.Project + "/" + name
+	case xgenCtlReg:
 		dir = "../../"
 	}
 	dstfile := filepath.Join(dir, f)
@@ -478,6 +484,10 @@ func (me factory) writeConstMain() error {
 
 func (me factory) writeHtmlMain() error {
 	return me.writeBy(mainHtml, tmplHtmlMain)
+}
+
+func (me factory) writeJsMain() error {
+	return me.writeBy(mainJs, tmplJsMain)
 }
 
 func (me factory) writeDtoXgen() error {
@@ -588,7 +598,7 @@ func (me factory) genFileName(typ, name string) (string, string) {
 	if name == "domain" || name == "entity" || name == "main.domain" || name == "main.entity" {
 		name = ""
 	} else {
-		if strings.IsNotBlank(name) && typ != mainHtml {
+		if strings.IsNotBlank(name) && typ != mainHtml && typ != mainJs {
 			name = name + "_"
 		}
 	}
@@ -610,9 +620,12 @@ func (me factory) genFileName(typ, name string) (string, string) {
 	case xgenDto:
 		typ, name = me.resetTypAndName("dto_xgen", name)
 	}
-	if typ == mainHtml {
+	switch typ {
+	case mainHtml:
 		return fmt.Sprintf("%s.html", name), name
-	} else {
+	case mainJs:
+		return fmt.Sprintf("%s.js", name), name
+	default:
 		return fmt.Sprintf("%s%s.go", name, typ), name
 	}
 }
