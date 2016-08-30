@@ -33,6 +33,9 @@ func Login(c xhttp.Context, loginName, passwd string) error {
 		if err != nil {
 			return err
 		}
+		if loginName == "admin" {
+			ps = "sys:user:admin," + ps
+		}
 		p := session.Principal{
 			Id:          u.Id(),
 			Name:        u.Name(),

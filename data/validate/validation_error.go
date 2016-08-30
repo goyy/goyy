@@ -14,6 +14,18 @@ type Error struct {
 	message string
 }
 
+func (me *Error) Field() string {
+	return me.field
+}
+
+func (me *Error) Type() string {
+	return me.typ
+}
+
+func (me *Error) Message() string {
+	return me.message
+}
+
 func (me *Error) Error() string {
 	return fmt.Sprintf("field:%s,typ:%s,message:%s", me.field, me.typ, me.message)
 }
