@@ -17,8 +17,7 @@ import (
 
 // add space string:{before is add:yes, after is add:no}
 type query struct {
-	db        *sql.DB
-	session   *session
+	db        *db
 	dql       string
 	args      []interface{}
 	isNamed   bool
@@ -32,7 +31,7 @@ func (me *query) Rows(out entity.Interfaces) error {
 		now := time.Now()
 		defer debugLog(now, me.dql, me.args...)
 	}
-	stmt, err := me.db.Prepare(me.dql)
+	stmt, err := me.db.sqlDB.Prepare(me.dql)
 	if err != nil {
 		logger.Error(err.Error())
 		return err
@@ -82,7 +81,7 @@ func (me *query) Row(out entity.Interface) error {
 		now := time.Now()
 		defer debugLog(now, me.dql, me.args...)
 	}
-	stmt, err := me.db.Prepare(me.dql)
+	stmt, err := me.db.sqlDB.Prepare(me.dql)
 	if err != nil {
 		logger.Error(err.Error())
 		return err
@@ -164,7 +163,7 @@ func (me *query) val(out interface{}) error {
 		now := time.Now()
 		defer debugLog(now, me.dql, me.args...)
 	}
-	stmt, err := me.db.Prepare(me.dql)
+	stmt, err := me.db.sqlDB.Prepare(me.dql)
 	if err != nil {
 		logger.Error(err.Error())
 		return err
@@ -189,14 +188,14 @@ func (me *query) val(out interface{}) error {
 // Retrieve a single row mapped from the dql and args.
 func (me *query) Page(content entity.Interfaces, pageable domain.Pageable) (domain.Page, error) {
 	dqlCount := sqls.ParseCountSql(me.dql)
-	queryCount := me.session.Query(dqlCount, me.args...)
+	queryCount := me.db.Query(dqlCount, me.args...)
 	totalElements, err := queryCount.Int()
 	if err != nil {
 		return nil, err
 	}
-	d := dql.New(me.session.dialect)
+	d := dql.New(me.db.dialect)
 	dqlPage := d.SelectPage(me.dql, pageable)
-	queryPage := me.session.Query(dqlPage, me.args...)
+	queryPage := me.db.Query(dqlPage, me.args...)
 	err = queryPage.Rows(content)
 	if err != nil {
 		return nil, err

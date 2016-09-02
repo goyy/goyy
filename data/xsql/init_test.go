@@ -11,16 +11,13 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/xsql"
 )
 
-var factory xsql.Factory
-var session xsql.Session
+var db xsql.DB
 
 func init() {
-	factory, err := xsql.New(&dialect.MySQL{}, "db")
+	v, err := xsql.New(&dialect.MySQL{}, "db")
 	if err != nil {
 		panic(err)
-	}
-	session, err = factory.Session()
-	if err != nil {
-		panic(err)
+	} else {
+		db = v
 	}
 }

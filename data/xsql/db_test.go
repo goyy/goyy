@@ -38,94 +38,94 @@ func buildUser(i string) entity.Interface {
 	return user
 }
 
-func TestSessionDelete(t *testing.T) {
+func TestDBDelete(t *testing.T) {
 	log.SetPriority(log.Perror)
 	var dml string
-	if session.DBType() == dialect.MYSQL {
+	if db.Dialect().Type() == dialect.MYSQL {
 		dml = "delete from users where version = ?"
 	} else {
 		dml = "delete from users where version = :1"
 	}
-	session.Exec(dml, 0)
+	db.Exec(dml, 0)
 }
 
-func TestSessionInsert(t *testing.T) {
-	session.Insert(buildUser("01"))
-	session.Insert(buildUser("02"))
-	session.Insert(buildUser("03"))
-	session.Insert(buildUser("04"))
-	session.Insert(buildUser("05"))
-	session.Insert(buildUser("06"))
-	session.Insert(buildUser("07"))
-	session.Insert(buildUser("08"))
-	session.Insert(buildUser("09"))
-	session.Insert(buildUser("10"))
-	session.Insert(buildUser("11"))
-	session.Insert(buildUser("12"))
-	session.Insert(buildUser("13"))
-	session.Insert(buildUser("14"))
-	session.Insert(buildUser("15"))
-	session.Insert(buildUser("16"))
-	session.Insert(buildUser("17"))
-	session.Insert(buildUser("18"))
-	session.Insert(buildUser("19"))
-	session.Insert(buildUser("20"))
-	session.Insert(buildUser("21"))
-	session.Insert(buildUser("22"))
-	session.Insert(buildUser("23"))
-	session.Insert(buildUser("24"))
-	session.Insert(buildUser("25"))
+func TestDBInsert(t *testing.T) {
+	db.Insert(buildUser("01"))
+	db.Insert(buildUser("02"))
+	db.Insert(buildUser("03"))
+	db.Insert(buildUser("04"))
+	db.Insert(buildUser("05"))
+	db.Insert(buildUser("06"))
+	db.Insert(buildUser("07"))
+	db.Insert(buildUser("08"))
+	db.Insert(buildUser("09"))
+	db.Insert(buildUser("10"))
+	db.Insert(buildUser("11"))
+	db.Insert(buildUser("12"))
+	db.Insert(buildUser("13"))
+	db.Insert(buildUser("14"))
+	db.Insert(buildUser("15"))
+	db.Insert(buildUser("16"))
+	db.Insert(buildUser("17"))
+	db.Insert(buildUser("18"))
+	db.Insert(buildUser("19"))
+	db.Insert(buildUser("20"))
+	db.Insert(buildUser("21"))
+	db.Insert(buildUser("22"))
+	db.Insert(buildUser("23"))
+	db.Insert(buildUser("24"))
+	db.Insert(buildUser("25"))
 }
 
-func TestSessionGet(t *testing.T) {
+func TestDBGet(t *testing.T) {
 	user := NewUser()
 	user.SetId("aa")
 	expected := "aa"
-	if _ = session.Get(user); user.Name() != expected {
-		t.Errorf(`session.Get():"%v", want:"%v"`, user.Name(), expected)
+	if _ = db.Get(user); user.Name() != expected {
+		t.Errorf(`db.Get():"%v", want:"%v"`, user.Name(), expected)
 	}
 }
 
-func TestSessionSelectOne(t *testing.T) {
+func TestDBSifterRow(t *testing.T) {
 	s, _ := domain.NewSift("sNameEQ", "11")
 	user := NewUser()
-	err := session.SelectOne(user, s)
+	err := db.Sifter(s).Row(user)
 	if err != nil {
 		t.Error(err.Error())
 		return
 	}
 	expected := "11"
 	if out := user.Creater(); out != expected {
-		t.Errorf(`session.SelectOne():"%v", want:"%v"`, out, expected)
+		t.Errorf(`db.Sifter().Row():"%v", want:"%v"`, out, expected)
 	}
 }
 
-func TestSessionSelectList(t *testing.T) {
+func TestDBSifterRows(t *testing.T) {
 	s1, _ := domain.NewSift("sNameGT", "11")
 	s2, _ := domain.NewSift("sVersionEQ", "0")
 	s3, _ := domain.NewSift("sNameOA", "asc")
 	users := NewUserEntities(20)
-	err := session.SelectList(users, s1, s2, s3)
+	err := db.Sifter(s1, s2, s3).Rows(users)
 	if err != nil {
 		t.Error(err.Error())
 		return
 	}
 	got := 14
 	if out := users.Len(); out != got {
-		t.Errorf(`session.SelectList().Len():"%v", want:"%v"`, out, got)
+		t.Errorf(`db.Sifter().Rows().Len():"%v", want:"%v"`, out, got)
 	}
 	expected := "12"
 	if out := users.Index(0).(*User).Name(); out != expected {
-		t.Errorf(`session.SelectList().Index(0):"%v", want:"%v"`, out, expected)
+		t.Errorf(`db.Sifter().Rows().Index(0):"%v", want:"%v"`, out, expected)
 	}
 }
 
-func TestSessionSelectPage(t *testing.T) {
+func TestDBSifterPage(t *testing.T) {
 	sVersionEQ, _ := domain.NewSift("sVersionEQ", "0")
 	sIdOA, _ := domain.NewSift("sIdOA", "asc")
 	pageable := domain.NewPageable(2, 10)
 	content := NewUserEntities(30)
-	out, err := session.SelectPage(content, pageable, sVersionEQ, sIdOA)
+	out, err := db.Sifter(sVersionEQ, sIdOA).Page(content, pageable)
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -153,15 +153,15 @@ func TestSessionSelectPage(t *testing.T) {
 	}
 }
 
-func TestSessionQueryRows(t *testing.T) {
+func TestDBQueryRows(t *testing.T) {
 	var dql string
-	if session.DBType() == dialect.MYSQL {
+	if db.Dialect().Type() == dialect.MYSQL {
 		dql = "select * from users where name like ?"
 	} else {
 		dql = "select * from users where name like :1"
 	}
 	users := NewUserEntities(30)
-	err := session.Query(dql, "2%").Rows(users)
+	err := db.Query(dql, "2%").Rows(users)
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -178,15 +178,15 @@ func TestSessionQueryRows(t *testing.T) {
 	}
 }
 
-func TestSessionQueryRow(t *testing.T) {
+func TestDBQueryRow(t *testing.T) {
 	var dql string
-	if session.DBType() == dialect.MYSQL {
+	if db.Dialect().Type() == dialect.MYSQL {
 		dql = "select * from users where name = ?"
 	} else {
 		dql = "select * from users where name = :1"
 	}
 	user := NewUser()
-	err := session.Query(dql, "12").Row(user)
+	err := db.Query(dql, "12").Row(user)
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -197,14 +197,14 @@ func TestSessionQueryRow(t *testing.T) {
 	}
 }
 
-func TestSessionQueryInt(t *testing.T) {
+func TestDBQueryInt(t *testing.T) {
 	var dql string
-	if session.DBType() == dialect.MYSQL {
+	if db.Dialect().Type() == dialect.MYSQL {
 		dql = "select count(*) from users where name like ?"
 	} else {
 		dql = "select count(*) from users where name like :1"
 	}
-	out, err := session.Query(dql, "1%").Int()
+	out, err := db.Query(dql, "1%").Int()
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -215,7 +215,7 @@ func TestSessionQueryInt(t *testing.T) {
 	}
 }
 
-func TestSessionNamedQueryInt(t *testing.T) {
+func TestDBNamedQueryInt(t *testing.T) {
 	s := []struct {
 		dql      string
 		args     map[string]interface{}
@@ -243,7 +243,7 @@ func TestSessionNamedQueryInt(t *testing.T) {
 		},
 	}
 	for _, v := range s {
-		query, err := session.NamedQuery(v.dql, v.args)
+		query, err := db.NamedQuery(v.dql, v.args)
 		if err != nil {
 			t.Error(err.Error())
 			return
@@ -259,14 +259,14 @@ func TestSessionNamedQueryInt(t *testing.T) {
 	}
 }
 
-func TestSessionQueryStr(t *testing.T) {
+func TestDBQueryStr(t *testing.T) {
 	var dql string
-	if session.DBType() == dialect.MYSQL {
+	if db.Dialect().Type() == dialect.MYSQL {
 		dql = "select code from users where name = ?"
 	} else {
 		dql = "select code from users where name = :1"
 	}
-	out, err := session.Query(dql, "03").Str()
+	out, err := db.Query(dql, "03").Str()
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -277,14 +277,14 @@ func TestSessionQueryStr(t *testing.T) {
 	}
 }
 
-func TestSessionQueryTime(t *testing.T) {
+func TestDBQueryTime(t *testing.T) {
 	var dql string
-	if session.DBType() == dialect.MYSQL {
+	if db.Dialect().Type() == dialect.MYSQL {
 		dql = "select created from users where name = ?"
 	} else {
 		dql = "select created from users where name = :1"
 	}
-	out, err := session.Query(dql, "03").Int()
+	out, err := db.Query(dql, "03").Int()
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -295,14 +295,14 @@ func TestSessionQueryTime(t *testing.T) {
 	}
 }
 
-func TestSessionQueryIn(t *testing.T) {
+func TestDBQueryIn(t *testing.T) {
 	var dql string
-	if session.DBType() == dialect.MYSQL {
+	if db.Dialect().Type() == dialect.MYSQL {
 		dql = "select count(*) from users where name in (?,?)"
 	} else {
 		dql = "select count(*) from users where name in (:1,:2)"
 	}
-	out, err := session.Query(dql, "01", "02").Int()
+	out, err := db.Query(dql, "01", "02").Int()
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -313,16 +313,16 @@ func TestSessionQueryIn(t *testing.T) {
 	}
 }
 
-func TestSessionQueryPage(t *testing.T) {
+func TestDBQueryPage(t *testing.T) {
 	var dql string
-	if session.DBType() == dialect.MYSQL {
+	if db.Dialect().Type() == dialect.MYSQL {
 		dql = "select * from users where version = ? order by id"
 	} else {
 		dql = "select * from users where version = :1 order by id"
 	}
 	pageable := domain.NewPageable(2, 10)
 	content := NewUserEntities(30)
-	out, err := session.Query(dql, 0).Page(content, pageable)
+	out, err := db.Query(dql, 0).Page(content, pageable)
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -350,24 +350,24 @@ func TestSessionQueryPage(t *testing.T) {
 	}
 }
 
-func TestSessionUpdate(t *testing.T) {
+func TestDBUpdate(t *testing.T) {
 	var dql string
-	if session.DBType() == dialect.MYSQL {
+	if db.Dialect().Type() == dialect.MYSQL {
 		dql = "select * from users where name = ?"
 	} else {
 		dql = "select * from users where name = :1"
 	}
 	user := NewUser()
-	err := session.Query(dql, "22").Row(user)
+	err := db.Query(dql, "22").Row(user)
 	if err != nil {
 		t.Error(err.Error())
 		return
 	}
 	expected := "user2"
 	user.SetCode(expected)
-	session.Update(user)
+	db.Update(user)
 	user = NewUser()
-	err = session.Query(dql, "22").Row(user)
+	err = db.Query(dql, "22").Row(user)
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -377,23 +377,23 @@ func TestSessionUpdate(t *testing.T) {
 	}
 }
 
-func TestSessionDisable(t *testing.T) {
+func TestDBDisable(t *testing.T) {
 	var dql string
-	if session.DBType() == dialect.MYSQL {
+	if db.Dialect().Type() == dialect.MYSQL {
 		dql = "select * from users where name = ?"
 	} else {
 		dql = "select * from users where name = :1"
 	}
 	user := NewUser()
-	err := session.Query(dql, "23").Row(user)
+	err := db.Query(dql, "23").Row(user)
 	if err != nil {
 		t.Error(err.Error())
 		return
 	}
-	session.Disable(user)
+	db.Disable(user)
 	expected := entity.DeletionDisable
 	user = NewUser()
-	err = session.Query(dql, "23").Row(user)
+	err = db.Query(dql, "23").Row(user)
 	if err != nil {
 		t.Error(err.Error())
 		return

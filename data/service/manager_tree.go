@@ -6,13 +6,14 @@ package service
 
 import (
 	"errors"
+	"strconv"
+
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
-	"strconv"
 )
 
 type TreeManager struct {
@@ -23,7 +24,7 @@ func (me *TreeManager) Save(c xhttp.Context, e entity.Interface) error {
 	if me.Pre != nil {
 		me.Pre()
 	}
-	tx, err := me.Repository().Begin()
+	tx, err := me.DB().Begin()
 	if err != nil {
 		return err
 	}
@@ -36,7 +37,7 @@ func (me *TreeManager) Save(c xhttp.Context, e entity.Interface) error {
 		}
 		e.SetString(created, times.NowUnixStr())
 		e.SetString(modified, times.NowUnixStr())
-		_, err = me.Repository().Insert(e)
+		_, err = me.DB().Insert(e)
 	} else {
 		if c != nil && c.Session().IsLogin() {
 			if p, err := c.Session().Principal(); err == nil {
@@ -44,7 +45,7 @@ func (me *TreeManager) Save(c xhttp.Context, e entity.Interface) error {
 			}
 		}
 		e.SetString(modified, times.NowUnixStr())
-		_, err = me.Repository().Update(e)
+		_, err = me.DB().Update(e)
 	}
 	if err != nil {
 		tx.Rollback()
@@ -65,7 +66,7 @@ func (me *TreeManager) Disable(c xhttp.Context, e entity.Interface) (int64, erro
 	if strings.IsBlank(e.Get(e.Table().Primary().Name()).(string)) {
 		return 0, errors.New("Gets the primary key value failed")
 	}
-	tx, err := me.Repository().Begin()
+	tx, err := me.DB().Begin()
 	if err != nil {
 		return 0, err
 	}
@@ -75,7 +76,7 @@ func (me *TreeManager) Disable(c xhttp.Context, e entity.Interface) (int64, erro
 			e.SetString(modified, times.NowUnixStr())
 		}
 	}
-	r, err := me.Repository().Disable(e)
+	r, err := me.DB().Disable(e)
 	if err != nil {
 		tx.Rollback()
 		return 0, err

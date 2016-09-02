@@ -6,19 +6,18 @@ package xsql
 
 import (
 	"database/sql"
+
+	"gopkg.in/goyy/goyy.v0/data/dialect"
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 )
 
-type Session interface {
+type DB interface {
 	Query(dql string, args ...interface{}) Query
 	NamedQuery(dql string, args map[string]interface{}) (Query, error)
+	Sifter(sifts ...domain.Sift) Sifter
 
 	Get(out entity.Interface) error
-	SelectOne(out entity.Interface, sifts ...domain.Sift) error
-	SelectList(out entity.Interfaces, sifts ...domain.Sift) error
-	SelectPage(content entity.Interfaces, pageable domain.Pageable, sifts ...domain.Sift) (domain.Page, error)
-	SelectCount(e entity.Interface, sifts ...domain.Sift) (int, error)
 
 	Insert(e entity.Interface) (int64, error)
 	Update(e entity.Interface) (int64, error)
@@ -31,5 +30,7 @@ type Session interface {
 
 	Close() error
 
-	DBType() string
+	Dialect() dialect.Interface
+
+	Ping() error
 }
