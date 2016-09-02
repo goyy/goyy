@@ -13,7 +13,7 @@ import (
 func (me *UserManager) CheckPasswd(loginName, passwd string) bool {
 	if strings.IsNotBlank(loginName) && strings.IsNotBlank(passwd) {
 		var countByLogin string
-		if me.Repository().Dialect().Type() == dialect.ORACLE {
+		if me.DB().Dialect().Type() == dialect.ORACLE {
 			countByLogin = countByLogin_oracle
 		} else {
 			countByLogin = countByLogin_mysql
@@ -34,7 +34,7 @@ func (me *UserManager) SelectUser(loginName string) (*User, error) {
 	if strings.IsNotBlank(loginName) {
 		out := NewUser()
 		var selectUserByLoginName string
-		if me.Repository().Dialect().Type() == dialect.ORACLE {
+		if me.DB().Dialect().Type() == dialect.ORACLE {
 			selectUserByLoginName = selectUserByLoginName_oracle
 		} else {
 			selectUserByLoginName = selectUserByLoginName_mysql

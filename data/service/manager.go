@@ -7,7 +7,9 @@ package service
 import (
 	"database/sql"
 	"errors"
+	"os"
 
+	"gopkg.in/goyy/goyy.v0/data/dialect"
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/result"
@@ -19,6 +21,16 @@ import (
 )
 
 var DB xsql.DB
+
+// NewDB returns xsql.DB.
+func NewDB(d dialect.Interface, name string) xsql.DB {
+	db, err := xsql.New(d, name)
+	if err != nil {
+		logger.Error("env.DataSource failed", err)
+		os.Exit(3)
+	}
+	return db
+}
 
 type Manager struct {
 	db       xsql.DB
