@@ -5,20 +5,25 @@
 package client
 
 import (
-	"gopkg.in/goyy/goyy.v0/data/result"
-	"gopkg.in/goyy/goyy.v0/util/errors"
-	"gopkg.in/goyy/goyy.v0/util/strings"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"time"
+
+	"gopkg.in/goyy/goyy.v0/data/result"
+	"gopkg.in/goyy/goyy.v0/util/errors"
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 type Client struct {
 	URL         string
 	Params      url.Values
+	PostBody    string
 	Header      http.Header
 	Cookies     []*http.Cookie
-	Timeout     int
+	Transport   http.RoundTripper
+	Timeout     int64
 	OnTimeout   func()
 	OnError     func(error)
 	OnCompleted func(*result.Client)
@@ -33,19 +38,19 @@ func (me *Client) DoPost() {
 }
 
 func (me *Client) GoGet() {
-	go me.do("GET")
+	go me.doRecover("GET")
 }
 
 func (me *Client) GoPost() {
-	go me.do("POST")
+	go me.doRecover("POST")
 }
 
 func (me *Client) QueueGet() {
-	go me.do("GET")
+	go me.doRecover("GET")
 }
 
 func (me *Client) QueuePost() {
-	go me.do("POST")
+	go me.doRecover("POST")
 }
 
 func (me *Client) onError(err error) {
@@ -55,12 +60,30 @@ func (me *Client) onError(err error) {
 	}
 }
 
+func (me *Client) doRecover(method string) {
+	defer func() {
+		if err := recover(); err != nil {
+			logger.Printf("Panic recovery -> %s\n", err)
+		}
+	}()
+	me.do(method)
+}
+
 func (me *Client) do(method string) {
 	if strings.IsBlank(me.URL) {
 		me.onError(errors.NewNotBlank("URL"))
 		return
 	}
-	client := &http.Client{}
+	var timeout int64 = 30
+	if me.Timeout > 0 {
+		timeout = me.Timeout
+	}
+	client := &http.Client{
+		Timeout: time.Duration(timeout * int64(time.Second)),
+	}
+	if me.Transport != nil {
+		client.Transport = me.Transport
+	}
 	req, err := me.getRequest(method)
 	if err != nil {
 		me.onError(err)
@@ -116,7 +139,21 @@ func (me *Client) getRequest(method string) (*http.Request, error) {
 		}
 		return req, err
 	} else {
-		req, err := http.NewRequest("POST", me.URL, strings.NewReader(me.Params.Encode()))
+		var params io.Reader
+		url := me.URL
+		if strings.IsNotBlank(me.PostBody) {
+			if me.Params != nil {
+				if strings.Contains(me.URL, "?") {
+					url = me.URL + "&" + me.Params.Encode()
+				} else {
+					url = me.URL + "?" + me.Params.Encode()
+				}
+			}
+			params = strings.NewReader(me.PostBody)
+		} else {
+			params = strings.NewReader(me.Params.Encode())
+		}
+		req, err := http.NewRequest("POST", url, params)
 		if err != nil {
 			logger.Debug(err.Error())
 			return req, err
