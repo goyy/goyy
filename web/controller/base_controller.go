@@ -138,7 +138,7 @@ func (me *baseController) Save(c xhttp.Context, mgr service.Service, pre func(c 
 	if err != nil {
 		return
 	}
-	err = mgr.Save(c, data)
+	err = mgr.SaveAndTx(c, data)
 	if err != nil {
 		return
 	}
@@ -164,7 +164,7 @@ func (me *baseController) Disable(c xhttp.Context, mgr service.Service, pre func
 	if err != nil {
 		return
 	}
-	_, err = mgr.Disable(c, data)
+	_, err = mgr.DisableAndTx(c, data)
 	if err != nil {
 		return
 	}

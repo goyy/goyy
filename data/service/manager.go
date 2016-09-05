@@ -233,7 +233,46 @@ func (me *Manager) SelectCountBySift(sifts ...domain.Sift) (int, error) {
 	return me.DB().Sifter(sifts...).Count(me.NewEntity())
 }
 
+func (me *Manager) save(c xhttp.Context, e entity.Interface) error {
+	if strings.IsBlank(e.Get(e.Table().Primary().Name()).(string)) {
+		if c != nil && c.Session().IsLogin() {
+			if p, err := c.Session().Principal(); err == nil {
+				e.SetString(creater, p.Id)
+				e.SetString(modifier, p.Id)
+			}
+		}
+		e.SetString(created, times.NowUnixStr())
+		e.SetString(modified, times.NowUnixStr())
+		_, err := me.DB().Insert(e)
+		if err != nil {
+			return err
+		}
+	} else {
+		if c != nil && c.Session().IsLogin() {
+			if p, err := c.Session().Principal(); err == nil {
+				e.SetString(modifier, p.Id)
+			}
+		}
+		e.SetString(modified, times.NowUnixStr())
+		_, err := me.DB().Update(e)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (me *Manager) Save(c xhttp.Context, e entity.Interface) error {
+	if me.Pre != nil {
+		me.Pre()
+	}
+	if err := e.Validate(); err != nil {
+		return err
+	}
+	return me.save(c, e)
+}
+
+func (me *Manager) SaveAndTx(c xhttp.Context, e entity.Interface) error {
 	if me.Pre != nil {
 		me.Pre()
 	}
@@ -244,25 +283,7 @@ func (me *Manager) Save(c xhttp.Context, e entity.Interface) error {
 	if err != nil {
 		return err
 	}
-	if strings.IsBlank(e.Get(e.Table().Primary().Name()).(string)) {
-		if c != nil && c.Session().IsLogin() {
-			if p, err := c.Session().Principal(); err == nil {
-				e.SetString(creater, p.Id)
-				e.SetString(modifier, p.Id)
-			}
-		}
-		e.SetString(created, times.NowUnixStr())
-		e.SetString(modified, times.NowUnixStr())
-		_, err = me.DB().Insert(e)
-	} else {
-		if c != nil && c.Session().IsLogin() {
-			if p, err := c.Session().Principal(); err == nil {
-				e.SetString(modifier, p.Id)
-			}
-		}
-		e.SetString(modified, times.NowUnixStr())
-		_, err = me.DB().Update(e)
-	}
+	err = me.save(c, e)
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -275,16 +296,9 @@ func (me *Manager) Save(c xhttp.Context, e entity.Interface) error {
 	return nil
 }
 
-func (me *Manager) Disable(c xhttp.Context, e entity.Interface) (int64, error) {
-	if me.Pre != nil {
-		me.Pre()
-	}
+func (me *Manager) disable(c xhttp.Context, e entity.Interface) (int64, error) {
 	if strings.IsBlank(e.Get(e.Table().Primary().Name()).(string)) {
 		return 0, errors.New("Gets the primary key value failed")
-	}
-	tx, err := me.DB().Begin()
-	if err != nil {
-		return 0, err
 	}
 	if c != nil && c.Session().IsLogin() {
 		if p, err := c.Session().Principal(); err == nil {
@@ -292,7 +306,25 @@ func (me *Manager) Disable(c xhttp.Context, e entity.Interface) (int64, error) {
 			e.SetString(modified, times.NowUnixStr())
 		}
 	}
-	r, err := me.DB().Disable(e)
+	return me.DB().Disable(e)
+}
+
+func (me *Manager) Disable(c xhttp.Context, e entity.Interface) (int64, error) {
+	if me.Pre != nil {
+		me.Pre()
+	}
+	return me.disable(c, e)
+}
+
+func (me *Manager) DisableAndTx(c xhttp.Context, e entity.Interface) (int64, error) {
+	if me.Pre != nil {
+		me.Pre()
+	}
+	tx, err := me.DB().Begin()
+	if err != nil {
+		return 0, err
+	}
+	r, err := me.disable(c, e)
 	if err != nil {
 		tx.Rollback()
 		return 0, err
@@ -305,7 +337,18 @@ func (me *Manager) Disable(c xhttp.Context, e entity.Interface) (int64, error) {
 	return r, nil
 }
 
+func (me *Manager) exec(dml string, args ...interface{}) (sql.Result, error) {
+	return me.DB().Exec(dml, args...)
+}
+
 func (me *Manager) Exec(dml string, args ...interface{}) (sql.Result, error) {
+	if me.Pre != nil {
+		me.Pre()
+	}
+	return me.exec(dml, args...)
+}
+
+func (me *Manager) ExecAndTx(dml string, args ...interface{}) (sql.Result, error) {
 	if me.Pre != nil {
 		me.Pre()
 	}
@@ -313,7 +356,7 @@ func (me *Manager) Exec(dml string, args ...interface{}) (sql.Result, error) {
 	if err != nil {
 		return nil, err
 	}
-	r, err := me.DB().Exec(dml, args...)
+	r, err := me.exec(dml, args...)
 	if err != nil {
 		tx.Rollback()
 		return r, err

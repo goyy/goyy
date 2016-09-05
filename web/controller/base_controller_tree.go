@@ -199,7 +199,7 @@ func (me *baseTreeController) setTreeInfo(c xhttp.Context, mgr service.Service) 
 		leaf := p.GetString(entityLeaf)
 		if leaf != "0" {
 			p.SetString(entityLeaf, "0")
-			mgr.Save(c, p)
+			mgr.SaveAndTx(c, p)
 		}
 	}
 	return nil
@@ -226,7 +226,7 @@ func (me *baseTreeController) setLeafOfDisable(c xhttp.Context, mgr service.Serv
 				pEntity := mgr.NewEntity()
 				if err := mgr.SelectOneBySift(pEntity, sIdParent); err == nil {
 					pEntity.SetString(entityLeaf, "1")
-					mgr.Save(c, pEntity)
+					mgr.SaveAndTx(c, pEntity)
 				} else {
 					return err
 				}
