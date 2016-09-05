@@ -375,7 +375,11 @@ func (me *Manager) SetDB(val xsql.DB) {
 
 func (me *Manager) DB() xsql.DB {
 	if me.db == nil {
-		me.SetDB(DB)
+		if DB == nil {
+			logger.Errorln("The default DB cannot be empty.")
+		} else {
+			me.SetDB(DB)
+		}
 	}
 	return me.db
 }

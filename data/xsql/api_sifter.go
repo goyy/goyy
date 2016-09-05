@@ -12,6 +12,6 @@ import (
 type Sifter interface {
 	Rows(out entity.Interfaces) error
 	Row(out entity.Interface) error
-	Count(out entity.Interface) (int, error)
+	Count(e entity.Interface) (int, error)
 	Page(content entity.Interfaces, pageable domain.Pageable) (domain.Page, error)
 }

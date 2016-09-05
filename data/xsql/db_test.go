@@ -153,6 +153,20 @@ func TestDBSifterPage(t *testing.T) {
 	}
 }
 
+func TestDBSifterCount(t *testing.T) {
+	s, _ := domain.NewSift("sNameEQ", "11")
+	user := NewUser()
+	out, err := db.Sifter(s).Count(user)
+	if err != nil {
+		t.Error(err.Error())
+		return
+	}
+	expected := 1
+	if out != expected {
+		t.Errorf(`db.Sifter().Count():"%v", want:"%v"`, out, expected)
+	}
+}
+
 func TestDBQueryRows(t *testing.T) {
 	var dql string
 	if db.Dialect().Type() == dialect.MYSQL {
@@ -197,6 +211,43 @@ func TestDBQueryRow(t *testing.T) {
 	}
 }
 
+func TestDBQueryPage(t *testing.T) {
+	var dql string
+	if db.Dialect().Type() == dialect.MYSQL {
+		dql = "select * from users where version = ? order by id"
+	} else {
+		dql = "select * from users where version = :1 order by id"
+	}
+	pageable := domain.NewPageable(2, 10)
+	content := NewUserEntities(30)
+	out, err := db.Query(dql, 0).Page(content, pageable)
+	if err != nil {
+		t.Error(err.Error())
+		return
+	}
+	expected := 25
+	if out.TotalElements() != expected {
+		t.Errorf(`page.TotalElements():"%v", want:"%v"`, out.TotalElements(), expected)
+	}
+	expected = 3
+	if out.TotalPages() != expected {
+		t.Errorf(`page.TotalPages():"%v", want:"%v"`, out.TotalPages(), expected)
+	}
+	expected = 2
+	if out.PageNo() != expected {
+		t.Errorf(`page.PageNo():"%v", want:"%v"`, out.PageNo(), expected)
+	}
+	expected = 10
+	if out.PageSize() != expected {
+		t.Errorf(`page.PageSize():"%v", want:"%v"`, out.PageSize(), expected)
+	}
+	want := "11"
+	name := out.Content().Index(0).(*User).Name()
+	if name != want {
+		t.Errorf(`page.Content():"%v", want:"%v"`, name, want)
+	}
+}
+
 func TestDBQueryInt(t *testing.T) {
 	var dql string
 	if db.Dialect().Type() == dialect.MYSQL {
@@ -212,50 +263,6 @@ func TestDBQueryInt(t *testing.T) {
 	expected := 10
 	if out != expected {
 		t.Errorf(`query.Int():"%v", want:"%v"`, out, expected)
-	}
-}
-
-func TestDBNamedQueryInt(t *testing.T) {
-	s := []struct {
-		dql      string
-		args     map[string]interface{}
-		expected int
-	}{
-		{
-			"select count(*) from users",
-			map[string]interface{}{"name": "1%", "version": 0, "memo": "memo"},
-			26,
-		},
-		{
-			"select count(*) from users where name like #{name}",
-			map[string]interface{}{"name": "1%", "version": 0, "memo": "memo"},
-			10,
-		},
-		{
-			"select count(*) from users where version = #{version}",
-			map[string]interface{}{"name": "1%", "version": 0, "memo": "memo"},
-			25,
-		},
-		{
-			"select count(*) from users where name like #{name}{{if gt .version 0}} and version = #{version}{{end}}",
-			map[string]interface{}{"name": "1%", "version": 0, "memo": "memo"},
-			10,
-		},
-	}
-	for _, v := range s {
-		query, err := db.NamedQuery(v.dql, v.args)
-		if err != nil {
-			t.Error(err.Error())
-			return
-		}
-		out, err := query.Int()
-		if err != nil {
-			t.Error(err.Error())
-			return
-		}
-		if out != v.expected {
-			t.Errorf(`namedQuery.Int():"%v", want:"%v"`, out, v.expected)
-		}
 	}
 }
 
@@ -313,40 +320,47 @@ func TestDBQueryIn(t *testing.T) {
 	}
 }
 
-func TestDBQueryPage(t *testing.T) {
-	var dql string
-	if db.Dialect().Type() == dialect.MYSQL {
-		dql = "select * from users where version = ? order by id"
-	} else {
-		dql = "select * from users where version = :1 order by id"
+func TestDBNamedQueryInt(t *testing.T) {
+	s := []struct {
+		dql      string
+		args     map[string]interface{}
+		expected int
+	}{
+		{
+			"select count(*) from users",
+			map[string]interface{}{"name": "1%", "version": 0, "memo": "memo"},
+			26,
+		},
+		{
+			"select count(*) from users where name like #{name}",
+			map[string]interface{}{"name": "1%", "version": 0, "memo": "memo"},
+			10,
+		},
+		{
+			"select count(*) from users where version = #{version}",
+			map[string]interface{}{"name": "1%", "version": 0, "memo": "memo"},
+			25,
+		},
+		{
+			"select count(*) from users where name like #{name}{{if gt .version 0}} and version = #{version}{{end}}",
+			map[string]interface{}{"name": "1%", "version": 0, "memo": "memo"},
+			10,
+		},
 	}
-	pageable := domain.NewPageable(2, 10)
-	content := NewUserEntities(30)
-	out, err := db.Query(dql, 0).Page(content, pageable)
-	if err != nil {
-		t.Error(err.Error())
-		return
-	}
-	expected := 25
-	if out.TotalElements() != expected {
-		t.Errorf(`page.TotalElements():"%v", want:"%v"`, out.TotalElements(), expected)
-	}
-	expected = 3
-	if out.TotalPages() != expected {
-		t.Errorf(`page.TotalPages():"%v", want:"%v"`, out.TotalPages(), expected)
-	}
-	expected = 2
-	if out.PageNo() != expected {
-		t.Errorf(`page.PageNo():"%v", want:"%v"`, out.PageNo(), expected)
-	}
-	expected = 10
-	if out.PageSize() != expected {
-		t.Errorf(`page.PageSize():"%v", want:"%v"`, out.PageSize(), expected)
-	}
-	want := "11"
-	name := out.Content().Index(0).(*User).Name()
-	if name != want {
-		t.Errorf(`page.Content():"%v", want:"%v"`, name, want)
+	for _, v := range s {
+		query, err := db.NamedQuery(v.dql, v.args)
+		if err != nil {
+			t.Error(err.Error())
+			return
+		}
+		out, err := query.Int()
+		if err != nil {
+			t.Error(err.Error())
+			return
+		}
+		if out != v.expected {
+			t.Errorf(`namedQuery.Int():"%v", want:"%v"`, out, v.expected)
+		}
 	}
 }
 

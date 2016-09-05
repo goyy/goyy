@@ -26,4 +26,6 @@ const (
 	mainUtil     = "main.util"
 	mainService  = "main.service"
 	mainSql      = "main.sql"
+	testService  = "test.service"
+	testCtl      = "test.controller"
 )

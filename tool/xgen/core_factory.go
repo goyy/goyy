@@ -337,6 +337,9 @@ func (me factory) Write() error {
 		if err := me.writeServiceMain(); err != nil {
 			return err
 		}
+		if err := me.writeServiceTest(); err != nil {
+			return err
+		}
 	}
 	if me.HasGenController {
 		if strings.IsNotBlank(me.Apipath) {
@@ -344,6 +347,9 @@ func (me factory) Write() error {
 				return err
 			}
 			if err := me.writeControllerMain(); err != nil {
+				return err
+			}
+			if err := me.writeControllerTest(); err != nil {
 				return err
 			}
 			if err := me.writeControllerReg(); err != nil {
@@ -450,12 +456,20 @@ func (me factory) writeServiceMain() error {
 	return me.writeBy(mainService, tmplServiceMain)
 }
 
+func (me factory) writeServiceTest() error {
+	return me.writeBy(testService, tmplServiceTest)
+}
+
 func (me factory) writeControllerXgen() error {
 	return me.writeBy(xgenCtl, tmplControllerXgen)
 }
 
 func (me factory) writeControllerMain() error {
 	return me.writeBy(mainCtl, tmplControllerMain)
+}
+
+func (me factory) writeControllerTest() error {
+	return me.writeBy(testCtl, tmplControllerTest)
 }
 
 func (me factory) writeControllerReg() error {
@@ -499,6 +513,72 @@ func (me factory) writeDtoXgen() error {
 
 func (me factory) writeApiMain() error {
 	return me.writeBy(mainApi, tmplApiMain)
+}
+
+func (me factory) genFileName(typ, name string) (string, string) {
+	switch typ {
+	case xgenLogJson, xgenLogApi:
+		return "log_xgen.go", name
+	case mainApi:
+		return me.PackageName + ".go", name
+	case mainUtil:
+		return me.PackageName + "_util.go", name
+	case mainConst:
+		return me.PackageName + "_const.go", name
+	case xgenCtlReg:
+		return me.PackageName + "_register_xgen.go", name
+	}
+	if strings.HasPrefix(name, typMain) {
+		name = strings.After(name, typMain)
+	}
+	if strings.HasSuffix(name, "_entity") {
+		name = strings.Before(name, "_entity")
+	}
+	if name == "domain" || name == "entity" || name == "main.domain" || name == "main.entity" {
+		name = ""
+	} else {
+		if strings.IsNotBlank(name) && typ != mainHtml && typ != mainJs {
+			name = name + "_"
+		}
+	}
+	switch typ {
+	case mainCtl:
+		typ = "controller"
+	case mainService:
+		typ = "manager"
+	case mainSql:
+		typ = "sql"
+	case xgenCtl:
+		typ, name = me.resetTypAndName("controller_xgen", name)
+	case xgenService:
+		typ, name = me.resetTypAndName("manager_xgen", name)
+	case xgenEntity:
+		typ, name = me.resetTypAndName("entity_xgen", name)
+	case xgenEntities:
+		typ, name = me.resetTypAndName("entities_xgen", name)
+	case xgenDto:
+		typ, name = me.resetTypAndName("dto_xgen", name)
+	}
+	switch typ {
+	case mainHtml:
+		return fmt.Sprintf("%s.html", name), name
+	case mainJs:
+		return fmt.Sprintf("%s.js", name), name
+	case testCtl:
+		return fmt.Sprintf("%scontroller_test.go", name), name
+	case testService:
+		return fmt.Sprintf("%smanager_test.go", name), name
+	default:
+		return fmt.Sprintf("%s%s.go", name, typ), name
+	}
+}
+
+func (me factory) resetTypAndName(typ, name string) (string, string) {
+	if strings.HasSuffix(name, "_test_") {
+		name = strings.Before(name, "test_")
+		typ = typ + "_test"
+	}
+	return typ, name
 }
 
 func (me *factory) isTimeField() {
@@ -574,66 +654,4 @@ func (me factory) printerType(e ast.Expr) string {
 	default:
 		return "err"
 	}
-}
-
-func (me factory) genFileName(typ, name string) (string, string) {
-	switch typ {
-	case xgenLogJson, xgenLogApi:
-		return "log_xgen.go", name
-	case mainApi:
-		return me.PackageName + ".go", name
-	case mainUtil:
-		return me.PackageName + "_util.go", name
-	case mainConst:
-		return me.PackageName + "_const.go", name
-	case xgenCtlReg:
-		return me.PackageName + "_register_xgen.go", name
-	}
-	if strings.HasPrefix(name, typMain) {
-		name = strings.After(name, typMain)
-	}
-	if strings.HasSuffix(name, "_entity") {
-		name = strings.Before(name, "_entity")
-	}
-	if name == "domain" || name == "entity" || name == "main.domain" || name == "main.entity" {
-		name = ""
-	} else {
-		if strings.IsNotBlank(name) && typ != mainHtml && typ != mainJs {
-			name = name + "_"
-		}
-	}
-	switch typ {
-	case mainCtl:
-		typ = "controller"
-	case mainService:
-		typ = "manager"
-	case mainSql:
-		typ = "sql"
-	case xgenCtl:
-		typ, name = me.resetTypAndName("controller_xgen", name)
-	case xgenService:
-		typ, name = me.resetTypAndName("manager_xgen", name)
-	case xgenEntity:
-		typ, name = me.resetTypAndName("entity_xgen", name)
-	case xgenEntities:
-		typ, name = me.resetTypAndName("entities_xgen", name)
-	case xgenDto:
-		typ, name = me.resetTypAndName("dto_xgen", name)
-	}
-	switch typ {
-	case mainHtml:
-		return fmt.Sprintf("%s.html", name), name
-	case mainJs:
-		return fmt.Sprintf("%s.js", name), name
-	default:
-		return fmt.Sprintf("%s%s.go", name, typ), name
-	}
-}
-
-func (me factory) resetTypAndName(typ, name string) (string, string) {
-	if strings.HasSuffix(name, "_test_") {
-		name = strings.Before(name, "test_")
-		typ = typ + "_test"
-	}
-	return typ, name
 }
