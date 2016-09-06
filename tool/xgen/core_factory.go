@@ -27,6 +27,7 @@ type factory struct {
 	Clidir            string
 	Clipath           string
 	Apipath           string
+	Tstpath           string
 	HasGenService     bool
 	HasGenController  bool
 	HasGenDto         bool
