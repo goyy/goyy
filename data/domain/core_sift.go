@@ -6,7 +6,7 @@ package domain
 
 var ops = []string{op_eq, op_ne, op_gt, op_lt, op_ge,
 	op_le, op_li, op_lk, op_ll, op_lr,
-	op_be, op_in, op_nu, op_nn, op_tr, op_oa, op_od}
+	op_be, op_nb, op_in, op_ni, op_nu, op_nn, op_tr, op_oa, op_od}
 
 var ots = []string{ot_st, ot_bl,
 	ot_i0, ot_i8, ot_i1, ot_i3, ot_i6,

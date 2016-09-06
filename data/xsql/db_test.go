@@ -50,31 +50,31 @@ func TestDBDelete(t *testing.T) {
 }
 
 func TestDBInsert(t *testing.T) {
-	db.Insert(buildUser("01"))
-	db.Insert(buildUser("02"))
-	db.Insert(buildUser("03"))
-	db.Insert(buildUser("04"))
-	db.Insert(buildUser("05"))
-	db.Insert(buildUser("06"))
-	db.Insert(buildUser("07"))
-	db.Insert(buildUser("08"))
-	db.Insert(buildUser("09"))
-	db.Insert(buildUser("10"))
-	db.Insert(buildUser("11"))
-	db.Insert(buildUser("12"))
-	db.Insert(buildUser("13"))
-	db.Insert(buildUser("14"))
-	db.Insert(buildUser("15"))
-	db.Insert(buildUser("16"))
-	db.Insert(buildUser("17"))
-	db.Insert(buildUser("18"))
-	db.Insert(buildUser("19"))
-	db.Insert(buildUser("20"))
-	db.Insert(buildUser("21"))
-	db.Insert(buildUser("22"))
-	db.Insert(buildUser("23"))
-	db.Insert(buildUser("24"))
-	db.Insert(buildUser("25"))
+	db.Insert(buildUser("a01"))
+	db.Insert(buildUser("a02"))
+	db.Insert(buildUser("a03"))
+	db.Insert(buildUser("a04"))
+	db.Insert(buildUser("a05"))
+	db.Insert(buildUser("a06"))
+	db.Insert(buildUser("a07"))
+	db.Insert(buildUser("a08"))
+	db.Insert(buildUser("a09"))
+	db.Insert(buildUser("a10"))
+	db.Insert(buildUser("a11"))
+	db.Insert(buildUser("a12"))
+	db.Insert(buildUser("a13"))
+	db.Insert(buildUser("a14"))
+	db.Insert(buildUser("a15"))
+	db.Insert(buildUser("a16"))
+	db.Insert(buildUser("a17"))
+	db.Insert(buildUser("a18"))
+	db.Insert(buildUser("a19"))
+	db.Insert(buildUser("a20"))
+	db.Insert(buildUser("a21"))
+	db.Insert(buildUser("a22"))
+	db.Insert(buildUser("a23"))
+	db.Insert(buildUser("a24"))
+	db.Insert(buildUser("a25"))
 }
 
 func TestDBGet(t *testing.T) {
@@ -87,21 +87,21 @@ func TestDBGet(t *testing.T) {
 }
 
 func TestDBSifterRow(t *testing.T) {
-	s, _ := domain.NewSift("sNameEQ", "11")
+	s, _ := domain.NewSift("sNameEQ", "a11")
 	user := NewUser()
 	err := db.Sifter(s).Row(user)
 	if err != nil {
 		t.Error(err.Error())
 		return
 	}
-	expected := "11"
+	expected := "a11"
 	if out := user.Creater(); out != expected {
 		t.Errorf(`db.Sifter().Row():"%v", want:"%v"`, out, expected)
 	}
 }
 
 func TestDBSifterRows(t *testing.T) {
-	s1, _ := domain.NewSift("sNameGT", "11")
+	s1, _ := domain.NewSift("sNameGT", "a11")
 	s2, _ := domain.NewSift("sVersionEQ", "0")
 	s3, _ := domain.NewSift("sNameOA", "asc")
 	users := NewUserEntities(20)
@@ -114,7 +114,7 @@ func TestDBSifterRows(t *testing.T) {
 	if out := users.Len(); out != got {
 		t.Errorf(`db.Sifter().Rows().Len():"%v", want:"%v"`, out, got)
 	}
-	expected := "12"
+	expected := "a12"
 	if out := users.Index(0).(*User).Name(); out != expected {
 		t.Errorf(`db.Sifter().Rows().Index(0):"%v", want:"%v"`, out, expected)
 	}
@@ -146,7 +146,7 @@ func TestDBSifterPage(t *testing.T) {
 	if out.PageSize() != expected {
 		t.Errorf(`page.PageSize():"%v", want:"%v"`, out.PageSize(), expected)
 	}
-	want := "11"
+	want := "a11"
 	name := out.Content().Index(0).(*User).Name()
 	if name != want {
 		t.Errorf(`page.Content():"%v", want:"%v"`, name, want)
@@ -154,7 +154,7 @@ func TestDBSifterPage(t *testing.T) {
 }
 
 func TestDBSifterCount(t *testing.T) {
-	s, _ := domain.NewSift("sNameEQ", "11")
+	s, _ := domain.NewSift("sNameEQ", "a11")
 	user := NewUser()
 	out, err := db.Sifter(s).Count(user)
 	if err != nil {
@@ -175,7 +175,7 @@ func TestDBQueryRows(t *testing.T) {
 		dql = "select * from users where name like :1"
 	}
 	users := NewUserEntities(30)
-	err := db.Query(dql, "2%").Rows(users)
+	err := db.Query(dql, "a2%").Rows(users)
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -185,7 +185,7 @@ func TestDBQueryRows(t *testing.T) {
 		t.Errorf(`query.Rows():"%v", want:"%v"`, out, expected)
 	}
 	for i := 0; i < users.Len(); i++ {
-		want := strconv.Itoa(20 + i)
+		want := "a" + strconv.Itoa(20+i)
 		if out := users.Value(i); out.Code() != want {
 			t.Errorf(`get(%v).Code():"%v", want:"%v"`, i, out.Code(), want)
 		}
@@ -200,12 +200,12 @@ func TestDBQueryRow(t *testing.T) {
 		dql = "select * from users where name = :1"
 	}
 	user := NewUser()
-	err := db.Query(dql, "12").Row(user)
+	err := db.Query(dql, "a12").Row(user)
 	if err != nil {
 		t.Error(err.Error())
 		return
 	}
-	expected := "12"
+	expected := "a12"
 	if out := user.Creater(); out != expected {
 		t.Errorf(`query.Row():"%v", want:"%v"`, out, expected)
 	}
@@ -241,7 +241,7 @@ func TestDBQueryPage(t *testing.T) {
 	if out.PageSize() != expected {
 		t.Errorf(`page.PageSize():"%v", want:"%v"`, out.PageSize(), expected)
 	}
-	want := "11"
+	want := "a11"
 	name := out.Content().Index(0).(*User).Name()
 	if name != want {
 		t.Errorf(`page.Content():"%v", want:"%v"`, name, want)
@@ -255,7 +255,7 @@ func TestDBQueryInt(t *testing.T) {
 	} else {
 		dql = "select count(*) from users where name like :1"
 	}
-	out, err := db.Query(dql, "1%").Int()
+	out, err := db.Query(dql, "a1%").Int()
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -273,12 +273,12 @@ func TestDBQueryStr(t *testing.T) {
 	} else {
 		dql = "select code from users where name = :1"
 	}
-	out, err := db.Query(dql, "03").Str()
+	out, err := db.Query(dql, "a03").Str()
 	if err != nil {
 		t.Error(err.Error())
 		return
 	}
-	expected := "03"
+	expected := "a03"
 	if out != expected {
 		t.Errorf(`query.Str():"%v", want:"%v"`, out, expected)
 	}
@@ -291,7 +291,7 @@ func TestDBQueryTime(t *testing.T) {
 	} else {
 		dql = "select created from users where name = :1"
 	}
-	out, err := db.Query(dql, "03").Int()
+	out, err := db.Query(dql, "a03").Int()
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -309,7 +309,7 @@ func TestDBQueryIn(t *testing.T) {
 	} else {
 		dql = "select count(*) from users where name in (:1,:2)"
 	}
-	out, err := db.Query(dql, "01", "02").Int()
+	out, err := db.Query(dql, "a01", "a02").Int()
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -328,22 +328,22 @@ func TestDBNamedQueryInt(t *testing.T) {
 	}{
 		{
 			"select count(*) from users",
-			map[string]interface{}{"name": "1%", "version": 0, "memo": "memo"},
+			map[string]interface{}{"name": "a1%", "version": 0, "memo": "memo"},
 			26,
 		},
 		{
 			"select count(*) from users where name like #{name}",
-			map[string]interface{}{"name": "1%", "version": 0, "memo": "memo"},
+			map[string]interface{}{"name": "a1%", "version": 0, "memo": "memo"},
 			10,
 		},
 		{
 			"select count(*) from users where version = #{version}",
-			map[string]interface{}{"name": "1%", "version": 0, "memo": "memo"},
+			map[string]interface{}{"name": "a1%", "version": 0, "memo": "memo"},
 			25,
 		},
 		{
 			"select count(*) from users where name like #{name}{{if gt .version 0}} and version = #{version}{{end}}",
-			map[string]interface{}{"name": "1%", "version": 0, "memo": "memo"},
+			map[string]interface{}{"name": "a1%", "version": 0, "memo": "memo"},
 			10,
 		},
 	}
@@ -372,7 +372,7 @@ func TestDBUpdate(t *testing.T) {
 		dql = "select * from users where name = :1"
 	}
 	user := NewUser()
-	err := db.Query(dql, "22").Row(user)
+	err := db.Query(dql, "a22").Row(user)
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -381,7 +381,7 @@ func TestDBUpdate(t *testing.T) {
 	user.SetCode(expected)
 	db.Update(user)
 	user = NewUser()
-	err = db.Query(dql, "22").Row(user)
+	err = db.Query(dql, "a22").Row(user)
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -399,7 +399,7 @@ func TestDBDisable(t *testing.T) {
 		dql = "select * from users where name = :1"
 	}
 	user := NewUser()
-	err := db.Query(dql, "23").Row(user)
+	err := db.Query(dql, "a23").Row(user)
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -407,12 +407,68 @@ func TestDBDisable(t *testing.T) {
 	db.Disable(user)
 	expected := entity.DeletionDisable
 	user = NewUser()
-	err = db.Query(dql, "23").Row(user)
+	err = db.Query(dql, "a23").Row(user)
 	if err != nil {
 		t.Error(err.Error())
 		return
 	}
 	if out := user.Deletion(); out != expected {
 		t.Errorf(`query.Disable():"%v", want:"%v"`, out, expected)
+	}
+}
+
+func TestDBSifterCountIn(t *testing.T) {
+	s, _ := domain.NewSift("sNameIN", "a11,a12,a13,a14")
+	user := NewUser()
+	out, err := db.Sifter(s).Count(user)
+	if err != nil {
+		t.Error(err.Error())
+		return
+	}
+	expected := 4
+	if out != expected {
+		t.Errorf(`db.Sifter().Count():"%v", want:"%v"`, out, expected)
+	}
+}
+
+func TestDBSifterCountNotIn(t *testing.T) {
+	s, _ := domain.NewSift("sNameNI", "a11,a12,a13,a14")
+	user := NewUser()
+	out, err := db.Sifter(s).Count(user)
+	if err != nil {
+		t.Error(err.Error())
+		return
+	}
+	expected := 22
+	if out != expected {
+		t.Errorf(`db.Sifter().Count():"%v", want:"%v"`, out, expected)
+	}
+}
+
+func TestDBSifterCountBetween(t *testing.T) {
+	s, _ := domain.NewSift("sNameBE", "a11,a12")
+	user := NewUser()
+	out, err := db.Sifter(s).Count(user)
+	if err != nil {
+		t.Error(err.Error())
+		return
+	}
+	expected := 2
+	if out != expected {
+		t.Errorf(`db.Sifter().Count():"%v", want:"%v"`, out, expected)
+	}
+}
+
+func TestDBSifterCountNotBetween(t *testing.T) {
+	s, _ := domain.NewSift("sNameNB", "a11,a12")
+	user := NewUser()
+	out, err := db.Sifter(s).Count(user)
+	if err != nil {
+		t.Error(err.Error())
+		return
+	}
+	expected := 24
+	if out != expected {
+		t.Errorf(`db.Sifter().Count():"%v", want:"%v"`, out, expected)
 	}
 }

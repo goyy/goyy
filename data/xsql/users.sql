@@ -44,7 +44,4 @@ create table users (
   primary key (id)
 );
 
-insert into users (id, code, name, password, memo, genre, status, roles, posts, org, area, creater, created, modifier, modified, version, deletion) values ('demo-i-01', '01', '01', '01', '01', '01', '01', '01', '01', '01', '01', '01', 1443253329, '01', 1443253329, 0, 0);
-insert into users (id, code, name, password, memo, genre, status, roles, posts, org, area, creater, created, modifier, modified, version, deletion) values ('demo-i-02', '02', 'user02', '02', '02', '02', '02', '02', '02', '02', '02', '02', 1443253329, '02', 1443253329, 0, 1);
-insert into users (id, code, name, password, memo, genre, status, roles, posts, org, area, creater, created, modifier, modified, version, deletion) values ('demo-i-03', '03', '03', '03', '03', '03', '03', '03', '03', '03', '03', '03', 1443253329, '03', 1443253329, 0, 0);
-insert into users (id, code, name, password, memo, genre, status, roles, posts, org, area, creater, created, modifier, modified, version, deletion) values ('demo-i-04', '04', '04', '04', '04', '04', '04', '04', '04', '04', '04', '04', 1443253329, '04', 1443253329, 0, 0);
+insert into users (id, code, name, password, memo, genre, status, roles, posts, org, area, creater, created, modifier, modified, version, deletion) values ('aa', 'aa', 'aa', 'aa', 'aa', 'aa', 'aa', 'aa', 'aa', 'aa', 'aa', 'aa', 1443253329, 'aa', 1443253329, 1, 0);

@@ -70,13 +70,57 @@ func (me *oracle) selectBySift(e entity.Interface, begin string, sifts ...domain
 			if v.Operator() == "NU" || v.Operator() == "NN" {
 				w.WriteString(key + op[v.Operator()])
 			} else {
-				w.WriteString(key + op[v.Operator()] + ":" + strconv.Itoa(i) + " ")
+				switch v.Operator() {
+				case "IN", "NI":
+					values := strings.Split(v.Value(), ",")
+					var b bytes.Buffer
+					for k, _ := range values {
+						if k > 0 {
+							b.WriteString(",")
+						}
+						b.WriteString(":" + strconv.Itoa(i))
+						i++
+					}
+					w.WriteString(key + op[v.Operator()] + "(" + b.String() + ") ")
+				case "BE", "NB":
+					values := strings.Split(v.Value(), ",")
+					var b bytes.Buffer
+					for k, _ := range values {
+						if k > 1 {
+							break
+						}
+						if k > 0 {
+							b.WriteString(" and ")
+						}
+						b.WriteString(":" + strconv.Itoa(i))
+						i++
+					}
+					w.WriteString(key + op[v.Operator()] + b.String() + " ")
+				default:
+					w.WriteString(key + op[v.Operator()] + ":" + strconv.Itoa(i) + " ")
+				}
 				if typ, ok := e.Type(key); ok {
 					val, err := toValue(v.Value(), typ.Name())
 					if err != nil {
 						return "", nil, err
 					}
-					args = append(args, val)
+					switch v.Operator() {
+					case "IN", "NI":
+						values := strings.Split(v.Value(), ",")
+						for _, inVal := range values {
+							args = append(args, inVal)
+						}
+					case "BE", "NB":
+						values := strings.Split(v.Value(), ",")
+						for i, inVal := range values {
+							if i > 1 {
+								break
+							}
+							args = append(args, inVal)
+						}
+					default:
+						args = append(args, val)
+					}
 				}
 			}
 			i++

@@ -28,7 +28,9 @@ const (
 	op_ll = "LL" // like '%?'
 	op_lr = "LR" // like '?%'
 	op_be = "BE" // between 'a,b'
+	op_nb = "NB" // not between 'a,b'
 	op_in = "IN" // in 'a,b,c,d'
+	op_ni = "NI" // not in 'a,b,c,d'
 	op_nu = "NU" // is null
 	op_nn = "NN" // is not null
 	op_tr = "TR" // transient

@@ -69,13 +69,44 @@ func (me *mysql) selectBySift(e entity.Interface, begin string, sifts ...domain.
 			if v.Operator() == "NU" || v.Operator() == "NN" {
 				w.WriteString(key + op[v.Operator()])
 			} else {
-				w.WriteString(key + op[v.Operator()] + "? ")
+				switch v.Operator() {
+				case "IN", "NI":
+					values := strings.Split(v.Value(), ",")
+					inArg := strings.Repeat("?,", len(values)-1)
+					w.WriteString(key + op[v.Operator()] + "(" + inArg + "?) ")
+				case "BE", "NB":
+					values := strings.Split(v.Value(), ",")
+					valLen := len(values) - 1
+					if valLen > 1 {
+						valLen = 1
+					}
+					inArg := strings.Repeat("? and ", valLen)
+					w.WriteString(key + op[v.Operator()] + inArg + "? ")
+				default:
+					w.WriteString(key + op[v.Operator()] + "? ")
+				}
 				if typ, ok := e.Type(key); ok {
 					val, err := toValue(v.Value(), typ.Name())
 					if err != nil {
 						return "", nil, err
 					}
-					args = append(args, val)
+					switch v.Operator() {
+					case "IN", "NI":
+						values := strings.Split(v.Value(), ",")
+						for _, inVal := range values {
+							args = append(args, inVal)
+						}
+					case "BE", "NB":
+						values := strings.Split(v.Value(), ",")
+						for i, inVal := range values {
+							if i > 1 {
+								break
+							}
+							args = append(args, inVal)
+						}
+					default:
+						args = append(args, val)
+					}
 				}
 			}
 			i++
