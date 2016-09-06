@@ -5,9 +5,10 @@
 package main
 
 import (
+	"log"
+
 	"gopkg.in/goyy/goyy.v0/comm/env"
 	"gopkg.in/goyy/goyy.v0/util/strings"
-	"log"
 )
 
 var conf *configuration = &configuration{}
@@ -62,6 +63,7 @@ func (me *inits) Projects() {
 			clipath:  xp.Clipath,
 			apidir:   xp.Apidir,
 			apipath:  xp.Apipath,
+			tstpath:  xp.Tstpath,
 		}
 		conf.projects = append(conf.projects, p)
 	}
@@ -88,6 +90,7 @@ func (me *inits) Modules() {
 			clipath:  xm.Clipath,
 			apidir:   xm.Apidir,
 			apipath:  xm.Apipath,
+			tstpath:  xm.Tstpath,
 		}
 		conf.modules = append(conf.modules, m)
 	}

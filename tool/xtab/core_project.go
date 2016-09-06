@@ -24,6 +24,7 @@ type xProject struct {
 	Clipath  string `xml:"clipath,attr"`
 	Apidir   string `xml:"apidir,attr"`
 	Apipath  string `xml:"apipath,attr"`
+	Tstpath  string `xml:"tstpath,attr"`
 }
 
 type project struct {
@@ -38,6 +39,7 @@ type project struct {
 	clipath  string
 	apidir   string
 	apipath  string
+	tstpath  string
 }
 
 func (me *project) Id() string {
@@ -121,4 +123,12 @@ func (me *project) Apipath() string {
 
 func (me *project) SetApipath(value string) {
 	me.apipath = value
+}
+
+func (me *project) Tstpath() string {
+	return me.tstpath
+}
+
+func (me *project) SetTstpath(value string) {
+	me.tstpath = value
 }

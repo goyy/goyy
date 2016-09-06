@@ -5,9 +5,10 @@
 package cache
 
 import (
+	"time"
+
 	"github.com/garyburd/redigo/redis"
 	"gopkg.in/goyy/goyy.v0/util/strings"
-	"time"
 )
 
 func Init(conf Conf) {

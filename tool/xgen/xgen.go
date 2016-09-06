@@ -14,6 +14,7 @@ func main() {
 	clidir := flag.String("clidir", "", "client project path")
 	clipath := flag.String("clipath", "", "import path for client project")
 	apipath := flag.String("apipath", "", "import path for api project")
+	tstpath := flag.String("tstpath", "", "import path for test project")
 	hasScaffold := flag.Bool("scaffold", false, "is generated service and controller")
 	hasService := flag.Bool("service", false, "is generated service")
 	hasController := flag.Bool("controller", false, "is generated controller")
@@ -30,6 +31,7 @@ func main() {
 		Clidir:           *clidir,
 		Clipath:          *clipath,
 		Apipath:          *apipath,
+		Tstpath:          *tstpath,
 		HasGenService:    *hasService,
 		HasGenController: *hasController,
 		HasGenDto:        *hasDto,

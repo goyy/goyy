@@ -24,6 +24,7 @@ type xModule struct {
 	Clipath  string `xml:"clipath,attr"`
 	Apidir   string `xml:"apidir,attr"`
 	Apipath  string `xml:"apipath,attr"`
+	Tstpath  string `xml:"tstpath,attr"`
 }
 
 type module struct {
@@ -38,6 +39,7 @@ type module struct {
 	clipath  string
 	apidir   string
 	apipath  string
+	tstpath  string
 }
 
 func (me *module) Id() string { // module.id: this
@@ -139,4 +141,15 @@ func (me *module) Apipath() string { // module.apipath: this -> project
 
 func (me *module) SetApipath(value string) {
 	me.apipath = value
+}
+
+func (me *module) Tstpath() string { // module.tstpath: this -> project
+	if strings.TrimSpace(me.tstpath) == "" && me.project != nil {
+		return me.project.Tstpath()
+	}
+	return me.tstpath
+}
+
+func (me *module) SetTstpath(value string) {
+	me.tstpath = value
 }
