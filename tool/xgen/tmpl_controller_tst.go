@@ -4,5 +4,18 @@
 
 package main
 
-var tmplControllerTest = `package <%.PackageName%>_test
+var tmplControllerTest = `package <%.PackageName%>
+
+import (
+	"testing"
+
+	_ "<%.Tstpath%>"
+	"gopkg.in/goyy/goyy.v0/test/assert"
+)
+
+func TestControllerIndex(t *testing.T) {
+	if !assert.HTTPSuccess(t, ctl.Index, "GET", ctl.ApiIndex(), nil) {
+		t.Errorf(` + "`" + `GET: %s: Fail` + "`" + `, ctl.ApiIndex())
+	}
+}
 `
