@@ -338,8 +338,10 @@ func (me factory) Write() error {
 		if err := me.writeServiceMain(); err != nil {
 			return err
 		}
-		if err := me.writeServiceTest(); err != nil {
-			return err
+		if strings.IsNotBlank(me.Tstpath) {
+			if err := me.writeServiceTest(); err != nil {
+				return err
+			}
 		}
 	}
 	if me.HasGenController {
@@ -350,8 +352,10 @@ func (me factory) Write() error {
 			if err := me.writeControllerMain(); err != nil {
 				return err
 			}
-			if err := me.writeControllerTest(); err != nil {
-				return err
+			if strings.IsNotBlank(me.Tstpath) {
+				if err := me.writeControllerTest(); err != nil {
+					return err
+				}
 			}
 			if err := me.writeControllerReg(); err != nil {
 				return err
