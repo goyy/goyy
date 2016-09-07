@@ -5,7 +5,9 @@
 package main
 
 const (
+	typXgen = "xgen."
 	typMain = "main."
+	typTest = "test."
 )
 
 // gen type

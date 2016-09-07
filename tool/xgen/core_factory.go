@@ -426,10 +426,10 @@ func (me factory) writeBy(typ, content string) error {
 	}
 	dstfile := filepath.Join(dir, f)
 	if files.IsExist(dstfile) {
-		if strings.HasPrefix(typ, typMain) {
-			return nil
-		} else {
+		if strings.HasPrefix(typ, typXgen) {
 			files.Remove(dstfile)
+		} else {
+			return nil
 		}
 	} else {
 		files.MkdirAll(dir, 0644)
