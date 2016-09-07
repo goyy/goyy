@@ -5,11 +5,14 @@
 package xhttp
 
 import (
+	"io"
 	"net/http"
+	"net/url"
 	"time"
 
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/data/cache"
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 var preRuns []func() = make([]func(), 10)
@@ -78,4 +81,35 @@ func Run() error {
 	logger.Printf("Listening and serving HTTP on %s\n", Conf.Addr)
 	err := http.ListenAndServe(Conf.Addr, defaultEngine)
 	return err
+}
+
+// NewRequest returns a new Request given a method, URL, and optional body.
+//
+// If the provided body is also an io.Closer, the returned
+// Request.Body is set to body and will be closed by the Client
+// methods Do, Post, and PostForm, and Transport.RoundTrip.
+//
+// NewRequest returns a Request suitable for use with Client.Do or
+// Transport.RoundTrip.
+// To create a request for use with testing a Server Handler use either
+// ReadRequest or manually update the Request fields. See the Request
+// type's documentation for the difference between inbound and outbound
+// request fields.
+func NewRequest(method, urlStr string, values url.Values) (*http.Request, error) {
+	var body io.Reader
+	switch method {
+	case "GET":
+		if values != nil {
+			if strings.Index(urlStr, "?") != -1 {
+				urlStr = urlStr + "&" + values.Encode()
+			} else {
+				urlStr = urlStr + "?" + values.Encode()
+			}
+		}
+	case "POST":
+		if values != nil {
+			body = strings.NewReader(values.Encode())
+		}
+	}
+	return http.NewRequest(method, urlStr, body)
 }

@@ -5,12 +5,24 @@
 package xhttp
 
 import (
-	"gopkg.in/goyy/goyy.v0/data/entity"
-	"gopkg.in/goyy/goyy.v0/util/strings"
-	"gopkg.in/goyy/goyy.v0/web/session"
 	"net/http"
 	"net/url"
+
+	"gopkg.in/goyy/goyy.v0/data/entity"
+	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/util/webs"
+	"gopkg.in/goyy/goyy.v0/web/session"
 )
+
+func NewContext(w http.ResponseWriter, r *http.Request, h ...Handler) Context {
+	values, err := webs.Values(r)
+	if err != nil {
+		logger.Error(err.Error())
+		return nil
+	}
+	s := newSession4Redis(w, r)
+	return newContext(w, s, r, values, h)
+}
 
 func newContext(w http.ResponseWriter, s session.Interface, r *http.Request, vs url.Values, hs Handlers) Context {
 	c := &context{}

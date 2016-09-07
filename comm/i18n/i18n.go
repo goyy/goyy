@@ -13,7 +13,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
-var defaultLocale string = Locale_en_US
+var defaultLocale string = Locale_zh_CN
 
 // I18n is the interface that wraps the operation i18n method.
 type I18n interface {
@@ -132,7 +132,7 @@ func SetDefaultLocale(locale string) {
 	if strings.IsNotBlank(locale) {
 		defaultLocale = transformLocale(locale)
 		if strings.IsBlank(defaultLocale) {
-			defaultLocale = Locale_en_US
+			defaultLocale = Locale_zh_CN
 		}
 	}
 }

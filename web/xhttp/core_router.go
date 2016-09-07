@@ -162,10 +162,5 @@ func (me *router) addAction(method httpMethod, pattern string, handle Handle, pe
 }
 
 func (me *router) newContext(w http.ResponseWriter, r *http.Request) Context {
-	values, err := webs.Values(r)
-	if err != nil {
-		logger.Error(err.Error())
-	}
-	s := newSession4Redis(w, r)
-	return newContext(w, s, r, values, me.handlers)
+	return NewContext(w, r, me.handlers...)
 }
