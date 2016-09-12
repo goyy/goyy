@@ -5,11 +5,12 @@ import (
 )
 
 func init() {
-	xhttp.GET(menuCtl.ApiIndex(), menuCtl.Index)
-	xhttp.POST(menuCtl.ApiIndex(), menuCtl.Index)
-	xhttp.GET(menuCtl.ApiShow(), menuCtl.Show)
-	xhttp.POST(menuCtl.ApiAdd(), menuCtl.Add)
-	xhttp.POST(menuCtl.ApiEdit(), menuCtl.Edit)
-	xhttp.POST(menuCtl.ApiSave(), menuCtl.Save)
-	xhttp.POST(menuCtl.ApiDisable(), menuCtl.Disable)
+	xhttp.GET(menuCtl.ApiIndex(), menuCtl.Index, menuCtl.PermitView())
+	xhttp.POST(menuCtl.ApiIndex(), menuCtl.Index, menuCtl.PermitView())
+	xhttp.GET(menuCtl.ApiShow(), menuCtl.Show, menuCtl.PermitView())
+	xhttp.POST(menuCtl.ApiShow(), menuCtl.Show, menuCtl.PermitView())
+	xhttp.POST(menuCtl.ApiAdd(), menuCtl.Add, menuCtl.PermitAdd())
+	xhttp.POST(menuCtl.ApiEdit(), menuCtl.Edit, menuCtl.PermitEdit())
+	xhttp.POST(menuCtl.ApiSave(), menuCtl.Save, menuCtl.PermitAdd(), menuCtl.PermitEdit())
+	xhttp.POST(menuCtl.ApiDisable(), menuCtl.Disable, menuCtl.PermitDisable())
 }

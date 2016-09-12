@@ -5,12 +5,12 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/schema"
 )
 
-//go:generate xgen -entity=$GOFILE -scaffold -clidir=../../../bms -clipath=gopkg.in/goyy/goyy.v0/app/bms -apipath=gopkg.in/goyy/goyy.v0/app/sys
+//go:generate xgen -entity=$GOFILE -scaffold -clidir=../../../bms -clipath=gopkg.in/goyy/goyy.v0/app/bms -apipath=gopkg.in/goyy/goyy.v0/app/sys -tstpath=gopkg.in/goyy/goyy.v0/app/tst
 
 // ORG Entity.
-// @entity(project:"sys")
+// @entity(module:"org" project:"sys")
 type Entity struct {
 	entity.Tree
 	table  schema.Table  `db:"table=sys_org&comment=ORG"`
-	areaId entity.String `db:"column=area_id"`
+	areaId entity.String `db:"column=area_id&comment=AREA_ID"`
 }

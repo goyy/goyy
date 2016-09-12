@@ -5,11 +5,12 @@ import (
 )
 
 func init() {
-	xhttp.GET(roleCtl.ApiIndex(), roleCtl.Index)
-	xhttp.POST(roleCtl.ApiIndex(), roleCtl.Index)
-	xhttp.GET(roleCtl.ApiShow(), roleCtl.Show)
-	xhttp.POST(roleCtl.ApiAdd(), roleCtl.Add)
-	xhttp.POST(roleCtl.ApiEdit(), roleCtl.Edit)
-	xhttp.POST(roleCtl.ApiSave(), roleCtl.Save)
-	xhttp.POST(roleCtl.ApiDisable(), roleCtl.Disable)
+	xhttp.GET(roleCtl.ApiIndex(), roleCtl.Index, roleCtl.PermitView())
+	xhttp.POST(roleCtl.ApiIndex(), roleCtl.Index, roleCtl.PermitView())
+	xhttp.GET(roleCtl.ApiShow(), roleCtl.Show, roleCtl.PermitView())
+	xhttp.POST(roleCtl.ApiShow(), roleCtl.Show, roleCtl.PermitView())
+	xhttp.POST(roleCtl.ApiAdd(), roleCtl.Add, roleCtl.PermitAdd())
+	xhttp.POST(roleCtl.ApiEdit(), roleCtl.Edit, roleCtl.PermitEdit())
+	xhttp.POST(roleCtl.ApiSave(), roleCtl.Save, roleCtl.PermitAdd(), roleCtl.PermitEdit())
+	xhttp.POST(roleCtl.ApiDisable(), roleCtl.Disable, roleCtl.PermitDisable())
 }
