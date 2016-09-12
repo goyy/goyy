@@ -7,9 +7,8 @@ import (
 )
 
 func init() {
-	if v, err := env.Session("goyy"); err == nil {
-		xhttp.Conf.Session.Addr = v.Addr
-		xhttp.Conf.Session.Password = v.Password
+	if v, err := env.Developer("goyy"); err == nil {
+		xhttp.Conf.Export.Dir = v.Dir + "/export/excel"
 	} else {
 		log.Println(err.Error())
 	}

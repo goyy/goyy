@@ -7,14 +7,15 @@ import (
 
 func init() {
 	xhttp.Conf.Secure.ForbidUrl = "/err/403.html"
-	xhttp.Conf.Secure.SuccessUrl = "/home.html"
+	xhttp.Conf.Secure.SuccessUrl = "/"
 	xhttp.Conf.Secure.Filters = []xtype.Map{
-		{"/apis/sys/**/(save|saved)", "forbid"},
-		{"/apis/**/(disable|disabled)", "forbid"},
-		{"/apis/sys/menu/**", "forbid"},
-		{"/apis/sys/post/**", "forbid"},
-		{"/apis/sys/user/role/**", "forbid"},
-		{"/apis/sys/user/(index|show|add|edit|repwd)", "forbid"},
-		{"/**", "anon"},
+		{"/**.(css|js|map)", "anon"},
+		{"/**.(jpg|gif|png|bmp|ico)", "anon"},
+		{"/login.html", "anon"},
+		{"/login", "anon"},
+		{"/signin", "anon"},
+		{"/logout", "anon"},
+		{"/err/**", "anon"},
+		{"/**", "authc"},
 	}
 }

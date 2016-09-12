@@ -19,7 +19,7 @@ func init() {
 }
 
 type Controller struct {
-	controller.ClientTreeController
+	controller.Controller
 }
 
 var ctl = &Controller{}
