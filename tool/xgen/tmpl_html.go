@@ -14,7 +14,7 @@ var tmplHtmlMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 <title go:title="/title.html">{%title%}</title>
 <!--#include file="/core/include/head.html"--><!--#endinclude-->
 
-<script type="text/javascript" go:src="{%statics%}/js/{%project%}/{%module%}/{%module%}.js"></script>
+<script type="text/javascript" go:src="{%statics%}/js/{%project%}/{%module%}/{%module%}.js?{%ver%}"></script>
 </head>
 <body>
 <!--#include file="/core/include/header.html" param="{%project%}"--><!--#endinclude-->
