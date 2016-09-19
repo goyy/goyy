@@ -48,8 +48,34 @@ func (me *JSONTreeController) Save(c xhttp.Context) {
 	}
 }
 
+func (me *JSONTreeController) SaveAndTx(c xhttp.Context) {
+	r, err := me.baseTreeController.SaveAndTx(c, me.Mgr, me.PreSave, me.PostSave)
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+	err = c.Text(xhttp.StatusOK, r.JSON())
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+}
+
 func (me *JSONTreeController) Disable(c xhttp.Context) {
 	r, err := me.baseTreeController.Disable(c, me.Mgr, me.PreDisable, me.PostDisable)
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+	err = c.Text(xhttp.StatusOK, r.JSON())
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+}
+
+func (me *JSONTreeController) DisableAndTx(c xhttp.Context) {
+	r, err := me.baseTreeController.DisableAndTx(c, me.Mgr, me.PreDisable, me.PostDisable)
 	if err != nil {
 		me.Error(c, err)
 		return

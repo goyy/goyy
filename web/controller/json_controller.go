@@ -92,8 +92,34 @@ func (me *JSONController) Save(c xhttp.Context) {
 	}
 }
 
+func (me *JSONController) SaveAndTx(c xhttp.Context) {
+	r, err := me.baseController.SaveAndTx(c, me.Mgr, me.PreSave, me.PostSave)
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+	err = c.Text(xhttp.StatusOK, r.JSON())
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+}
+
 func (me *JSONController) Disable(c xhttp.Context) {
 	r, err := me.baseController.Disable(c, me.Mgr, me.PreDisable, me.PostDisable)
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+	err = c.Text(xhttp.StatusOK, r.JSON())
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+}
+
+func (me *JSONController) DisableAndTx(c xhttp.Context) {
+	r, err := me.baseController.DisableAndTx(c, me.Mgr, me.PreDisable, me.PostDisable)
 	if err != nil {
 		me.Error(c, err)
 		return

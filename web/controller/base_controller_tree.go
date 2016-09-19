@@ -41,6 +41,18 @@ func (me *baseTreeController) Save(c xhttp.Context, mgr service.Service, pre fun
 	return me.baseController.Save(c, mgr, pre, post)
 }
 
+func (me *baseTreeController) SaveAndTx(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r *result.Entity) error) (out *result.Entity, err error) {
+	if ts, err := me.Breadcrumb(c, mgr); err == nil {
+		c.SetAttribute(defaultParents, ts)
+	} else {
+		logger.Error(err.Error())
+	}
+	if err = me.setTreeInfo(c, mgr); err != nil {
+		return
+	}
+	return me.baseController.SaveAndTx(c, mgr, pre, post)
+}
+
 func (me *baseTreeController) Disable(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r *result.Entity) error) (out *result.Entity, err error) {
 	if ts, err := me.Breadcrumb(c, mgr); err == nil {
 		c.SetAttribute(defaultParents, ts)
@@ -52,6 +64,19 @@ func (me *baseTreeController) Disable(c xhttp.Context, mgr service.Service, pre 
 		return
 	}
 	return me.baseController.Disable(c, mgr, pre, post)
+}
+
+func (me *baseTreeController) DisableAndTx(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r *result.Entity) error) (out *result.Entity, err error) {
+	if ts, err := me.Breadcrumb(c, mgr); err == nil {
+		c.SetAttribute(defaultParents, ts)
+	} else {
+		logger.Errorln(err)
+	}
+	if err = me.setLeafOfDisable(c, mgr); err != nil {
+		logger.Errorln(err)
+		return
+	}
+	return me.baseController.DisableAndTx(c, mgr, pre, post)
 }
 
 func (me *baseTreeController) Tree(c xhttp.Context, mgr service.Service) (out []xtype.Tree, err error) {

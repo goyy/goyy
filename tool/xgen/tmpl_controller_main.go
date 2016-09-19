@@ -17,8 +17,8 @@ func init() {<%range $i, $e := .Entities%><%with $name := ctlvar $e.Name $e.Rela
 	xhttp.POST(<%$name%>.ApiShow(), <%$name%>.Show, <%$name%>.PermitView())
 	xhttp.POST(<%$name%>.ApiAdd(), <%$name%>.Add, <%$name%>.PermitAdd())
 	xhttp.POST(<%$name%>.ApiEdit(), <%$name%>.Edit, <%$name%>.PermitEdit())
-	xhttp.POST(<%$name%>.ApiSave(), <%$name%>.Save, <%$name%>.PermitAdd(), <%$name%>.PermitEdit())
-	xhttp.POST(<%$name%>.ApiDisable(), <%$name%>.Disable, <%$name%>.PermitDisable())<%if eq "tree" $e.Extend%>
+	xhttp.POST(<%$name%>.ApiSave(), <%$name%>.SaveAndTx, <%$name%>.PermitAdd(), <%$name%>.PermitEdit())
+	xhttp.POST(<%$name%>.ApiDisable(), <%$name%>.DisableAndTx, <%$name%>.PermitDisable())<%if eq "tree" $e.Extend%>
 	xhttp.GET(<%$name%>.ApiTree(), <%$name%>.Tree, <%$name%>.PermitView())<%end%><%end%><%end%>
 }
 `

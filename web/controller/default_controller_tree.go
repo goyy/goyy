@@ -40,8 +40,34 @@ func (me *TreeController) Save(c xhttp.Context) {
 	}
 }
 
+func (me *TreeController) SaveAndTx(c xhttp.Context) {
+	out, err := me.baseTreeController.SaveAndTx(c, me.Mgr, me.PreSave, me.PostSave)
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+	err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.SuccessMsg(c, "Save success", templates.EnIndex, out))
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+}
+
 func (me *TreeController) Disable(c xhttp.Context) {
 	out, err := me.baseTreeController.Disable(c, me.Mgr, me.PreDisable, me.PostDisable)
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+	err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.SuccessMsg(c, "Delete success", templates.EnIndex, out))
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+}
+
+func (me *TreeController) DisableAndTx(c xhttp.Context) {
+	out, err := me.baseTreeController.DisableAndTx(c, me.Mgr, me.PreDisable, me.PostDisable)
 	if err != nil {
 		me.Error(c, err)
 		return

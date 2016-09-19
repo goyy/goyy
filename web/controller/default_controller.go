@@ -83,8 +83,34 @@ func (me *Controller) Save(c xhttp.Context) {
 	}
 }
 
+func (me *Controller) SaveAndTx(c xhttp.Context) {
+	out, err := me.baseController.SaveAndTx(c, me.Mgr, me.PreSave, me.PostSave)
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+	err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.SuccessMsg(c, i18N.Message("msg.save"), templates.EnIndex, out.Data))
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+}
+
 func (me *Controller) Disable(c xhttp.Context) {
 	out, err := me.baseController.Disable(c, me.Mgr, me.PreDisable, me.PostDisable)
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+	err = c.HTML(xhttp.StatusOK, me.TmplDefault(), me.SuccessMsg(c, i18N.Message("msg.disable"), templates.EnIndex, out.Data))
+	if err != nil {
+		me.Error(c, err)
+		return
+	}
+}
+
+func (me *Controller) DisableAndTx(c xhttp.Context) {
+	out, err := me.baseController.DisableAndTx(c, me.Mgr, me.PreDisable, me.PostDisable)
 	if err != nil {
 		me.Error(c, err)
 		return
