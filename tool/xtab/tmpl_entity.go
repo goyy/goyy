@@ -11,7 +11,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/schema"
 )
 
-//go:generate xgen -entity=$GOFILE -scaffold{{if notblank .Module.Clidir}} -clidir={{.Module.Clidir}}{{end}}{{if notblank .Module.Clipath}} -clipath={{.Module.Clipath}}{{end}} -apipath={{.Module.Apipath}} -tstpath={{.Module.Tstpath}}
+//go:generate xgen -entity=$GOFILE -scaffold{{if notblank .Module.Clipath}} -clipath={{.Module.Clipath}}{{end}} -apipath={{.Module.Apipath}} -tstpath={{.Module.Tstpath}}
 
 // {{.Name}}` + i18N.Message("domain.title") + `.
 // @entity(module:"{{.Id}}" project:"{{.Module.Id}}"{{if notblank .Slave}} relationship:"slave"{{end}})
