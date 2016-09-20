@@ -57,11 +57,9 @@ func (me *inits) Projects() {
 			name:     xp.Name,
 			database: d,
 			generate: xp.Generate,
+			menu:     xp.Menu,
 			comment:  xp.Comment,
-			rootdir:  xp.Rootdir,
-			clidir:   xp.Clidir,
 			clipath:  xp.Clipath,
-			apidir:   xp.Apidir,
 			apipath:  xp.Apipath,
 			tstpath:  xp.Tstpath,
 		}
@@ -84,11 +82,9 @@ func (me *inits) Modules() {
 			prefix:   xm.Prefix,
 			project:  p,
 			generate: xm.Generate,
+			menu:     xm.Menu,
 			comment:  xm.Comment,
-			rootdir:  xm.Rootdir,
-			clidir:   xm.Clidir,
 			clipath:  xm.Clipath,
-			apidir:   xm.Apidir,
 			apipath:  xm.Apipath,
 			tstpath:  xm.Tstpath,
 		}
@@ -248,15 +244,18 @@ func (me *inits) ProjectTables() {
 				}
 			}
 			t := &table{
-				module:   m,
-				parent:   p,
-				id:       xt.Id,
-				name:     xt.Name,
-				prefix:   xt.Prefix,
-				generate: xt.Generate,
-				comment:  xt.Comment,
-				master:   xt.Master,
-				slave:    xt.Slave,
+				module:      m,
+				parent:      p,
+				id:          xt.Id,
+				name:        xt.Name,
+				prefix:      xt.Prefix,
+				generate:    xt.Generate,
+				menu:        xt.Menu,
+				comment:     xt.Comment,
+				master:      xt.Master,
+				slave:       xt.Slave,
+				permissions: xt.Permissions,
+				href:        xt.Href,
 			}
 			switch t.Super() {
 			case "pk":

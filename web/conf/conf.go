@@ -16,10 +16,10 @@ var Conf = &conf{
 	Addr:    ":9090",
 	Profile: profile.DEV,
 	Err: &errOptions{
-		Err401: "",
-		Err403: "",
-		Err404: "",
-		Err500: "",
+		Err401: "/err/401.html",
+		Err403: "/err/403.html",
+		Err404: "/err/404.html",
+		Err500: "/err/500.html",
 	},
 	Api: &apiOptions{
 		URL: "/apis",

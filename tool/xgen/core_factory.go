@@ -24,7 +24,6 @@ type factory struct {
 	Project           string
 	PackageName       string
 	Epath             string
-	Clidir            string
 	Clipath           string
 	Apipath           string
 	Tstpath           string
@@ -413,18 +412,19 @@ func (me factory) Write() error {
 }
 
 func (me factory) writeBy(typ, content string) error {
+	clidir := "../../../" + strings.AfterLast(me.Clipath, "/")
 	// get the destination file
 	dir, file := filepath.Split(me.Epath)
 	f, name := me.genFileName(typ, file)
 	switch typ {
 	case xgenDto:
-		dir = me.Clidir + "/internal/" + me.Project + "/" + me.PackageName
+		dir = clidir + "/internal/" + me.Project + "/" + me.PackageName
 	case mainApi, xgenLogApi:
 		dir = "../../api/" + me.PackageName
 	case mainHtml:
-		dir = me.Clidir + "/templates/" + me.Project + "/" + name
+		dir = clidir + "/templates/" + me.Project + "/" + name
 	case mainJs:
-		dir = me.Clidir + "/static/js/" + me.Project + "/" + name
+		dir = clidir + "/static/js/" + me.Project + "/" + name
 	case xgenCtlReg:
 		dir = "../../"
 	}
@@ -510,7 +510,7 @@ func (me factory) writeJsMain() error {
 }
 
 func (me factory) writeDtoXgen() error {
-	if strings.IsBlank(me.Clidir) {
+	if strings.IsBlank(me.Clipath) {
 		return nil
 	}
 	return me.writeBy(xgenDto, tmplDtoXgen)

@@ -11,6 +11,7 @@ import (
 func main() {
 	isEntity := flag.Bool("entity", false, "is generated entity")
 	isSQL := flag.Bool("sql", false, "is generated SQL")
+	isMenu := flag.Bool("menu", false, "is generated menu")
 	flag.Parse()
 	if *isSQL {
 		logger.Println("Exporting sql : start")
@@ -21,5 +22,10 @@ func main() {
 		logger.Println("Generating entity : start")
 		genEntity()
 		logger.Println("Generated entity : end")
+	}
+	if *isMenu {
+		logger.Println("Generating menu : start")
+		genMenu()
+		logger.Println("Generated menu : end")
 	}
 }

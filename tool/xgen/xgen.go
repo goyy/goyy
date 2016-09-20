@@ -11,7 +11,6 @@ import (
 
 func main() {
 	epath := flag.String("entity", "", "entity file path")
-	clidir := flag.String("clidir", "", "client project path")
 	clipath := flag.String("clipath", "", "import path for client project")
 	apipath := flag.String("apipath", "", "import path for api project")
 	tstpath := flag.String("tstpath", "", "import path for test project")
@@ -28,7 +27,6 @@ func main() {
 	hasJs := flag.Bool("js", false, "is generated js")
 	flag.Parse()
 	f := factory{
-		Clidir:           *clidir,
 		Clipath:          *clipath,
 		Apipath:          *apipath,
 		Tstpath:          *tstpath,

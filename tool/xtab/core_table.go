@@ -5,6 +5,8 @@
 package main
 
 import (
+	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
@@ -13,15 +15,18 @@ type xTables struct {
 }
 
 type xTable struct {
-	Id       string     `xml:"id,attr"`
-	Name     string     `xml:"name,attr"`
-	Prefix   string     `xml:"prefix,attr"`
-	Extends  string     `xml:"extends,attr"`
-	Generate string     `xml:"generate,attr"`
-	Comment  string     `xml:"comment,attr"`
-	Master   string     `xml:"master,attr"`
-	Slave    string     `xml:"slave,attr"`
-	Columns  []*xColumn `xml:"column"`
+	Id          string     `xml:"id,attr"`
+	Name        string     `xml:"name,attr"`
+	Prefix      string     `xml:"prefix,attr"`
+	Extends     string     `xml:"extends,attr"`
+	Generate    string     `xml:"generate,attr"`
+	Menu        string     `xml:"menu,attr"`
+	Comment     string     `xml:"comment,attr"`
+	Master      string     `xml:"master,attr"`
+	Slave       string     `xml:"slave,attr"`
+	Permissions string     `xml:"permissions,attr"`
+	Href        string     `xml:"href,attr"`
+	Columns     []*xColumn `xml:"column"`
 }
 
 type table struct {
@@ -31,9 +36,12 @@ type table struct {
 	prefix          string
 	parent          *table
 	generate        string
+	menu            string
 	comment         string
 	master          string
 	slave           string
+	permissions     string
+	href            string
 	fieldMaxLen     int
 	columnMaxLen    int
 	typeMaxLen      int
@@ -135,6 +143,17 @@ func (me *table) SetGenerate(value string) {
 	me.generate = value
 }
 
+func (me *table) Menu() string { // table.menu: this -> module
+	if strings.TrimSpace(me.menu) == "" && me.module != nil {
+		return me.module.Menu()
+	}
+	return me.menu
+}
+
+func (me *table) SetMenu(value string) {
+	me.menu = value
+}
+
 func (me *table) Comment() string { // table.comment: this -> parent
 	if me.comment == "" && me.parent != nil {
 		return me.parent.Comment()
@@ -160,6 +179,28 @@ func (me *table) Slave() string { // table.slave: this
 
 func (me *table) SetSlave(value string) {
 	me.slave = value
+}
+
+func (me *table) Permissions() string { // table.permissions: this
+	if strings.TrimSpace(me.permissions) == "" {
+		return fmt.Sprintf("%s:%s:view", me.module.Id(), me.Id())
+	}
+	return me.permissions
+}
+
+func (me *table) SetPermissions(value string) {
+	me.permissions = value
+}
+
+func (me *table) Href() string { // table.href: this
+	if strings.TrimSpace(me.permissions) == "" {
+		return fmt.Sprintf("/%s/%s/%s.html", me.module.Id(), me.Id(), me.Id())
+	}
+	return me.href
+}
+
+func (me *table) SetHref(value string) {
+	me.href = value
 }
 
 func (me *table) Columns() []*column { // table.columns: this + parent
