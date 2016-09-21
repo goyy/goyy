@@ -28,6 +28,9 @@ func newTmpl(s string) *template.Template {
 
 var (
 	funcs = template.FuncMap{
+		"message": func(key string) string { // get message for i18n
+			return i18N.Message(key)
+		},
 		"supercol": util.IsSuperCol,
 		"padname": func(s string, size int) string {
 			return strings.PadRight(s, size, " ")

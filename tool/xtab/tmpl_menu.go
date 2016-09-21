@@ -28,29 +28,19 @@ var tmplMenu = `<script type="text/javascript">{{$ := .}}
 				</button>
 				<a class="navbar-brand" href="/sys/user/info.html">{{$.Project.Name}}</a>
 			</div>
-			<div class="navbar-collapse collapse">
+			<div class="navbar-collapse collapse">{{range $module := .Modules}}
 				<ul class="nav navbar-nav">
-					<li id="header_sys" data-permissions="sys:area:view,sys:org:view,sys:user:view,sys:menu:view,sys:post:view,sys:role:view,sys:dict:view,sys:log:view,sys:cache:view" class="{%if eq .param 'sys'%}active {%end%}dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">系统管理<b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li data-permissions="sys:area:view"><a href="/sys/area/area.html">区域管理</a></li>
-							<li data-permissions="sys:org:view"><a href="/sys/org/org.html">机构管理</a></li>
-							<li data-permissions="sys:user:view"><a href="/sys/user/user.html">用户管理</a></li>
-							<li data-permissions="sys:menu:view,sys:post:view,sys:role:view" class="divider"></li>
-							<li data-permissions="sys:menu:view"><a href="/sys/menu/menu.html">菜单管理</a></li>
-							<li data-permissions="sys:post:view"><a href="/sys/post/post.html">岗位管理</a></li>
-							<li data-permissions="sys:role:view"><a href="/sys/role/role.html">角色管理</a></li>
-							<li data-permissions="sys:dict:view" class="divider"></li>
-							<li data-permissions="sys:dict:view"><a href="/sys/dict/dict.html">字典管理</a></li>
-							<li data-permissions="sys:log:view,sys:cache:view" class="divider"></li>
-							<li data-permissions="sys:log:view"><a href="/sys/log/log.html">日志查询</a></li>
-							<li data-permissions="sys:cache:view"><a href="/sys/cache/cache.html">缓存查询</a></li>
+					<li id="header_{{$module.Id}}" data-permissions="{{range $table := $.Tables}}{{if eq $table.Module.Id $module.Id}}{{if eq $table.Menu "true"}}{{if ne $table.Id "-"}}{{$table.Permissions}},{{end}}{{end}}{{end}}{{end}}" class="{%if eq .param '{{$module.Id}}'%}active {%end%}dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{$module.Name}}<b class="caret"></b></a>
+						<ul class="dropdown-menu">{{range $table := $.Tables}}{{if eq $table.Module.Id $module.Id}}{{if eq $table.Menu "true"}}{{if eq $table.Id "-"}}
+							<li data-permissions="{{$table.Permissions}}" class="divider"></li>{{else}}
+							<li data-permissions="{{$table.Permissions}}"><a href="{{$table.Href}}">{{$table.Name}}{{message "tmpl.menu.manage"}}</a></li>{{end}}{{end}}{{end}}{{end}}
 						</ul>
 					</li>
-				</ul>
+				</ul>{{end}}
 				<ul class="nav navbar-nav navbar-right">
 					<li><a id="loginName" href="/sys/user/info.html">&nbsp;</a></li>
-					<li><a href="/logout">退出</a></li>
+					<li><a href="/logout">{{message "tmpl.menu.exit"}}</a></li>
 				</ul>
 			</div>
 		</div>
