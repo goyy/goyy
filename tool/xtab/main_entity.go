@@ -17,7 +17,7 @@ func genEntity() {
 	for _, p := range conf.projects {
 		for _, t := range conf.tables {
 			if t.module.project.Id() == p.Id() && t.module.project.generate == "true" && t.module.generate == "true" && t.generate == "true" {
-				apidir := "../../../" + strings.AfterLast(t.module.Apipath(), "/")
+				apidir := "../" + strings.AfterLast(t.module.Apipath(), "/")
 				dir := apidir + "/internal/" + t.id + "/"
 				dstfile := filepath.Join(dir, t.id+"_entity.go")
 				if strings.IsNotBlank(t.master) {
