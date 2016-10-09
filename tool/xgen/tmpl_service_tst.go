@@ -4,16 +4,16 @@
 
 package main
 
-var tmplServiceTest = `package <%.PackageName%>
+var tmplServiceTest = `package <%.PackageName%><%with $ := .%>
 
 import (
 	"testing"
 
 	_ "<%.Tstpath%>"
 	"gopkg.in/goyy/goyy.v0/data/domain"
-)
+)<%range $i, $e := .Entities%>
 
-func TestSelectCountBySift(t *testing.T) {
+func Test<%tstname $e.Name $e.Relationship%>SelectCountBySift(t *testing.T) {
 	sIdEQ, _ := domain.NewSift("sIdEQ", "1")
 	sDeletionEQ, _ := domain.NewSift("sDeletionEQ", "0")
 	out, _ := Mgr.SelectCountBySift(sIdEQ, sDeletionEQ)
@@ -21,5 +21,5 @@ func TestSelectCountBySift(t *testing.T) {
 	if out != expected {
 		t.Errorf(` + "`" + `SelectCountBySift:"%v", want:"%v"` + "`" + `, out, expected)
 	}
-}
+}<%end%><%end%>
 `

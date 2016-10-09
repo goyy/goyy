@@ -95,6 +95,16 @@ var (
 				return name + "DTOs"
 			}
 		},
+		"tstname": func(name, relationship string) string { // test func name
+			if relationship == "master" {
+				return ""
+			} else {
+				if strings.HasSuffix(name, "Entity") {
+					name = strings.Before(name, "Entity")
+				}
+				return name
+			}
+		},
 		"mname": func(name, pkg string) string { // settings module name
 			if name == "Entity" || name == "entity" {
 				return pkg
