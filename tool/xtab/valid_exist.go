@@ -143,6 +143,7 @@ func (me *valids) IsExistColumns() bool {
 		<column id="nickname"     name="NICKNAME"     domain="code"   comment="nickname"/>
 		<column id="fullname"     name="FULLNAME"     domain="memo"   comment="fullname"/>
 		<column id="genre"        name="GENRE"        domain="code"   comment="genre"/>
+		<column id="classify"     name="CLASSIFY"     domain="code"   comment="classify"/>
 		<column id="content"      name="CONTENT"      domain="descr"  comment="content"/>
 		<column id="memo"         name="MEMO"         domain="memo"   comment="memo"/>
 		<column id="descr"        name="DESCR"        domain="descr"  comment="description"/>

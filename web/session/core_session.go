@@ -130,11 +130,21 @@ func (me *session) Principal() (Principal, error) {
 	if err != nil {
 		return p, err
 	}
+	rolesFunc, err := me.Get(principalRolesFunc)
+	if err != nil {
+		return p, err
+	}
+	rolesData, err := me.Get(principalRolesData)
+	if err != nil {
+		return p, err
+	}
 	p.Id = id
 	p.Name = name
 	p.LoginName = loginName
 	p.LoginTime = loginTime
 	p.Permissions = permissions
+	p.Roles.Func = rolesFunc
+	p.Roles.Data = rolesData
 	return p, nil
 }
 
@@ -154,6 +164,12 @@ func (me *session) SetPrincipal(value Principal) error {
 	if err := me.Set(principalPermissions, value.Permissions); err != nil {
 		return err
 	}
+	if err := me.Set(principalRolesFunc, value.Roles.Func); err != nil {
+		return err
+	}
+	if err := me.Set(principalRolesData, value.Roles.Data); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -171,6 +187,12 @@ func (me *session) ResetPrincipal() error {
 		return err
 	}
 	if err := me.Delete(principalPermissions); err != nil {
+		return err
+	}
+	if err := me.Delete(principalRolesFunc); err != nil {
+		return err
+	}
+	if err := me.Delete(principalRolesData); err != nil {
 		return err
 	}
 	return nil

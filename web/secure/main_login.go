@@ -5,6 +5,7 @@
 package secure
 
 import (
+	"bytes"
 	"encoding/base64"
 	"net/http"
 	"strconv"
@@ -36,12 +37,37 @@ func Login(c xhttp.Context, loginName, passwd string) error {
 		if loginName == "admin" {
 			ps = "sys:user:admin," + ps
 		}
+		rs, err := internal.RoleMgr.SelectRole(u.Id())
+		if err != nil {
+			return err
+		}
+		var funcs, datas bytes.Buffer
+		for _, r := range rs {
+			if r.Genre() == "10" {
+				if funcs.Len() > 0 {
+					funcs.WriteString(",")
+				}
+				funcs.WriteString(r.Id())
+			} else {
+				if datas.Len() > 0 {
+					datas.WriteString(",")
+				}
+				datas.WriteString(r.Id())
+			}
+		}
 		p := session.Principal{
 			Id:          u.Id(),
 			Name:        u.Name(),
 			LoginName:   u.LoginName(),
 			LoginTime:   times.NowUnixStr(),
 			Permissions: ps,
+			Roles: struct {
+				Func string
+				Data string
+			}{
+				Func: funcs.String(),
+				Data: datas.String(),
+			},
 		}
 		setCookies(c, p)
 		return c.Session().SetPrincipal(p)

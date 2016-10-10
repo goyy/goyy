@@ -11,4 +11,8 @@ type Principal struct {
 	LoginName   string
 	LoginTime   string
 	Permissions string
+	Roles       struct {
+		Func string
+		Data string
+	}
 }

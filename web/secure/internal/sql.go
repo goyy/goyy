@@ -8,6 +8,7 @@ const (
 	repwdByUserId_mysql             = `update sys_user set passwd = ? where id = ?`
 	countByLogin_mysql              = `select count(*) from sys_user where deletion = 0 and login_name = ? and passwd = ?`
 	selectUserByLoginName_mysql     = `select id, name, login_name from sys_user where deletion = 0 and login_name = ?`
+	selectRoleByUserId_mysql        = `select r.id, r.name, r.genre from sys_role r,sys_user_role ur where r.id = ur.role_id and r.deletion = 0 and ur.user_id = ?`
 	selectPermissionsByUserId_mysql = `
 select distinct m.permission
   from sys_menu m, sys_post_menu pm, sys_role_post rp, sys_user_role ur
@@ -21,6 +22,7 @@ select distinct m.permission
 	repwdByUserId_oracle             = `update sys_user set passwd = :0 where id = :1`
 	countByLogin_oracle              = `select count(*) from sys_user where deletion = 0 and login_name = :0 and passwd = :1`
 	selectUserByLoginName_oracle     = `select id, name, login_name from sys_user where deletion = 0 and login_name = :0`
+	selectRoleByUserId_oracle        = `select r.id, r.name, r.genre from sys_role r,sys_user_role ur where r.id = ur.role_id and r.deletion = 0 and ur.user_id = :0`
 	selectPermissionsByUserId_oracle = `
 select distinct m.permission
   from sys_menu m, sys_post_menu pm, sys_role_post rp, sys_user_role ur

@@ -13,4 +13,6 @@ const (
 	principalLoginName   = "_gsessionid_principal_login_name_"
 	principalLoginTime   = "_gsessionid_principal_login_time_"
 	principalPermissions = "_gsessionid_principal_permissions_"
+	principalRolesFunc   = "_gsessionid_principal_roles_func_"
+	principalRolesData   = "_gsessionid_principal_roles_data_"
 )
