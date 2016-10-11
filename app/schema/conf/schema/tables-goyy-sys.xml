@@ -2,6 +2,30 @@
 <!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
 <configuration>
 	<tables>
+		<table id="menu" name="MENU" extends="tree" generate="true" comment="MENU">
+			<column id="href" name="HREF" domain="memo" comment="HREF"/>
+			<column id="target" name="TARGET" domain="code" comment="TARGET"/>
+			<column id="icon" name="ICON" domain="code" comment="ICON"/>
+			<column id="hidden" name="HIDDEN" domain="bool" comment="HIDDEN"/>
+			<column id="permission" name="PERMISSION" domain="memo" comment="PERMISSION"/>
+		</table>
+		<table id="post" name="POST" extends="tree" generate="true" comment="POST">
+		</table>
+		<table id="post_menu" name="POST MENU" extends="sys" generate="true" menu="false" comment="POST MENU" master="post" slave="menu">
+			<column extends="post_id"/>
+			<column extends="menu_id"/>
+		</table>
+		<table id="role" name="ROLE" extends="sys" generate="true" comment="ROLE">
+			<column extends="name"/>
+			<column extends="code"/>
+			<column extends="genre"/>
+			<column extends="ordinal"/>
+		</table>
+		<table id="role_post" name="ROLE POST" extends="sys" generate="true" menu="false" comment="ROLE POST" master="role" slave="post">
+			<column extends="role_id"/>
+			<column extends="post_id"/>
+		</table>
+		<table id="-" name="-" generate="false" menu="true" permissions="sys:area:view,sys:org:view,sys:user:view"/>
 		<table id="area" name="AREA" extends="tree" generate="true" comment="AREA">
 		</table>
 		<table id="org" name="ORG" extends="tree" generate="true" comment="ORG">
@@ -21,33 +45,11 @@
 			<column id="login_ip" name="LOGIN IP" domain="code" comment="LOGIN IP"/>
 			<column id="login_time" name="LOGIN TIME" domain="long" comment="LOGIN TIME"/>
 		</table>
-		<table id="user_role" name="USER ROLE" extends="sys" generate="true" comment="USER ROLE" master="user" slave="role">
+		<table id="user_role" name="USER ROLE" extends="sys" generate="true" menu="false" comment="USER ROLE" master="user" slave="role">
 			<column extends="user_id"/>
 			<column extends="role_id"/>
 		</table>
-		<table id="role" name="ROLE" extends="sys" generate="true" comment="ROLE">
-			<column extends="name"/>
-			<column extends="code"/>
-			<column extends="genre"/>
-			<column extends="ordinal"/>
-		</table>
-		<table id="role_post" name="ROLE POST" extends="sys" generate="true" comment="ROLE POST" master="role" slave="post">
-			<column extends="role_id"/>
-			<column extends="post_id"/>
-		</table>
-		<table id="post" name="POST" extends="tree" generate="true" comment="POST">
-		</table>
-		<table id="post_menu" name="POST MENU" extends="sys" generate="true" comment="POST MENU" master="post" slave="menu">
-			<column extends="post_id"/>
-			<column extends="menu_id"/>
-		</table>
-		<table id="menu" name="MENU" extends="tree" generate="true" comment="MENU">
-			<column id="href" name="HREF" domain="memo" comment="HREF"/>
-			<column id="target" name="TARGET" domain="code" comment="TARGET"/>
-			<column id="icon" name="ICON" domain="code" comment="ICON"/>
-			<column id="hidden" name="HIDDEN" domain="bool" comment="HIDDEN"/>
-			<column id="permission" name="PERMISSION" domain="memo" comment="PERMISSION"/>
-		</table>
+		<table id="-" name="-" generate="false" menu="true" permissions="sys:dict:view"/>
 		<table id="dict" name="DICT" extends="sys" generate="true" comment="DICT">
 			<column extends="genre"/>
 			<column extends="descr"/>
@@ -56,7 +58,9 @@
 			<column extends="filters"/>
 			<column extends="ordinal"/>
 		</table>
-		<table id="conf" name="CONF" extends="sys" generate="true" comment="CONF">
+		<table id="-" name="-" generate="false" menu="true" permissions="sys:cache:view"/>
+		<table id="cache" name="CACHE" generate="false" menu="true"/>
+		<table id="conf" name="CONF" extends="sys" generate="true" menu="false" comment="CONF">
 			<column extends="name"/>
 			<column extends="code"/>
 			<column extends="content"/>
