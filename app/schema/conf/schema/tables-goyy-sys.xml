@@ -19,6 +19,7 @@
 			<column extends="name"/>
 			<column extends="code"/>
 			<column extends="genre"/>
+			<column extends="classify"/>
 			<column extends="ordinal"/>
 		</table>
 		<table id="role_post" name="ROLE POST" extends="sys" generate="true" menu="false" comment="ROLE POST" master="role" slave="post">
@@ -60,6 +61,11 @@
 		</table>
 		<table id="-" name="-" generate="false" menu="true" permissions="sys:cache:view"/>
 		<table id="cache" name="CACHE" generate="false" menu="true"/>
+		<table id="blacklist" name="BLACKLIST" extends="sys" generate="true" menu="false" comment="BLACKLIST">
+			<column extends="name"/>
+			<column extends="genre"/>
+			<column extends="usable"/>
+		</table>
 		<table id="conf" name="CONF" extends="sys" generate="true" menu="false" comment="CONF">
 			<column extends="name"/>
 			<column extends="code"/>
