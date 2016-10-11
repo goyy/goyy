@@ -1,6 +1,7 @@
 package org
 
 import (
+	"gopkg.in/goyy/goyy.v0/data/result"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
@@ -11,7 +12,16 @@ func init() {
 	xhttp.POST(ctl.ApiShow(), ctl.Show, ctl.PermitView())
 	xhttp.POST(ctl.ApiAdd(), ctl.Add, ctl.PermitAdd())
 	xhttp.POST(ctl.ApiEdit(), ctl.Edit, ctl.PermitEdit())
-	xhttp.POST(ctl.ApiSave(), ctl.Save, ctl.PermitAdd(), ctl.PermitEdit())
-	xhttp.POST(ctl.ApiDisable(), ctl.Disable, ctl.PermitDisable())
-	xhttp.GET(ctl.ApiTree(), ctl.Tree, ctl.PermitView())
+	xhttp.POST(ctl.ApiSave(), ctl.SaveAndTx, ctl.PermitAdd(), ctl.PermitEdit())
+	xhttp.POST(ctl.ApiDisable(), ctl.DisableAndTx, ctl.PermitDisable())
+	xhttp.GET(ctl.ApiTree(), ctl.Tree)
+
+	ctl.PostSave = refresh
+	ctl.PostDisable = refresh
+}
+
+// Refresh the cache data for the org dictionary.
+func refresh(c xhttp.Context, r *result.Entity) error {
+	refreshCache()
+	return nil
 }

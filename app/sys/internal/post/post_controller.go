@@ -12,6 +12,19 @@ func init() {
 	xhttp.POST(ctl.ApiAdd(), ctl.Add, ctl.PermitAdd())
 	xhttp.POST(ctl.ApiEdit(), ctl.Edit, ctl.PermitEdit())
 	xhttp.POST(ctl.ApiSave(), ctl.Save, ctl.PermitAdd(), ctl.PermitEdit())
-	xhttp.POST(ctl.ApiDisable(), ctl.Disable, ctl.PermitDisable())
-	xhttp.GET(ctl.ApiTree(), ctl.Tree, ctl.PermitView())
+	xhttp.POST(ctl.ApiDisable(), ctl.DisableAndTx, ctl.PermitDisable())
+	xhttp.GET(ctl.ApiTree(), ctl.Tree)
+
+	ctl.PreAdd = preSetMenuIds
+	ctl.PreEdit = preSetMenuIds
+	ctl.PreShow = preSetMenuIds
+}
+
+func preSetMenuIds(c xhttp.Context) error {
+	if menuIds, err := menus(c.Param("sIdTR")); err != nil {
+		return err
+	} else {
+		c.Params().Set("menuIds", menuIds)
+		return nil
+	}
 }

@@ -71,11 +71,11 @@ func (me *Entity) SetIcon(v string) {
 	me.icon.SetValue(v)
 }
 
-func (me *Entity) Hidden() bool {
+func (me *Entity) Hidden() string {
 	return me.hidden.Value()
 }
 
-func (me *Entity) SetHidden(v bool) {
+func (me *Entity) SetHidden(v string) {
 	me.hidden.SetValue(v)
 }
 
@@ -430,7 +430,7 @@ func (me *Entity) JSON() string {
 	b.WriteString(`,"href":"` + jsons.Format(me.GetString("href")) + `"`)
 	b.WriteString(`,"target":"` + jsons.Format(me.GetString("target")) + `"`)
 	b.WriteString(`,"icon":"` + jsons.Format(me.GetString("icon")) + `"`)
-	b.WriteString(`,"hidden":` + me.GetString("hidden"))
+	b.WriteString(`,"hidden":"` + jsons.Format(me.GetString("hidden")) + `"`)
 	b.WriteString(`,"permission":"` + jsons.Format(me.GetString("permission")) + `"`)
 	b.WriteString("}")
 	return b.String()

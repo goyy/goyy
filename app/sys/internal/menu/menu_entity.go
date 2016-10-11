@@ -5,7 +5,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/schema"
 )
 
-//go:generate xgen -entity=$GOFILE -scaffold -clidir=../../../bms -clipath=gopkg.in/goyy/goyy.v0/app/bms -apipath=gopkg.in/goyy/goyy.v0/app/sys -tstpath=gopkg.in/goyy/goyy.v0/app/tst
+//go:generate xgen -entity=$GOFILE -scaffold -clipath=gopkg.in/goyy/goyy.v0/app/bms -apipath=gopkg.in/goyy/goyy.v0/app/sys -tstpath=gopkg.in/goyy/goyy.v0/app/tst
 
 // MENU Entity.
 // @entity(module:"menu" project:"sys")
@@ -15,6 +15,6 @@ type Entity struct {
 	href       entity.String `db:"column=href&comment=HREF"`
 	target     entity.String `db:"column=target&comment=TARGET"`
 	icon       entity.String `db:"column=icon&comment=ICON"`
-	hidden     entity.Bool   `db:"column=hidden&comment=HIDDEN"`
+	hidden     entity.String `db:"column=hidden&comment=HIDDEN"`
 	permission entity.String `db:"column=permission&comment=PERMISSION"`
 }

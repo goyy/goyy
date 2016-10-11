@@ -26,7 +26,9 @@ var (
 	ENTITY_NAME      = ENTITY.COLUMN("name", "NAME")
 	ENTITY_CODE      = ENTITY.COLUMN("code", "CODE")
 	ENTITY_GENRE     = ENTITY.COLUMN("genre", "GENRE")
+	ENTITY_CLASSIFY  = ENTITY.COLUMN("classify", "LASSIFY")
 	ENTITY_ORDINAL   = ENTITY.COLUMN("ordinal", "ORDINAL")
+	ENTITY_POST_IDS  = ENTITY.TRANSIENT("post_ids", "POST_IDS")
 )
 
 func NewEntity() *Entity {
@@ -59,12 +61,28 @@ func (me *Entity) SetGenre(v string) {
 	me.genre.SetValue(v)
 }
 
+func (me *Entity) Classify() string {
+	return me.classify.Value()
+}
+
+func (me *Entity) SetClassify(v string) {
+	me.classify.SetValue(v)
+}
+
 func (me *Entity) Ordinal() string {
 	return me.ordinal.Value()
 }
 
 func (me *Entity) SetOrdinal(v string) {
 	me.ordinal.SetValue(v)
+}
+
+func (me *Entity) PostIds() string {
+	return me.postIds.Value()
+}
+
+func (me *Entity) SetPostIds(v string) {
+	me.postIds.SetValue(v)
 }
 
 func (me *Entity) init() {
@@ -118,7 +136,9 @@ func (me *Entity) initSetColumn() {
 	me.name.SetColumn(ENTITY_NAME)
 	me.code.SetColumn(ENTITY_CODE)
 	me.genre.SetColumn(ENTITY_GENRE)
+	me.classify.SetColumn(ENTITY_CLASSIFY)
 	me.ordinal.SetColumn(ENTITY_ORDINAL)
+	me.postIds.SetColumn(ENTITY_POST_IDS)
 }
 
 func (me *Entity) initSetDefault() {
@@ -139,7 +159,9 @@ func (me *Entity) initSetField() {
 	me.name.SetField(entity.DefaultField())
 	me.code.SetField(entity.DefaultField())
 	me.genre.SetField(entity.DefaultField())
+	me.classify.SetField(entity.DefaultField())
 	me.ordinal.SetField(entity.DefaultField())
+	me.postIds.SetField(entity.DefaultField())
 }
 
 func (me *Entity) initSetExcel() {
@@ -154,7 +176,9 @@ func (me *Entity) initSetJson() {
 	me.name.Field().SetJson(entity.NewJsonBy("name"))
 	me.code.Field().SetJson(entity.NewJsonBy("code"))
 	me.genre.Field().SetJson(entity.NewJsonBy("genre"))
+	me.classify.Field().SetJson(entity.NewJsonBy("classify"))
 	me.ordinal.Field().SetJson(entity.NewJsonBy("ordinal"))
+	me.postIds.Field().SetJson(entity.NewJsonBy("postIds"))
 }
 
 func (me *Entity) initSetXml() {
@@ -166,7 +190,9 @@ func (me *Entity) initSetXml() {
 	me.name.Field().SetXml(entity.NewXmlBy("name"))
 	me.code.Field().SetXml(entity.NewXmlBy("code"))
 	me.genre.Field().SetXml(entity.NewXmlBy("genre"))
+	me.classify.Field().SetXml(entity.NewXmlBy("classify"))
 	me.ordinal.Field().SetXml(entity.NewXmlBy("ordinal"))
+	me.postIds.Field().SetXml(entity.NewXmlBy("postIds"))
 }
 
 func (me Entity) New() entity.Interface {
@@ -181,8 +207,12 @@ func (me *Entity) Get(column string) interface{} {
 		return me.code.Value()
 	case ENTITY_GENRE.Name():
 		return me.genre.Value()
+	case ENTITY_CLASSIFY.Name():
+		return me.classify.Value()
 	case ENTITY_ORDINAL.Name():
 		return me.ordinal.Value()
+	case ENTITY_POST_IDS.Name():
+		return me.postIds.Value()
 	}
 	return me.Sys.Get(column)
 }
@@ -195,8 +225,12 @@ func (me *Entity) GetPtr(column string) interface{} {
 		return me.code.ValuePtr()
 	case ENTITY_GENRE.Name():
 		return me.genre.ValuePtr()
+	case ENTITY_CLASSIFY.Name():
+		return me.classify.ValuePtr()
 	case ENTITY_ORDINAL.Name():
 		return me.ordinal.ValuePtr()
+	case ENTITY_POST_IDS.Name():
+		return me.postIds.ValuePtr()
 	}
 	return me.Sys.GetPtr(column)
 }
@@ -209,8 +243,12 @@ func (me *Entity) GetString(field string) string {
 		return me.code.String()
 	case "genre":
 		return me.genre.String()
+	case "classify":
+		return me.classify.String()
 	case "ordinal":
 		return me.ordinal.String()
+	case "postIds":
+		return me.postIds.String()
 	}
 	return me.Sys.GetString(field)
 }
@@ -223,8 +261,12 @@ func (me *Entity) SetString(field, value string) error {
 		return me.code.SetString(value)
 	case "genre":
 		return me.genre.SetString(value)
+	case "classify":
+		return me.classify.SetString(value)
 	case "ordinal":
 		return me.ordinal.SetString(value)
+	case "postIds":
+		return me.postIds.SetString(value)
 	}
 	return me.Sys.SetString(field, value)
 }
@@ -241,8 +283,12 @@ func (me *Entity) Type(column string) (entity.Type, bool) {
 		return &me.code, true
 	case ENTITY_GENRE.Name():
 		return &me.genre, true
+	case ENTITY_CLASSIFY.Name():
+		return &me.classify, true
 	case ENTITY_ORDINAL.Name():
 		return &me.ordinal, true
+	case ENTITY_POST_IDS.Name():
+		return &me.postIds, true
 	}
 	return me.Sys.Type(column)
 }
@@ -255,8 +301,12 @@ func (me *Entity) Column(field string) (schema.Column, bool) {
 		return ENTITY_CODE, true
 	case "genre":
 		return ENTITY_GENRE, true
+	case "classify":
+		return ENTITY_CLASSIFY, true
 	case "ordinal":
 		return ENTITY_ORDINAL, true
+	case "postIds":
+		return ENTITY_POST_IDS, true
 	}
 	return me.Sys.Column(field)
 }
@@ -277,7 +327,9 @@ func (me *Entity) Columns() []schema.Column {
 		ENTITY_NAME,
 		ENTITY_CODE,
 		ENTITY_GENRE,
+		ENTITY_CLASSIFY,
 		ENTITY_ORDINAL,
+		ENTITY_POST_IDS,
 	}
 }
 
@@ -297,7 +349,9 @@ func (me *Entity) Names() []string {
 		"name",
 		"code",
 		"genre",
+		"classify",
 		"ordinal",
+		"postIds",
 	}
 }
 
@@ -326,7 +380,9 @@ func (me *Entity) JSON() string {
 	b.WriteString(`,"name":"` + jsons.Format(me.GetString("name")) + `"`)
 	b.WriteString(`,"code":"` + jsons.Format(me.GetString("code")) + `"`)
 	b.WriteString(`,"genre":"` + jsons.Format(me.GetString("genre")) + `"`)
+	b.WriteString(`,"classify":"` + jsons.Format(me.GetString("classify")) + `"`)
 	b.WriteString(`,"ordinal":"` + jsons.Format(me.GetString("ordinal")) + `"`)
+	b.WriteString(`,"postIds":"` + jsons.Format(me.GetString("postIds")) + `"`)
 	b.WriteString("}")
 	return b.String()
 }

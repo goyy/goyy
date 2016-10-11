@@ -5,7 +5,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/schema"
 )
 
-//go:generate xgen -entity=$GOFILE -scaffold -clidir=../../../bms -clipath=gopkg.in/goyy/goyy.v0/app/bms -apipath=gopkg.in/goyy/goyy.v0/app/sys -tstpath=gopkg.in/goyy/goyy.v0/app/tst
+//go:generate xgen -entity=$GOFILE -scaffold -clipath=gopkg.in/goyy/goyy.v0/app/bms -apipath=gopkg.in/goyy/goyy.v0/app/sys -tstpath=gopkg.in/goyy/goyy.v0/app/tst
 
 // USER Entity.
 // @entity(module:"user" project:"sys")
@@ -24,4 +24,5 @@ type Entity struct {
 	loginName entity.String `db:"column=login_name&comment=LOGIN NAME"`
 	loginIp   entity.String `db:"column=login_ip&comment=LOGIN IP"`
 	loginTime entity.Int64  `db:"column=login_time&comment=LOGIN TIME"`
+	roleIds   entity.String `db:"comment=ROLE_IDS&transient=true"`
 }

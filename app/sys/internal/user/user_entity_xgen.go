@@ -35,6 +35,7 @@ var (
 	ENTITY_LOGIN_NAME = ENTITY.COLUMN("login_name", "LOGIN NAME")
 	ENTITY_LOGIN_IP   = ENTITY.COLUMN("login_ip", "LOGIN IP")
 	ENTITY_LOGIN_TIME = ENTITY.COLUMN("login_time", "LOGIN TIME")
+	ENTITY_ROLE_IDS   = ENTITY.TRANSIENT("role_ids", "ROLE_IDS")
 )
 
 func NewEntity() *Entity {
@@ -139,6 +140,14 @@ func (me *Entity) SetLoginTime(v int64) {
 	me.loginTime.SetValue(v)
 }
 
+func (me *Entity) RoleIds() string {
+	return me.roleIds.Value()
+}
+
+func (me *Entity) SetRoleIds(v string) {
+	me.roleIds.SetValue(v)
+}
+
 func (me *Entity) init() {
 	me.table = ENTITY
 	me.initSetDict()
@@ -199,6 +208,7 @@ func (me *Entity) initSetColumn() {
 	me.loginName.SetColumn(ENTITY_LOGIN_NAME)
 	me.loginIp.SetColumn(ENTITY_LOGIN_IP)
 	me.loginTime.SetColumn(ENTITY_LOGIN_TIME)
+	me.roleIds.SetColumn(ENTITY_ROLE_IDS)
 }
 
 func (me *Entity) initSetDefault() {
@@ -228,6 +238,7 @@ func (me *Entity) initSetField() {
 	me.loginName.SetField(entity.DefaultField())
 	me.loginIp.SetField(entity.DefaultField())
 	me.loginTime.SetField(entity.DefaultField())
+	me.roleIds.SetField(entity.DefaultField())
 }
 
 func (me *Entity) initSetExcel() {
@@ -251,6 +262,7 @@ func (me *Entity) initSetJson() {
 	me.loginName.Field().SetJson(entity.NewJsonBy("loginName"))
 	me.loginIp.Field().SetJson(entity.NewJsonBy("loginIp"))
 	me.loginTime.Field().SetJson(entity.NewJsonBy("loginTime"))
+	me.roleIds.Field().SetJson(entity.NewJsonBy("roleIds"))
 }
 
 func (me *Entity) initSetXml() {
@@ -271,6 +283,7 @@ func (me *Entity) initSetXml() {
 	me.loginName.Field().SetXml(entity.NewXmlBy("loginName"))
 	me.loginIp.Field().SetXml(entity.NewXmlBy("loginIp"))
 	me.loginTime.Field().SetXml(entity.NewXmlBy("loginTime"))
+	me.roleIds.Field().SetXml(entity.NewXmlBy("roleIds"))
 }
 
 func (me Entity) New() entity.Interface {
@@ -303,6 +316,8 @@ func (me *Entity) Get(column string) interface{} {
 		return me.loginIp.Value()
 	case ENTITY_LOGIN_TIME.Name():
 		return me.loginTime.Value()
+	case ENTITY_ROLE_IDS.Name():
+		return me.roleIds.Value()
 	}
 	return me.Sys.Get(column)
 }
@@ -333,6 +348,8 @@ func (me *Entity) GetPtr(column string) interface{} {
 		return me.loginIp.ValuePtr()
 	case ENTITY_LOGIN_TIME.Name():
 		return me.loginTime.ValuePtr()
+	case ENTITY_ROLE_IDS.Name():
+		return me.roleIds.ValuePtr()
 	}
 	return me.Sys.GetPtr(column)
 }
@@ -363,6 +380,8 @@ func (me *Entity) GetString(field string) string {
 		return me.loginIp.String()
 	case "loginTime":
 		return me.loginTime.String()
+	case "roleIds":
+		return me.roleIds.String()
 	}
 	return me.Sys.GetString(field)
 }
@@ -393,6 +412,8 @@ func (me *Entity) SetString(field, value string) error {
 		return me.loginIp.SetString(value)
 	case "loginTime":
 		return me.loginTime.SetString(value)
+	case "roleIds":
+		return me.roleIds.SetString(value)
 	}
 	return me.Sys.SetString(field, value)
 }
@@ -427,6 +448,8 @@ func (me *Entity) Type(column string) (entity.Type, bool) {
 		return &me.loginIp, true
 	case ENTITY_LOGIN_TIME.Name():
 		return &me.loginTime, true
+	case ENTITY_ROLE_IDS.Name():
+		return &me.roleIds, true
 	}
 	return me.Sys.Type(column)
 }
@@ -457,6 +480,8 @@ func (me *Entity) Column(field string) (schema.Column, bool) {
 		return ENTITY_LOGIN_IP, true
 	case "loginTime":
 		return ENTITY_LOGIN_TIME, true
+	case "roleIds":
+		return ENTITY_ROLE_IDS, true
 	}
 	return me.Sys.Column(field)
 }
@@ -486,6 +511,7 @@ func (me *Entity) Columns() []schema.Column {
 		ENTITY_LOGIN_NAME,
 		ENTITY_LOGIN_IP,
 		ENTITY_LOGIN_TIME,
+		ENTITY_ROLE_IDS,
 	}
 }
 
@@ -514,6 +540,7 @@ func (me *Entity) Names() []string {
 		"loginName",
 		"loginIp",
 		"loginTime",
+		"roleIds",
 	}
 }
 
@@ -551,6 +578,7 @@ func (me *Entity) JSON() string {
 	b.WriteString(`,"loginName":"` + jsons.Format(me.GetString("loginName")) + `"`)
 	b.WriteString(`,"loginIp":"` + jsons.Format(me.GetString("loginIp")) + `"`)
 	b.WriteString(`,"loginTime":` + me.GetString("loginTime"))
+	b.WriteString(`,"roleIds":"` + jsons.Format(me.GetString("roleIds")) + `"`)
 	b.WriteString("}")
 	return b.String()
 }

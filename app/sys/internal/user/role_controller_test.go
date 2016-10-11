@@ -7,7 +7,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/test/assert"
 )
 
-func TestControllerIndex(t *testing.T) {
+func TestRoleControllerIndex(t *testing.T) {
 	if !assert.HTTPSuccess(t, ctl.Index, "GET", ctl.ApiIndex(), nil) {
 		t.Errorf(`GET: %s: Fail`, ctl.ApiIndex())
 	}

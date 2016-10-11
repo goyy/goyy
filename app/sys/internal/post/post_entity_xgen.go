@@ -34,12 +34,21 @@ var (
 	ENTITY_DELETION     = ENTITY.DELETION("deletion", "DELETION")
 	ENTITY_ARTIFICAL    = ENTITY.COLUMN("artifical", "ARTIFICAL")
 	ENTITY_HISTORY      = ENTITY.COLUMN("history", "HISTORY")
+	ENTITY_MENU_IDS     = ENTITY.TRANSIENT("menu_ids", "MENU IDS")
 )
 
 func NewEntity() *Entity {
 	e := &Entity{}
 	e.init()
 	return e
+}
+
+func (me *Entity) MenuIds() string {
+	return me.menuIds.Value()
+}
+
+func (me *Entity) SetMenuIds(v string) {
+	me.menuIds.SetValue(v)
 }
 
 func (me *Entity) init() {
@@ -123,6 +132,7 @@ func (me *Entity) initSetColumn() {
 	if t, ok := me.Tree.Type("history"); ok {
 		t.SetColumn(ENTITY_HISTORY)
 	}
+	me.menuIds.SetColumn(ENTITY_MENU_IDS)
 }
 
 func (me *Entity) initSetDefault() {
@@ -140,6 +150,7 @@ func (me *Entity) initSetField() {
 			t.SetField(entity.DefaultField())
 		}
 	}
+	me.menuIds.SetField(entity.DefaultField())
 }
 
 func (me *Entity) initSetExcel() {
@@ -151,6 +162,7 @@ func (me *Entity) initSetJson() {
 			t.Field().SetJson(entity.NewJsonBy(c))
 		}
 	}
+	me.menuIds.Field().SetJson(entity.NewJsonBy("menuIds"))
 }
 
 func (me *Entity) initSetXml() {
@@ -159,6 +171,7 @@ func (me *Entity) initSetXml() {
 			t.Field().SetXml(entity.NewXmlBy(c))
 		}
 	}
+	me.menuIds.Field().SetXml(entity.NewXmlBy("menuIds"))
 }
 
 func (me Entity) New() entity.Interface {
@@ -167,24 +180,32 @@ func (me Entity) New() entity.Interface {
 
 func (me *Entity) Get(column string) interface{} {
 	switch column {
+	case ENTITY_MENU_IDS.Name():
+		return me.menuIds.Value()
 	}
 	return me.Tree.Get(column)
 }
 
 func (me *Entity) GetPtr(column string) interface{} {
 	switch column {
+	case ENTITY_MENU_IDS.Name():
+		return me.menuIds.ValuePtr()
 	}
 	return me.Tree.GetPtr(column)
 }
 
 func (me *Entity) GetString(field string) string {
 	switch strings.ToLowerFirst(field) {
+	case "menuIds":
+		return me.menuIds.String()
 	}
 	return me.Tree.GetString(field)
 }
 
 func (me *Entity) SetString(field, value string) error {
 	switch strings.ToLowerFirst(field) {
+	case "menuIds":
+		return me.menuIds.SetString(value)
 	}
 	return me.Tree.SetString(field, value)
 }
@@ -195,12 +216,16 @@ func (me *Entity) Table() schema.Table {
 
 func (me *Entity) Type(column string) (entity.Type, bool) {
 	switch column {
+	case ENTITY_MENU_IDS.Name():
+		return &me.menuIds, true
 	}
 	return me.Tree.Type(column)
 }
 
 func (me *Entity) Column(field string) (schema.Column, bool) {
 	switch strings.ToLowerFirst(field) {
+	case "menuIds":
+		return ENTITY_MENU_IDS, true
 	}
 	return me.Tree.Column(field)
 }
@@ -229,6 +254,7 @@ func (me *Entity) Columns() []schema.Column {
 		ENTITY_DELETION,
 		ENTITY_ARTIFICAL,
 		ENTITY_HISTORY,
+		ENTITY_MENU_IDS,
 	}
 }
 
@@ -256,6 +282,7 @@ func (me *Entity) Names() []string {
 		"deletion",
 		"artifical",
 		"history",
+		"menuIds",
 	}
 }
 
@@ -292,6 +319,7 @@ func (me *Entity) JSON() string {
 	b.WriteString(`,"deletion":` + me.GetString("deletion"))
 	b.WriteString(`,"artifical":` + me.GetString("artifical"))
 	b.WriteString(`,"history":` + me.GetString("history"))
+	b.WriteString(`,"menuIds":"` + jsons.Format(me.GetString("menuIds")) + `"`)
 	b.WriteString("}")
 	return b.String()
 }

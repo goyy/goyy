@@ -7,7 +7,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/domain"
 )
 
-func TestSelectCountBySift(t *testing.T) {
+func TestRoleSelectCountBySift(t *testing.T) {
 	sIdEQ, _ := domain.NewSift("sIdEQ", "1")
 	sDeletionEQ, _ := domain.NewSift("sDeletionEQ", "0")
 	out, _ := Mgr.SelectCountBySift(sIdEQ, sDeletionEQ)
