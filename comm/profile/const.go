@@ -5,16 +5,15 @@
 package profile
 
 const (
-	DEFAULT = "default"
-	PROD    = "production"
-	DEV     = "development"
-	TEST    = "test"
-	UNIT    = "unit"
-	BMS     = "bms"
-	WEB     = "web"
-	WAP     = "wap"
-	API     = "api"
-	QRY     = "qry"
+	PROD = "production"
+	DEV  = "development"
+	TEST = "test"
+	UNIT = "unit"
+	BMS  = "bms"
+	WEB  = "web"
+	WAP  = "wap"
+	API  = "api"
+	QRY  = "qry"
 )
 
 const (

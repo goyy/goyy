@@ -9,6 +9,7 @@ import (
 	"errors"
 	"os"
 
+	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
@@ -203,12 +204,18 @@ func parse(file string) (xEnv *xEnvironment, err error) {
 		err = derr
 		return
 	}
+	xenvs := xConf.Environments.Environment
+	for _, xenv := range xenvs {
+		if xenv.Id == profile.Default() {
+			xEnv = &xenv
+			return
+		}
+	}
 	defaultName := xConf.Environments.Default
 	if strings.IsBlank(defaultName) {
 		err = errors.New(i18N.Message("empty.environments.default"))
 		return
 	}
-	xenvs := xConf.Environments.Environment
 	for _, xenv := range xenvs {
 		if xenv.Id == defaultName {
 			xEnv = &xenv

@@ -10,7 +10,7 @@ import (
 
 var (
 	actives  []string
-	defaults = DEFAULT
+	defaults = DEV
 )
 
 // Return the set of profiles explicitly made active for this environment.
