@@ -24,6 +24,7 @@ type xEnvironment struct {
 	Developers []xStatic   `xml:"developer"`
 	Operations []xStatic   `xml:"operation"`
 	Uploads    []xUpload   `xml:"upload"`
+	Export     []xExport   `xml:"export"`
 }
 
 type xDatabase struct {
@@ -66,4 +67,9 @@ type xUpload struct {
 	Dir     string `xml:"dir"`
 	URL     string `xml:"url"`
 	MaxSize string `xml:"maxSize"`
+}
+
+type xExport struct {
+	Name string `xml:"name,attr"`
+	Dir  string `xml:"dir"`
 }

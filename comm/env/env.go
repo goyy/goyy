@@ -71,7 +71,7 @@ func Session(name string) (out xSession, err error) {
 	return
 }
 
-// Get the apis based on the environment profiles.
+// Get the api based on the environment profiles.
 func Api(name string) (out xApi, err error) {
 	xEnv, err := parse(conf + "/env/api.xml")
 	if err != nil {
@@ -170,6 +170,23 @@ func Upload(name string) (out xUpload, err error) {
 		}
 	}
 	err = errors.New(i18N.Messagef("empty.environments.environment.upload", name))
+	return
+}
+
+// Get the export based on the environment profiles.
+func Export(name string) (out xExport, err error) {
+	xEnv, err := parse(conf + "/env/export.xml")
+	if err != nil {
+		return
+	}
+	outs := xEnv.Export
+	for _, v := range outs {
+		if v.Name == name {
+			out = v
+			return
+		}
+	}
+	err = errors.New(i18N.Messagef("empty.environments.environment.export", name))
 	return
 }
 
