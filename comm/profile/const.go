@@ -13,11 +13,10 @@ const (
 	BMS     = "bms"
 	WEB     = "web"
 	WAP     = "wap"
-	APIS    = "apis"
+	API     = "api"
+	QRY     = "qry"
 )
 
 const (
-	_actives_  = "actives"
-	_defaults_ = "defaults"
-	_reverse_  = "!"
+	reverse = "!"
 )

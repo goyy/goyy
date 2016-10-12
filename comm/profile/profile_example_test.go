@@ -6,12 +6,18 @@ package profile_test
 
 import (
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/comm/profile"
 )
 
 func ExampleActives() {
 	profile.SetActives(profile.PROD, profile.TEST)
+	fmt.Println(profile.Accepts(profile.PROD))
+	fmt.Println(profile.Accepts(profile.DEV))
 	fmt.Println(profile.Actives())
 
-	// Output:[production test]
+	// Output:
+	// true
+	// false
+	// [production test]
 }
