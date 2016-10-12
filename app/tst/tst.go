@@ -4,11 +4,13 @@ import (
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
+	"gopkg.in/goyy/goyy.v0/app/sys/api/dict"
 	"gopkg.in/goyy/goyy.v0/comm/env"
 	"gopkg.in/goyy/goyy.v0/comm/log"
 	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/data/cache"
 	"gopkg.in/goyy/goyy.v0/data/dialect"
+	"gopkg.in/goyy/goyy.v0/data/schema"
 	"gopkg.in/goyy/goyy.v0/data/service"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
@@ -20,6 +22,9 @@ func init() {
 	// DataBase
 	env.SetConf("/gopkg.in/goyy/goyy.v0/app/tst/conf")
 	service.DB = service.NewDB(&dialect.MySQL{}, "goyy")
+
+	// dict
+	schema.ParseDict = dict.Mval
 
 	// cache
 	if v, err := env.Session("goyy"); err == nil {
