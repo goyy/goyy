@@ -4,54 +4,66 @@
 	<environments default="development">
 		<environment id="development">
 			<asset name="env">
+				<enable>true</enable>
 				<dir>/assets</dir>
 				<url>/assets</url>
 			</asset>
 			<static name="env">
+				<enable>true</enable>
 				<dir>static</dir>
 				<url>/statics</url>
 			</static>
 			<developer name="env">
+				<enable>true</enable>
 				<dir>/assets/devs</dir>
 				<url>/devs</url>
 			</developer>
 			<operation name="env">
+				<enable>true</enable>
 				<dir>/assets/oprs</dir>
 				<url>/oprs</url>
 			</operation>
 		</environment>
 		<environment id="test">
 			<asset name="env">
+				<enable>false</enable>
 				<dir>/assets</dir>
 				<url>/assets</url>
 			</asset>
 			<static name="env">
+				<enable>false</enable>
 				<dir>static</dir>
 				<url>/statics</url>
 			</static>
 			<developer name="env">
+				<enable>false</enable>
 				<dir>/assets/devs</dir>
 				<url>/devs</url>
 			</developer>
 			<operation name="env">
+				<enable>false</enable>
 				<dir>/assets/oprs</dir>
 				<url>/oprs</url>
 			</operation>
 		</environment>
 		<environment id="production">
 			<asset name="env">
+				<enable>false</enable>
 				<dir>/assets</dir>
 				<url>/assets</url>
 			</asset>
 			<static name="env">
+				<enable>false</enable>
 				<dir>static</dir>
 				<url>/statics</url>
 			</static>
 			<developer name="env">
+				<enable>false</enable>
 				<dir>/assets/devs</dir>
 				<url>/devs</url>
 			</developer>
 			<operation name="env">
+				<enable>false</enable>
 				<dir>/assets/oprs</dir>
 				<url>/oprs</url>
 			</operation>

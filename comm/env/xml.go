@@ -57,13 +57,15 @@ type xApi struct {
 }
 
 type xStatic struct {
-	Name string `xml:"name,attr"`
-	Dir  string `xml:"dir"`
-	URL  string `xml:"url"`
+	Name   string `xml:"name,attr"`
+	Enable bool   `xml:"enable"`
+	Dir    string `xml:"dir"`
+	URL    string `xml:"url"`
 }
 
 type xUpload struct {
 	Name    string `xml:"name,attr"`
+	Enable  bool   `xml:"enable"`
 	Dir     string `xml:"dir"`
 	URL     string `xml:"url"`
 	MaxSize string `xml:"maxSize"`

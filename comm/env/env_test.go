@@ -73,24 +73,26 @@ func TestSession(t *testing.T) {
 func TestStatic(t *testing.T) {
 	in := "env"
 	out1 := "env"
-	out2 := "static"
-	out3 := "/statics"
+	out2 := true
+	out3 := "static"
+	out4 := "/statics"
 	v, _ := env.Static(in)
-	if v.Name != out1 || v.Dir != out2 || v.URL != out3 {
-		format := "env.Static(%s) = %s, %s, %s; want %s, %s, %s"
-		t.Errorf(format, in, v.Name, v.Dir, v.URL, out1, out2, out3)
+	if v.Name != out1 || v.Enable != out2 || v.Dir != out3 || v.URL != out4 {
+		format := "env.Static(%s) = %s, %t, %s, %s; want %s, %t, %s, %s"
+		t.Errorf(format, in, v.Name, v.Enable, v.Dir, v.URL, out1, out2, out3, out4)
 	}
 }
 
 func TestUpload(t *testing.T) {
 	in := "env"
 	out1 := "env"
-	out2 := "/assets/upls"
-	out3 := "/upls"
-	out4 := "5242880"
+	out2 := true
+	out3 := "/assets/upls"
+	out4 := "/upls"
+	out5 := "5242880"
 	v, _ := env.Upload(in)
-	if v.Name != out1 || v.Dir != out2 || v.URL != out3 || v.MaxSize != out4 {
-		format := "env.Upload(%s) = %s, %s, %s, %s; want %s, %s, %s, %s"
-		t.Errorf(format, in, v.Name, v.Dir, v.URL, v.MaxSize, out1, out2, out3, out4)
+	if v.Name != out1 || v.Enable != out2 || v.Dir != out3 || v.URL != out4 || v.MaxSize != out5 {
+		format := "env.Upload(%s) = %s, %t, %s, %s, %s; want %s, %t, %s, %s, %s"
+		t.Errorf(format, in, v.Name, v.Enable, v.Dir, v.URL, v.MaxSize, out1, out2, out3, out4, out5)
 	}
 }
