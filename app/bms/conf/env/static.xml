@@ -4,54 +4,66 @@
 	<environments default="development">
 		<environment id="development">
 			<asset name="goyy">
+				<enable>true</enable>
 				<dir>/assets</dir>
 				<url>/assets</url>
 			</asset>
 			<static name="goyy">
+				<enable>true</enable>
 				<dir>static</dir>
 				<url>/statics</url>
 			</static>
 			<developer name="goyy">
+				<enable>true</enable>
 				<dir>/assets/yydev</dir>
 				<url>/devs</url>
 			</developer>
 			<operation name="goyy">
+				<enable>true</enable>
 				<dir>/assets/yyopr</dir>
 				<url>/oprs</url>
 			</operation>
 		</environment>
 		<environment id="test">
 			<asset name="goyy">
+				<enable>false</enable>
 				<dir>/assets</dir>
 				<url>http://127.0.0.1:9099</url>
 			</asset>
 			<static name="goyy">
+				<enable>false</enable>
 				<dir>/assets/yybms</dir>
 				<url>http://127.0.0.1:9099/yybms</url>
 			</static>
 			<developer name="goyy">
+				<enable>false</enable>
 				<dir>/assets/yydev</dir>
 				<url>http://127.0.0.1:9099/yydev</url>
 			</developer>
 			<operation name="goyy">
+				<enable>false</enable>
 				<dir>/assets/yyopr</dir>
 				<url>http://127.0.0.1:9099/yyopr</url>
 			</operation>
 		</environment>
 		<environment id="production">
 			<asset name="goyy">
+				<enable>false</enable>
 				<dir>/assets</dir>
 				<url>http://assets.goyy.org</url>
 			</asset>
 			<static name="goyy">
+				<enable>false</enable>
 				<dir>/assets/yybms</dir>
 				<url>http://assets.goyy.org/yybms</url>
 			</static>
 			<developer name="goyy">
+				<enable>false</enable>
 				<dir>/assets/yydev</dir>
 				<url>http://assets.goyy.org/yydev</url>
 			</developer>
 			<operation name="goyy">
+				<enable>false</enable>
 				<dir>/assets/yyopr</dir>
 				<url>http://assets.goyy.org/yyopr</url>
 			</operation>

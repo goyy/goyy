@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE env PUBLIC "-//GOYY//DTD ENV 1.0//EN" "http://goyy.org/dtd/env-1.0.dtd">
+<configuration>
+	<environments default="development">
+		<environment id="development">
+			<export name="goyy">
+				<dir>/assets/devs/export/excel</dir>
+			</export>
+		</environment>
+		<environment id="test">
+			<export name="goyy">
+				<dir>/app/assets/devs/export/excel</dir>
+			</export>
+		</environment>
+		<environment id="production">
+			<export name="goyy">
+				<dir>/app/assets/devs/export/excel</dir>
+			</export>
+		</environment>
+	</environments>
+</configuration>
