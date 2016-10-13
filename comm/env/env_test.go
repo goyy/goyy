@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"gopkg.in/goyy/goyy.v0/comm/env"
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 func TestApi(t *testing.T) {
@@ -106,5 +107,23 @@ func TestTemplate(t *testing.T) {
 	if v.Name != out1 || v.Enable != out2 || v.Reloaded != out3 {
 		format := "env.Template(%s) = %s, %t, %t; want %s, %t, %t"
 		t.Errorf(format, in, v.Name, v.Enable, v.Reloaded, out1, out2, out3)
+	}
+}
+
+func TestIllegal(t *testing.T) {
+	in := "env"
+	out1 := "env"
+	out2 := true
+
+	notExpected := -1
+	exclude := "/login"
+	value := "FileOutputStream,"
+
+	v, _ := env.Illegal(in)
+	out3 := strings.Index(v.Excludes, exclude)
+	out4 := strings.Index(v.Values, value)
+	if v.Name != out1 || v.Enable != out2 || out3 == notExpected || out4 == notExpected {
+		format := "env.Illegal(%s) = %s, %t, %v, %v; want %s, %t, %s, %s"
+		t.Errorf(format, in, v.Name, v.Enable, out3, out4, out1, out2, ">0", ">0")
 	}
 }

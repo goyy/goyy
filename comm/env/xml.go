@@ -27,6 +27,7 @@ type xEnvironment struct {
 	Exports    []xExport   `xml:"export"`
 	Htmls      []xTemplate `xml:"html"`
 	Templates  []xTemplate `xml:"template"`
+	Illegals   []xIllegal  `xml:"illegal"`
 }
 
 type xDatabase struct {
@@ -82,4 +83,11 @@ type xTemplate struct {
 	Name     string `xml:"name,attr"`
 	Enable   bool   `xml:"enable"`
 	Reloaded bool   `xml:"reloaded"`
+}
+
+type xIllegal struct {
+	Name     string `xml:"name,attr"`
+	Enable   bool   `xml:"enable"`
+	Excludes string `xml:"excludes"`
+	Values   string `xml:"values"`
 }

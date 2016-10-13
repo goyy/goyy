@@ -19,6 +19,7 @@ func Init(envName, defaultProfile string, activesProfile ...string) {
 	initExport(envName)
 	initSession(envName)
 	initTemplate(envName)
+	initIllegal(envName)
 }
 
 func initProfile(defaults string, actives ...string) {
@@ -124,4 +125,14 @@ func initTemplate(envName string) {
 		log.Println(err.Error())
 	}
 
+}
+
+func initIllegal(envName string) {
+	if v, err := env.Illegal(envName); err == nil {
+		Conf.Illegal.Enable = v.Enable
+		Conf.Illegal.Excludes = []string{v.Excludes}
+		Conf.Illegal.Values = []string{v.Values}
+	} else {
+		log.Println(err.Error())
+	}
 }

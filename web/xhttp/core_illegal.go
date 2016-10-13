@@ -26,8 +26,14 @@ func (me *illegalServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) boo
 	// Excluded URL
 	if Conf.Illegal.Excludes != nil && len(Conf.Illegal.Excludes) > 0 {
 		for _, e := range Conf.Illegal.Excludes {
-			if e == r.URL.Path {
-				return false
+			for _, v := range strings.Split(e, ",") {
+				v = strings.TrimSpace(v)
+				if strings.IsBlank(v) {
+					continue
+				}
+				if v == r.URL.Path {
+					return false
+				}
 			}
 		}
 	}
@@ -94,6 +100,7 @@ func (me *illegalServeMux) setValues() {
 						for _, v := range vs {
 							if strings.IsNotBlank(v) {
 								v = strings.ToLower(v)
+								v = strings.TrimSpace(v)
 								me.values = append(me.values, v)
 							}
 						}

@@ -225,6 +225,23 @@ func Template(name string) (out xTemplate, err error) {
 	return
 }
 
+// Get the illegal based on the environment profiles.
+func Illegal(name string) (out xIllegal, err error) {
+	xEnv, err := parse(conf + "/env/illegal.xml")
+	if err != nil {
+		return
+	}
+	outs := xEnv.Illegals
+	for _, v := range outs {
+		if v.Name == name {
+			out = v
+			return
+		}
+	}
+	err = errors.New(i18N.Messagef("empty.environments.environment.illegal", name))
+	return
+}
+
 func parse(file string) (xEnv *xEnvironment, err error) {
 	f, ferr := os.Open(file)
 	defer f.Close()
