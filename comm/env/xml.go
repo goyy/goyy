@@ -28,6 +28,7 @@ type xEnvironment struct {
 	Htmls      []xTemplate `xml:"html"`
 	Templates  []xTemplate `xml:"template"`
 	Illegals   []xIllegal  `xml:"illegal"`
+	Secures    []xSecure   `xml:"secure"`
 }
 
 type xDatabase struct {
@@ -90,4 +91,22 @@ type xIllegal struct {
 	Enable   bool   `xml:"enable"`
 	Excludes string `xml:"excludes"`
 	Values   string `xml:"values"`
+}
+
+type xSecure struct {
+	Name       string   `xml:"name,attr"`
+	Enable     bool     `xml:"enable"`
+	LoginUrl   string   `xml:"login-url"`
+	ForbidUrl  string   `xml:"forbid-url"`
+	SuccessUrl string   `xml:"success-url"`
+	Filters    xFilters `xml:"filters"`
+}
+
+type xFilters struct {
+	InterceptUrl []xInterceptUrl `xml:"intercept-url"`
+}
+
+type xInterceptUrl struct {
+	Pattern string `xml:"pattern,attr"`
+	Access  string `xml:"access,attr"`
 }

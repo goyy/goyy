@@ -242,6 +242,23 @@ func Illegal(name string) (out xIllegal, err error) {
 	return
 }
 
+// Get the secure based on the environment profiles.
+func Secure(name string) (out xSecure, err error) {
+	xEnv, err := parse(conf + "/env/secure.xml")
+	if err != nil {
+		return
+	}
+	outs := xEnv.Secures
+	for _, v := range outs {
+		if v.Name == name {
+			out = v
+			return
+		}
+	}
+	err = errors.New(i18N.Messagef("empty.environments.environment.secure", name))
+	return
+}
+
 func parse(file string) (xEnv *xEnvironment, err error) {
 	f, ferr := os.Open(file)
 	defer f.Close()

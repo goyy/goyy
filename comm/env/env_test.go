@@ -127,3 +127,20 @@ func TestIllegal(t *testing.T) {
 		t.Errorf(format, in, v.Name, v.Enable, out3, out4, out1, out2, ">0", ">0")
 	}
 }
+
+func TestSecure(t *testing.T) {
+	in := "env"
+	out1 := "env"
+	out2 := true
+	out3 := "/login.html"
+	out4 := "/err/403.html"
+	out5 := "/"
+	out6 := "/login"
+	out7 := "anon"
+
+	v, _ := env.Secure(in)
+	if v.Name != out1 || v.Enable != out2 || v.LoginUrl != out3 || v.ForbidUrl != out4 || v.SuccessUrl != out5 || v.Filters.InterceptUrl[3].Pattern != out6 || v.Filters.InterceptUrl[3].Access != out7 {
+		format := "env.Secure(%s) = %s, %t, %s, %s, %s, %s, %s; want %s, %t, %s, %s, %s, %s, %s"
+		t.Errorf(format, in, v.Name, v.Enable, v.LoginUrl, v.ForbidUrl, v.SuccessUrl, v.Filters.InterceptUrl[3].Pattern, v.Filters.InterceptUrl[3].Access, out3, out4, out1, out2, out3, out5, out6, out7)
+	}
+}

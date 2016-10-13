@@ -8,6 +8,8 @@ import (
 	"gopkg.in/goyy/goyy.v0/comm/env"
 	"gopkg.in/goyy/goyy.v0/comm/log"
 	"gopkg.in/goyy/goyy.v0/comm/profile"
+	"gopkg.in/goyy/goyy.v0/comm/xtype"
+	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/templates"
 )
 
@@ -20,6 +22,7 @@ func Init(envName, defaultProfile string, activesProfile ...string) {
 	initSession(envName)
 	initTemplate(envName)
 	initIllegal(envName)
+	initSecure(envName)
 }
 
 func initProfile(defaults string, actives ...string) {
@@ -130,8 +133,40 @@ func initTemplate(envName string) {
 func initIllegal(envName string) {
 	if v, err := env.Illegal(envName); err == nil {
 		Conf.Illegal.Enable = v.Enable
-		Conf.Illegal.Excludes = []string{v.Excludes}
-		Conf.Illegal.Values = []string{v.Values}
+		if v.Enable {
+			Conf.Illegal.Excludes = []string{v.Excludes}
+			Conf.Illegal.Values = []string{v.Values}
+		}
+	} else {
+		log.Println(err.Error())
+	}
+}
+
+func initSecure(envName string) {
+	if v, err := env.Secure(envName); err == nil {
+		Conf.Secure.Enable = v.Enable
+		if v.Enable {
+			if strings.IsNotBlank(v.LoginUrl) {
+				Conf.Secure.LoginUrl = v.LoginUrl
+			}
+			if strings.IsNotBlank(v.ForbidUrl) {
+				Conf.Secure.ForbidUrl = v.ForbidUrl
+			}
+			if strings.IsNotBlank(v.SuccessUrl) {
+				Conf.Secure.SuccessUrl = v.SuccessUrl
+			}
+			l := len(v.Filters.InterceptUrl)
+			if v.Filters.InterceptUrl != nil && l > 0 {
+				filters := make([]xtype.Map, l)
+				for i, v := range v.Filters.InterceptUrl {
+					m := xtype.Map{
+						Key:   v.Pattern,
+						Value: v.Access,
+					}
+					filters[i] = m
+				}
+			}
+		}
 	} else {
 		log.Println(err.Error())
 	}
