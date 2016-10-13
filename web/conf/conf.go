@@ -7,14 +7,12 @@ package conf
 import (
 	"html/template"
 
-	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/web/session"
 )
 
 var Conf = &conf{
-	Addr:    ":9090",
-	Profile: profile.DEV,
+	Addr: ":9090",
 	Err: &errOptions{
 		Err401: "/err/401.html",
 		Err403: "/err/403.html",
@@ -100,7 +98,6 @@ var Conf = &conf{
 
 type conf struct {
 	Addr      string           // the TCP network address
-	Profile   string           // value:production|development|test
 	Err       *errOptions      // Error options
 	Api       *apiOptions      // Apis options
 	Asset     *staticOptions   // Asset options

@@ -5,10 +5,16 @@
 package log
 
 type Logging struct {
+	hasSettings   bool
+	Settings      func() // The function executed before the log is printed and executed only once.
 	prefix        string
+	isDefaultConf bool
 	priority      int
+	setPriority   bool
 	layouts       int
+	setLayouts    bool
 	outputs       int
+	setOutputs    bool
 	dailyfilename string
 	console       *Logger
 	dailyfile     *Logger
@@ -17,10 +23,11 @@ type Logging struct {
 // New creates a new Logging.
 func New(prefix string) *Logging {
 	return &Logging{
-		prefix:   prefix,
-		priority: DefaultPriority,
-		layouts:  DefaultLayout,
-		outputs:  DefaultOutput,
+		prefix:        prefix,
+		isDefaultConf: true,
+		priority:      defaultPriority,
+		layouts:       defaultLayout,
+		outputs:       defaultOutput,
 	}
 }
 

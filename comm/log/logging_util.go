@@ -10,6 +10,27 @@ import (
 	"time"
 )
 
+func (me *Logging) pre() {
+	// Modify the log defaults,
+	// all of the log objects will be synchronized to the default value.
+	if isResetDefault && me.isDefaultConf {
+		if !me.setPriority {
+			me.SetPriority(defaultPriority)
+		}
+		if !me.setLayouts {
+			me.SetLayouts(defaultLayout)
+		}
+		if !me.setOutputs {
+			me.SetOutputs(defaultOutput)
+		}
+	}
+	// The function executed before the log is printed and executed only once.
+	if !me.hasSettings && me.Settings != nil {
+		me.hasSettings = true
+		me.Settings()
+	}
+}
+
 func (me *Logging) setConsoleLogger() {
 	me.console = NewLogger(os.Stderr)
 	me.console.SetPriority(me.priority)

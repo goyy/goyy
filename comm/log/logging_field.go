@@ -27,6 +27,7 @@ func (me *Logging) Priority() int {
 
 // SetPriority sets the output priority for the logging.
 func (me *Logging) SetPriority(value int) {
+	me.setPriority = true
 	me.priority = value
 	if me.console != nil {
 		me.console.SetPriority(me.priority)
@@ -43,6 +44,7 @@ func (me *Logging) Layouts() int {
 
 // SetLayouts sets the output layouts for the logging.
 func (me *Logging) SetLayouts(value int) {
+	me.setLayouts = true
 	me.layouts = value
 	if me.console != nil {
 		me.console.SetLayouts(me.layouts)
@@ -59,5 +61,6 @@ func (me *Logging) Outputs() int {
 
 // SetOutputs sets the output outputs for the logging.
 func (me *Logging) SetOutputs(value int) {
+	me.setOutputs = true
 	me.outputs = value
 }

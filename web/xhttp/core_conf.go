@@ -5,23 +5,7 @@
 package xhttp
 
 import (
-	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/web/conf"
 )
 
-func setConfProfile() {
-	if profile.Accepts(profile.PROD) {
-		Conf.Profile = profile.PROD
-		return
-	}
-	if profile.Accepts(profile.TEST) {
-		Conf.Profile = profile.TEST
-		return
-	}
-}
-
 var Conf = conf.Conf
-
-func init() {
-	RegisterPreRun(setConfProfile)
-}

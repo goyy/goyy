@@ -8,6 +8,7 @@ import (
 	htmpl "html/template"
 	ttmpl "text/template"
 
+	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
 	"gopkg.in/goyy/goyy.v0/web/conf"
@@ -188,7 +189,7 @@ var needit = func(t string) bool {
 ////////////////////////////////////////////////////////////
 
 func getProfile() string {
-	return conf.Conf.Profile
+	return profile.Default()
 }
 
 func getApis() string {

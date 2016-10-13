@@ -7,12 +7,30 @@ package xsql
 import (
 	"bytes"
 	"fmt"
-	"gopkg.in/goyy/goyy.v0/comm/log"
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"time"
+
+	"gopkg.in/goyy/goyy.v0/comm/log"
+	"gopkg.in/goyy/goyy.v0/comm/profile"
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
+var isResetPriority bool
+
+func init() {
+	logger.Settings = func() {
+		if !isResetPriority {
+			isResetPriority = true
+			if profile.Accepts(profile.PROD) {
+				logger.SetPriority(log.Perror)
+			} else {
+				logger.SetPriority(log.Pdebug)
+			}
+		}
+	}
+}
+
 func SetPriority(value int) {
+	isResetPriority = true
 	logger.SetPriority(value)
 }
 

@@ -12,5 +12,5 @@ var console *Logger = NewLogger(os.Stderr)
 
 func init() {
 	console.isConsole = true
-	console.SetLayouts(DefaultLayout)
+	console.SetLayouts(defaultLayout)
 }
