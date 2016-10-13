@@ -180,7 +180,7 @@ func Export(name string) (out xExport, err error) {
 	if err != nil {
 		return
 	}
-	outs := xEnv.Export
+	outs := xEnv.Exports
 	for _, v := range outs {
 		if v.Name == name {
 			out = v
@@ -188,6 +188,40 @@ func Export(name string) (out xExport, err error) {
 		}
 	}
 	err = errors.New(i18N.Messagef("empty.environments.environment.export", name))
+	return
+}
+
+// Get the html based on the environment profiles.
+func Html(name string) (out xTemplate, err error) {
+	xEnv, err := parse(conf + "/env/template.xml")
+	if err != nil {
+		return
+	}
+	outs := xEnv.Htmls
+	for _, v := range outs {
+		if v.Name == name {
+			out = v
+			return
+		}
+	}
+	err = errors.New(i18N.Messagef("empty.environments.environment.html", name))
+	return
+}
+
+// Get the template based on the environment profiles.
+func Template(name string) (out xTemplate, err error) {
+	xEnv, err := parse(conf + "/env/template.xml")
+	if err != nil {
+		return
+	}
+	outs := xEnv.Templates
+	for _, v := range outs {
+		if v.Name == name {
+			out = v
+			return
+		}
+	}
+	err = errors.New(i18N.Messagef("empty.environments.environment.template", name))
 	return
 }
 

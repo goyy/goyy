@@ -24,7 +24,9 @@ type xEnvironment struct {
 	Developers []xStatic   `xml:"developer"`
 	Operations []xStatic   `xml:"operation"`
 	Uploads    []xUpload   `xml:"upload"`
-	Export     []xExport   `xml:"export"`
+	Exports    []xExport   `xml:"export"`
+	Htmls      []xTemplate `xml:"html"`
+	Templates  []xTemplate `xml:"template"`
 }
 
 type xDatabase struct {
@@ -74,4 +76,10 @@ type xUpload struct {
 type xExport struct {
 	Name string `xml:"name,attr"`
 	Dir  string `xml:"dir"`
+}
+
+type xTemplate struct {
+	Name     string `xml:"name,attr"`
+	Enable   bool   `xml:"enable"`
+	Reloaded bool   `xml:"reloaded"`
 }

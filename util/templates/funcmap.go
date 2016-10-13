@@ -11,7 +11,6 @@ import (
 	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
-	"gopkg.in/goyy/goyy.v0/web/conf"
 )
 
 var Text = text{funcMapText}
@@ -192,26 +191,53 @@ func getProfile() string {
 	return profile.Default()
 }
 
+var (
+	GetApis       func() string
+	GetAssets     func() string
+	GetStatics    func() string
+	GetDevelopers func() string
+	GetOperations func() string
+	GetUploads    func() string
+)
+
 func getApis() string {
-	return conf.Conf.Api.URL
+	if GetApis == nil {
+		return ""
+	}
+	return GetApis()
 }
 
 func getAssets() string {
-	return conf.Conf.Asset.URL
+	if GetAssets == nil {
+		return ""
+	}
+	return GetAssets()
 }
 
 func getStatics() string {
-	return conf.Conf.Static.URL
+	if GetStatics == nil {
+		return ""
+	}
+	return GetStatics()
 }
 
 func getDevelopers() string {
-	return conf.Conf.Developer.URL
+	if GetDevelopers == nil {
+		return ""
+	}
+	return GetDevelopers()
 }
 
 func getOperations() string {
-	return conf.Conf.Operation.URL
+	if GetOperations == nil {
+		return ""
+	}
+	return GetOperations()
 }
 
 func getUploads() string {
-	return conf.Conf.Upload.URL
+	if GetUploads == nil {
+		return ""
+	}
+	return GetUploads()
 }

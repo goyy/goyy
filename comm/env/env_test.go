@@ -96,3 +96,15 @@ func TestUpload(t *testing.T) {
 		t.Errorf(format, in, v.Name, v.Enable, v.Dir, v.URL, v.MaxSize, out1, out2, out3, out4, out5)
 	}
 }
+
+func TestTemplate(t *testing.T) {
+	in := "env"
+	out1 := "env"
+	out2 := true
+	out3 := true
+	v, _ := env.Template(in)
+	if v.Name != out1 || v.Enable != out2 || v.Reloaded != out3 {
+		format := "env.Template(%s) = %s, %t, %t; want %s, %t, %t"
+		t.Errorf(format, in, v.Name, v.Enable, v.Reloaded, out1, out2, out3)
+	}
+}

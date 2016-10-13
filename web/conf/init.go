@@ -8,6 +8,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/comm/env"
 	"gopkg.in/goyy/goyy.v0/comm/log"
 	"gopkg.in/goyy/goyy.v0/comm/profile"
+	"gopkg.in/goyy/goyy.v0/util/templates"
 )
 
 func Init(envName, defaultProfile string, activesProfile ...string) {
@@ -17,6 +18,7 @@ func Init(envName, defaultProfile string, activesProfile ...string) {
 	initAsset(envName)
 	initExport(envName)
 	initSession(envName)
+	initTemplate(envName)
 }
 
 func initProfile(defaults string, actives ...string) {
@@ -97,4 +99,29 @@ func initSession(envName string) {
 	} else {
 		log.Println(err.Error())
 	}
+}
+
+func initTemplate(envName string) {
+	if v, err := env.Html(envName); err == nil {
+		Conf.Html.Enable = v.Enable
+		Conf.Html.Reloaded = v.Reloaded
+	} else {
+		log.Println(err.Error())
+	}
+
+	if v, err := env.Template(envName); err == nil {
+		Conf.Template.Enable = v.Enable
+		Conf.Template.Reloaded = v.Reloaded
+		if v.Enable {
+			templates.GetApis = func() string { return Conf.Api.URL }
+			templates.GetAssets = func() string { return Conf.Asset.URL }
+			templates.GetDevelopers = func() string { return Conf.Developer.URL }
+			templates.GetOperations = func() string { return Conf.Operation.URL }
+			templates.GetStatics = func() string { return Conf.Static.URL }
+			templates.GetUploads = func() string { return Conf.Upload.URL }
+		}
+	} else {
+		log.Println(err.Error())
+	}
+
 }

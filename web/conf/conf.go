@@ -8,6 +8,7 @@ import (
 	"html/template"
 
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
+	"gopkg.in/goyy/goyy.v0/util/templates"
 	"gopkg.in/goyy/goyy.v0/web/session"
 )
 
@@ -87,7 +88,7 @@ var Conf = &conf{
 		Enable:     true,
 		Dir:        "templates",
 		Extensions: []string{"html"},
-		Funcs:      []template.FuncMap{},
+		Funcs:      []template.FuncMap{templates.Html.FuncMap},
 		Delims: templateDelims{
 			Left:  "<%",
 			Right: "%>",
