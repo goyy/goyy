@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"time"
 
+	"gopkg.in/goyy/goyy.v0/comm/log"
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/data/cache"
 	"gopkg.in/goyy/goyy.v0/util/strings"
@@ -79,6 +80,9 @@ func Run() error {
 		}
 	}
 	logger.Printf("Listening and serving HTTP on %s\n", Conf.Addr)
+	if logger.Outputs()&log.Oconsole == 0 {
+		log.Printf("Listening and serving HTTP on %s\n", Conf.Addr)
+	}
 	err := http.ListenAndServe(Conf.Addr, defaultEngine)
 	return err
 }
