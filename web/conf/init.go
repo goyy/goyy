@@ -9,20 +9,27 @@ import (
 	"gopkg.in/goyy/goyy.v0/comm/log"
 	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
+	"gopkg.in/goyy/goyy.v0/data/service"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/templates"
 )
 
-func Init(envName, defaultProfile string, activesProfile ...string) {
-	initProfile(defaultProfile, activesProfile...)
-	initLog()
-	initApi(envName)
-	initAsset(envName)
-	initExport(envName)
-	initSession(envName)
-	initTemplate(envName)
-	initIllegal(envName)
-	initSecure(envName)
+func init() {
+	if v, err := env.Settings(); err == nil {
+		actives := strings.Split(v.Profile.Actives, ",")
+		initProfile(v.Profile.Default, actives...)
+		initLog()
+		initDB(v.Name)
+		initApi(v.Name)
+		initAsset(v.Name)
+		initExport(v.Name)
+		initSession(v.Name)
+		initTemplate(v.Name)
+		initIllegal(v.Name)
+		initSecure(v.Name)
+	} else {
+		log.Println(err.Error())
+	}
 }
 
 func initProfile(defaults string, actives ...string) {
@@ -36,6 +43,10 @@ func initLog() {
 	} else {
 		log.SetDefaultOutput(log.Odailyfile)
 	}
+}
+
+func initDB(envName string) {
+	service.DB = service.NewDB(envName)
 }
 
 func initApi(envName string) {
@@ -127,7 +138,6 @@ func initTemplate(envName string) {
 	} else {
 		log.Println(err.Error())
 	}
-
 }
 
 func initIllegal(envName string) {

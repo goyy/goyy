@@ -21,6 +21,23 @@ func SetConf(path string) {
 	conf = path
 }
 
+// Get the settings link parameters based on the configuration file.
+func Settings() (out xSettings, err error) {
+	f, ferr := os.Open(conf + "/env/settings.xml")
+	defer f.Close()
+	if ferr != nil {
+		err = ferr
+		return
+	}
+	decoder := xml.NewDecoder(f)
+	var xConf *xConfiguration
+	if derr := decoder.Decode(&xConf); derr != nil {
+		err = derr
+		return
+	}
+	return xConf.Settings, nil
+}
+
 // Get the database link parameters based on the environment profiles.
 func Database(name string) (out xDatabase, err error) {
 	xEnv, err := parse(conf + "/env/db.xml")

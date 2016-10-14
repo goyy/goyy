@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/satori/go.uuid"
+	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/data/cache"
 	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/strings"
@@ -105,8 +106,8 @@ func (me *session) IsLogin() bool {
 	return false
 }
 
-func (me *session) Principal() (Principal, error) {
-	p := Principal{}
+func (me *session) Principal() (xtype.Principal, error) {
+	p := xtype.Principal{}
 	if !me.exists(principalId) {
 		return p, errors.New("Not logged in")
 	}
@@ -148,7 +149,7 @@ func (me *session) Principal() (Principal, error) {
 	return p, nil
 }
 
-func (me *session) SetPrincipal(value Principal) error {
+func (me *session) SetPrincipal(value xtype.Principal) error {
 	if err := me.Set(principalId, value.Id); err != nil {
 		return err
 	}

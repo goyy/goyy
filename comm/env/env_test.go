@@ -11,6 +11,17 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
+func TestSettings(t *testing.T) {
+	out1 := "env"
+	out2 := "development"
+	out3 := "comm"
+	v, _ := env.Settings()
+	if v.Name != out1 || v.Profile.Default != out2 || v.Profile.Actives != out3 {
+		format := "env.Settings() = %s, %s, %s; want %s, %s, %s"
+		t.Errorf(format, v.Name, v.Profile.Default, v.Profile.Actives, out1, out2, out3)
+	}
+}
+
 func TestApi(t *testing.T) {
 	in := "env"
 	out1 := "env"

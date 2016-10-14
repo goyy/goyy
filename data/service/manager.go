@@ -9,6 +9,7 @@ import (
 	"errors"
 	"os"
 
+	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/data/dialect"
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
@@ -17,14 +18,23 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/sqls"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
-	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
 var DB xsql.DB
 
 // NewDB returns xsql.DB.
-func NewDB(d dialect.Interface, name string) xsql.DB {
+func New(d dialect.Interface, name string) xsql.DB {
 	db, err := xsql.New(d, name)
+	if err != nil {
+		logger.Error("env.DataSource failed", err)
+		os.Exit(3)
+	}
+	return db
+}
+
+// NewDB returns xsql.DB.
+func NewDB(name string) xsql.DB {
+	db, err := xsql.NewDB(name)
 	if err != nil {
 		logger.Error("env.DataSource failed", err)
 		os.Exit(3)
@@ -233,13 +243,11 @@ func (me *Manager) SelectCountBySift(sifts ...domain.Sift) (int, error) {
 	return me.DB().Sifter(sifts...).Count(me.NewEntity())
 }
 
-func (me *Manager) save(c xhttp.Context, e entity.Interface) error {
+func (me *Manager) save(p xtype.Principal, e entity.Interface) error {
 	if strings.IsBlank(e.Get(e.Table().Primary().Name()).(string)) {
-		if c != nil && c.Session().IsLogin() {
-			if p, err := c.Session().Principal(); err == nil {
-				e.SetString(creater, p.Id)
-				e.SetString(modifier, p.Id)
-			}
+		if strings.IsNotBlank(p.Id) {
+			e.SetString(creater, p.Id)
+			e.SetString(modifier, p.Id)
 		}
 		e.SetString(created, times.NowUnixStr())
 		e.SetString(modified, times.NowUnixStr())
@@ -248,10 +256,8 @@ func (me *Manager) save(c xhttp.Context, e entity.Interface) error {
 			return err
 		}
 	} else {
-		if c != nil && c.Session().IsLogin() {
-			if p, err := c.Session().Principal(); err == nil {
-				e.SetString(modifier, p.Id)
-			}
+		if strings.IsNotBlank(p.Id) {
+			e.SetString(modifier, p.Id)
 		}
 		e.SetString(modified, times.NowUnixStr())
 		_, err := me.DB().Update(e)
@@ -262,17 +268,17 @@ func (me *Manager) save(c xhttp.Context, e entity.Interface) error {
 	return nil
 }
 
-func (me *Manager) Save(c xhttp.Context, e entity.Interface) error {
+func (me *Manager) Save(p xtype.Principal, e entity.Interface) error {
 	if me.Pre != nil {
 		me.Pre()
 	}
 	if err := e.Validate(); err != nil {
 		return err
 	}
-	return me.save(c, e)
+	return me.save(p, e)
 }
 
-func (me *Manager) SaveAndTx(c xhttp.Context, e entity.Interface) error {
+func (me *Manager) SaveAndTx(p xtype.Principal, e entity.Interface) error {
 	if me.Pre != nil {
 		me.Pre()
 	}
@@ -283,7 +289,7 @@ func (me *Manager) SaveAndTx(c xhttp.Context, e entity.Interface) error {
 	if err != nil {
 		return err
 	}
-	err = me.save(c, e)
+	err = me.save(p, e)
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -296,27 +302,25 @@ func (me *Manager) SaveAndTx(c xhttp.Context, e entity.Interface) error {
 	return nil
 }
 
-func (me *Manager) disable(c xhttp.Context, e entity.Interface) (int64, error) {
+func (me *Manager) disable(p xtype.Principal, e entity.Interface) (int64, error) {
 	if strings.IsBlank(e.Get(e.Table().Primary().Name()).(string)) {
 		return 0, errors.New("Gets the primary key value failed")
 	}
-	if c != nil && c.Session().IsLogin() {
-		if p, err := c.Session().Principal(); err == nil {
-			e.SetString(modifier, p.Id)
-			e.SetString(modified, times.NowUnixStr())
-		}
+	if strings.IsNotBlank(p.Id) {
+		e.SetString(modifier, p.Id)
+		e.SetString(modified, times.NowUnixStr())
 	}
 	return me.DB().Disable(e)
 }
 
-func (me *Manager) Disable(c xhttp.Context, e entity.Interface) (int64, error) {
+func (me *Manager) Disable(p xtype.Principal, e entity.Interface) (int64, error) {
 	if me.Pre != nil {
 		me.Pre()
 	}
-	return me.disable(c, e)
+	return me.disable(p, e)
 }
 
-func (me *Manager) DisableAndTx(c xhttp.Context, e entity.Interface) (int64, error) {
+func (me *Manager) DisableAndTx(p xtype.Principal, e entity.Interface) (int64, error) {
 	if me.Pre != nil {
 		me.Pre()
 	}
@@ -324,7 +328,7 @@ func (me *Manager) DisableAndTx(c xhttp.Context, e entity.Interface) (int64, err
 	if err != nil {
 		return 0, err
 	}
-	r, err := me.disable(c, e)
+	r, err := me.disable(p, e)
 	if err != nil {
 		tx.Rollback()
 		return 0, err

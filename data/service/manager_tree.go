@@ -13,14 +13,13 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
-	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
 type TreeManager struct {
 	Manager
 }
 
-func (me *TreeManager) Save(c xhttp.Context, e entity.Interface) error {
+func (me *TreeManager) Save(p xtype.Principal, e entity.Interface) error {
 	if me.Pre != nil {
 		me.Pre()
 	}
@@ -29,20 +28,16 @@ func (me *TreeManager) Save(c xhttp.Context, e entity.Interface) error {
 		return err
 	}
 	if strings.IsBlank(e.Get(e.Table().Primary().Name()).(string)) {
-		if c != nil && c.Session().IsLogin() {
-			if p, err := c.Session().Principal(); err == nil {
-				e.SetString(creater, p.Id)
-				e.SetString(modifier, p.Id)
-			}
+		if strings.IsNotBlank(p.Id) {
+			e.SetString(creater, p.Id)
+			e.SetString(modifier, p.Id)
 		}
 		e.SetString(created, times.NowUnixStr())
 		e.SetString(modified, times.NowUnixStr())
 		_, err = me.DB().Insert(e)
 	} else {
-		if c != nil && c.Session().IsLogin() {
-			if p, err := c.Session().Principal(); err == nil {
-				e.SetString(modifier, p.Id)
-			}
+		if strings.IsNotBlank(p.Id) {
+			e.SetString(modifier, p.Id)
 		}
 		e.SetString(modified, times.NowUnixStr())
 		_, err = me.DB().Update(e)
@@ -59,7 +54,7 @@ func (me *TreeManager) Save(c xhttp.Context, e entity.Interface) error {
 	return nil
 }
 
-func (me *TreeManager) Disable(c xhttp.Context, e entity.Interface) (int64, error) {
+func (me *TreeManager) Disable(p xtype.Principal, e entity.Interface) (int64, error) {
 	if me.Pre != nil {
 		me.Pre()
 	}
@@ -70,11 +65,9 @@ func (me *TreeManager) Disable(c xhttp.Context, e entity.Interface) (int64, erro
 	if err != nil {
 		return 0, err
 	}
-	if c != nil && c.Session().IsLogin() {
-		if p, err := c.Session().Principal(); err == nil {
-			e.SetString(modifier, p.Id)
-			e.SetString(modified, times.NowUnixStr())
-		}
+	if strings.IsNotBlank(p.Id) {
+		e.SetString(modifier, p.Id)
+		e.SetString(modified, times.NowUnixStr())
 	}
 	r, err := me.DB().Disable(e)
 	if err != nil {
@@ -90,7 +83,7 @@ func (me *TreeManager) Disable(c xhttp.Context, e entity.Interface) (int64, erro
 }
 
 // Modify system field information : ParentIds、ParentCodes、ParentNames、fullname、leaf、grade
-func (me *TreeManager) modifyParents(c xhttp.Context, e entity.Interface) {
+func (me *TreeManager) modifyParents(p xtype.Principal, e entity.Interface) {
 	parentId := e.Get(defaultParentId).(string)
 	if strings.IsBlank(parentId) {
 		return
@@ -107,7 +100,7 @@ func (me *TreeManager) modifyParents(c xhttp.Context, e entity.Interface) {
 	// Whether the parent node is a leaf node.
 	if leafYes == parent.Get(defaultLeaf).(string) {
 		parent.SetString(defaultLeaf, leafNo)
-		me.Save(c, parent)
+		me.Save(p, parent)
 	}
 	parentIds := parent.Get(defaultParentIds).(string)
 	parentCodes := parent.Get(defaultParentCodes).(string)
@@ -132,7 +125,7 @@ func (me *TreeManager) modifyParents(c xhttp.Context, e entity.Interface) {
 	e.SetString(defaultLeaf, me.getLeaf(e.Get(defaultId).(string)))
 }
 
-func (me *TreeManager) modifyParents4Childs(c xhttp.Context, id string) {
+func (me *TreeManager) modifyParents4Childs(p xtype.Principal, id string) {
 	if strings.IsBlank(id) {
 		return
 	}
@@ -145,14 +138,14 @@ func (me *TreeManager) modifyParents4Childs(c xhttp.Context, id string) {
 		return
 	}
 	for i := 0; i < childs.Len(); i++ {
-		me.modifyParents(c, childs.Index(i))
+		me.modifyParents(p, childs.Index(i))
 		cid := childs.Index(i).Get(defaultId).(string)
-		me.modifyParents4Childs(c, cid)
+		me.modifyParents4Childs(p, cid)
 	}
 }
 
 // Modify system field information : ParentIds、ParentCodes、ParentNames、fullname、leaf、grade
-func (me *TreeManager) modifyOldParents(c xhttp.Context, e entity.Interface) {
+func (me *TreeManager) modifyOldParents(p xtype.Principal, e entity.Interface) {
 	id := e.Get(defaultId).(string)
 	if strings.IsBlank(id) {
 		return
@@ -178,13 +171,13 @@ func (me *TreeManager) modifyOldParents(c xhttp.Context, e entity.Interface) {
 			logger.Debug(err.Error())
 			return
 		}
-		me.modifyParents(c, oldParent)
+		me.modifyParents(p, oldParent)
 	}
 	return
 }
 
 // Whether the parent node is a leaf node.
-func (me *TreeManager) setParentLeaf(c xhttp.Context, e entity.Interface) {
+func (me *TreeManager) setParentLeaf(p xtype.Principal, e entity.Interface) {
 	parentId := e.Get(defaultParentId).(string)
 	if strings.IsBlank(parentId) {
 		return
@@ -201,7 +194,7 @@ func (me *TreeManager) setParentLeaf(c xhttp.Context, e entity.Interface) {
 	leaf := me.getLeaf(parentId)
 	if leaf != parent.Get(defaultLeaf).(string) {
 		parent.SetString(defaultLeaf, leaf)
-		me.Save(c, parent)
+		me.Save(p, parent)
 	}
 }
 

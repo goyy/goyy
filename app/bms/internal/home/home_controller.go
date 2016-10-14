@@ -6,6 +6,10 @@ import (
 )
 
 func (me *Controller) home(c xhttp.Context) {
+	if !c.Session().IsLogin() {
+		c.Redirect(xhttp.Conf.Secure.LoginUrl)
+		return
+	}
 	c.Redirect("home.html")
 }
 

@@ -8,15 +8,14 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/strings"
-	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
-func (me *Manager) Save(c xhttp.Context, e entity.Interface) error {
+func (me *Manager) Save(p xtype.Principal, e entity.Interface) error {
 	tx, err := me.DB().Begin()
 	if err != nil {
 		return err
 	}
-	err = me.Manager.Save(c, e)
+	err = me.Manager.Save(p, e)
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -33,7 +32,7 @@ func (me *Manager) Save(c xhttp.Context, e entity.Interface) error {
 			rp := NewPostEntity()
 			rp.SetRoleId(roleId)
 			rp.SetPostId(postId)
-			err = PostMgr.SaveAndTx(c, rp)
+			err = PostMgr.SaveAndTx(p, rp)
 			if err != nil {
 				tx.Rollback()
 				return err

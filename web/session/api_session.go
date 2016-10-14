@@ -4,6 +4,10 @@
 
 package session
 
+import (
+	"gopkg.in/goyy/goyy.v0/comm/xtype"
+)
+
 // Options stores configuration for a session or session store.
 //
 // Fields are a subset of http.Cookie fields.
@@ -41,9 +45,9 @@ type Interface interface {
 	// To determine whether it has been logged in
 	IsLogin() bool
 	// Get principal from session
-	Principal() (Principal, error)
+	Principal() (xtype.Principal, error)
 	// Set principal to session
-	SetPrincipal(value Principal) error
+	SetPrincipal(value xtype.Principal) error
 	// Set principal to session
 	ResetPrincipal() error
 }

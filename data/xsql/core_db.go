@@ -24,8 +24,19 @@ func New(dialect dialect.Interface, name string) (DB, error) {
 	r := &db{
 		name:    name,
 		dialect: dialect,
-		dml:     dml.New(dialect),
-		dql:     dql.New(dialect),
+	}
+	if dialect != nil {
+		r.dml = dml.New(dialect)
+		r.dql = dql.New(dialect)
+	}
+	err := r.init()
+	return r, err
+}
+
+// New DB
+func NewDB(name string) (DB, error) {
+	r := &db{
+		name: name,
 	}
 	err := r.init()
 	return r, err
@@ -52,6 +63,26 @@ func (me *db) init() error {
 	sqlDB, err := sql.Open(dbconf.DriverName, dbconf.DataSourceName)
 	if err != nil {
 		return err
+	}
+	if me.dialect == nil {
+		switch strings.ToLower(dbconf.DriverName) {
+		case "oci8", "oracle":
+			me.dialect = &dialect.Oracle{}
+		case "postgres":
+			me.dialect = &dialect.PostgreSQL{}
+		case "mssql", "adodb":
+			me.dialect = &dialect.SQLServer{}
+		case "sqlite3":
+			me.dialect = &dialect.Sqlite{}
+		default:
+			me.dialect = &dialect.MySQL{}
+		}
+	}
+	if me.dml == nil {
+		me.dml = dml.New(me.dialect)
+	}
+	if me.dql == nil {
+		me.dql = dql.New(me.dialect)
 	}
 	sqlDB.SetMaxIdleConns(dbconf.MaxIdleConns)
 	sqlDB.SetMaxOpenConns(dbconf.MaxOpenConns)

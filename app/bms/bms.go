@@ -1,6 +1,8 @@
 package main
 
-import _ "gopkg.in/goyy/goyy.v0/app/bms/internal/conf"
+import _ "github.com/go-sql-driver/mysql"
+import _ "gopkg.in/goyy/goyy.v0/web/conf"
+import _ "gopkg.in/goyy/goyy.v0/app/sys/api/dict"
 
 import (
 	_ "gopkg.in/goyy/goyy.v0/app/bms/internal"

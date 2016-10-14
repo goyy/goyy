@@ -7,10 +7,10 @@ package service
 import (
 	"database/sql"
 
+	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/data/result"
-	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
 type Service interface {
@@ -38,10 +38,10 @@ type Service interface {
 	SelectListBySift(out entity.Interfaces, sifts ...domain.Sift) error
 	SelectPageBySift(content entity.Interfaces, pageable domain.Pageable, sifts ...domain.Sift) (out domain.Page, err error)
 	SelectCountBySift(sifts ...domain.Sift) (int, error)
-	Save(c xhttp.Context, e entity.Interface) error
-	SaveAndTx(c xhttp.Context, e entity.Interface) error
-	Disable(c xhttp.Context, e entity.Interface) (int64, error)
-	DisableAndTx(c xhttp.Context, e entity.Interface) (int64, error)
+	Save(p xtype.Principal, e entity.Interface) error
+	SaveAndTx(p xtype.Principal, e entity.Interface) error
+	Disable(p xtype.Principal, e entity.Interface) (int64, error)
+	DisableAndTx(p xtype.Principal, e entity.Interface) (int64, error)
 	Exec(dml string, args ...interface{}) (sql.Result, error)
 	ExecAndTx(dml string, args ...interface{}) (sql.Result, error)
 }

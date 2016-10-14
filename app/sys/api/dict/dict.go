@@ -3,6 +3,7 @@ package dict
 import (
 	"gopkg.in/goyy/goyy.v0/app/sys/internal/cache/dict"
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
+	"gopkg.in/goyy/goyy.v0/data/schema"
 )
 
 // Through dictionary type and key acquisition value.
@@ -29,4 +30,8 @@ func RegisterCache(field string, init func() []*xtype.Dict) {
 // Refresh cache data.
 func RefreshCache(field string) {
 	dict.RefreshCache(field)
+}
+
+func init() {
+	schema.ParseDict = Mval
 }

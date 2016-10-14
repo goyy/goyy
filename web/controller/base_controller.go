@@ -138,7 +138,8 @@ func (me *baseController) Save(c xhttp.Context, mgr service.Service, pre func(c 
 	if err != nil {
 		return
 	}
-	err = mgr.Save(c, data)
+	p, _ := c.Session().Principal()
+	err = mgr.Save(p, data)
 	if err != nil {
 		return
 	}
@@ -162,7 +163,8 @@ func (me *baseController) SaveAndTx(c xhttp.Context, mgr service.Service, pre fu
 	if err != nil {
 		return
 	}
-	err = mgr.SaveAndTx(c, data)
+	p, _ := c.Session().Principal()
+	err = mgr.SaveAndTx(p, data)
 	if err != nil {
 		return
 	}
@@ -188,7 +190,8 @@ func (me *baseController) Disable(c xhttp.Context, mgr service.Service, pre func
 	if err != nil {
 		return
 	}
-	_, err = mgr.Disable(c, data)
+	p, _ := c.Session().Principal()
+	_, err = mgr.Disable(p, data)
 	if err != nil {
 		return
 	}
@@ -214,7 +217,8 @@ func (me *baseController) DisableAndTx(c xhttp.Context, mgr service.Service, pre
 	if err != nil {
 		return
 	}
-	_, err = mgr.DisableAndTx(c, data)
+	p, _ := c.Session().Principal()
+	_, err = mgr.DisableAndTx(p, data)
 	if err != nil {
 		return
 	}

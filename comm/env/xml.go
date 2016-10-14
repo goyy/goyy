@@ -5,12 +5,23 @@
 package env
 
 type xConfiguration struct {
+	Settings     xSettings     `xml:"settings"`
 	Environments xEnvironments `xml:"environments"`
 }
 
 type xEnvironments struct {
 	Default     string         `xml:"default,attr"`
 	Environment []xEnvironment `xml:"environment"`
+}
+
+type xSettings struct {
+	Name    string   `xml:"name,attr"`
+	Profile xProfile `xml:"profile"`
+}
+
+type xProfile struct {
+	Default string `xml:"default,attr"`
+	Actives string `xml:"actives,attr"`
 }
 
 type xEnvironment struct {

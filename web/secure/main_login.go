@@ -10,12 +10,12 @@ import (
 	"net/http"
 	"strconv"
 
+	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/util/cookies"
 	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
 	"gopkg.in/goyy/goyy.v0/web/secure/internal"
-	"gopkg.in/goyy/goyy.v0/web/session"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
@@ -55,7 +55,7 @@ func Login(c xhttp.Context, loginName, passwd string) error {
 				datas.WriteString(r.Id())
 			}
 		}
-		p := session.Principal{
+		p := xtype.Principal{
 			Id:          u.Id(),
 			Name:        u.Name(),
 			LoginName:   u.LoginName(),
@@ -77,7 +77,7 @@ func Login(c xhttp.Context, loginName, passwd string) error {
 	return nil
 }
 
-func setCookies(c xhttp.Context, p session.Principal) {
+func setCookies(c xhttp.Context, p xtype.Principal) {
 	ps := base64.StdEncoding.EncodeToString([]byte(p.Permissions))
 	// GSESSIONUSER
 	ucookie := &http.Cookie{

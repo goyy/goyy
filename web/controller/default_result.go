@@ -5,9 +5,9 @@
 package controller
 
 import (
+	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/data/result"
 	"gopkg.in/goyy/goyy.v0/util/webs"
-	"gopkg.in/goyy/goyy.v0/web/session"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
@@ -17,7 +17,7 @@ import (
 
 func (me *Controller) Result(c xhttp.Context, r result.Http) map[string]interface{} {
 	params := webs.ToParams(c.Params())
-	p := session.Principal{}
+	p := xtype.Principal{}
 	if c.Session().IsLogin() {
 		v, err := c.Session().Principal()
 		if err != nil {

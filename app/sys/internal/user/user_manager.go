@@ -1,6 +1,7 @@
 package user
 
 import (
+	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/strings"
@@ -8,12 +9,12 @@ import (
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
-func (me *Manager) Save(c xhttp.Context, e entity.Interface) error {
+func (me *Manager) Save(p xtype.Principal, e entity.Interface) error {
 	tx, err := me.DB().Begin()
 	if err != nil {
 		return err
 	}
-	err = me.Manager.Save(c, e)
+	err = me.Manager.Save(p, e)
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -29,7 +30,7 @@ func (me *Manager) Save(c xhttp.Context, e entity.Interface) error {
 		ur := NewRoleEntity()
 		ur.SetUserId(userId)
 		ur.SetRoleId(roleId)
-		err = RoleMgr.SaveAndTx(c, ur)
+		err = RoleMgr.SaveAndTx(p, ur)
 		if err != nil {
 			tx.Rollback()
 			return err
