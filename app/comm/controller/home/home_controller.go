@@ -1,6 +1,7 @@
 package home
 
 import (
+	"gopkg.in/goyy/goyy.v0/util/cookies"
 	"gopkg.in/goyy/goyy.v0/web/controller"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
@@ -14,6 +15,13 @@ func (me *Controller) home(c xhttp.Context) {
 	if !c.Session().IsLogin() {
 		c.Redirect(xhttp.Conf.Secure.LoginUrl)
 		return
+	}
+	// Set cookie,
+	// for the computer version and touch screen version of the switch
+	m := c.Param("mode")
+	switch m {
+	case "pc", "webapp":
+		cookies.SetValue(c.ResponseWriter(), "mode", m)
 	}
 	c.Redirect(xhttp.Conf.Secure.SuccessUrl)
 }
