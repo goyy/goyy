@@ -78,7 +78,7 @@ var Conf = &conf{
 	Secure: &secureOptions{
 		Enable:     true,
 		LoginUrl:   "/login.html",
-		SuccessUrl: "/",
+		SuccessUrl: "/home.html",
 		ForbidUrl:  "/err/403.html",
 		Filters: []xtype.Map{
 			{"/**", "anon"},

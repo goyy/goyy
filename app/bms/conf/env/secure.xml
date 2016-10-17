@@ -7,7 +7,7 @@
 				<enable>true</enable>
 				<login-url>/login.html</login-url>
 				<forbid-url>/err/403.html</forbid-url>
-				<success-url>/</success-url>
+				<success-url>/home.html</success-url>
 				<filters>
 					<intercept-url pattern="/**.(css|js|map)" access="anon"/>
 					<intercept-url pattern="/**.(jpg|gif|png|bmp|ico)" access="anon"/>
@@ -25,7 +25,7 @@
 				<enable>true</enable>
 				<login-url>/login.html</login-url>
 				<forbid-url>/err/403.html</forbid-url>
-				<success-url>/</success-url>
+				<success-url>/home.html</success-url>
 				<filters>
 					<intercept-url pattern="/**.(css|js|map)" access="anon"/>
 					<intercept-url pattern="/**.(jpg|gif|png|bmp|ico)" access="anon"/>
@@ -43,7 +43,7 @@
 				<enable>true</enable>
 				<login-url>/login.html</login-url>
 				<forbid-url>/err/403.html</forbid-url>
-				<success-url>/</success-url>
+				<success-url>/home.html</success-url>
 				<filters>
 					<intercept-url pattern="/**.(css|js|map)" access="anon"/>
 					<intercept-url pattern="/**.(jpg|gif|png|bmp|ico)" access="anon"/>
