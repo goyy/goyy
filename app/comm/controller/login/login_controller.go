@@ -3,6 +3,7 @@ package login
 import (
 	"gopkg.in/goyy/goyy.v0/comm/captcha"
 	"gopkg.in/goyy/goyy.v0/util/crypto/aes"
+	"gopkg.in/goyy/goyy.v0/util/files"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/web/controller"
 	"gopkg.in/goyy/goyy.v0/web/secure"
@@ -15,8 +16,19 @@ func init() {
 	xhttp.GET("/logout", ctl.logout)
 }
 
+func ver() string {
+	var ver string = "ver=1"
+	fver := xhttp.Conf.Html.Dir + "/version.html"
+	if files.IsExist(fver) {
+		if c, err := files.Read(fver); err == nil {
+			ver = c
+		}
+	}
+	return ver
+}
+
 func (me *Controller) login(c xhttp.Context) {
-	c.Redirect(xhttp.Conf.Secure.LoginUrl)
+	c.Redirect(xhttp.Conf.Secure.LoginUrl + "?" + ver())
 }
 
 func (me *Controller) logout(c xhttp.Context) {
@@ -26,7 +38,7 @@ func (me *Controller) logout(c xhttp.Context) {
 		c.Redirect(xhttp.Conf.Err.Err500)
 		return
 	}
-	c.Redirect(xhttp.Conf.Secure.LoginUrl)
+	c.Redirect(xhttp.Conf.Secure.LoginUrl + "?" + ver())
 }
 
 func (me *Controller) signin(c xhttp.Context) {
