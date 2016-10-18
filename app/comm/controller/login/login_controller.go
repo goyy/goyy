@@ -24,11 +24,15 @@ func ver() string {
 			ver = c
 		}
 	}
-	return ver
+	if strings.Index(xhttp.Conf.Secure.LoginUrl, "?") == -1 {
+		return "?" + ver
+	} else {
+		return "&" + ver
+	}
 }
 
 func (me *Controller) login(c xhttp.Context) {
-	c.Redirect(xhttp.Conf.Secure.LoginUrl + "?" + ver())
+	c.Redirect(xhttp.Conf.Secure.LoginUrl + ver())
 }
 
 func (me *Controller) logout(c xhttp.Context) {
@@ -38,7 +42,7 @@ func (me *Controller) logout(c xhttp.Context) {
 		c.Redirect(xhttp.Conf.Err.Err500)
 		return
 	}
-	c.Redirect(xhttp.Conf.Secure.LoginUrl + "?" + ver())
+	c.Redirect(xhttp.Conf.Secure.LoginUrl + ver())
 }
 
 func (me *Controller) signin(c xhttp.Context) {

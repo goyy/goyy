@@ -3,6 +3,7 @@ package home
 import (
 	"gopkg.in/goyy/goyy.v0/util/cookies"
 	"gopkg.in/goyy/goyy.v0/util/files"
+	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/web/controller"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
@@ -20,7 +21,11 @@ func ver() string {
 			ver = c
 		}
 	}
-	return ver
+	if strings.Index(xhttp.Conf.Secure.SuccessUrl, "?") == -1 {
+		return "?" + ver
+	} else {
+		return "&" + ver
+	}
 }
 
 func (me *Controller) home(c xhttp.Context) {
@@ -35,7 +40,7 @@ func (me *Controller) home(c xhttp.Context) {
 	case "pc", "webapp":
 		cookies.SetValue(c.ResponseWriter(), "mode", m)
 	}
-	c.Redirect(xhttp.Conf.Secure.SuccessUrl + "?" + ver())
+	c.Redirect(xhttp.Conf.Secure.SuccessUrl + ver())
 }
 
 func (me *Controller) favicon(c xhttp.Context) {
