@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "bms-exec",
+            "type": "go",
+            "request": "launch",
+            "mode": "exec",
+            "program": "${workspaceRoot}/app/bms/bms.go",
+            "env": {},
+            "args": []
+        },
+        {
+            "name": "bms-debug",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceRoot}/app/bms/bms.go",
+            "env": {},
+            "args": []
+        }
+    ]
+}
