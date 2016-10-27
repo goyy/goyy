@@ -1,5 +1,6 @@
 // Place your settings in this file to overwrite default and user settings.
 {
+    // go
     "go.buildOnSave": true,
     "go.lintOnSave": true,
     "go.vetOnSave": true,
@@ -11,5 +12,7 @@
     "go.formatOnSave": true,
     "go.formatTool": "goreturns",
     "go.goroot": "C:\\go",
-    "go.gopath": "E:\\gopath"
+    "go.gopath": "E:\\gopath",
+    // code-runner
+    "code-runner.fileDirectoryAsCwd": true
 }
