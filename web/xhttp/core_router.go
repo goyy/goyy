@@ -94,21 +94,12 @@ func (me *router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					}
 				}
 				if !isPermission {
-					msg := i18N.Message("err.407")
 					if webs.IsXMLHttpRequest(r) { // AJAX
-						c := `{"success":false,"message":"` + msg + `"}`
-						w.WriteHeader(StatusProxyAuthRequired)
-						w.Write([]byte(c))
+						err407(w, r)
 						return
 					} else {
-						if strings.IsNotBlank(Conf.Err.Err401) {
-							http.Redirect(w, r, Conf.Err.Err401, http.StatusFound)
-							return
-						} else {
-							w.WriteHeader(StatusProxyAuthRequired)
-							w.Write([]byte(msg))
-							return
-						}
+						err401(w, r, c)
+						return
 					}
 				}
 			}
@@ -118,25 +109,15 @@ func (me *router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			logger.Errorf("No match for router:%s:%s", r.Method, r.RequestURI)
 			c := me.newContext(w, r)
 			c.Next()
-			if strings.IsNotBlank(Conf.Err.Err404) {
-				http.Redirect(w, r, Conf.Err.Err404, http.StatusFound)
-				return
-			} else {
-				msg := i18N.Message("err.404")
-				serveError(c, StatusNotFound, []byte(msg))
-			}
+			err404(w, r, c)
+			return
 		}
 	} else {
 		logger.Error("No match for router:", r.Method)
 		c := me.newContext(w, r)
 		c.Next()
-		if strings.IsNotBlank(Conf.Err.Err404) {
-			http.Redirect(w, r, Conf.Err.Err404, http.StatusFound)
-			return
-		} else {
-			msg := i18N.Message("err.404")
-			serveError(c, StatusNotFound, []byte(msg))
-		}
+		err404(w, r, c)
+		return
 	}
 }
 

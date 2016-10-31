@@ -24,11 +24,11 @@ func SetConf(path string) {
 // Get the settings link parameters based on the configuration file.
 func Settings() (out xSettings, err error) {
 	f, ferr := os.Open(conf + "/env/settings.xml")
-	defer f.Close()
 	if ferr != nil {
 		err = ferr
 		return
 	}
+	defer f.Close()
 	decoder := xml.NewDecoder(f)
 	var xConf *xConfiguration
 	if derr := decoder.Decode(&xConf); derr != nil {
@@ -278,11 +278,11 @@ func Secure(name string) (out xSecure, err error) {
 
 func parse(file string) (xEnv *xEnvironment, err error) {
 	f, ferr := os.Open(file)
-	defer f.Close()
 	if ferr != nil {
 		err = ferr
 		return
 	}
+	defer f.Close()
 	decoder := xml.NewDecoder(f)
 	var xConf *xConfiguration
 	if derr := decoder.Decode(&xConf); derr != nil {

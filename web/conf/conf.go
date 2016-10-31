@@ -66,7 +66,7 @@ var Conf = &conf{
 	},
 	Session: &sessionOptions{
 		Enable: true,
-		Addr:   ":6379",
+		Addr:   "127.0.0.1:6379",
 		Options: &session.Options{
 			Path:     "/",
 			Domain:   "",

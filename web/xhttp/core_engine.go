@@ -7,8 +7,6 @@ package xhttp
 import (
 	"net/http"
 	"runtime/debug"
-
-	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 type engine struct {
@@ -21,14 +19,7 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if err := recover(); err != nil {
 			logger.Error(err)
 			debug.PrintStack()
-			if strings.IsNotBlank(Conf.Err.Err500) {
-				http.Redirect(w, r, Conf.Err.Err500, http.StatusFound)
-				return
-			} else {
-				msg := i18N.Message("err.500")
-				w.WriteHeader(500)
-				w.Write([]byte(msg))
-			}
+			err500(w, r)
 		}
 	}()
 	if Conf.Asset.Enable { // assetServeMux
