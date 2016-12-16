@@ -17,7 +17,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/uuids"
 )
 
-// Reports whether the specified file exists.
+// IsExist reports whether the specified file exists.
 // Returns true if the file exists, false if it does not exist.
 func IsExist(filename string) bool {
 	_, err := os.Stat(filename)
@@ -82,7 +82,10 @@ func MkdirAll(name string, perm os.FileMode) error {
 	return os.MkdirAll(name, perm)
 }
 
-// Rename renames a file.
+// Rename renames (moves) oldpath to newpath.
+// If newpath already exists, Rename replaces it.
+// OS-specific restrictions may apply when oldpath and newpath are in different directories.
+// If there is an error, it will be of type *LinkError.
 func Rename(oldname, newname string) error {
 	return os.Rename(oldname, newname)
 }
@@ -93,7 +96,7 @@ func Remove(name string) error {
 	return os.Remove(name)
 }
 
-// Returns the <a href="http://en.wikipedia.org/wiki/Filename_extension">file
+// Extension returns the <a href="http://en.wikipedia.org/wiki/Filename_extension">file
 // extension</a> for the given file name, or the empty string if the file has
 // no extension.  The result does not include the '{@code .}'.
 func Extension(fileName string) string {
@@ -102,9 +105,8 @@ func Extension(fileName string) string {
 	first := strings.Left(ext, 1)
 	if first == "/" {
 		return ""
-	} else {
-		return ext
 	}
+	return ext
 }
 
 // ModTime returns the file modification time
@@ -134,7 +136,12 @@ func Size(file string) (int64, error) {
 	return f.Size(), nil
 }
 
-// file upload
+// Upload uploads a file.
+// eg.
+// confdir : /assets
+// filedir : /upl
+// field : art/library
+// out : /assets/upl/art/library/8826e07b8d2111e6ab7854e873b1560c.png
 func Upload(w http.ResponseWriter, r *http.Request, field, confdir, filedir string) (out string, err error) {
 	if r.Method != "POST" {
 		err = errors.New("status method tot allowed")
@@ -170,7 +177,12 @@ func Upload(w http.ResponseWriter, r *http.Request, field, confdir, filedir stri
 	return
 }
 
-// multipart file upload
+// Uploads uploads a multipart file.
+// eg.
+// confdir : /assets
+// filedir : /upl
+// field : art/library
+// out : /assets/upl/art/library/8826e07b8d2111e6ab7854e873b1560c.png
 func Uploads(w http.ResponseWriter, r *http.Request, field, confdir, filedir string) (out []string, err error) {
 	if r.Method != "POST" {
 		err = errors.New("status method tot allowed")
@@ -190,7 +202,7 @@ func Uploads(w http.ResponseWriter, r *http.Request, field, confdir, filedir str
 	dir := parseDirLR(confdir) + parseDirRight(filedir)
 	//get the *fileheaders
 	files := m.File[field]
-	for i, _ := range files {
+	for i := range files {
 		//for each fileheader, get a handle to the actual file
 		file, ferr := files[i].Open()
 		defer file.Close()

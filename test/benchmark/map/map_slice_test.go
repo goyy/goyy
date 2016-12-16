@@ -30,16 +30,17 @@ var dmap map[int]int
 var dslice Maps
 
 func TestResult(t *testing.T) {
-	//PASS
-	//BenchmarkMapSet-4  	10000000	       180 ns/op
-	//BenchmarkSliceSet-4	50000000	        76.5 ns/op
-	//BenchmarkMapGet-4  	20000000	       110 ns/op
-	//BenchmarkSliceGet-4	  300000	    216905 ns/op
-	//ok  	gopkg.in/goyy/goyy.v0/test/bench/map	91.263s
+	// BenchmarkMapSet-4       10000000               177 ns/op
+	// BenchmarkSliceSet-4     50000000               49.1 ns/op
+	// BenchmarkMapGet-4       20000000               104 ns/op
+	// BenchmarkSliceGet-4       500000            521592 ns/op
+	// PASS
+	// ok      gopkg.in/goyy/goyy.v0/test/benchmark/map        282.871s
 }
 
 func BenchmarkMapSet(b *testing.B) {
 	dmap = make(map[int]int, b.N)
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		dmap[i] = i
 	}
@@ -47,6 +48,7 @@ func BenchmarkMapSet(b *testing.B) {
 
 func BenchmarkSliceSet(b *testing.B) {
 	dslice.Data = make([]*Map, b.N)
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		v := &Map{i, i}
 		dslice.Data[i] = v
