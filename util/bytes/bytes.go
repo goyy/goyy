@@ -26,6 +26,7 @@ func IsHex(c byte) bool {
 	return false
 }
 
+// NewBuffer creates a new Buffer.
 func NewBuffer() bytes.Buffer {
 	return bytes.Buffer{}
 }

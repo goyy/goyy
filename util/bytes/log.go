@@ -10,6 +10,7 @@ import (
 
 var logger = log.New("[bytes]")
 
+// SetPriority sets the output priority for the logging.
 func SetPriority(value int) {
 	logger.SetPriority(value)
 }
