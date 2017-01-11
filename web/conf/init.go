@@ -4,10 +4,12 @@
 
 package conf
 
+import _ "gopkg.in/goyy/goyy.v0/comm/profile/settings"
+import _ "gopkg.in/goyy/goyy.v0/comm/log/settings"
+
 import (
 	"gopkg.in/goyy/goyy.v0/comm/env"
 	"gopkg.in/goyy/goyy.v0/comm/log"
-	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/data/service"
 	"gopkg.in/goyy/goyy.v0/util/strings"
@@ -16,9 +18,6 @@ import (
 
 func init() {
 	if v, err := env.Settings(); err == nil {
-		actives := strings.Split(v.Profile.Actives, ",")
-		initProfile(v.Profile.Default, actives...)
-		initLog()
 		initDB(v.Name)
 		initApi(v.Name)
 		initAsset(v.Name)
@@ -29,19 +28,6 @@ func init() {
 		initSecure(v.Name)
 	} else {
 		log.Println(err.Error())
-	}
-}
-
-func initProfile(defaults string, actives ...string) {
-	profile.SetDefault(defaults)
-	profile.SetActives(actives...)
-}
-
-func initLog() {
-	if profile.Accepts(profile.DEV) {
-		log.SetDefaultOutput(log.Oconsole)
-	} else {
-		log.SetDefaultOutput(log.Odailyfile)
 	}
 }
 

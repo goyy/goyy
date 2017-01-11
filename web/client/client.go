@@ -20,6 +20,7 @@ type Client struct {
 	URL         string
 	Params      url.Values
 	PostBody    string
+	Referer     string
 	Header      http.Header
 	Cookies     []*http.Cookie
 	Transport   http.RoundTripper
@@ -161,6 +162,11 @@ func (me *Client) getRequest(method string) (*http.Request, error) {
 		req.Header = me.Header
 		if strings.IsBlank(req.Header.Get("Content-Type")) {
 			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+		}
+		if strings.IsBlank(me.Referer) {
+			req.Header.Set("Referer", me.URL)
+		} else {
+			req.Header.Set("Referer", me.Referer)
 		}
 		for _, c := range me.Cookies {
 			req.AddCookie(c)

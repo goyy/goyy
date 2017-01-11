@@ -8,6 +8,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/comm/i18n"
 )
 
+// SetLocale set the i18n locale
 func SetLocale(locale string) {
 	i18N.SetLocale(locale)
 }
@@ -30,6 +31,7 @@ var locales = map[string]map[string]string{
 		"empty.environments.environment.html":      "environments.environment.html[@name='%s']: 不允许为空！",
 		"empty.environments.environment.template":  "environments.environment.template[@name='%s']: 不允许为空！",
 		"empty.environments.environment.illegal":   "environments.environment.illegal[@name='%s']: 不允许为空！",
+		"empty.environments.environment.log":       "environments.environment.log[@name='%s']: 不允许为空！",
 		"empty.environments.environment.secure":    "environments.environment.secure[@name='%s']: 不允许为空！",
 	},
 	i18n.Locale_en_US: map[string]string{
@@ -47,6 +49,7 @@ var locales = map[string]map[string]string{
 		"empty.environments.environment.html":      "environments.environment.html[@name='%s']: can not be empty!",
 		"empty.environments.environment.template":  "environments.environment.template[@name='%s']: can not be empty!",
 		"empty.environments.environment.illegal":   "environments.environment.illegal[@name='%s']: can not be empty!",
+		"empty.environments.environment.log":       "environments.environment.log[@name='%s']: can not be empty!",
 		"empty.environments.environment.secure":    "environments.environment.secure[@name='%s']: can not be empty!",
 	},
 }

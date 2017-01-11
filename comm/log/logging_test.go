@@ -5,12 +5,13 @@
 package log_test
 
 import (
-	"gopkg.in/goyy/goyy.v0/comm/log"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/comm/log"
 )
 
 func TestLogging(t *testing.T) {
-	logging := log.NewLogging("[logging]", log.Perror, log.Lstd, log.Ostd)
+	logging := log.NewLogging("[logging]", log.Perror, log.LstdFlags, log.Ostd)
 
 	logging.Trace("=====trace=====")
 	logging.Debug("=====debug=====")

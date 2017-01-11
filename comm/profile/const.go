@@ -5,15 +5,24 @@
 package profile
 
 const (
+	// PROD is the production active
 	PROD = "production"
-	DEV  = "development"
+	// DEV is the development active
+	DEV = "development"
+	// TEST is the test active
 	TEST = "test"
+	// UNIT is the unit active
 	UNIT = "unit"
-	BMS  = "bms"
-	WEB  = "web"
-	WAP  = "wap"
-	API  = "api"
-	QRY  = "qry"
+	// BMS is the bms active
+	BMS = "bms" // -> adm
+	// WEB is the web active
+	WEB = "web"
+	// WAP is the wap active
+	WAP = "wap"
+	// API is the api active
+	API = "api"
+	// QRY is the qry active
+	QRY = "qry"
 )
 
 const (

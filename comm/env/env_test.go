@@ -139,13 +139,28 @@ func TestIllegal(t *testing.T) {
 	}
 }
 
+func TestLog(t *testing.T) {
+	in := "env"
+	out1 := "env"
+	out2 := 2
+	out3 := 75
+	out4 := 1
+	out5 := "logs"
+
+	v, _ := env.Log(in)
+	if v.Name != out1 || v.Priority != out2 || v.Layout != out3 || v.Output != out4 || v.Dir != out5 {
+		format := "env.Log(%s) = %s, %v, %v, %v, %s; want %s, %v, %v, %v, %s"
+		t.Errorf(format, in, v.Name, v.Priority, v.Layout, v.Output, v.Dir, out1, out2, out3, out4, out5)
+	}
+}
+
 func TestSecure(t *testing.T) {
 	in := "env"
 	out1 := "env"
 	out2 := true
 	out3 := "/login.html"
 	out4 := "/err/403.html"
-	out5 := "/"
+	out5 := "/home.html"
 	out6 := "/login"
 	out7 := "anon"
 

@@ -5,14 +5,15 @@
 package log_test
 
 import (
-	"gopkg.in/goyy/goyy.v0/comm/log"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/comm/log"
 )
 
 func TestLog(t *testing.T) {
 	log.SetPrefix("[log]")
 	log.SetPriority(log.Perror)
-	log.SetLayouts(log.Lstd | log.Llongfile)
+	log.SetLayouts(log.LstdFlags | log.Llongfile)
 
 	log.Trace("=====trace=====")
 	log.Debug("=====debug=====")

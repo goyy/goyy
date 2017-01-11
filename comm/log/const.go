@@ -26,8 +26,8 @@ const (
 	Llongfile                     // full file name and line number: /a/b/c/d.go:23
 	Lshortfile                    // final file name element and line number: d.go:23. overrides Llongfile
 	LUTC                          // if Ldate or Ltime is set, use UTC rather than the local time zone
-	LstdFlags     = Ldate | Ltime // initial values for the standard logger
 	Lpriority                     // the priority: Debug
+	LstdFlags     = Ldate | Ltime // initial values for the standard logger
 )
 
 // sets the outputs destination for the logger.
@@ -36,8 +36,4 @@ const (
 	Odailyfile                           // the daily file logger
 	Orollingfile                         // the rolling file logger
 	Ostd         = Oconsole | Odailyfile // the console|daily file logger
-)
-
-const (
-	logDir = "logs"
 )

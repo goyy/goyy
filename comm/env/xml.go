@@ -39,6 +39,7 @@ type xEnvironment struct {
 	Htmls      []xTemplate `xml:"html"`
 	Templates  []xTemplate `xml:"template"`
 	Illegals   []xIllegal  `xml:"illegal"`
+	Logs       []xLog      `xml:"log"`
 	Secures    []xSecure   `xml:"secure"`
 }
 
@@ -102,6 +103,14 @@ type xIllegal struct {
 	Enable   bool   `xml:"enable"`
 	Excludes string `xml:"excludes"`
 	Values   string `xml:"values"`
+}
+
+type xLog struct {
+	Name     string `xml:"name,attr"`
+	Priority int    `xml:"priority"`
+	Layout   int    `xml:"layout"`
+	Output   int    `xml:"output"`
+	Dir      string `xml:"dir"`
 }
 
 type xSecure struct {

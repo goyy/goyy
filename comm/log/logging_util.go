@@ -51,7 +51,7 @@ func (me *Logging) resetConsoleLogger() {
 func (me *Logging) getDailyFileName() string {
 	date := time.Now().Format("2006-01-02")
 	format := "./%s/daily.%s.log"
-	return fmt.Sprintf(format, logDir, date)
+	return fmt.Sprintf(format, defaultDir, date)
 }
 
 func (me *Logging) setDailyFileLogger() {
@@ -63,7 +63,7 @@ func (me *Logging) setDailyFileLogger() {
 		}
 		me.dailyfile = NewLogger(f)
 	} else {
-		os.Mkdir(logDir, 0666)
+		os.Mkdir(defaultDir, 0666)
 		f, err := os.Create(me.dailyfilename)
 		if err != nil {
 			fmt.Println(err.Error())

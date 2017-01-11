@@ -13,7 +13,7 @@ var (
 	defaults = DEV
 )
 
-// Return the set of profiles explicitly made active for this environment.
+// Actives return the set of profiles explicitly made active for this environment.
 // Profiles are used for creating logical groupings of bean definitions to be registered conditionally,
 // for example based on deployment environment.
 // Profiles can be activated by calling profile.SetActives(...string).
@@ -22,6 +22,7 @@ func Actives() []string {
 	return actives
 }
 
+// SetActives set the actives.
 func SetActives(profiles ...string) {
 	i := 0
 	for _, v := range profiles {
@@ -35,7 +36,7 @@ func SetActives(profiles ...string) {
 	}
 }
 
-// Return the set of profiles explicitly made active for this environment.
+// Default return the set of profiles explicitly made active for this environment.
 // Profiles are used for creating logical groupings of bean definitions to be registered conditionally,
 // for example based on deployment environment.
 // Profiles can be activated by calling profile.SetDefault(string).
@@ -44,13 +45,14 @@ func Default() string {
 	return defaults
 }
 
+// SetDefault set the default active.
 func SetDefault(profile string) {
 	if strings.IsNotBlank(profile) {
 		defaults = profile
 	}
 }
 
-// Return whether one or more of the given profiles is active or,
+// Accepts return whether one or more of the given profiles is active or,
 // in the case of no explicit active profiles,
 // whether one or more of the given profiles is included in the set of default profile.
 // If a profile begins with '!' the logic is inverted,
