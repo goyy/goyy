@@ -32,8 +32,8 @@
 			</asset>
 			<static name="goyy">
 				<enable>false</enable>
-				<dir>/assets/yybms</dir>
-				<url>http://127.0.0.1:9099/yybms</url>
+				<dir>/assets/yyadm</dir>
+				<url>http://127.0.0.1:9099/yyadm</url>
 			</static>
 			<developer name="goyy">
 				<enable>false</enable>
@@ -54,8 +54,8 @@
 			</asset>
 			<static name="goyy">
 				<enable>false</enable>
-				<dir>/assets/yybms</dir>
-				<url>http://assets.goyy.org/yybms</url>
+				<dir>/assets/yyadm</dir>
+				<url>http://assets.goyy.org/yyadm</url>
 			</static>
 			<developer name="goyy">
 				<enable>false</enable>

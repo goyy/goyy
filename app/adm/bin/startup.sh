@@ -1,2 +1,2 @@
 #!/bin/sh
-cd /app/bms/ && ./bms &
+cd /app/adm/ && ./adm &

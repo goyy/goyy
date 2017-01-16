@@ -1,3 +1,3 @@
 #!/bin/sh
-kill -9 `ps -ef | grep /bms | grep -v 'grep' | awk '{print $2}'`
+kill -9 `ps -ef | grep /adm | grep -v 'grep' | awk '{print $2}'`
 exit

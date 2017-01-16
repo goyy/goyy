@@ -58,7 +58,7 @@ var funcMapText = ttmpl.FuncMap{
 	"profile":    getProfile,    // profile[production|development|test]
 	"apis":       getApis,       // The URL of the apis.
 	"assets":     getAssets,     // The URL of the static file.
-	"statics":    getStatics,    // static file[web|wap|bms]
+	"statics":    getStatics,    // static file[web|wap|adm]
 	"developers": getDevelopers, // The URL of the development of relevant documents
 	"operations": getOperations, // The URL of the operation related documents.
 	"uploads":    getUploads,    // The URL of the uploaded file.
@@ -94,7 +94,7 @@ var funcMapHtml = htmpl.FuncMap{
 	"profile":    getProfile,    // profile[production|development|test]
 	"apis":       getApis,       // The URL of the apis.
 	"assets":     getAssets,     // The URL of the static file.
-	"statics":    getStatics,    // static file[web|wap|bms]
+	"statics":    getStatics,    // static file[web|wap|adm]
 	"developers": getDevelopers, // The URL of the development of relevant documents
 	"operations": getOperations, // The URL of the operation related documents.
 	"uploads":    getUploads,    // The URL of the uploaded file.
