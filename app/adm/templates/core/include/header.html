@@ -1,1 +1,51 @@
-
+<script type="text/javascript">
+	$(function(){
+		$("#header").permission();
+		var winUrl = $.url();
+		var project=winUrl.param("project");
+		if($.isNotBlank(project)){
+			var headerMenu="#header_"+project;
+			$(headerMenu).addClass("active");
+		}
+		$("#loginName").html($.getLoginName());
+	});
+</script>
+<div id="header" class="navbar navbar-default navbar-fixed-top dn" role="navigation">
+	<div class="container-fluid">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/sys/user/info.html">GOYY</a>
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li id="header_sys" data-permissions="sys:menu:view,sys:post:view,sys:role:view,sys:area:view,sys:org:view,sys:user:view,sys:dict:view,sys:cache:view," class="{%if eq .param 'sys'%}active {%end%}dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">SYS<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li data-permissions="sys:menu:view"><a href="/sys/menu/menu.html">MENU manage</a></li>
+							<li data-permissions="sys:post:view"><a href="/sys/post/post.html">POST manage</a></li>
+							<li data-permissions="sys:role:view"><a href="/sys/role/role.html">ROLE manage</a></li>
+							<li data-permissions="sys:area:view,sys:org:view,sys:user:view" class="divider"></li>
+							<li data-permissions="sys:area:view"><a href="/sys/area/area.html">AREA manage</a></li>
+							<li data-permissions="sys:org:view"><a href="/sys/org/org.html">ORG manage</a></li>
+							<li data-permissions="sys:user:view"><a href="/sys/user/user.html">USER manage</a></li>
+							<li data-permissions="sys:dict:view" class="divider"></li>
+							<li data-permissions="sys:dict:view"><a href="/sys/dict/dict.html">DICT manage</a></li>
+							<li data-permissions="sys:cache:view" class="divider"></li>
+							<li data-permissions="sys:cache:view"><a href="/sys/cache/cache.html">CACHE manage</a></li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a id="loginName" href="/sys/user/info.html">&nbsp;</a></li>
+					<li><a href="/logout">exit</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

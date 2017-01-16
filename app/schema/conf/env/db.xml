@@ -5,7 +5,7 @@
 		<environment id="development">
 			<database name="goyy">
 				<driverName>mysql</driverName>
-				<dataSourceName>root:root@tcp(10.100.141.39:3306)/goyy_development</dataSourceName>
+				<dataSourceName>root:root@tcp(127.0.0.1:3306)/goyy_development</dataSourceName>
 				<maxIdleConns>10</maxIdleConns>
 				<maxOpenConns>100</maxOpenConns>
 			</database>
@@ -13,7 +13,7 @@
 		<environment id="test">
 			<database name="goyy">
 				<driverName>mysql</driverName>
-				<dataSourceName>root:root@tcp(10.100.141.39:3306)/goyy_test</dataSourceName>
+				<dataSourceName>root:root@tcp(127.0.0.1:3306)/goyy_test</dataSourceName>
 				<maxIdleConns>10</maxIdleConns>
 				<maxOpenConns>100</maxOpenConns>
 			</database>
@@ -21,7 +21,7 @@
 		<environment id="production">
 			<database name="goyy">
 				<driverName>mysql</driverName>
-				<dataSourceName>root:root@tcp(10.100.141.39:3306)/goyy_production</dataSourceName>
+				<dataSourceName>root:root@tcp(127.0.0.1:3306)/goyy_production</dataSourceName>
 				<maxIdleConns>10</maxIdleConns>
 				<maxOpenConns>100</maxOpenConns>
 			</database>
