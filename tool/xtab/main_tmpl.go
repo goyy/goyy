@@ -28,6 +28,8 @@ func newTmpl(s string) *template.Template {
 
 var (
 	funcs = template.FuncMap{
+		"add1": func(v int) int { return v + 1 },
+		"sub1": func(v int) int { return v - 1 },
 		"message": func(key string) string { // get message for i18n
 			return i18N.Message(key)
 		},

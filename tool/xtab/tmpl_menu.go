@@ -30,7 +30,7 @@ var tmplMenu = `<script type="text/javascript">{{$ := .}}
 			</div>
 			<div class="navbar-collapse collapse">{{range $module := .Modules}}
 				<ul class="nav navbar-nav">
-					<li id="header_{{$module.Id}}" go:data-permissions="{{range $table := $.Tables}}{{if eq $table.Module.Id $module.Id}}{{if eq $table.Menu "true"}}{{if ne $table.Id "-"}}{{$table.Permissions}}{{end}}{{end}}{{end}}{{end}}" class="{%if eq .param '{{$module.Id}}'%}active {%end%}dropdown">
+					<li id="header_{{$module.Id}}" go:data-permissions="{{range $table := $.Tables}}{{if eq $table.Module.Id $module.Id}}{{if eq $table.Menu "true"}}{{if ne $table.Id "-"}}{{$table.Permissions}},{{end}}{{end}}{{end}}{{end}}" class="{%if eq .param '{{$module.Id}}'%}active {%end%}dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{$module.Name}}<b class="caret"></b></a>
 						<ul class="dropdown-menu">{{range $table := $.Tables}}{{if eq $table.Module.Id $module.Id}}{{if eq $table.Menu "true"}}{{if eq $table.Id "-"}}
 							<li data-permissions="{{$table.Permissions}}" class="divider"></li>{{else}}
