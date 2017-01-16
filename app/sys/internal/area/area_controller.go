@@ -8,11 +8,11 @@ import (
 )
 
 func init() {
-	xhttp.GET(ctl.ApiIndex(), ctl.Index, ctl.PermitView(profile.BMS))
-	xhttp.POST(ctl.ApiIndex(), ctl.Index, ctl.PermitView(profile.BMS))
-	xhttp.GET(ctl.ApiShow(), ctl.Show, ctl.PermitView(profile.BMS))
-	xhttp.POST(ctl.ApiShow(), ctl.Show, ctl.PermitView(profile.BMS))
-	xhttp.POST(ctl.ApiSave(), ctl.SaveAndTx, ctl.PermitAdd(profile.BMS), ctl.PermitEdit(profile.BMS))
+	xhttp.GET(ctl.ApiIndex(), ctl.Index, ctl.PermitView(profile.ADM))
+	xhttp.POST(ctl.ApiIndex(), ctl.Index, ctl.PermitView(profile.ADM))
+	xhttp.GET(ctl.ApiShow(), ctl.Show, ctl.PermitView(profile.ADM))
+	xhttp.POST(ctl.ApiShow(), ctl.Show, ctl.PermitView(profile.ADM))
+	xhttp.POST(ctl.ApiSave(), ctl.SaveAndTx, ctl.PermitAdd(profile.ADM), ctl.PermitEdit(profile.ADM))
 	xhttp.GET(ctl.ApiTree(), ctl.Tree)
 
 	xhttp.POST(ctl.ApiDisable(), ctl.DisableAndTx, ctl.PermitDisable())

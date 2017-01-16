@@ -13,8 +13,8 @@ const (
 	TEST = "test"
 	// UNIT is the unit active
 	UNIT = "unit"
-	// BMS is the bms active
-	BMS = "bms" // -> adm
+	// BMS is the adm active
+	ADM = "adm"
 	// WEB is the web active
 	WEB = "web"
 	// WAP is the wap active
