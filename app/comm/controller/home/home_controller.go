@@ -2,7 +2,6 @@ package home
 
 import (
 	"gopkg.in/goyy/goyy.v0/util/cookies"
-	"gopkg.in/goyy/goyy.v0/util/files"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/web/controller"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
@@ -13,24 +12,17 @@ func init() {
 	xhttp.GET("/favicon.ico", ctl.favicon)
 }
 
-func ver() string {
-	var ver string = "ver=1"
-	fver := xhttp.Conf.Html.Dir + "/version.html"
-	if files.IsExist(fver) {
-		if c, err := files.Read(fver); err == nil {
-			ver = c
-		}
-	}
-	if strings.Index(xhttp.Conf.Secure.SuccessUrl, "?") == -1 {
-		return "?" + ver
+func ver(url string) string {
+	if strings.Index(url, "?") == -1 {
+		return url + "?" + xhttp.Conf.Asset.Ver
 	} else {
-		return "&" + ver
+		return url + "&" + xhttp.Conf.Asset.Ver
 	}
 }
 
 func (me *Controller) home(c xhttp.Context) {
 	if !c.Session().IsLogin() {
-		c.Redirect(xhttp.Conf.Secure.LoginUrl)
+		c.Redirect(ver(xhttp.Conf.Secure.LoginUrl))
 		return
 	}
 	// Set cookie,
@@ -40,7 +32,7 @@ func (me *Controller) home(c xhttp.Context) {
 	case "pc", "webapp":
 		cookies.SetValue(c.ResponseWriter(), "mode", m)
 	}
-	c.Redirect(xhttp.Conf.Secure.SuccessUrl + ver())
+	c.Redirect(ver(xhttp.Conf.Secure.SuccessUrl))
 }
 
 func (me *Controller) favicon(c xhttp.Context) {

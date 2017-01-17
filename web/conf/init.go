@@ -4,7 +4,9 @@
 
 package conf
 
-import _ "gopkg.in/goyy/goyy.v0/comm/profile/settings"
+import (
+	_ "gopkg.in/goyy/goyy.v0/comm/profile/settings"
+)
 import _ "gopkg.in/goyy/goyy.v0/comm/log/settings"
 
 import (
@@ -12,6 +14,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/comm/log"
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/data/service"
+	"gopkg.in/goyy/goyy.v0/util/files"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/templates"
 )
@@ -44,8 +47,10 @@ func initApi(envName string) {
 }
 
 func initAsset(envName string) {
+	ver := assetVersion()
 	if v, err := env.Asset(envName); err == nil {
 		Conf.Asset.Enable = v.Enable
+		Conf.Asset.Ver = ver
 		Conf.Asset.Dir = v.Dir
 		Conf.Asset.URL = v.URL
 	} else {
@@ -54,6 +59,7 @@ func initAsset(envName string) {
 
 	if v, err := env.Static(envName); err == nil {
 		Conf.Static.Enable = v.Enable
+		Conf.Static.Ver = ver
 		Conf.Static.Dir = v.Dir
 		Conf.Static.URL = v.URL
 	} else {
@@ -62,6 +68,7 @@ func initAsset(envName string) {
 
 	if v, err := env.Developer(envName); err == nil {
 		Conf.Developer.Enable = v.Enable
+		Conf.Developer.Ver = ver
 		Conf.Developer.Dir = v.Dir
 		Conf.Developer.URL = v.URL
 	} else {
@@ -70,6 +77,7 @@ func initAsset(envName string) {
 
 	if v, err := env.Operation(envName); err == nil {
 		Conf.Operation.Enable = v.Enable
+		Conf.Operation.Ver = ver
 		Conf.Operation.Dir = v.Dir
 		Conf.Operation.URL = v.URL
 	} else {
@@ -161,9 +169,21 @@ func initSecure(envName string) {
 					}
 					filters[i] = m
 				}
+				Conf.Secure.Filters = filters
 			}
 		}
 	} else {
 		log.Println(err.Error())
 	}
+}
+
+func assetVersion() string {
+	var ver string = "ver=1"
+	fver := Conf.Html.Dir + "/version.html"
+	if files.IsExist(fver) {
+		if c, err := files.Read(fver); err == nil {
+			ver = c
+		}
+	}
+	return ver
 }

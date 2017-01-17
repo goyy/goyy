@@ -56,9 +56,9 @@ func (me *secureServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool
 				// After login support to redirect to the URL before
 				if url, err := aes.EncryptHex(r.URL.String(), aes.DefaultKey); err == nil {
 					if strings.Index(loginUrl, "?") > 0 {
-						loginUrl = loginUrl + "&redirect=" + url
+						loginUrl = loginUrl + "&" + Conf.Asset.Ver + "&redirect=" + url
 					} else {
-						loginUrl = loginUrl + "?redirect=" + url
+						loginUrl = loginUrl + "?" + Conf.Asset.Ver + "&redirect=" + url
 					}
 				}
 				http.Redirect(w, r, loginUrl, http.StatusFound)

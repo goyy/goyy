@@ -25,21 +25,25 @@ var Conf = &conf{
 	},
 	Asset: &staticOptions{
 		Enable: false,
+		Ver:    "ver=1",
 		Dir:    "/assets",
 		URL:    "/assets",
 	},
 	Static: &staticOptions{
 		Enable: false,
+		Ver:    "ver=1",
 		Dir:    "static",
 		URL:    "/statics",
 	},
 	Developer: &staticOptions{
 		Enable: false,
+		Ver:    "ver=1",
 		Dir:    "/assets/devs",
 		URL:    "/devs",
 	},
 	Operation: &staticOptions{
 		Enable: false,
+		Ver:    "ver=1",
 		Dir:    "/assets/oprs",
 		URL:    "/oprs",
 	},
@@ -127,6 +131,7 @@ type apiOptions struct {
 
 type staticOptions struct {
 	Enable bool   // Whether service is enabled
+	Ver    string // Static resource version
 	Dir    string // Static resource directory
 	URL    string // Static resource URL prefix
 }
