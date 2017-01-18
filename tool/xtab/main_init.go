@@ -11,8 +11,8 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
-var conf *configuration = &configuration{}
-var util *utils = &utils{}
+var conf = &configuration{}
+var util = &utils{}
 
 func init() {
 	valid := &valids{}

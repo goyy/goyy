@@ -43,7 +43,7 @@ func (me *postgresql) CreateIndex(t *table) (sql string) {
 func (me *postgresql) CreateTableColumns(t *table) (sql string) {
 	var id string
 	var b bool
-	var l int = len(t.Columns()) - 1
+	var l = len(t.Columns()) - 1
 	for i, c := range t.Columns() {
 		if i == l {
 			sql += me.CreateTableColumn(c)

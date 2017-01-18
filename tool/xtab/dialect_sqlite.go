@@ -37,7 +37,7 @@ func (me *sqlite) CreateIndex(t *table) (sql string) {
 }
 
 func (me *sqlite) CreateTableColumns(t *table) (sql string) {
-	var l int = len(t.Columns()) - 1
+	var l = len(t.Columns()) - 1
 	for i, c := range t.Columns() {
 		if i == l {
 			sql += me.CreateTableColumn(c)
