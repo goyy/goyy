@@ -4,7 +4,7 @@
 
 package main
 
-var tmplEntity = `package {{if blank .Master}}{{.Id}}{{else}}{{.Master}}{{end}}
+var tmplEntity = `package {{if blank .Master}}{{.ID}}{{else}}{{.Master}}{{end}}
 {{$ := .}}
 import (
 	"gopkg.in/goyy/goyy.v0/data/entity"
@@ -14,10 +14,10 @@ import (
 //go:generate xgen -entity=$GOFILE -scaffold{{if notblank .Module.Clipath}} -clipath={{.Module.Clipath}}{{end}} -apipath={{.Module.Apipath}} -tstpath={{.Module.Tstpath}}
 
 // {{.Name}}` + i18N.Message("domain.title") + `.
-// @entity(module:"{{.Id}}" project:"{{.Module.Id}}"{{if notblank .Slave}} relationship:"slave"{{end}})
+// @entity(module:"{{.ID}}" project:"{{.Module.ID}}"{{if notblank .Slave}} relationship:"slave"{{end}})
 type {{if notblank .Master}}{{camel .Slave}}{{end}}Entity struct {
 	{{if eq .Super "pk"}}entity.Pk{{end}}{{if eq .Super "sys"}}entity.Sys{{end}}{{if eq .Super "tree"}}entity.Tree{{end}}
-	{{padname "table" $.FieldMaxLen}} {{padname "schema.Table" $.TypeMaxLen}} ` + "`" + `db:"table={{.Module.Prefix}}_{{.Id}}&comment={{.Name}}"` + "`" + `{{range $column := .Columns}}{{if not (supercol $column.Id $.Super)}}
-	{{padname $column.Field $.FieldMaxLen}} {{padname $column.Etype $.TypeMaxLen}} ` + "`" + `db:"column={{$column.Id}}&comment={{$column.Name}}{{if notblank $column.Defaults}}&default={{$column.Defaults}}{{end}}"` + "`" + `{{end}}{{end}}
+	{{padname "table" $.FieldMaxLen}} {{padname "schema.Table" $.TypeMaxLen}} ` + "`" + `db:"table={{.Module.Prefix}}_{{.ID}}&comment={{.Name}}"` + "`" + `{{range $column := .Columns}}{{if not (supercol $column.ID $.Super)}}
+	{{padname $column.Field $.FieldMaxLen}} {{padname $column.Etype $.TypeMaxLen}} ` + "`" + `db:"column={{$column.ID}}&comment={{$column.Name}}{{if notblank $column.Defaults}}&default={{$column.Defaults}}{{end}}"` + "`" + `{{end}}{{end}}
 }
 `

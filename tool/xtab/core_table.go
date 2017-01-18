@@ -15,7 +15,7 @@ type xTables struct {
 }
 
 type xTable struct {
-	Id          string     `xml:"id,attr"`
+	ID          string     `xml:"id,attr"`
 	Name        string     `xml:"name,attr"`
 	Prefix      string     `xml:"prefix,attr"`
 	Extends     string     `xml:"extends,attr"`
@@ -98,16 +98,16 @@ func (me *table) Super() string { // table.super: this -> parent
 	return ""
 }
 
-func (me *table) Id() string { // table.id: this
+func (me *table) ID() string { // table.id: this
 	return me.id
 }
 
-func (me *table) SetId(value string) {
+func (me *table) SetID(value string) {
 	me.id = value
 }
 
-func (me *table) Ids() string {
-	return me.Prefix() + "_" + me.Id()
+func (me *table) IDs() string {
+	return me.Prefix() + "_" + me.ID()
 }
 
 func (me *table) Name() string { // table.name: this -> parent
@@ -183,7 +183,7 @@ func (me *table) SetSlave(value string) {
 
 func (me *table) Permissions() string { // table.permissions: this
 	if strings.TrimSpace(me.permissions) == "" {
-		return fmt.Sprintf("%s:%s:view", me.module.Id(), me.Id())
+		return fmt.Sprintf("%s:%s:view", me.module.ID(), me.ID())
 	}
 	return me.permissions
 }
@@ -194,7 +194,7 @@ func (me *table) SetPermissions(value string) {
 
 func (me *table) Href() string { // table.href: this
 	if strings.TrimSpace(me.permissions) == "" {
-		return fmt.Sprintf("/%s/%s/%s.html", me.module.Id(), me.Id(), me.Id())
+		return fmt.Sprintf("/%s/%s/%s.html", me.module.ID(), me.ID(), me.ID())
 	}
 	return me.href
 }
@@ -205,11 +205,11 @@ func (me *table) SetHref(value string) {
 
 func (me *table) Columns() []*column { // table.columns: this + parent
 	var cs []*column
-	if me.IsDefineId() {
+	if me.IsDefineID() {
 		cs = append(cs, me.columns...)
 		if me.parent != nil {
 			for _, c := range me.parent.Columns() {
-				if me.IsExists(me.columns, c.Id()) {
+				if me.IsExists(me.columns, c.ID()) {
 					continue
 				}
 				cs = append(cs, c)
@@ -218,7 +218,7 @@ func (me *table) Columns() []*column { // table.columns: this + parent
 	} else {
 		if me.parent != nil {
 			for _, c := range me.parent.Columns() {
-				if c.Id() == "id" {
+				if c.ID() == "id" {
 					cs = append(cs, c)
 					break
 				}
@@ -227,7 +227,7 @@ func (me *table) Columns() []*column { // table.columns: this + parent
 		cs = append(cs, me.columns...)
 		if me.parent != nil {
 			for _, c := range me.parent.Columns() {
-				if me.IsExists(me.columns, c.Id()) || c.Id() == "id" {
+				if me.IsExists(me.columns, c.ID()) || c.ID() == "id" {
 					continue
 				}
 				cs = append(cs, c)
@@ -237,18 +237,18 @@ func (me *table) Columns() []*column { // table.columns: this + parent
 	return cs
 }
 
-func (me *table) IsDefineId() bool {
+func (me *table) IsDefineID() bool {
 	for _, c := range me.columns {
-		if c.Id() == "id" {
+		if c.ID() == "id" {
 			return true
 		}
 	}
 	return false
 }
 
-func (me *table) IsExists(cs []*column, columnId string) bool {
+func (me *table) IsExists(cs []*column, columnID string) bool {
 	for _, c := range cs {
-		if c.Id() == columnId {
+		if c.ID() == columnID {
 			return true
 		}
 	}

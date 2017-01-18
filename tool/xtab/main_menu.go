@@ -38,7 +38,7 @@ func genMenu() {
 	}
 	for _, p := range conf.projects {
 		for mi, m := range conf.modules {
-			if p.Id() == m.project.Id() && m.Menu() == "true" {
+			if p.ID() == m.project.ID() && m.Menu() == "true" {
 				root := &menu{
 					id:      "root",
 					code:    "00",
@@ -46,16 +46,16 @@ func genMenu() {
 					ordinal: "00",
 				}
 				po := strings.PadLeft(strconv.Itoa(mi+1), 2, "0")
-				pp := addMenu(p.Id(), m.Id(), "", m.Name(), po, "10", root) // module
+				pp := addMenu(p.ID(), m.ID(), "", m.Name(), po, "10", root) // module
 				for ti, t := range conf.tables {
-					if m.Id() == t.module.Id() && t.Menu() == "true" && t.Id() != "-" {
+					if m.ID() == t.module.ID() && t.Menu() == "true" && t.ID() != "-" {
 						to := strings.PadLeft(strconv.Itoa(ti+1), 2, "0")
-						mp := addMenu(p.Id(), m.Id(), t.Id(), t.Name(), to, "20", pp) // table
-						addMenu(p.Id(), m.Id(), t.Id(), "view", "10", "30", mp)       // button:view
-						addMenu(p.Id(), m.Id(), t.Id(), "add", "20", "30", mp)        // button:add
-						addMenu(p.Id(), m.Id(), t.Id(), "edit", "30", "30", mp)       // button:edit
-						addMenu(p.Id(), m.Id(), t.Id(), "disable", "40", "30", mp)    // button:disable
-						addMenu(p.Id(), m.Id(), t.Id(), "export", "50", "30", mp)     // button:export
+						mp := addMenu(p.ID(), m.ID(), t.ID(), t.Name(), to, "20", pp) // table
+						addMenu(p.ID(), m.ID(), t.ID(), "view", "10", "30", mp)       // button:view
+						addMenu(p.ID(), m.ID(), t.ID(), "add", "20", "30", mp)        // button:add
+						addMenu(p.ID(), m.ID(), t.ID(), "edit", "30", "30", mp)       // button:edit
+						addMenu(p.ID(), m.ID(), t.ID(), "disable", "40", "30", mp)    // button:disable
+						addMenu(p.ID(), m.ID(), t.ID(), "export", "50", "30", mp)     // button:export
 					}
 				}
 			}
@@ -71,16 +71,16 @@ func addMenu(pid, mid, tid, xname, ordinal, genre string, parent *menu) *menu {
 		hidden:   "0",
 		code:     parent.ordinal + ordinal,
 		name:     xname,
-		parentId: parent.id,
+		parentID: parent.id,
 		leaf:     "0",
 		genre:    genre,
 		ordinal:  parent.ordinal + ordinal,
 	}
 	if parent.id == "root" {
-		m.parentIds = parent.id
+		m.parentIDs = parent.id
 		m.parentCodes = parent.code
 	} else {
-		m.parentIds = parent.parentIds + "," + parent.id
+		m.parentIDs = parent.parentIDs + "," + parent.id
 		m.parentCodes = parent.parentCodes + "," + parent.code
 	}
 	switch genre {
@@ -132,7 +132,7 @@ func addMenu(pid, mid, tid, xname, ordinal, genre string, parent *menu) *menu {
 		return m
 	}
 	if count == 0 {
-		_, err = db.Exec(sql, m.id, m.href, m.hidden, m.permission, m.code, m.name, m.fullname, m.genre, m.ordinal, m.parentId, m.parentIds, m.parentCodes, m.parentNames, m.leaf, m.grade)
+		_, err = db.Exec(sql, m.id, m.href, m.hidden, m.permission, m.code, m.name, m.fullname, m.genre, m.ordinal, m.parentID, m.parentIDs, m.parentCodes, m.parentNames, m.leaf, m.grade)
 		if err != nil {
 			logger.Error(err)
 			return m
@@ -142,7 +142,7 @@ func addMenu(pid, mid, tid, xname, ordinal, genre string, parent *menu) *menu {
 }
 
 type menu struct {
-	id, href, hidden, permission, code, name, fullname, genre, ordinal, parentId, parentIds, parentCodes, parentNames, leaf, grade string
+	id, href, hidden, permission, code, name, fullname, genre, ordinal, parentID, parentIDs, parentCodes, parentNames, leaf, grade string
 }
 
 var once sync.Once

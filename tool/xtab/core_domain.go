@@ -13,7 +13,7 @@ type xDomains struct {
 }
 
 type xDomain struct {
-	Id        string `xml:"id,attr"`
+	ID        string `xml:"id,attr"`
 	Name      string `xml:"name,attr"`
 	Types     string `xml:"types,attr"`
 	Length    int    `xml:"length,attr"`
@@ -35,11 +35,11 @@ type domain struct {
 	etype     string
 }
 
-func (me *domain) Id() string {
+func (me *domain) ID() string {
 	return me.id
 }
 
-func (me *domain) SetId(value string) {
+func (me *domain) SetID(value string) {
 	me.id = value
 }
 

@@ -26,7 +26,7 @@ func expSQL() {
 		default:
 			dialect = &mysqls{conf.Settings.Statement.Seperator, conf.Settings.Statement.Case}
 		}
-		filename := p.Id() + ".sql"
+		filename := p.ID() + ".sql"
 		os.Remove(filename)
 		var content string
 		f, ferr := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE, 0644)
@@ -35,17 +35,17 @@ func expSQL() {
 			log.Fatal(ferr)
 		}
 		for _, t := range conf.tables {
-			if t.module.project.Id() == p.Id() && t.Generate() == "true" {
+			if t.module.project.ID() == p.ID() && t.Generate() == "true" {
 				content += dialect.DropTable(t)
 			}
 		}
 		for _, t := range conf.tables {
-			if t.module.project.Id() == p.Id() && t.Generate() == "true" {
+			if t.module.project.ID() == p.ID() && t.Generate() == "true" {
 				content += dialect.CreateTable(t)
 			}
 		}
 		for _, t := range conf.tables {
-			if t.module.project.Id() == p.Id() && t.Generate() == "true" {
+			if t.module.project.ID() == p.ID() && t.Generate() == "true" {
 				content += dialect.CreateIndex(t)
 			}
 		}

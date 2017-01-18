@@ -13,7 +13,7 @@ type xModules struct {
 }
 
 type xModule struct {
-	Id       string `xml:"id,attr"`
+	ID       string `xml:"id,attr"`
 	Name     string `xml:"name,attr"`
 	Prefix   string `xml:"prefix,attr"`
 	Project  string `xml:"project,attr"`
@@ -38,11 +38,11 @@ type module struct {
 	tstpath  string
 }
 
-func (me *module) Id() string { // module.id: this
+func (me *module) ID() string { // module.id: this
 	return me.id
 }
 
-func (me *module) SetId(value string) {
+func (me *module) SetID(value string) {
 	me.id = value
 }
 

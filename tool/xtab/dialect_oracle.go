@@ -15,11 +15,11 @@ type oracles struct {
 }
 
 func (me *oracles) DropTable(t *table) string {
-	return fmt.Sprintf("drop table %s cascade constraints%s\n\n", util.Case(t.Ids()), me.Seperator)
+	return fmt.Sprintf("drop table %s cascade constraints%s\n\n", util.Case(t.IDs()), me.Seperator)
 }
 
 func (me *oracles) CreateTable(t *table) (sql string) {
-	id := util.Case(t.Ids())
+	id := util.Case(t.IDs())
 	sql = fmt.Sprintf("create table %s (\n%s\n)%s\n\n", id, me.CreateTableColumns(t), me.Seperator)
 	if strings.TrimSpace(t.Comment()) != "" {
 		sql += fmt.Sprintf("comment on table %s is '%s'%s\n", id, t.Comment(), me.Seperator)
@@ -29,11 +29,11 @@ func (me *oracles) CreateTable(t *table) (sql string) {
 }
 
 func (me *oracles) CreateIndex(t *table) (sql string) {
-	tid := util.Case(t.Ids())
+	tid := util.Case(t.IDs())
 	for _, c := range t.Columns() {
 		if c.Index() == "true" {
-			cid := util.Case(c.Id())
-			index := util.Case("idx_" + t.Ids() + "_" + cid)
+			cid := util.Case(c.ID())
+			index := util.Case("idx_" + t.IDs() + "_" + cid)
 			sql += fmt.Sprintf("create index %s on %s(%s)%s\n\n", index, tid, cid, me.Seperator)
 		}
 	}
@@ -50,9 +50,9 @@ func (me *oracles) CreateTableColumns(t *table) (sql string) {
 		} else {
 			sql += me.CreateTableColumn(c) + ",\n"
 		}
-		if c.Id() == "id" {
+		if c.ID() == "id" {
 			b = true
-			id, pk = util.Case(c.Id()), util.Case("pk_"+t.Ids())
+			id, pk = util.Case(c.ID()), util.Case("pk_"+t.IDs())
 		}
 	}
 	if b {
@@ -64,7 +64,7 @@ func (me *oracles) CreateTableColumns(t *table) (sql string) {
 func (me *oracles) CreateTableColumn(c *column) (sql string) {
 	var id, ids, types string
 	//===========id============
-	id = util.Case(c.Id())
+	id = util.Case(c.ID())
 	ids = "\t" + util.Pad(id)
 	//==========types==========
 	switch c.Types() {
@@ -94,7 +94,7 @@ func (me *oracles) CreateTableColumn(c *column) (sql string) {
 		types += " default " + c.Defaults()
 	}
 	//========not null=========
-	if c.Id() == "id" {
+	if c.ID() == "id" {
 		types += " not null"
 	} else {
 		if strings.TrimSpace(c.Nullable()) == "false" {
@@ -108,7 +108,7 @@ func (me *oracles) CreateTableColumn(c *column) (sql string) {
 func (me *oracles) CreateTableComment(t *table) (sql string) {
 	var tid, cid string
 	for _, c := range t.Columns() {
-		tid, cid = util.Case(t.Ids()), c.Id()
+		tid, cid = util.Case(t.IDs()), c.ID()
 		sql += fmt.Sprintf("comment on column %s.%s is '%s'%s\n", tid, cid, c.Comment(), me.Seperator)
 	}
 	sql += "\n"

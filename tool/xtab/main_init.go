@@ -53,7 +53,7 @@ func (me *inits) Projects() {
 		}
 		d := &database{xp.Database, db.DriverName, db.DataSourceName}
 		p := &project{
-			id:       xp.Id,
+			id:       xp.ID,
 			name:     xp.Name,
 			database: d,
 			generate: xp.Generate,
@@ -72,12 +72,12 @@ func (me *inits) Modules() {
 	for _, xm := range xconf.Modules.Module {
 		var p *project
 		for _, cp := range conf.projects {
-			if cp.Id() == xm.Project {
+			if cp.ID() == xm.Project {
 				p = cp
 			}
 		}
 		m := &module{
-			id:       xm.Id,
+			id:       xm.ID,
 			name:     xm.Name,
 			prefix:   xm.Prefix,
 			project:  p,
@@ -96,7 +96,7 @@ func (me *inits) Domains() {
 	xconf := util.DecodeXML(xdomains)
 	for _, xd := range xconf.Domains.Domain {
 		d := &domain{
-			id:        xd.Id,
+			id:        xd.ID,
 			name:      xd.Name,
 			types:     xd.Types,
 			length:    xd.Length,
@@ -115,12 +115,12 @@ func (me *inits) Columns() {
 	for _, xc := range xconf.Columns.Column {
 		var d *domain
 		for _, cd := range conf.domains {
-			if cd.Id() == xc.Domain {
+			if cd.ID() == xc.Domain {
 				d = cd
 			}
 		}
 		c := &column{
-			id:       xc.Id,
+			id:       xc.ID,
 			name:     xc.Name,
 			domain:   d,
 			index:    xc.Index,
@@ -128,7 +128,7 @@ func (me *inits) Columns() {
 			defaults: xc.Defaults,
 			nullable: xc.Nullable,
 		}
-		c.field = strings.ToLowerFirst(strings.Camel(c.Id()))
+		c.field = strings.ToLowerFirst(strings.Camel(c.ID()))
 		conf.columns = append(conf.columns, c)
 	}
 }
@@ -140,7 +140,7 @@ func (me *inits) Tables() {
 		if strings.TrimSpace(xt.Extends) == "" {
 			t := &table{
 				module:  m,
-				id:      xt.Id,
+				id:      xt.ID,
 				name:    xt.Name,
 				comment: xt.Comment,
 				master:  xt.Master,
@@ -150,7 +150,7 @@ func (me *inits) Tables() {
 				var ec *column
 				if strings.TrimSpace(xc.Extends) != "" {
 					for _, cc := range conf.columns {
-						if cc.Id() == xc.Extends {
+						if cc.ID() == xc.Extends {
 							ec = cc
 						}
 					}
@@ -158,14 +158,14 @@ func (me *inits) Tables() {
 				var d *domain
 				if strings.TrimSpace(xc.Domain) != "" {
 					for _, cd := range conf.domains {
-						if cd.Id() == xc.Domain {
+						if cd.ID() == xc.Domain {
 							d = cd
 						}
 					}
 				}
 				c := &column{
 					parent:   ec,
-					id:       xc.Id,
+					id:       xc.ID,
 					name:     xc.Name,
 					domain:   d,
 					index:    xc.Index,
@@ -173,7 +173,7 @@ func (me *inits) Tables() {
 					defaults: xc.Defaults,
 					nullable: xc.Nullable,
 				}
-				c.field = strings.ToLowerFirst(strings.Camel(c.Id()))
+				c.field = strings.ToLowerFirst(strings.Camel(c.ID()))
 				t.columns = append(t.columns, c)
 			}
 			conf.parent = append(conf.parent, t)
@@ -184,10 +184,10 @@ func (me *inits) Tables() {
 
 func (me *inits) ChildTables(xconf *xConfiguration, parent *table, filename string) {
 	for _, xt := range xconf.Tables.Table {
-		if strings.TrimSpace(xt.Extends) == parent.Id() {
+		if strings.TrimSpace(xt.Extends) == parent.ID() {
 			t := &table{
 				module:  parent.module,
-				id:      xt.Id,
+				id:      xt.ID,
 				name:    xt.Name,
 				parent:  parent,
 				comment: xt.Comment,
@@ -198,7 +198,7 @@ func (me *inits) ChildTables(xconf *xConfiguration, parent *table, filename stri
 				var ec *column
 				if strings.TrimSpace(xc.Extends) != "" {
 					for _, cc := range conf.columns {
-						if cc.Id() == xc.Extends {
+						if cc.ID() == xc.Extends {
 							ec = cc
 						}
 					}
@@ -206,14 +206,14 @@ func (me *inits) ChildTables(xconf *xConfiguration, parent *table, filename stri
 				var d *domain
 				if strings.TrimSpace(xc.Domain) != "" {
 					for _, cd := range conf.domains {
-						if cd.Id() == xc.Domain {
+						if cd.ID() == xc.Domain {
 							d = cd
 						}
 					}
 				}
 				c := &column{
 					parent:   ec,
-					id:       xc.Id,
+					id:       xc.ID,
 					name:     xc.Name,
 					domain:   d,
 					index:    xc.Index,
@@ -221,7 +221,7 @@ func (me *inits) ChildTables(xconf *xConfiguration, parent *table, filename stri
 					defaults: xc.Defaults,
 					nullable: xc.Nullable,
 				}
-				c.field = strings.ToLowerFirst(strings.Camel(c.Id()))
+				c.field = strings.ToLowerFirst(strings.Camel(c.ID()))
 				t.columns = append(t.columns, c)
 			}
 			conf.parent = append(conf.parent, t)
@@ -232,13 +232,13 @@ func (me *inits) ChildTables(xconf *xConfiguration, parent *table, filename stri
 
 func (me *inits) ProjectTables() {
 	for _, m := range conf.modules {
-		filename := "./conf/schema/tables-" + m.project.Id() + "-" + m.Id() + ".xml"
+		filename := "./conf/schema/tables-" + m.project.ID() + "-" + m.ID() + ".xml"
 		xconf := util.DecodeXML("./" + filename)
 		for _, xt := range xconf.Tables.Table {
 			var p *table
 			if strings.TrimSpace(xt.Extends) != "" {
 				for _, t := range conf.parent {
-					if t.Id() == xt.Extends {
+					if t.ID() == xt.Extends {
 						p = t
 					}
 				}
@@ -246,7 +246,7 @@ func (me *inits) ProjectTables() {
 			t := &table{
 				module:      m,
 				parent:      p,
-				id:          xt.Id,
+				id:          xt.ID,
 				name:        xt.Name,
 				prefix:      xt.Prefix,
 				generate:    xt.Generate,
@@ -282,7 +282,7 @@ func (me *inits) ProjectTables() {
 				var ec *column
 				if strings.TrimSpace(xc.Extends) != "" {
 					for _, cc := range conf.columns {
-						if cc.Id() == xc.Extends {
+						if cc.ID() == xc.Extends {
 							ec = cc
 						}
 					}
@@ -290,14 +290,14 @@ func (me *inits) ProjectTables() {
 				var d *domain
 				if strings.TrimSpace(xc.Domain) != "" {
 					for _, cd := range conf.domains {
-						if cd.Id() == xc.Domain {
+						if cd.ID() == xc.Domain {
 							d = cd
 						}
 					}
 				}
 				c := &column{
 					parent:   ec,
-					id:       xc.Id,
+					id:       xc.ID,
 					name:     xc.Name,
 					domain:   d,
 					index:    xc.Index,
@@ -305,11 +305,11 @@ func (me *inits) ProjectTables() {
 					defaults: xc.Defaults,
 					nullable: xc.Nullable,
 				}
-				c.field = strings.ToLowerFirst(strings.Camel(c.Id()))
+				c.field = strings.ToLowerFirst(strings.Camel(c.ID()))
 				t.columns = append(t.columns, c)
 			}
 			for _, c := range t.Columns() {
-				if util.IsSuperCol(c.Id(), t.Super()) {
+				if util.IsSuperCol(c.ID(), t.Super()) {
 					continue
 				}
 				if t.fieldMaxLen < len(c.field) {
@@ -318,11 +318,11 @@ func (me *inits) ProjectTables() {
 				if t.allFieldMaxLen < len(c.field) {
 					t.allFieldMaxLen = len(c.field)
 				}
-				if t.columnMaxLen < len(c.Id()) {
-					t.columnMaxLen = len(c.Id())
+				if t.columnMaxLen < len(c.ID()) {
+					t.columnMaxLen = len(c.ID())
 				}
-				if t.allColumnMaxLen < len(c.Id()) {
-					t.allColumnMaxLen = len(c.Id())
+				if t.allColumnMaxLen < len(c.ID()) {
+					t.allColumnMaxLen = len(c.ID())
 				}
 				if t.typeMaxLen < len(c.Etype()) {
 					t.typeMaxLen = len(c.Etype())

@@ -13,7 +13,7 @@ type xProjects struct {
 }
 
 type xProject struct {
-	Id       string `xml:"id,attr"`
+	ID       string `xml:"id,attr"`
 	Name     string `xml:"name,attr"`
 	Prefix   string `xml:"prefix,attr"`
 	Database string `xml:"database,attr"`
@@ -38,11 +38,11 @@ type project struct {
 	tstpath  string
 }
 
-func (me *project) Id() string {
+func (me *project) ID() string {
 	return me.id
 }
 
-func (me *project) SetId(value string) {
+func (me *project) SetID(value string) {
 	me.id = value
 }
 

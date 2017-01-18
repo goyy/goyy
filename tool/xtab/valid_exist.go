@@ -296,16 +296,16 @@ func (me *valids) IsExistProjectTables() bool {
 	xconf := util.DecodeXML(xmodules)
 	isExist := true
 	for _, v := range xconf.Modules.Module {
-		if v.Project == "demo" && v.Id == "app" {
+		if v.Project == "demo" && v.ID == "app" {
 			if util.InitFile("./conf/schema/tables-demo-app.xml", app) == false {
 				isExist = false
 			}
-		} else if v.Project == "demo" && v.Id == "sys" {
+		} else if v.Project == "demo" && v.ID == "sys" {
 			if util.InitFile("./conf/schema/tables-demo-sys.xml", sys) == false {
 				isExist = false
 			}
 		} else {
-			if util.InitFile("./conf/schema/tables-"+v.Project+"-"+v.Id+".xml", content) == false {
+			if util.InitFile("./conf/schema/tables-"+v.Project+"-"+v.ID+".xml", content) == false {
 				isExist = false
 			}
 		}

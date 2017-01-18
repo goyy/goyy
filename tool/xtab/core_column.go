@@ -14,7 +14,7 @@ type xColumns struct {
 
 type xColumn struct {
 	Extends  string `xml:"extends,attr"`
-	Id       string `xml:"id,attr"`
+	ID       string `xml:"id,attr"`
 	Name     string `xml:"name,attr"`
 	Domain   string `xml:"domain,attr"`
 	Index    string `xml:"index,attr"`
@@ -35,14 +35,14 @@ type column struct {
 	field    string
 }
 
-func (me *column) Id() string { // column.id: this -> parent
+func (me *column) ID() string { // column.id: this -> parent
 	if strings.TrimSpace(me.id) == "" && me.parent != nil {
-		return me.parent.Id()
+		return me.parent.ID()
 	}
 	return me.id
 }
 
-func (me *column) SetId(value string) {
+func (me *column) SetID(value string) {
 	me.id = value
 }
 

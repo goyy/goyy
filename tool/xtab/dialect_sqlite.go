@@ -15,21 +15,21 @@ type sqlite struct {
 }
 
 func (me *sqlite) DropTable(t *table) string {
-	return fmt.Sprintf("drop table %s%s\n\n", util.Case(t.Ids()), me.Seperator)
+	return fmt.Sprintf("drop table %s%s\n\n", util.Case(t.IDs()), me.Seperator)
 }
 
 func (me *sqlite) CreateTable(t *table) (sql string) {
-	id := util.Case(t.Ids())
+	id := util.Case(t.IDs())
 	sql = fmt.Sprintf("create table if not exists %s (\n%s\n)%s\n\n", id, me.CreateTableColumns(t), me.Seperator)
 	return
 }
 
 func (me *sqlite) CreateIndex(t *table) (sql string) {
-	tid := util.Case(t.Ids())
+	tid := util.Case(t.IDs())
 	for _, c := range t.Columns() {
 		if c.Index() == "true" {
-			cid := util.Case(c.Id())
-			index := util.Case("idx_" + t.Ids() + "_" + cid)
+			cid := util.Case(c.ID())
+			index := util.Case("idx_" + t.IDs() + "_" + cid)
 			sql += fmt.Sprintf("create index %s on %s(%s)%s\n\n", index, tid, cid, me.Seperator)
 		}
 	}
@@ -51,7 +51,7 @@ func (me *sqlite) CreateTableColumns(t *table) (sql string) {
 func (me *sqlite) CreateTableColumn(c *column) (sql string) {
 	var id, ids, types string
 	//===========id============
-	id = util.Case(c.Id())
+	id = util.Case(c.ID())
 	ids = "\t" + util.Pad(id)
 	//==========types==========
 	switch c.Types() {
@@ -81,7 +81,7 @@ func (me *sqlite) CreateTableColumn(c *column) (sql string) {
 		types += " default " + c.Defaults()
 	}
 	//========not null=========
-	if c.Id() == "id" {
+	if c.ID() == "id" {
 		types += " not null" + " primary key"
 	} else {
 		if strings.TrimSpace(c.Nullable()) == "false" {
@@ -95,7 +95,7 @@ func (me *sqlite) CreateTableColumn(c *column) (sql string) {
 func (me *sqlite) CreateTableComment(t *table) (sql string) {
 	var tid, cid string
 	for _, c := range t.Columns() {
-		tid, cid = util.Case(t.Ids()), c.Id()
+		tid, cid = util.Case(t.IDs()), c.ID()
 		sql += fmt.Sprintf("comment on column %s.%s is '%s'%s\n\n", tid, cid, c.Comment(), me.Seperator)
 	}
 	return
