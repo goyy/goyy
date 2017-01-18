@@ -29,6 +29,7 @@ func (me *inits) Init() {
 	me.Settings()
 	me.Projects()
 	me.Modules()
+	me.Buttons()
 	me.Domains()
 	me.Columns()
 	me.Tables()
@@ -89,6 +90,18 @@ func (me *inits) Modules() {
 			tstpath:  xm.Tstpath,
 		}
 		conf.modules = append(conf.modules, m)
+	}
+}
+
+func (me *inits) Buttons() {
+	xconf := util.DecodeXML(xbuttons)
+	for _, xd := range xconf.Buttons.Button {
+		d := &button{
+			id:      xd.ID,
+			name:    xd.Name,
+			comment: xd.Comment,
+		}
+		conf.buttons = append(conf.buttons, d)
 	}
 }
 
@@ -256,6 +269,10 @@ func (me *inits) ProjectTables() {
 				slave:       xt.Slave,
 				permissions: xt.Permissions,
 				href:        xt.Href,
+				buttons:     xt.Buttons,
+			}
+			if strings.IsBlank(t.buttons) {
+				t.buttons = defaultButtons
 			}
 			switch t.Super() {
 			case "pk":

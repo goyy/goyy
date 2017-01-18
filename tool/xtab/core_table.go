@@ -26,6 +26,7 @@ type xTable struct {
 	Slave       string     `xml:"slave,attr"`
 	Permissions string     `xml:"permissions,attr"`
 	Href        string     `xml:"href,attr"`
+	Buttons     string     `xml:"buttons,attr"`
 	Columns     []*xColumn `xml:"column"`
 }
 
@@ -42,6 +43,7 @@ type table struct {
 	slave           string
 	permissions     string
 	href            string
+	buttons         string
 	fieldMaxLen     int
 	columnMaxLen    int
 	typeMaxLen      int
@@ -201,6 +203,14 @@ func (me *table) Href() string { // table.href: this
 
 func (me *table) SetHref(value string) {
 	me.href = value
+}
+
+func (me *table) Buttons() string { // table.buttons: this
+	return me.buttons
+}
+
+func (me *table) SetButtons(value string) {
+	me.buttons = value
 }
 
 func (me *table) Columns() []*column { // table.columns: this + parent

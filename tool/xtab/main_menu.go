@@ -15,10 +15,12 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/xsql"
 	"gopkg.in/goyy/goyy.v0/util/files"
 	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/util/times"
 	"gopkg.in/goyy/goyy.v0/util/uuids"
 )
 
 func genMenu() {
+	// generate the header.html
 	for _, p := range conf.projects {
 		clidir := "../" + strings.AfterLast(p.Clipath(), "/")
 		dir := clidir + "/templates/core/include/"
@@ -36,7 +38,9 @@ func genMenu() {
 		tmpl.Execute(&buf, data)
 		ioutil.WriteFile(dstfile, buf.Bytes(), 0644)
 	}
+	// insert into sys_menu
 	for _, p := range conf.projects {
+		insertRootMenu(p.ID())
 		for mi, m := range conf.modules {
 			if p.ID() == m.project.ID() && m.Menu() == "true" {
 				root := &menu{
@@ -51,11 +55,13 @@ func genMenu() {
 					if m.ID() == t.module.ID() && t.Menu() == "true" && t.ID() != "-" {
 						to := strings.PadLeft(strconv.Itoa(ti+1), 2, "0")
 						mp := addMenu(p.ID(), m.ID(), t.ID(), t.Name(), to, "20", pp) // table
-						addMenu(p.ID(), m.ID(), t.ID(), "view", "10", "30", mp)       // button:view
-						addMenu(p.ID(), m.ID(), t.ID(), "add", "20", "30", mp)        // button:add
-						addMenu(p.ID(), m.ID(), t.ID(), "edit", "30", "30", mp)       // button:edit
-						addMenu(p.ID(), m.ID(), t.ID(), "disable", "40", "30", mp)    // button:disable
-						addMenu(p.ID(), m.ID(), t.ID(), "export", "50", "30", mp)     // button:export
+						buttons := strings.Split(t.Buttons(), ",")
+						for i, button := range buttons {
+							if strings.IsBlank(button) {
+								continue
+							}
+							addMenu(p.ID(), m.ID(), t.ID(), button, strconv.Itoa(i+1)+"0", "30", mp)
+						}
 					}
 				}
 			}
@@ -63,9 +69,35 @@ func genMenu() {
 	}
 }
 
+func insertRootMenu(pid string) {
+	db := getDB(pid)
+	csql := "SELECT count(1) FROM sys_menu WHERE id = ?"
+
+	sql := `INSERT INTO sys_menu
+	(id, href, target, icon, hidden, permission, code, name, fullname, genre, ordinal, parent_id, parent_ids, parent_codes, parent_names, leaf, grade, memo, creates, creater, created, modifier, modified, version, deletion, artifical, history)
+	VALUES
+	('root', null, null, null, 0, null, '00', ?, null, '00', '00', null, null, null, null, 0, 1, null, null, null, ?, null, ?, 0, 0, 0, 0);`
+
+	count, err := db.Query(csql, "root").Int()
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+	if count == 0 {
+		name := i18N.Message("tmpl.menu.data.root")
+		now := times.NowUnix()
+		_, err = db.Exec(sql, name, now, now)
+		if err != nil {
+			logger.Error(err)
+			return
+		}
+	}
+}
+
 func addMenu(pid, mid, tid, xname, ordinal, genre string, parent *menu) *menu {
 	db := getDB(pid)
 	id := uuids.New()
+	now := times.NowUnix()
 	m := &menu{
 		id:       id,
 		hidden:   "0",
@@ -124,7 +156,7 @@ func addMenu(pid, mid, tid, xname, ordinal, genre string, parent *menu) *menu {
 	sql := `INSERT INTO sys_menu
 	(id, href, target, icon, hidden, permission, code, name, fullname, genre, ordinal, parent_id, parent_ids, parent_codes, parent_names, leaf, grade, memo, creates, creater, created, modifier, modified, version, deletion, artifical, history)
 	VALUES
-	(?, ?, NULL, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL, 1447816484, NULL, 1447816484, 0, 0, 0, 0)`
+	(?, ?, NULL, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL, ?, NULL, ?, 0, 0, 0, 0)`
 
 	count, err := db.Query(csql, m.code).Int()
 	if err != nil {
@@ -132,7 +164,7 @@ func addMenu(pid, mid, tid, xname, ordinal, genre string, parent *menu) *menu {
 		return m
 	}
 	if count == 0 {
-		_, err = db.Exec(sql, m.id, m.href, m.hidden, m.permission, m.code, m.name, m.fullname, m.genre, m.ordinal, m.parentID, m.parentIDs, m.parentCodes, m.parentNames, m.leaf, m.grade)
+		_, err = db.Exec(sql, m.id, m.href, m.hidden, m.permission, m.code, m.name, m.fullname, m.genre, m.ordinal, m.parentID, m.parentIDs, m.parentCodes, m.parentNames, m.leaf, m.grade, now, now)
 		if err != nil {
 			logger.Error(err)
 			return m

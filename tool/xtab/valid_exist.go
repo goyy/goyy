@@ -24,6 +24,9 @@ func (me *valids) IsExistXML() {
 	if me.IsExistModules() == false {
 		isExit = true
 	}
+	if me.IsExistButtons() == false {
+		isExit = true
+	}
 	if me.IsExistDomains() == false {
 		isExit = true
 	}
@@ -105,6 +108,22 @@ func (me *valids) IsExistModules() bool {
 </configuration>
 `
 	return util.InitFile(xmodules, content)
+}
+
+func (me *valids) IsExistButtons() bool {
+	content := `<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
+<configuration>
+	<buttons>
+		<button id="view"    name="VIEW"   comment="view"/>
+		<button id="add"     name="ADD"    comment="add"/>
+		<button id="edit"    name="ADD"    comment="edit"/>
+		<button id="disable" name="DELETE" comment="delete"/>
+		<button id="export"  name="ADD"    comment="export"/>
+	</buttons>
+</configuration>
+`
+	return util.InitFile(xbuttons, content)
 }
 
 func (me *valids) IsExistDomains() bool {

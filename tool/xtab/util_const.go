@@ -21,7 +21,12 @@ const (
 	xsettings     = "./conf/schema/settings.xml"
 	xprojects     = "./conf/schema/projects.xml"
 	xmodules      = "./conf/schema/modules.xml"
+	xbuttons      = "./conf/schema/buttons.xml"
 	xdomains      = "./conf/schema/domains.xml"
 	xcolumns      = "./conf/schema/columns.xml"
 	xtables       = "./conf/schema/tables.xml"
+)
+
+const (
+	defaultButtons = "view,add,edit,disable,export"
 )

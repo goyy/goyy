@@ -8,6 +8,7 @@ type configuration struct {
 	Settings *settings
 	projects []*project
 	modules  []*module
+	buttons  []*button
 	domains  []*domain
 	columns  []*column
 	parent   []*table
@@ -18,6 +19,7 @@ type xConfiguration struct {
 	Settings *xSettings `xml:"settings"`
 	Projects *xProjects `xml:"projects"`
 	Modules  *xModules  `xml:"modules"`
+	Buttons  *xButtons  `xml:"buttons"`
 	Domains  *xDomains  `xml:"domains"`
 	Columns  *xColumns  `xml:"columns"`
 	Tables   *xTables   `xml:"tables"`
