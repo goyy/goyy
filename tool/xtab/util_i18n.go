@@ -62,11 +62,6 @@ var locales = map[string]map[string]string{
 		"table.column.domain.errorf":        "%s:configuration.tables.table[@id=%s].column.@domain=%s:对应的域不存在！",
 		"tmpl.menu.exit":                    "退出",
 		"tmpl.menu.manage":                  "管理",
-		"tmpl.menu.btn.view":                "查看",
-		"tmpl.menu.btn.add":                 "添加",
-		"tmpl.menu.btn.edit":                "修改",
-		"tmpl.menu.btn.disable":             "删除",
-		"tmpl.menu.btn.export":              "导出",
 		"tmpl.menu.data.root":               "菜单",
 	},
 	i18n.Locale_en_US: map[string]string{
@@ -120,11 +115,6 @@ var locales = map[string]map[string]string{
 		"table.column.domain.errorf":        "%s:configuration.tables.table[@id=%s].column.@domain=%s:match the domain does not exist!",
 		"tmpl.menu.exit":                    "exit",
 		"tmpl.menu.manage":                  " manage",
-		"tmpl.menu.btn.view":                "view",
-		"tmpl.menu.btn.add":                 "add",
-		"tmpl.menu.btn.edit":                "edit",
-		"tmpl.menu.btn.disable":             "delete",
-		"tmpl.menu.btn.export":              "export",
 		"tmpl.menu.data.root":               "menu",
 	},
 }

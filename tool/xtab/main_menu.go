@@ -137,9 +137,16 @@ func addMenu(pid, mid, tid, xname, ordinal, genre string, parent *menu) *menu {
 		}
 		m.grade = "3"
 	case "30":
+		var name string
+		xconf := util.DecodeXML(xbuttons)
+		for _, v := range xconf.Buttons.Button {
+			if v.ID == xname {
+				name = v.Name
+			}
+		}
 		m.hidden = "1"
 		m.permission = mid + ":" + tid + ":" + xname
-		m.name = i18N.Message("tmpl.menu.btn." + xname)
+		m.name = name
 		if parent.id == "root" {
 			m.fullname = m.name
 			m.parentNames = parent.name
