@@ -60,7 +60,7 @@ func genMenu() {
 							if strings.IsBlank(button) {
 								continue
 							}
-							addMenu(p.ID(), m.ID(), t.ID(), button, strconv.Itoa(i+1)+"0", "30", mp)
+							addMenu(p.ID(), m.ID(), t.ID(), button, strconv.Itoa((i+2)*5), "30", mp)
 						}
 					}
 				}
