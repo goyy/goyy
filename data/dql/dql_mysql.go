@@ -135,7 +135,6 @@ func (me *mysql) selectBySift(e entity.Interface, begin string, sifts ...domain.
 	}
 	if y == 0 {
 		return w.String(), args, nil
-	} else {
-		return w.String() + o.String(), args, nil
 	}
+	return w.String() + o.String(), args, nil
 }

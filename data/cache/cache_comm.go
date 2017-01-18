@@ -37,6 +37,7 @@ func do(cmd string, args ...interface{}) (interface{}, error) {
 	return v, err
 }
 
+// Delete delete cache based on key.
 func Delete(key string) error {
 	err := send("DEL", key)
 	if err != nil {
@@ -45,6 +46,7 @@ func Delete(key string) error {
 	return err
 }
 
+// Exists determine whether there is a key cache.
 func Exists(key string) bool {
 	v, err := redis.Bool(do("EXISTS", key))
 	if err != nil {
@@ -54,6 +56,7 @@ func Exists(key string) bool {
 	return v
 }
 
+// Expire set expiration time for a key.
 func Expire(key string, second int) error {
 	err := send("EXPIRE", key, second)
 	if err != nil {

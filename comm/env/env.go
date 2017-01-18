@@ -22,7 +22,7 @@ func SetConf(path string) {
 }
 
 // Settings get the settings link parameters based on the configuration file.
-func Settings() (out xSettings, err error) {
+func Settings() (out XMLSettings, err error) {
 	f, ferr := os.Open(conf + "/env/settings.xml")
 	if ferr != nil {
 		err = ferr
@@ -30,7 +30,7 @@ func Settings() (out xSettings, err error) {
 	}
 	defer f.Close()
 	decoder := xml.NewDecoder(f)
-	var xConf *xConfiguration
+	var xConf *XMLConfiguration
 	if derr := decoder.Decode(&xConf); derr != nil {
 		err = derr
 		return
@@ -39,7 +39,7 @@ func Settings() (out xSettings, err error) {
 }
 
 // Database get the database link parameters based on the environment profiles.
-func Database(name string) (out xDatabase, err error) {
+func Database(name string) (out XMLDatabase, err error) {
 	xEnv, err := parse(conf + "/env/db.xml")
 	if err != nil {
 		return
@@ -56,7 +56,7 @@ func Database(name string) (out xDatabase, err error) {
 }
 
 // Mail get the mail server parameters based on the environment profiles.
-func Mail(name string) (out xMail, err error) {
+func Mail(name string) (out XMLMail, err error) {
 	xEnv, err := parse(conf + "/env/mail.xml")
 	if err != nil {
 		return
@@ -73,7 +73,7 @@ func Mail(name string) (out xMail, err error) {
 }
 
 // Session get the session based on the environment profiles.
-func Session(name string) (out xSession, err error) {
+func Session(name string) (out XMLSession, err error) {
 	xEnv, err := parse(conf + "/env/session.xml")
 	if err != nil {
 		return
@@ -89,13 +89,13 @@ func Session(name string) (out xSession, err error) {
 	return
 }
 
-// Api get the api based on the environment profiles.
-func Api(name string) (out xApi, err error) {
+// API get the api based on the environment profiles.
+func API(name string) (out XMLAPI, err error) {
 	xEnv, err := parse(conf + "/env/api.xml")
 	if err != nil {
 		return
 	}
-	outs := xEnv.Apis
+	outs := xEnv.APIs
 	for _, v := range outs {
 		if v.Name == name {
 			out = v
@@ -107,7 +107,7 @@ func Api(name string) (out xApi, err error) {
 }
 
 // Asset get the asset based on the environment profiles.
-func Asset(name string) (out xStatic, err error) {
+func Asset(name string) (out XMLStatic, err error) {
 	xEnv, err := parse(conf + "/env/static.xml")
 	if err != nil {
 		return
@@ -124,7 +124,7 @@ func Asset(name string) (out xStatic, err error) {
 }
 
 // Static get the static based on the environment profiles.
-func Static(name string) (out xStatic, err error) {
+func Static(name string) (out XMLStatic, err error) {
 	xEnv, err := parse(conf + "/env/static.xml")
 	if err != nil {
 		return
@@ -141,7 +141,7 @@ func Static(name string) (out xStatic, err error) {
 }
 
 // Developer get the developer based on the environment profiles.
-func Developer(name string) (out xStatic, err error) {
+func Developer(name string) (out XMLStatic, err error) {
 	xEnv, err := parse(conf + "/env/static.xml")
 	if err != nil {
 		return
@@ -158,7 +158,7 @@ func Developer(name string) (out xStatic, err error) {
 }
 
 // Operation get the operation based on the environment profiles.
-func Operation(name string) (out xStatic, err error) {
+func Operation(name string) (out XMLStatic, err error) {
 	xEnv, err := parse(conf + "/env/static.xml")
 	if err != nil {
 		return
@@ -175,7 +175,7 @@ func Operation(name string) (out xStatic, err error) {
 }
 
 // Upload get the upload based on the environment profiles.
-func Upload(name string) (out xUpload, err error) {
+func Upload(name string) (out XMLUpload, err error) {
 	xEnv, err := parse(conf + "/env/upload.xml")
 	if err != nil {
 		return
@@ -192,7 +192,7 @@ func Upload(name string) (out xUpload, err error) {
 }
 
 // Export get the export based on the environment profiles.
-func Export(name string) (out xExport, err error) {
+func Export(name string) (out XMLExport, err error) {
 	xEnv, err := parse(conf + "/env/export.xml")
 	if err != nil {
 		return
@@ -208,8 +208,8 @@ func Export(name string) (out xExport, err error) {
 	return
 }
 
-// Html get the html based on the environment profiles.
-func Html(name string) (out xTemplate, err error) {
+// HTML get the html based on the environment profiles.
+func HTML(name string) (out XMLTemplate, err error) {
 	xEnv, err := parse(conf + "/env/template.xml")
 	if err != nil {
 		return
@@ -226,7 +226,7 @@ func Html(name string) (out xTemplate, err error) {
 }
 
 // Template get the template based on the environment profiles.
-func Template(name string) (out xTemplate, err error) {
+func Template(name string) (out XMLTemplate, err error) {
 	xEnv, err := parse(conf + "/env/template.xml")
 	if err != nil {
 		return
@@ -243,7 +243,7 @@ func Template(name string) (out xTemplate, err error) {
 }
 
 // Illegal get the illegal based on the environment profiles.
-func Illegal(name string) (out xIllegal, err error) {
+func Illegal(name string) (out XMLIllegal, err error) {
 	xEnv, err := parse(conf + "/env/illegal.xml")
 	if err != nil {
 		return
@@ -260,7 +260,7 @@ func Illegal(name string) (out xIllegal, err error) {
 }
 
 // Log get the log based on the environment profiles.
-func Log(name string) (out xLog, err error) {
+func Log(name string) (out XMLLog, err error) {
 	xEnv, err := parse(conf + "/env/log.xml")
 	if err != nil {
 		return
@@ -277,7 +277,7 @@ func Log(name string) (out xLog, err error) {
 }
 
 // Secure get the secure based on the environment profiles.
-func Secure(name string) (out xSecure, err error) {
+func Secure(name string) (out XMLSecure, err error) {
 	xEnv, err := parse(conf + "/env/secure.xml")
 	if err != nil {
 		return
@@ -293,7 +293,7 @@ func Secure(name string) (out xSecure, err error) {
 	return
 }
 
-func parse(file string) (xEnv *xEnvironment, err error) {
+func parse(file string) (xEnv *XMLEnvironment, err error) {
 	f, ferr := os.Open(file)
 	if ferr != nil {
 		err = ferr
@@ -301,14 +301,14 @@ func parse(file string) (xEnv *xEnvironment, err error) {
 	}
 	defer f.Close()
 	decoder := xml.NewDecoder(f)
-	var xConf *xConfiguration
+	var xConf *XMLConfiguration
 	if derr := decoder.Decode(&xConf); derr != nil {
 		err = derr
 		return
 	}
 	xenvs := xConf.Environments.Environment
 	for _, xenv := range xenvs {
-		if xenv.Id == profile.Default() {
+		if xenv.ID == profile.Default() {
 			xEnv = &xenv
 			return
 		}
@@ -319,7 +319,7 @@ func parse(file string) (xEnv *xEnvironment, err error) {
 		return
 	}
 	for _, xenv := range xenvs {
-		if xenv.Id == defaultName {
+		if xenv.ID == defaultName {
 			xEnv = &xenv
 			return
 		}

@@ -5,9 +5,10 @@
 package dql
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/errors"
 	"strconv"
 	"time"
+
+	"gopkg.in/goyy/goyy.v0/util/errors"
 )
 
 func toValue(value, typ string) (interface{}, error) {
@@ -15,9 +16,8 @@ func toValue(value, typ string) (interface{}, error) {
 	case "bool":
 		if value == "true" {
 			return true, nil
-		} else {
-			return false, nil
 		}
+		return false, nil
 	case "float32", "float64":
 		return 1, nil
 	case "int", "int8", "int16", "int32", "int64":

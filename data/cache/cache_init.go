@@ -11,6 +11,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
+// Init cache initialization.
 func Init(conf Conf) {
 	if pool == nil {
 		pool = &redis.Pool{

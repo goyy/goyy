@@ -6,9 +6,11 @@ package cache
 
 import (
 	"encoding/json"
+
 	"github.com/garyburd/redigo/redis"
 )
 
+// SSet set the value of the struct type according to key.
 func SSet(key string, value interface{}) error {
 	b, err := json.Marshal(value)
 	if err != nil {
@@ -22,6 +24,7 @@ func SSet(key string, value interface{}) error {
 	return err
 }
 
+// SGet get the value of the struct type according to key.
 func SGet(key string, out interface{}) error {
 	v, err := redis.Bytes(do("GET", key))
 	if err != nil {

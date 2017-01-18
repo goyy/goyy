@@ -4,6 +4,7 @@
 
 package dto
 
+// Tree tree.
 type Tree struct {
 	Sys
 	Code        string `json:"code"`
@@ -13,8 +14,8 @@ type Tree struct {
 	Leaf        int    `json:"leaf"`
 	Grade       int    `json:"grade"`
 	Ordinal     string `json:"ordinal"`
-	ParentId    string `json:"parentId"`
-	ParentIds   string `json:"parentIds"`
+	ParentID    string `json:"parentId"`
+	ParentIDs   string `json:"parentIds"`
 	ParentCodes string `json:"parentCodes"`
 	ParentNames string `json:"parentNames"`
 }

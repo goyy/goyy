@@ -4,10 +4,12 @@
 
 package dialect
 
+// PostgreSQL postgres dialect.
 type PostgreSQL struct {
 	typ string
 }
 
+// Type return the type of dialect.
 func (me *PostgreSQL) Type() string {
 	return POSTGRESQL
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/garyburd/redigo/redis"
 )
 
+// Set set the value of the cache based on the key.
 func Set(key, value string) error {
 	err := send("SET", key, value)
 	if err != nil {
@@ -16,6 +17,7 @@ func Set(key, value string) error {
 	return err
 }
 
+// Get get the value of the cache based on the key.
 func Get(key string) (string, error) {
 	v, err := redis.String(do("GET", key))
 	if err != nil {

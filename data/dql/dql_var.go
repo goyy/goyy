@@ -4,7 +4,7 @@
 
 package dql
 
-var op map[string]string = map[string]string{
+var op = map[string]string{
 	"EQ": " = ",
 	"NE": " <> ",
 	"GT": " > ",

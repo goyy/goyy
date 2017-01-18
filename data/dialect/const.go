@@ -5,9 +5,14 @@
 package dialect
 
 const (
-	MYSQL      = "MySQL"
+	// MYSQL MySQL.
+	MYSQL = "MySQL"
+	// POSTGRESQL PostgreSQL.
 	POSTGRESQL = "PostgreSQL"
-	SQLITE     = "Sqlite"
-	ORACLE     = "Oracle"
-	SQLSERVER  = "SQLServer"
+	// SQLITE Sqlite.
+	SQLITE = "Sqlite"
+	// ORACLE Oracle.
+	ORACLE = "Oracle"
+	// SQLSERVER SQLServer.
+	SQLSERVER = "SQLServer"
 )

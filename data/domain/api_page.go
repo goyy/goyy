@@ -8,7 +8,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/entity"
 )
 
-// A page is a sublist of a list of objects. It allows gain information about
+// Page a page is a sublist of a list of objects. It allows gain information about
 // the position of it in the containing entire list.
 type Page interface {
 	Pageable

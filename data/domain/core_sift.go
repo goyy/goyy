@@ -4,15 +4,15 @@
 
 package domain
 
-var ops = []string{op_eq, op_ne, op_gt, op_lt, op_ge,
-	op_le, op_li, op_lk, op_ll, op_lr,
-	op_be, op_nb, op_in, op_ni, op_nu, op_nn, op_tr, op_oa, op_od}
+var ops = []string{opEQ, opNE, opGT, opLT, opGE,
+	opLE, opLI, opLK, opLL, opLR,
+	opBE, opNB, opIN, opNI, opNU, opNN, opTR, opOA, opOD}
 
-var ots = []string{ot_st, ot_bl,
-	ot_i0, ot_i8, ot_i1, ot_i3, ot_i6,
-	ot_u0, ot_u8, ot_u1, ot_u3, ot_u6,
-	ot_f3, ot_f6,
-	ot_td, ot_tt, ot_tm, ot_t2, ot_t5, ot_t4}
+var ots = []string{otST, otBL,
+	otI0, otI8, otI1, otI3, otI6,
+	otU0, otU8, otU1, otU3, otU6,
+	otF3, otF6,
+	otTD, otTT, otTM, otT2, otT5, otT4}
 
 // Query conditional filtering.
 type sift struct {

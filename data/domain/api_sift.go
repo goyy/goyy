@@ -13,7 +13,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/webs"
 )
 
-// Query conditional filtering.
+// Sift query conditional filtering.
 // eg: sNameEQST=goyy
 type Sift interface {
 	// Returns the name.
@@ -81,7 +81,7 @@ func NewSift(name, value string, prefix ...string) (Sift, bool) {
 	size := 0
 	op12 := strings.Right(k, 2)
 	op34 := strings.Slice(k, -4, -2)
-	if op_tr == op12 || op_tr == op34 {
+	if opTR == op12 || opTR == op34 {
 		return nil, false
 	}
 	if strings.ContainsSliceAny(op12, ops) {
@@ -101,16 +101,17 @@ func NewSift(name, value string, prefix ...string) (Sift, bool) {
 		size = size + 2
 	}
 	if strings.IsBlank(s.operator) {
-		s.operator = op_eq
+		s.operator = opEQ
 	}
 	if strings.IsBlank(s.typ) {
-		s.typ = ot_st
+		s.typ = otST
 	}
 	s.key = strings.Left(k, len(k)-size)
 	s.value = convertValue(s.operator, s.typ, value)
 	return s, true
 }
 
+// NewSifts returns the []Sift from url.Values and prefix.
 func NewSifts(values url.Values, prefix ...string) ([]Sift, error) {
 	ss := make([]Sift, 0)
 	for k, v := range values {
@@ -122,6 +123,7 @@ func NewSifts(values url.Values, prefix ...string) ([]Sift, error) {
 	return ss, nil
 }
 
+// NewSiftsReq returns the []Sift from http.Request and prefix.
 func NewSiftsReq(req *http.Request, prefix ...string) ([]Sift, error) {
 	values, err := webs.Values(req)
 	if err != nil {
@@ -130,6 +132,7 @@ func NewSiftsReq(req *http.Request, prefix ...string) ([]Sift, error) {
 	return NewSifts(values, prefix...)
 }
 
+// SiftsToParams returns the params(map) from []Sift.
 func SiftsToParams(sifts ...Sift) map[string]string {
 	result := make(map[string]string, 0)
 	for _, sift := range sifts {
@@ -138,6 +141,7 @@ func SiftsToParams(sifts ...Sift) map[string]string {
 	return result
 }
 
+// SiftsToMap returns the map from []Sift.
 func SiftsToMap(sifts ...Sift) map[string]interface{} {
 	result := make(map[string]interface{}, 0)
 	for _, sift := range sifts {
@@ -148,51 +152,51 @@ func SiftsToMap(sifts ...Sift) map[string]interface{} {
 
 func convertValue(operator, typ, value string) string {
 	switch operator {
-	case op_lk:
+	case opLK:
 		return "%" + value + "%"
-	case op_ll:
+	case opLL:
 		return "%" + value
-	case op_lr:
+	case opLR:
 		return value + "%"
 	}
 	switch typ {
-	case ot_t2:
+	case otT2:
 		if operator == "LT" {
-			if val, err := times.AddYYMD(value, times.Day); err == nil {
-				if v, err := times.ParseUnixYymd(val); err == nil {
-					return v
-				} else {
-					logger.Errorln(err.Error())
-				}
-			} else {
+			val, err := times.AddYYMD(value, times.Day)
+			if err != nil {
 				logger.Errorln(err.Error())
 			}
+			v, err := times.ParseUnixYymd(val)
+			if err != nil {
+				logger.Errorln(err.Error())
+			}
+			return v
 		} else if operator == "LE" {
 			val := strings.TrimSpace(value) + " 23:59:59"
-			if v, err := times.ParseUnixYymdhms(val); err == nil {
-				return v
-			} else {
+			v, err := times.ParseUnixYymdhms(val)
+			if err != nil {
 				logger.Errorln(err.Error())
 			}
+			return v
 		} else {
-			if v, err := times.ParseUnixYymd(value); err == nil {
-				return v
-			} else {
+			v, err := times.ParseUnixYymd(value)
+			if err != nil {
 				logger.Errorln(err.Error())
 			}
-		}
-	case ot_t5:
-		if v, err := times.ParseUnixYymdhms(value); err == nil {
 			return v
-		} else {
+		}
+	case otT5:
+		v, err := times.ParseUnixYymdhms(value)
+		if err != nil {
 			logger.Errorln(err.Error())
 		}
-	case ot_t4:
-		if v, err := times.ParseUnixYymdhm(value); err == nil {
-			return v
-		} else {
+		return v
+	case otT4:
+		v, err := times.ParseUnixYymdhm(value)
+		if err != nil {
 			logger.Errorln(err.Error())
 		}
+		return v
 	}
 	return value
 }

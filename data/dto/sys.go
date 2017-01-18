@@ -4,6 +4,7 @@
 
 package dto
 
+// Sys sys.
 type Sys struct {
 	Pk
 	Memo      string `json:"memo"`

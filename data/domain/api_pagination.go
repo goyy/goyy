@@ -4,7 +4,7 @@
 
 package domain
 
-// Abstract interface for pagination information.
+// Pagination abstract interface for pagination information.
 type Pagination interface {
 	Length() int
 	Slider() int

@@ -4,10 +4,12 @@
 
 package dialect
 
+// MySQL mysql dialect.
 type MySQL struct {
 	typ string
 }
 
+// Type return the type of dialect.
 func (me *MySQL) Type() string {
 	return MYSQL
 }

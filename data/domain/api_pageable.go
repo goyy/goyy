@@ -14,7 +14,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/webs"
 )
 
-// Abstract interface for pagination information.
+// Pageable abstract interface for pagination information.
 type Pageable interface {
 
 	// Returns the page to be returned.
@@ -63,17 +63,17 @@ func NewPageableHTTP(w http.ResponseWriter, r *http.Request) (Pageable, error) {
 			return nil, err
 		}
 		return p, err
-	} else { // Get pageable from http.Request
-		if v, err := getByRequest(w, r, defaultPageNoName); err == nil {
-			p.SetPageNo(v)
-		} else {
-			return nil, err
-		}
-		if v, err := getByRequest(w, r, defaultPageSizeName); err == nil {
-			p.SetPageSize(v)
-		} else {
-			return nil, err
-		}
+	}
+	// Get pageable from http.Request
+	if v, err := getByRequest(w, r, defaultPageNoName); err == nil {
+		p.SetPageNo(v)
+	} else {
+		return nil, err
+	}
+	if v, err := getByRequest(w, r, defaultPageSizeName); err == nil {
+		p.SetPageSize(v)
+	} else {
+		return nil, err
 	}
 	// When rePageNo=true, set pageNo=1
 	if v, ok := values[defaultRePageNo]; ok && v[0] == "true" {
@@ -83,19 +83,18 @@ func NewPageableHTTP(w http.ResponseWriter, r *http.Request) (Pageable, error) {
 }
 
 func getByCookie(w http.ResponseWriter, r *http.Request, name string) (int, error) {
-	if v, err := cookies.Value(r, name); err == nil {
-		if strings.IsNotBlank(v) {
-			if val, err := strconv.Atoi(name); err == nil {
-				return val, nil
-			} else {
-				return 0, err
-			}
-		} else {
-			return setDefaultPage(w, name)
-		}
-	} else {
+	v, err := cookies.Value(r, name)
+	if err != nil {
 		return 0, err
 	}
+	if strings.IsNotBlank(v) {
+		val, err := strconv.Atoi(name)
+		if err != nil {
+			return 0, err
+		}
+		return val, nil
+	}
+	return setDefaultPage(w, name)
 }
 
 func getByRequest(w http.ResponseWriter, r *http.Request, name string) (int, error) {
@@ -106,14 +105,14 @@ func getByRequest(w http.ResponseWriter, r *http.Request, name string) (int, err
 	if _, ok := values[name]; ok {
 		v := values.Get(name)
 		if strings.IsNotBlank(v) {
-			if val, err := strconv.Atoi(v); err == nil {
-				if name == defaultPageNoName || name == defaultPageSizeName {
-					cookies.SetValue(w, name, v)
-				}
-				return val, nil
-			} else {
+			val, err := strconv.Atoi(v)
+			if err != nil {
 				return 0, err
 			}
+			if name == defaultPageNoName || name == defaultPageSizeName {
+				cookies.SetValue(w, name, v)
+			}
+			return val, nil
 		}
 	}
 	return setDefaultPage(w, name)

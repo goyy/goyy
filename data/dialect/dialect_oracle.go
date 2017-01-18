@@ -4,10 +4,12 @@
 
 package dialect
 
+// Oracle oracle dialect.
 type Oracle struct {
 	typ string
 }
 
+// Type return the type of dialect.
 func (me *Oracle) Type() string {
 	return ORACLE
 }

@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// Conf cache configuration.
 type Conf struct {
 	Address  string
 	Password string

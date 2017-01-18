@@ -9,6 +9,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/entity"
 )
 
+// Interface dml interface.
 type Interface interface {
 	Update(e entity.Interface) (dml string, args []interface{})
 	Insert(e entity.Interface) (dml string, args []interface{})
@@ -16,6 +17,7 @@ type Interface interface {
 	Disable(e entity.Interface) (dml string, arg interface{})
 }
 
+// New new dml.interface.
 func New(i dialect.Interface) Interface {
 	switch i.Type() {
 	case dialect.ORACLE:

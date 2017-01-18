@@ -22,13 +22,13 @@ func TestSettings(t *testing.T) {
 	}
 }
 
-func TestApi(t *testing.T) {
+func TestAPI(t *testing.T) {
 	in := "env"
 	out1 := "env"
 	out2 := "/apis"
-	v, _ := env.Api(in)
+	v, _ := env.API(in)
 	if v.Name != out1 || v.URL != out2 {
-		format := "env.Api(%s) = %s, %s; want %s, %s"
+		format := "env.API(%s) = %s, %s; want %s, %s"
 		t.Errorf(format, in, v.Name, v.URL, out1, out2)
 	}
 }
@@ -165,8 +165,8 @@ func TestSecure(t *testing.T) {
 	out7 := "anon"
 
 	v, _ := env.Secure(in)
-	if v.Name != out1 || v.Enable != out2 || v.LoginUrl != out3 || v.ForbidUrl != out4 || v.SuccessUrl != out5 || v.Filters.InterceptUrl[3].Pattern != out6 || v.Filters.InterceptUrl[3].Access != out7 {
+	if v.Name != out1 || v.Enable != out2 || v.LoginURL != out3 || v.ForbidURL != out4 || v.SuccessURL != out5 || v.Filters.InterceptURL[3].Pattern != out6 || v.Filters.InterceptURL[3].Access != out7 {
 		format := "env.Secure(%s) = %s, %t, %s, %s, %s, %s, %s; want %s, %t, %s, %s, %s, %s, %s"
-		t.Errorf(format, in, v.Name, v.Enable, v.LoginUrl, v.ForbidUrl, v.SuccessUrl, v.Filters.InterceptUrl[3].Pattern, v.Filters.InterceptUrl[3].Access, out3, out4, out1, out2, out3, out5, out6, out7)
+		t.Errorf(format, in, v.Name, v.Enable, v.LoginURL, v.ForbidURL, v.SuccessURL, v.Filters.InterceptURL[3].Pattern, v.Filters.InterceptURL[3].Access, out3, out4, out1, out2, out3, out5, out6, out7)
 	}
 }

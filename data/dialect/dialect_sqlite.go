@@ -4,10 +4,12 @@
 
 package dialect
 
+// Sqlite sqlite dialect.
 type Sqlite struct {
 	typ string
 }
 
+// Type return the type of dialect.
 func (me *Sqlite) Type() string {
 	return SQLITE
 }

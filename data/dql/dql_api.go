@@ -10,6 +10,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/entity"
 )
 
+// Interface Interface.
 type Interface interface {
 	SelectOne(e entity.Interface) (dql string, arg interface{})
 	SelectPage(dql string, pageable domain.Pageable) string
@@ -17,6 +18,7 @@ type Interface interface {
 	SelectCountBySift(e entity.Interface, sifts ...domain.Sift) (dql string, args []interface{}, err error)
 }
 
+// New new dql.Interface.
 func New(i dialect.Interface) Interface {
 	switch i.Type() {
 	case dialect.ORACLE:

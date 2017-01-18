@@ -4,6 +4,7 @@
 
 package dialect
 
+// Interface dialect interface.
 type Interface interface {
 	Type() string
 }

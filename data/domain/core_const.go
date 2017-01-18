@@ -17,44 +17,44 @@ const (
 	defaultPageFn       = "page"
 	defaultSiftPrefix   = "s"
 
-	op_eq = "EQ" // equal( = )
-	op_ne = "NE" // not equal( <> )
-	op_gt = "GT" // greater than( > )
-	op_lt = "LT" // less than( < )
-	op_ge = "GE" // greater than or equal( >= )
-	op_le = "LE" // less than or equal( <= )
-	op_li = "LI" // like '?'
-	op_lk = "LK" // like '%?%'
-	op_ll = "LL" // like '%?'
-	op_lr = "LR" // like '?%'
-	op_be = "BE" // between 'a,b'
-	op_nb = "NB" // not between 'a,b'
-	op_in = "IN" // in 'a,b,c,d'
-	op_ni = "NI" // not in 'a,b,c,d'
-	op_nu = "NU" // is null
-	op_nn = "NN" // is not null
-	op_tr = "TR" // transient
-	op_oa = "OA" // order by asc
-	op_od = "OD" // order by desc
+	opEQ = "EQ" // equal( = )
+	opNE = "NE" // not equal( <> )
+	opGT = "GT" // greater than( > )
+	opLT = "LT" // less than( < )
+	opGE = "GE" // greater than or equal( >= )
+	opLE = "LE" // less than or equal( <= )
+	opLI = "LI" // like '?'
+	opLK = "LK" // like '%?%'
+	opLL = "LL" // like '%?'
+	opLR = "LR" // like '?%'
+	opBE = "BE" // between 'a,b'
+	opNB = "NB" // not between 'a,b'
+	opIN = "IN" // in 'a,b,c,d'
+	opNI = "NI" // not in 'a,b,c,d'
+	opNU = "NU" // is null
+	opNN = "NN" // is not null
+	opTR = "TR" // transient
+	opOA = "OA" // order by asc
+	opOD = "OD" // order by desc
 
-	ot_st = "ST" // string
-	ot_bl = "BL" // bool
-	ot_i0 = "I0" // int
-	ot_i8 = "I8" // int8
-	ot_i1 = "I1" // int16
-	ot_i3 = "I3" // int32
-	ot_i6 = "I6" // int64
-	ot_u0 = "U0" // uint
-	ot_u8 = "U8" // uint8
-	ot_u1 = "U1" // uint16
-	ot_u3 = "U3" // uint32
-	ot_u6 = "U6" // uint64
-	ot_f3 = "F3" // float32
-	ot_f6 = "F6" // float64
-	ot_td = "TD" // time.Time:2006-01-02
-	ot_tt = "TT" // time.Time:2006-01-02 15:04:05
-	ot_tm = "TM" // time.Time:2006-01-02 15:04
-	ot_t2 = "T2" // time.Time.Unix():2006-01-02
-	ot_t5 = "T5" // time.Time.Unix():2006-01-02 15:04:05
-	ot_t4 = "T4" // time.Time.Unix():2006-01-02 15:04
+	otST = "ST" // string
+	otBL = "BL" // bool
+	otI0 = "I0" // int
+	otI8 = "I8" // int8
+	otI1 = "I1" // int16
+	otI3 = "I3" // int32
+	otI6 = "I6" // int64
+	otU0 = "U0" // uint
+	otU8 = "U8" // uint8
+	otU1 = "U1" // uint16
+	otU3 = "U3" // uint32
+	otU6 = "U6" // uint64
+	otF3 = "F3" // float32
+	otF6 = "F6" // float64
+	otTD = "TD" // time.Time:2006-01-02
+	otTT = "TT" // time.Time:2006-01-02 15:04:05
+	otTM = "TM" // time.Time:2006-01-02 15:04
+	otT2 = "T2" // time.Time.Unix():2006-01-02
+	otT5 = "T5" // time.Time.Unix():2006-01-02 15:04:05
+	otT4 = "T4" // time.Time.Unix():2006-01-02 15:04
 )

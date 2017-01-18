@@ -74,7 +74,7 @@ func (me *oracle) selectBySift(e entity.Interface, begin string, sifts ...domain
 				case "IN", "NI":
 					values := strings.Split(v.Value(), ",")
 					var b bytes.Buffer
-					for k, _ := range values {
+					for k := range values {
 						if k > 0 {
 							b.WriteString(",")
 						}
@@ -85,7 +85,7 @@ func (me *oracle) selectBySift(e entity.Interface, begin string, sifts ...domain
 				case "BE", "NB":
 					values := strings.Split(v.Value(), ",")
 					var b bytes.Buffer
-					for k, _ := range values {
+					for k := range values {
 						if k > 1 {
 							break
 						}
@@ -149,7 +149,6 @@ func (me *oracle) selectBySift(e entity.Interface, begin string, sifts ...domain
 	}
 	if y == 0 {
 		return w.String(), args, nil
-	} else {
-		return w.String() + o.String(), args, nil
 	}
+	return w.String() + o.String(), args, nil
 }

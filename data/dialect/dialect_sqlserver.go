@@ -4,10 +4,12 @@
 
 package dialect
 
+// SQLServer sqlserver dialect.
 type SQLServer struct {
 	typ string
 }
 
+// Type return the type of dialect.
 func (me *SQLServer) Type() string {
 	return SQLSERVER
 }
