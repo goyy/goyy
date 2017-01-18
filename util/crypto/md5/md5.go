@@ -8,6 +8,7 @@ package md5
 import (
 	"crypto/md5"
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 

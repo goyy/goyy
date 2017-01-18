@@ -16,8 +16,8 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/templates"
 )
 
-// select ... from ... -> select count(1) from ...
-func ParseCountSql(sql string) string {
+// ParseCountSQL select ... from ... -> select count(1) from ...
+func ParseCountSQL(sql string) string {
 	stack := &xtype.Stack{}
 	ss := strings.Split(sql, " ")
 	p := 0
@@ -39,9 +39,9 @@ func ParseCountSql(sql string) string {
 	return "select count(1)" + sql[pfrom:]
 }
 
-// ParseNamedSql takes a query using named parameters and an argument and
+// ParseNamedSQL takes a query using named parameters and an argument and
 // returns a new query with a list of args that can be executed by a database.
-func ParseNamedSql(dia dialect.Interface, sql string, args map[string]interface{}) (sqlout string, argsout []interface{}, err error) {
+func ParseNamedSQL(dia dialect.Interface, sql string, args map[string]interface{}) (sqlout string, argsout []interface{}, err error) {
 	if dia == nil || strings.IsBlank(sql) || args == nil {
 		err = errors.NewNotBlank("dia/sql/args")
 		return
@@ -76,9 +76,9 @@ func ParseNamedSql(dia dialect.Interface, sql string, args map[string]interface{
 	return
 }
 
-// ParseTemplateSql takes a query using named parameters and an argument and
+// ParseTemplateSQL takes a query using named parameters and an argument and
 // returns a new query with a list of args that can be executed by a database.
-func ParseTemplateSql(sql string, args map[string]interface{}) (out string, err error) {
+func ParseTemplateSQL(sql string, args map[string]interface{}) (out string, err error) {
 	t, err := template.New("sqls-tmpl").Funcs(templates.Text.FuncMap).Parse(sql)
 	if err != nil {
 		logger.Error(err.Error())

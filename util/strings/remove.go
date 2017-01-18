@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// Removes all whitespaces from a string.
+// RemoveSpace removes all whitespaces from a string.
 func RemoveSpace(s string) (d string) {
 	if IsBlank(s) {
 		return
@@ -21,7 +21,7 @@ func RemoveSpace(s string) (d string) {
 	return
 }
 
-// Removes all whitespaces from a string.
+// RemoveBlank removes all whitespaces from a string.
 func RemoveBlank(s string) (d string) {
 	if IsBlank(s) {
 		return
@@ -34,7 +34,7 @@ func RemoveBlank(s string) (d string) {
 	return
 }
 
-// Removes a substring only if it is at the beginning of a source string,
+// RemoveStart removes a substring only if it is at the beginning of a source string,
 // otherwise returns the source string.
 func RemoveStart(s, remove string) string {
 	if IsBlank(s) || IsBlank(remove) {
@@ -46,7 +46,7 @@ func RemoveStart(s, remove string) string {
 	return s
 }
 
-// Removes a substring only if it is at the end of a source string,
+// RemoveEnd removes a substring only if it is at the end of a source string,
 // otherwise returns the source string.
 func RemoveEnd(s, remove string) string {
 	if IsBlank(s) || IsBlank(remove) {
@@ -58,7 +58,7 @@ func RemoveEnd(s, remove string) string {
 	return s
 }
 
-// Removes all occurrences of a substring from within the source string.
+// Remove removes all occurrences of a substring from within the source string.
 func Remove(s, remove string) string {
 	if IsBlank(s) || IsBlank(remove) {
 		return s

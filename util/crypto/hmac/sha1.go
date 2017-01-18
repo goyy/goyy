@@ -8,6 +8,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha1"
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 

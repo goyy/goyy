@@ -7,6 +7,7 @@ package rc4_test
 import (
 	"bytes"
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/util/crypto/rc4"
 )
 

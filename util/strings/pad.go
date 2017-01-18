@@ -13,17 +13,17 @@ const padLimit = 8192
 // Repeat returns a new string consisting of count copies of the string s.
 func Repeat(s string, count int) string { return strings.Repeat(s, count) }
 
-// Left pad a String with spaces.
+// PadStart left pad a String with spaces.
 func PadStart(s string, size int) string {
 	return PadLeft(s, size, " ")
 }
 
-// Right pad a String with spaces.
+// PadEnd right pad a String with spaces.
 func PadEnd(s string, size int) string {
 	return PadRight(s, size, " ")
 }
 
-// Left pad a String with a specified character.
+// PadLeft left pad a String with a specified character.
 func PadLeft(in string, size int, sep string) string {
 	if IsBlank(sep) {
 		sep = " "
@@ -51,7 +51,7 @@ func PadLeft(in string, size int, sep string) string {
 	return in
 }
 
-// Right pad a String with a specified character.
+// PadRight right pad a String with a specified character.
 func PadRight(in string, size int, sep string) string {
 	if IsBlank(sep) {
 		sep = " "
@@ -79,12 +79,12 @@ func PadRight(in string, size int, sep string) string {
 	return in
 }
 
-// Pads a string in a larger string of size using the space character (' ').
+// Pad pads a string in a larger string of size using the space character (' ').
 func Pad(in string, size int) string {
 	return Center(in, size, " ")
 }
 
-// Centers a string in a larger string of size.
+// Center centers a string in a larger string of size.
 func Center(in string, size int, sep string) (out string) {
 	if IsBlank(sep) {
 		sep = " "

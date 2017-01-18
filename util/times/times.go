@@ -14,12 +14,12 @@ func Now() time.Time {
 	return time.Now()
 }
 
-// Now returns the current local time of unix.
+// NowUnix returns the current local time of unix.
 func NowUnix() int64 {
 	return time.Now().Unix()
 }
 
-// Now returns the current local time of unix.
+// NowUnixStr returns the current local time of unix.
 func NowUnixStr() string {
 	return strconv.FormatInt(NowUnix(), 10)
 }

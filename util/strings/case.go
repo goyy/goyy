@@ -88,11 +88,10 @@ func Camel(s string) string {
 			if isSeparator(r) {
 				prev = true
 				return '_'
-			} else {
-				if prev {
-					prev = false
-					return unicode.ToTitle(r)
-				}
+			}
+			if prev {
+				prev = false
+				return unicode.ToTitle(r)
 			}
 			prev = false
 			return unicode.ToLower(r)

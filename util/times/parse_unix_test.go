@@ -5,8 +5,9 @@
 package times_test
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/times"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/util/times"
 )
 
 func TestParseUnix(t *testing.T) {

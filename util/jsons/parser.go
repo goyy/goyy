@@ -9,11 +9,13 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
+// Parser json parser.
 type Parser interface {
 	Value(key string) string
 	Len(key string) int
 }
 
+// NewParser return new json parser.
 func NewParser(json string) (Parser, error) {
 	// JSON format validation
 	if strings.IsBlank(json) {

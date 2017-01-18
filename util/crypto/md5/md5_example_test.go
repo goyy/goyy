@@ -6,6 +6,7 @@ package md5_test
 
 import (
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/util/crypto/md5"
 )
 

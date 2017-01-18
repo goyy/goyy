@@ -10,9 +10,11 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"encoding/hex"
+
 	"gopkg.in/goyy/goyy.v0/util/crypto/md5"
 )
 
+// DefaultKey default aes key
 const DefaultKey = "aes-key"
 
 // Encrypt encrypts the first block in src into dst.
@@ -20,7 +22,7 @@ const DefaultKey = "aes-key"
 func Encrypt(src, key []byte) (dst []byte, err error) {
 	keytext := key
 	keylen := len(key)
-	if keylen != 16 || keylen != 24 || keylen != 32 {
+	if !isIgnoreLen(keylen) {
 		keytext, err = md5.Digest(key)
 		if err != nil {
 			return
@@ -43,7 +45,7 @@ func Encrypt(src, key []byte) (dst []byte, err error) {
 func Decrypt(src, key []byte) (dst []byte, err error) {
 	keytext := key
 	keylen := len(key)
-	if keylen != 16 || keylen != 24 || keylen != 32 {
+	if !isIgnoreLen(keylen) {
 		keytext, err = md5.Digest(key)
 		if err != nil {
 			return
@@ -85,4 +87,12 @@ func DecryptHex(src, key string) (dst string, err error) {
 	}
 	dst = string(out)
 	return
+}
+
+func isIgnoreLen(v int) bool {
+	switch v {
+	case 16, 24, 32:
+		return true
+	}
+	return false
 }

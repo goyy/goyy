@@ -5,8 +5,9 @@
 package strings_test
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 func TestAbbr(t *testing.T) {

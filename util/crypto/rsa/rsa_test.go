@@ -5,8 +5,9 @@
 package rsa_test
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/crypto/rsa"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/util/crypto/rsa"
 )
 
 func TestRsaHex(t *testing.T) {

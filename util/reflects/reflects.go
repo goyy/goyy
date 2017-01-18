@@ -7,8 +7,9 @@ package reflects
 import (
 	"errors"
 	"fmt"
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"reflect"
+
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 const (
@@ -44,30 +45,30 @@ func Call(i interface{}, methodName string, methodArgs ...interface{}) (result [
 // Set assigns value to the interface{} i. It error if CanSet returns false.
 // As in Go, value's interface{} must be assignable to i's type.
 func Set(i interface{}, fieldName string, value interface{}) error {
-	if field, err := Field(i, fieldName); err != nil {
+	field, err := Field(i, fieldName)
+	if err != nil {
 		return err
-	} else {
-		if !field.CanSet() {
-			return fmt.Errorf("Cannot set %s field value", fieldName)
-		}
-		t := field.Type()
-		v := reflect.ValueOf(value)
-		if t != v.Type() {
-			return errors.New("Assigns value type didn't match i." + fieldName + " field type")
-		}
-		field.Set(v)
-		return nil
 	}
+	if !field.CanSet() {
+		return fmt.Errorf("Cannot set %s field value", fieldName)
+	}
+	t := field.Type()
+	v := reflect.ValueOf(value)
+	if t != v.Type() {
+		return errors.New("Assigns value type didn't match i." + fieldName + " field type")
+	}
+	field.Set(v)
+	return nil
 }
 
 // Interface returns i's current value as an interface{}.
 // It error if the Value was obtained by accessing unexported struct fields.
 func Interface(i interface{}, fieldName string) (interface{}, error) {
-	if field, err := Field(i, fieldName); err != nil {
+	field, err := Field(i, fieldName)
+	if err != nil {
 		return nil, err
-	} else {
-		return field.Interface(), nil
 	}
+	return field.Interface(), nil
 }
 
 // Tag returns the value associated with tagKey in the tag string.
@@ -78,11 +79,11 @@ func Tag(i interface{}, fieldName, tagKey string) (string, error) {
 	if strings.IsBlank(tagKey) {
 		return "", fmt.Errorf(fEmpty, "tagKey")
 	}
-	if field, err := StructField(i, fieldName); err != nil {
+	field, err := StructField(i, fieldName)
+	if err != nil {
 		return "", err
-	} else {
-		return field.Tag.Get(tagKey), nil
 	}
+	return field.Tag.Get(tagKey), nil
 }
 
 // Indirect returns the value that i points to.
@@ -95,11 +96,11 @@ func Indirect(i interface{}) (v reflect.Value) {
 // Kind returns i's Kind.
 // If i is the zero Value (IsValid returns false), Kind returns Invalid.
 func Kind(i interface{}, fieldName string) (reflect.Kind, error) {
-	if field, err := Field(i, fieldName); err != nil {
+	field, err := Field(i, fieldName)
+	if err != nil {
 		return reflect.Invalid, err
-	} else {
-		return field.Type().Kind(), nil
 	}
+	return field.Type().Kind(), nil
 }
 
 // StructField returns i's reflect.StructField.
@@ -287,9 +288,8 @@ func IsField(i interface{}, fieldName string) (bool, error) {
 	t := v.Type()
 	if _, ok := t.FieldByName(fieldName); ok {
 		return true, nil
-	} else {
-		return false, fmt.Errorf(fNoSuch, "field", fieldName)
 	}
+	return false, fmt.Errorf(fNoSuch, "field", fieldName)
 }
 
 // IsTag checks if i field tag is part of a struct.
@@ -298,15 +298,15 @@ func IsTag(i interface{}, fieldName, tagKey string) (bool, error) {
 	if strings.IsBlank(tagKey) {
 		return false, fmt.Errorf(fEmpty, "tagKey")
 	}
-	if field, err := StructField(i, fieldName); err != nil {
+	field, err := StructField(i, fieldName)
+	if err != nil {
 		return false, err
-	} else {
-		tag := field.Tag.Get(tagKey)
-		if strings.IsBlank(tag) {
-			return false, nil
-		}
-		return true, nil
 	}
+	tag := field.Tag.Get(tagKey)
+	if strings.IsBlank(tag) {
+		return false, nil
+	}
+	return true, nil
 }
 
 // IsAnyType returns true if any type in types are within i.

@@ -5,9 +5,10 @@
 package files_test
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/files"
 	"os"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/util/files"
 )
 
 func TestIsExist(t *testing.T) {
@@ -113,7 +114,7 @@ func TestRemove(t *testing.T) {
 	}
 }
 
-func TestGetExtension(t *testing.T) {
+func TestExtension(t *testing.T) {
 	s := []struct {
 		file     string
 		expected string
@@ -123,16 +124,16 @@ func TestGetExtension(t *testing.T) {
 		{"./README", ""},
 	}
 	for _, v := range s {
-		if out := files.GetExtension(v.file); out != v.expected {
-			t.Errorf(`GetExtension("%s") = %v, want %v`, v.file, out, v.expected)
+		if out := files.Extension(v.file); out != v.expected {
+			t.Errorf(`Extension("%s") = %v, want %v`, v.file, out, v.expected)
 		}
 	}
 }
 
 func TestModTime(t *testing.T) {
 	filename := "./README.md"
-	if out, _ := files.ModTime(filename); out <= 0 {
-		t.Errorf(`ModTime("%s") = %v, want %s`, filename, out, ">0")
+	if out, _ := files.ModTime(filename); out.Unix() <= 0 {
+		t.Errorf(`ModTime("%s") = %v, want %s`, filename, out.Unix(), ">0")
 	}
 }
 

@@ -6,8 +6,9 @@ package strings_test
 
 import (
 	"fmt"
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 func TestSlice(t *testing.T) {

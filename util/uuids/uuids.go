@@ -16,7 +16,7 @@ func New() string {
 	return strings.Replace(id.String(), "-", "", -1)
 }
 
-// New returns the id string.
+// NewV1 returns the id string.
 func NewV1() string {
 	return uuid.NewV1().String()
 }

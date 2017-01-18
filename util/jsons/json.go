@@ -10,14 +10,13 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
-/*
----------------------------------
-from: `ab\"cd
-		ef g`
----------------------------------
-to  : `ab\\\"cd\n\t\tef g`
----------------------------------
-*/
+// Format format json
+//---------------------------------
+// from: `ab\"cd
+//		ef g`
+//---------------------------------
+// to  : `ab\\\"cd\n\t\tef g`
+//---------------------------------
 func Format(s string) string {
 	if strings.IsBlank(s) {
 		return ""
@@ -27,14 +26,13 @@ func Format(s string) string {
 	return encode(s)
 }
 
-/*
----------------------------------
-from: `ab\\\"cd\n\t\tef g`
----------------------------------
-to  : `ab\"cd
-		ef g`
----------------------------------
-*/
+// Parse parse json
+//---------------------------------
+// from: `ab\\\"cd\n\t\tef g`
+//---------------------------------
+// to  : `ab\"cd
+//		ef g`
+//---------------------------------
 func Parse(json string) string {
 	if strings.IsBlank(json) {
 		return ""

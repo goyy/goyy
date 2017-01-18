@@ -6,8 +6,9 @@ package files_test
 
 import (
 	"fmt"
-	"gopkg.in/goyy/goyy.v0/util/files"
 	"log"
+
+	"gopkg.in/goyy/goyy.v0/util/files"
 )
 
 func ExampleIsExist() {

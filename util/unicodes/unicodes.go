@@ -9,7 +9,7 @@ import (
 	"unicode"
 )
 
-// IsLetter reports whether the rune is a quote.
+// IsQuote reports whether the rune is a quote.
 // Returns true when the value of r is ' or " or `, otherwise it returns false.
 func IsQuote(r rune) bool {
 	switch r {
@@ -23,7 +23,7 @@ func IsQuote(r rune) bool {
 	return false
 }
 
-// IsLetter reports whether the rune is a Chinese characters.
+// IsHan reports whether the rune is a Chinese characters.
 func IsHan(r rune) bool {
 	return unicode.Is(unicode.Scripts["Han"], r)
 }

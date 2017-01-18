@@ -32,22 +32,22 @@ func FormatUnix(layout string, i int64) string {
 	return Format(layout, t)
 }
 
-// Time formatted as Mon, 02 Jan 2006 15:04:05 GMT.
+// FormatUnixGMT time formatted as Mon, 02 Jan 2006 15:04:05 GMT.
 func FormatUnixGMT(i int64) string {
 	return FormatUnix(GMT, i)
 }
 
-// Time formatted as 2006-01-02.
+// FormatUnixYYMD time formatted as 2006-01-02.
 func FormatUnixYYMD(i int64) string {
 	return FormatUnix(YYMD, i)
 }
 
-// Time formatted as 2006-01-02 15:04:05.
+// FormatUnixYYMDHMS time formatted as 2006-01-02 15:04:05.
 func FormatUnixYYMDHMS(i int64) string {
 	return FormatUnix(YYMDHMS, i)
 }
 
-// Time formatted as 2006-01-02 15:04.
+// FormatUnixYYMDHM time formatted as 2006-01-02 15:04.
 func FormatUnixYYMDHM(i int64) string {
 	return FormatUnix(YYMDHM, i)
 }

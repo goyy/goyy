@@ -27,27 +27,26 @@ import (
 func Format(layout string, t time.Time) string {
 	if t.IsZero() {
 		return ""
-	} else {
-		return t.Format(layout)
 	}
+	return t.Format(layout)
 }
 
-// Time formatted as Mon, 02 Jan 2006 15:04:05 GMT.
+// FormatGMT time formatted as Mon, 02 Jan 2006 15:04:05 GMT.
 func FormatGMT(t time.Time) string {
 	return Format(GMT, t)
 }
 
-// Time formatted as 2006-01-02.
+// FormatYYMD time formatted as 2006-01-02.
 func FormatYYMD(t time.Time) string {
 	return Format(YYMD, t)
 }
 
-// Time formatted as 2006-01-02 15:04:05.
+// FormatYYMDHMS time formatted as 2006-01-02 15:04:05.
 func FormatYYMDHMS(t time.Time) string {
 	return Format(YYMDHMS, t)
 }
 
-// Time formatted as 2006-01-02 15:04.
+// FormatYYMDHM time formatted as 2006-01-02 15:04.
 func FormatYYMDHM(t time.Time) string {
 	return Format(YYMDHM, t)
 }

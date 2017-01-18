@@ -6,8 +6,9 @@ package sha256_test
 
 import (
 	"fmt"
-	"gopkg.in/goyy/goyy.v0/util/crypto/sha256"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/util/crypto/sha256"
 )
 
 func TestDigestHex(t *testing.T) {

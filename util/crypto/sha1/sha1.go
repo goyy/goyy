@@ -8,6 +8,7 @@ package sha1
 import (
 	"crypto/sha1"
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 

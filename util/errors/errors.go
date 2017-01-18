@@ -20,7 +20,7 @@ func New(text string) error {
 	return errors.New(text)
 }
 
-// New returns an error that formats as the given text.
+// Newf returns an error that formats as the given text.
 func Newf(format string, v ...interface{}) error {
 	return fmt.Errorf(format, v...)
 }
@@ -35,7 +35,7 @@ func NewNotBlank(name string) error {
 	return fmt.Errorf(fNotBlanck, name)
 }
 
-// NewReqNotPresent returns http.Request: named not present error.
+// NewReqNameNotPresent returns http.Request: named not present error.
 func NewReqNameNotPresent(name string) error {
 	return fmt.Errorf(fReqNameNotPresent, name)
 }

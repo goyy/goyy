@@ -5,8 +5,9 @@
 package jsons_test
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/jsons"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/util/jsons"
 )
 
 func TestFormat(t *testing.T) {

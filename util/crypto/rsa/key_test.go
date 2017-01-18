@@ -5,9 +5,10 @@
 package rsa_test
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/crypto/rsa"
 	"strings"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/util/crypto/rsa"
 )
 
 func TestGeneratingKey(t *testing.T) {

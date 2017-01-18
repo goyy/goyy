@@ -5,10 +5,10 @@
 package templates
 
 const (
-	EnIndex = "index"
-	EnShow  = "show"
-	EnEdit  = "edit"
-	EnAdd   = "add"
+	enIndex = "index"
+	enShow  = "show"
+	enEdit  = "edit"
+	enAdd   = "add"
 	zhIndex = "列表"
 	zhShow  = "查看"
 	zhEdit  = "修改"

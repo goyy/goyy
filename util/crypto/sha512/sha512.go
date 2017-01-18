@@ -9,6 +9,7 @@ package sha512
 import (
 	"crypto/sha512"
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 

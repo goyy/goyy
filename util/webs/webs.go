@@ -12,7 +12,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
-// Form contains the parsed form data, including both the URL
+// ToParams form contains the parsed form data, including both the URL
 // field's query parameters and the POST or PUT form data.
 func ToParams(values url.Values, prefix ...string) map[string]string {
 	result := make(map[string]string, 0)
@@ -24,7 +24,7 @@ func ToParams(values url.Values, prefix ...string) map[string]string {
 	return result
 }
 
-// Form contains the parsed form data, including both the URL
+// Params form contains the parsed form data, including both the URL
 // field's query parameters and the POST or PUT form data.
 func Params(req *http.Request, prefix ...string) (map[string]string, error) {
 	vs, err := Values(req)
@@ -40,7 +40,7 @@ func Params(req *http.Request, prefix ...string) (map[string]string, error) {
 	return result, nil
 }
 
-// Form contains the parsed form data, including both the URL
+// Values form contains the parsed form data, including both the URL
 // field's query parameters and the POST or PUT form data.
 func Values(req *http.Request) (values url.Values, err error) {
 	if req.Method == "GET" {
@@ -155,7 +155,8 @@ func ParseQuery(params url.Values) string {
 	return b.String()
 }
 
-func ParseUrlSpecialChars(s string) string {
+// ParseURLSpecialChars parse url.
+func ParseURLSpecialChars(s string) string {
 	b := bytes.NewBuffer()
 	// Count %, check that they're well-formed.
 	for i := 0; i < len(s); i++ {

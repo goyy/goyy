@@ -5,9 +5,10 @@
 package reflects_test
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/reflects"
 	"reflect"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/util/reflects"
 )
 
 type demo struct {

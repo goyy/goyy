@@ -6,8 +6,9 @@ package hmac_test
 
 import (
 	"fmt"
-	"gopkg.in/goyy/goyy.v0/util/crypto/hmac"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/util/crypto/hmac"
 )
 
 func TestSha256Hex(t *testing.T) {

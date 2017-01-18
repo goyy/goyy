@@ -6,8 +6,9 @@ package des_test
 
 import (
 	"bytes"
-	"gopkg.in/goyy/goyy.v0/util/crypto/des"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/util/crypto/des"
 )
 
 type desTest struct {

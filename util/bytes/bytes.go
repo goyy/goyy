@@ -10,10 +10,12 @@ import (
 	"bytes"
 )
 
+// TrimRightNul trim \x00 character at the end
 func TrimRightNul(src []byte) []byte {
 	return bytes.TrimRight(src, "\x00")
 }
 
+// IsHex to determine whether the hex character
 func IsHex(c byte) bool {
 	switch {
 	case '0' <= c && c <= '9':

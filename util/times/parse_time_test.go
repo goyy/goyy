@@ -5,9 +5,10 @@
 package times_test
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/times"
 	"testing"
 	"time"
+
+	"gopkg.in/goyy/goyy.v0/util/times"
 )
 
 func TestParse(t *testing.T) {

@@ -17,12 +17,12 @@ func ContainsAny(s, chars string) bool { return strings.ContainsAny(s, chars) }
 // ContainsRune returns true if the Unicode code point r is within s.
 func ContainsRune(s string, r rune) bool { return strings.ContainsRune(s, r) }
 
-// Contains returns true if whitespace is within s.
+// ContainsSpace contains returns true if whitespace is within s.
 func ContainsSpace(s string) bool {
 	return strings.ContainsAny(s, " \t\r\n")
 }
 
-// Checks if the string contains only certain chars.
+// ContainsOnly checks if the string contains only certain chars.
 func ContainsOnly(s, chars string) bool {
 	if s == "" || chars == "" {
 		return false
@@ -35,7 +35,7 @@ func ContainsOnly(s, chars string) bool {
 	return true
 }
 
-// Checks that the string does not contain certain chars.
+// ContainsNone checks that the string does not contain certain chars.
 func ContainsNone(s, chars string) bool {
 	if s == "" || chars == "" {
 		return true

@@ -13,9 +13,11 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/times"
 )
 
+// Text text funcMap
 var Text = text{funcMapText}
 
-var Html = html{funcMapHtml}
+// HTML html funcMap
+var HTML = html{funcMapHTML}
 
 type text struct {
 	FuncMap ttmpl.FuncMap
@@ -56,7 +58,7 @@ var funcMapText = ttmpl.FuncMap{
 	"needit":    needit,
 
 	"profile":    getProfile,    // profile[production|development|test]
-	"apis":       getApis,       // The URL of the apis.
+	"apis":       getAPIs,       // The URL of the apis.
 	"assets":     getAssets,     // The URL of the static file.
 	"statics":    getStatics,    // static file[web|wap|adm]
 	"developers": getDevelopers, // The URL of the development of relevant documents
@@ -64,7 +66,7 @@ var funcMapText = ttmpl.FuncMap{
 	"uploads":    getUploads,    // The URL of the uploaded file.
 }
 
-var funcMapHtml = htmpl.FuncMap{
+var funcMapHTML = htmpl.FuncMap{
 	"yymd":     times.FormatYYMD,
 	"yymdhms":  times.FormatYYMDHMS,
 	"yymdhm":   times.FormatYYMDHM,
@@ -92,7 +94,7 @@ var funcMapHtml = htmpl.FuncMap{
 	"needit":    needit,
 
 	"profile":    getProfile,    // profile[production|development|test]
-	"apis":       getApis,       // The URL of the apis.
+	"apis":       getAPIs,       // The URL of the apis.
 	"assets":     getAssets,     // The URL of the static file.
 	"statics":    getStatics,    // static file[web|wap|adm]
 	"developers": getDevelopers, // The URL of the development of relevant documents
@@ -127,41 +129,41 @@ var exist = func(m map[string]interface{}, key string) (ok bool) {
 
 var zhstate = func(t string) string {
 	switch t {
-	case EnIndex:
+	case enIndex:
 		return zhAdd
-	case EnShow:
+	case enShow:
 		return zhShow
-	case EnAdd:
+	case enAdd:
 		return zhAdd
-	case EnEdit:
+	case enEdit:
 		return zhEdit
 	}
 	return ""
 }
 
 var eqindex = func(t string) bool {
-	if EnIndex == t {
+	if enIndex == t {
 		return true
 	}
 	return false
 }
 
 var eqshow = func(t string) bool {
-	if EnShow == t {
+	if enShow == t {
 		return true
 	}
 	return false
 }
 
 var eqadd = func(t string) bool {
-	if EnAdd == t {
+	if enAdd == t {
 		return true
 	}
 	return false
 }
 
 var eqedit = func(t string) bool {
-	if EnEdit == t {
+	if enEdit == t {
 		return true
 	}
 	return false
@@ -192,19 +194,25 @@ func getProfile() string {
 }
 
 var (
-	GetApis       func() string
-	GetAssets     func() string
-	GetStatics    func() string
+	// GetAPIs return to apis in static resources
+	GetAPIs func() string
+	// GetAssets return to assets in static resources
+	GetAssets func() string
+	// GetStatics return to statics in static resources
+	GetStatics func() string
+	// GetDevelopers return to developers in static resources
 	GetDevelopers func() string
+	// GetOperations return to operations in static resources
 	GetOperations func() string
-	GetUploads    func() string
+	// GetUploads return to uploads in static resources
+	GetUploads func() string
 )
 
-func getApis() string {
-	if GetApis == nil {
+func getAPIs() string {
+	if GetAPIs == nil {
 		return ""
 	}
-	return GetApis()
+	return GetAPIs()
 }
 
 func getAssets() string {

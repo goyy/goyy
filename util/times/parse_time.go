@@ -5,8 +5,9 @@
 package times
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"time"
+
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 // Parse parses a formatted string and returns the time value it represents.
@@ -31,13 +32,13 @@ func ParseYYMD(value string) (time.Time, error) {
 	return Parse(YYMD, value)
 }
 
-// ParseGMT parses a formatted string and returns the time value it represents.
+// ParseYYMDHMS parses a formatted string and returns the time value it represents.
 // The layout is "2006-01-02 15:04:05"
 func ParseYYMDHMS(value string) (time.Time, error) {
 	return Parse(YYMDHMS, value)
 }
 
-// ParseGMT parses a formatted string and returns the time value it represents.
+// ParseYYMDHM parses a formatted string and returns the time value it represents.
 // The layout is "2006-01-02 15:04"
 func ParseYYMDHM(value string) (time.Time, error) {
 	return Parse(YYMDHM, value)

@@ -4,7 +4,7 @@
 
 package strings
 
-// The returned substring starts with the character in the start position
+// Slice the returned substring starts with the character in the start position
 // and ends before the end position.
 func Slice(s string, start, end int) string {
 	if IsBlank(s) {
@@ -35,7 +35,7 @@ func Slice(s string, start, end int) string {
 	return s[start:end]
 }
 
-// Gets the leftmost len characters of a String.
+// Left gets the leftmost len characters of a String.
 func Left(s string, length int) string {
 	if length < 0 || IsBlank(s) {
 		return ""
@@ -46,7 +46,7 @@ func Left(s string, length int) string {
 	return s[0:length]
 }
 
-// Gets the rightmost len characters of a String.
+// Right gets the rightmost len characters of a String.
 func Right(s string, length int) string {
 	if length < 0 || IsBlank(s) {
 		return ""
@@ -57,7 +57,7 @@ func Right(s string, length int) string {
 	return s[len(s)-length:]
 }
 
-// Gets len characters from the middle of a String.
+// Mid gets len characters from the middle of a String.
 func Mid(s string, start, length int) string {
 	if length < 0 || IsBlank(s) {
 		return ""
@@ -78,7 +78,7 @@ func Mid(s string, start, length int) string {
 	return s[start : start+length]
 }
 
-// Gets the substring before the first occurrence of a separator.
+// Before gets the substring before the first occurrence of a separator.
 // The separator is not returned.
 func Before(s, sep string) string {
 	if IsBlank(s) || IsBlank(sep) {
@@ -91,7 +91,7 @@ func Before(s, sep string) string {
 	return s[0:pos]
 }
 
-// Gets the substring after the first occurrence of a separator.
+// After gets the substring after the first occurrence of a separator.
 // The separator is not returned.
 func After(s, sep string) string {
 	if IsBlank(s) || IsBlank(sep) {
@@ -104,7 +104,7 @@ func After(s, sep string) string {
 	return s[pos+len(sep):]
 }
 
-// Gets the substring before the last occurrence of a separator.
+// BeforeLast gets the substring before the last occurrence of a separator.
 // The separator is not returned.
 func BeforeLast(s, sep string) string {
 	if IsBlank(s) || IsBlank(sep) {
@@ -117,7 +117,7 @@ func BeforeLast(s, sep string) string {
 	return s[0:pos]
 }
 
-// Gets the substring after the last occurrence of a separator.
+// AfterLast gets the substring after the last occurrence of a separator.
 // The separator is not returned.
 func AfterLast(s, sep string) string {
 	if IsBlank(s) || IsBlank(sep) {
@@ -130,7 +130,7 @@ func AfterLast(s, sep string) string {
 	return s[pos+len(sep):]
 }
 
-// Gets the string that is nested in between two string.
+// Between gets the string that is nested in between two string.
 // Only the first match is returned.
 func Between(s, start, end string) string {
 	if IsBlank(s) || IsBlank(start) || IsBlank(end) {
@@ -146,12 +146,12 @@ func Between(s, start, end string) string {
 	return ""
 }
 
-// Gets the string that is nested in between two instances of the same String.
+// BetweenSame gets the string that is nested in between two instances of the same String.
 func BetweenSame(s, tag string) string {
 	return Between(s, tag, tag)
 }
 
-// Gets the slice string that is nested in between two string.
+// Betweens gets the slice string that is nested in between two string.
 // Only the first match is returned.
 // eg.
 // strings.Betweens("[a][b][c]", "[", "]")                  = [a b c]

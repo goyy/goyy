@@ -7,6 +7,7 @@ package des_test
 import (
 	"bytes"
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/util/crypto/des"
 )
 

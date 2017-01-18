@@ -6,8 +6,9 @@ package rc4_test
 
 import (
 	"bytes"
-	"gopkg.in/goyy/goyy.v0/util/crypto/rc4"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/util/crypto/rc4"
 )
 
 type rc4Test struct {

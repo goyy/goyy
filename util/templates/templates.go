@@ -6,8 +6,9 @@ package templates
 
 import (
 	"bytes"
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"text/template"
+
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 // New allocates a new template with the given name.
@@ -15,7 +16,7 @@ func New(name string) *template.Template {
 	return template.New(name).Funcs(funcMapText)
 }
 
-// Compile template and output.
+// Process compile template and output.
 func Process(tmpl string, data interface{}) (r string, err error) {
 	buf := new(bytes.Buffer)
 	t, err := New("goyy-temples").Parse(tmpl)

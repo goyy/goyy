@@ -6,8 +6,9 @@ package aes_test
 
 import (
 	"bytes"
-	"gopkg.in/goyy/goyy.v0/util/crypto/aes"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/util/crypto/aes"
 )
 
 type aesTest struct {

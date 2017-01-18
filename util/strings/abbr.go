@@ -8,7 +8,7 @@ import (
 	"bytes"
 )
 
-// abbreviate a String using ellipses.
+// Abbr abbreviate a String using ellipses.
 // This will turn "goyy" into "g...".
 func Abbr(s string, maxWidth int) string {
 	if IsBlank(s) || maxWidth < 1 {
@@ -30,7 +30,7 @@ func Abbr(s string, maxWidth int) string {
 	return b.String()
 }
 
-// Anonymous a String using asterisk.
+// Anon anonymous a String using asterisk.
 // This will turn "goyy" into "g***y".
 func Anon(s string) string {
 	return Anonymous(s, 1, 1, 3)

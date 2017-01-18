@@ -66,7 +66,7 @@ func HasAnySuffix(s string, suffix ...string) (string, bool) {
 	return "", false
 }
 
-// Join concatenates the elements of a to create a single string.   The separator string
+// JoinIgnoreBlank join concatenates the elements of a to create a single string.   The separator string
 // sep is placed between elements in the resulting string.
 func JoinIgnoreBlank(a []string, sep string) string {
 	var b bytes.Buffer
@@ -93,7 +93,7 @@ func Runes(s string) []rune {
 	return rs
 }
 
-// Overlays part of a String with another String.
+// Overlay overlays part of a String with another String.
 func Overlay(str, overlay string, start, end int) string {
 	if IsBlank(overlay) {
 		overlay = ""

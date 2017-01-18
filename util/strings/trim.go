@@ -46,7 +46,7 @@ func TrimPrefix(s, prefix string) string { return strings.TrimPrefix(s, prefix) 
 // If s doesn't end with suffix, s is returned unchanged.
 func TrimSuffix(s, suffix string) string { return strings.TrimSuffix(s, suffix) }
 
-// TrimSpace returns a slice of the string s, with all leading
+// TrimSpaceNQuote1 returns a slice of the string s, with all leading
 // and trailing white space or quote removed, as defined by Unicode.
 func TrimSpaceNQuote1(s string) string {
 	v := strings.TrimSpace(s)

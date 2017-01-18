@@ -9,6 +9,7 @@ package sha256
 import (
 	"crypto/sha256"
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 

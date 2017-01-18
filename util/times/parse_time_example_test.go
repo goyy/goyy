@@ -6,6 +6,7 @@ package times_test
 
 import (
 	"fmt"
+
 	"gopkg.in/goyy/goyy.v0/util/times"
 )
 
