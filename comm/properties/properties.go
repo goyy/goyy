@@ -9,12 +9,13 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"gopkg.in/goyy/goyy.v0/util/files"
 	"io"
 	"io/ioutil"
 	"log"
 	"os"
 	"strings"
+
+	"gopkg.in/goyy/goyy.v0/util/files"
 )
 
 // Properties is the interface that wraps the operation properties file method.

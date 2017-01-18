@@ -139,7 +139,7 @@ func (me *session) Principal() (xtype.Principal, error) {
 	if err != nil {
 		return p, err
 	}
-	p.Id = id
+	p.ID = id
 	p.Name = name
 	p.LoginName = loginName
 	p.LoginTime = loginTime
@@ -150,7 +150,7 @@ func (me *session) Principal() (xtype.Principal, error) {
 }
 
 func (me *session) SetPrincipal(value xtype.Principal) error {
-	if err := me.Set(principalId, value.Id); err != nil {
+	if err := me.Set(principalId, value.ID); err != nil {
 		return err
 	}
 	if err := me.Set(principalName, value.Name); err != nil {

@@ -79,7 +79,7 @@ func (me *Logger) Errorln(v ...interface{}) {
 	me.println(Perror, v...)
 }
 
-// Criticall calls output to print to the logger with the Critical priority.
+// Critical calls output to print to the logger with the Critical priority.
 func (me *Logger) Critical(v ...interface{}) {
 	me.print(Pcritical, v...)
 }

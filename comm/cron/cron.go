@@ -79,9 +79,10 @@ func New() *Cron {
 	}
 }
 
-// A wrapper that turns a func() into a cron.Job
+// FuncJob a wrapper that turns a func() into a cron.Job
 type FuncJob func()
 
+// Run run.
 func (me FuncJob) Run() {
 	defer func() {
 		if err := recover(); err != nil {
@@ -96,7 +97,7 @@ func (me *Cron) AddFunc(spec string, cmd func()) error {
 	return me.AddJob(spec, FuncJob(cmd))
 }
 
-// AddFunc adds a Job to the Cron to be run on the given schedule.
+// AddJob adds a Job to the Cron to be run on the given schedule.
 func (me *Cron) AddJob(spec string, cmd Job) error {
 	schedule, err := Parse(spec)
 	if err != nil {

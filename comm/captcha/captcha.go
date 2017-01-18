@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	// Default number of digits in captcha solution.
+	// DefaultLen default number of digits in captcha solution.
 	DefaultLen = 4
 )
 

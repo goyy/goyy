@@ -47,14 +47,14 @@ func (me *illegalServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) boo
 		for _, vs := range params {
 			for _, v := range vs {
 				if strings.IsNotBlank(v) {
-					v = webs.ParseUrlSpecialChars(v)
+					v = webs.ParseURLSpecialChars(v)
 					unescape, err := url.QueryUnescape(v)
 					if err != nil {
 						logger.Error(err.Error())
 						me.write(w, r)
 						return true
 					}
-					unescape = webs.ParseUrlSpecialChars(unescape)
+					unescape = webs.ParseURLSpecialChars(unescape)
 					unescape2, err := url.QueryUnescape(unescape)
 					if err != nil {
 						logger.Error(err.Error())

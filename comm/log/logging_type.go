@@ -4,6 +4,7 @@
 
 package log
 
+// Logging logging.
 type Logging struct {
 	hasSettings   bool
 	Settings      func() // The function executed before the log is printed and executed only once.
@@ -31,7 +32,7 @@ func New(prefix string) *Logging {
 	}
 }
 
-// New creates a new Logging.
+// NewLogging creates a new Logging.
 func NewLogging(prefix string, priority, layouts, outputs int) *Logging {
 	return &Logging{
 		prefix:   prefix,

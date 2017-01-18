@@ -4,7 +4,7 @@
 
 package log
 
-// Calls Output to print to the logging with the Trace priority.
+// Trace calls Output to print to the logging with the Trace priority.
 func (me *Logging) Trace(v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -21,7 +21,7 @@ func (me *Logging) Trace(v ...interface{}) {
 	}
 }
 
-// Calls Output to printf to the logging with the Trace priority.
+// Tracef calls Output to printf to the logging with the Trace priority.
 func (me *Logging) Tracef(format string, v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -38,7 +38,7 @@ func (me *Logging) Tracef(format string, v ...interface{}) {
 	}
 }
 
-// Calls Output to println to the logging with the Trace priority.
+// Traceln calls Output to println to the logging with the Trace priority.
 func (me *Logging) Traceln(v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -55,7 +55,7 @@ func (me *Logging) Traceln(v ...interface{}) {
 	}
 }
 
-// Calls Output to print to the logging with the Debug priority.
+// Debug calls Output to print to the logging with the Debug priority.
 func (me *Logging) Debug(v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -72,7 +72,7 @@ func (me *Logging) Debug(v ...interface{}) {
 	}
 }
 
-// Calls Output to printf to the logging with the Debug priority.
+// Debugf calls Output to printf to the logging with the Debug priority.
 func (me *Logging) Debugf(format string, v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -89,7 +89,7 @@ func (me *Logging) Debugf(format string, v ...interface{}) {
 	}
 }
 
-// Calls Output to println to the logging with the Debug priority.
+// Debugln calls Output to println to the logging with the Debug priority.
 func (me *Logging) Debugln(v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -106,7 +106,7 @@ func (me *Logging) Debugln(v ...interface{}) {
 	}
 }
 
-// Calls Output to print to the logging with the Info priority.
+// Info calls Output to print to the logging with the Info priority.
 func (me *Logging) Info(v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -123,7 +123,7 @@ func (me *Logging) Info(v ...interface{}) {
 	}
 }
 
-// Calls Output to printf to the logging with the Info priority.
+// Infof calls Output to printf to the logging with the Info priority.
 func (me *Logging) Infof(format string, v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -140,7 +140,7 @@ func (me *Logging) Infof(format string, v ...interface{}) {
 	}
 }
 
-// Calls Output to println to the logging with the Info priority.
+// Infoln calls Output to println to the logging with the Info priority.
 func (me *Logging) Infoln(v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -157,7 +157,7 @@ func (me *Logging) Infoln(v ...interface{}) {
 	}
 }
 
-// Calls Output to print to the logging with the Warn priority.
+// Warn calls Output to print to the logging with the Warn priority.
 func (me *Logging) Warn(v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -174,7 +174,7 @@ func (me *Logging) Warn(v ...interface{}) {
 	}
 }
 
-// Calls Output to printf to the logging with the Warn priority.
+// Warnf calls Output to printf to the logging with the Warn priority.
 func (me *Logging) Warnf(format string, v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -191,7 +191,7 @@ func (me *Logging) Warnf(format string, v ...interface{}) {
 	}
 }
 
-// Calls Output to println to the logging with the Warn priority.
+// Warnln calls Output to println to the logging with the Warn priority.
 func (me *Logging) Warnln(v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -208,7 +208,7 @@ func (me *Logging) Warnln(v ...interface{}) {
 	}
 }
 
-// Calls Output to print to the logging with the Error priority.
+// Error calls Output to print to the logging with the Error priority.
 func (me *Logging) Error(v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -225,7 +225,7 @@ func (me *Logging) Error(v ...interface{}) {
 	}
 }
 
-// Calls Output to printf to the logging with the Error priority.
+// Errorf calls Output to printf to the logging with the Error priority.
 func (me *Logging) Errorf(format string, v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -242,7 +242,7 @@ func (me *Logging) Errorf(format string, v ...interface{}) {
 	}
 }
 
-// Calls Output to println to the logging with the Error priority.
+// Errorln calls Output to println to the logging with the Error priority.
 func (me *Logging) Errorln(v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -259,7 +259,7 @@ func (me *Logging) Errorln(v ...interface{}) {
 	}
 }
 
-// Calls Output to print to the logging with the Critical priority.
+// Critical calls Output to print to the logging with the Critical priority.
 func (me *Logging) Critical(v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -276,7 +276,7 @@ func (me *Logging) Critical(v ...interface{}) {
 	}
 }
 
-// Calls Output to printf to the logging with the Critical priority.
+// Criticalf calls Output to printf to the logging with the Critical priority.
 func (me *Logging) Criticalf(format string, v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -293,7 +293,7 @@ func (me *Logging) Criticalf(format string, v ...interface{}) {
 	}
 }
 
-// Calls Output to println to the logging with the Critical priority.
+// Criticalln calls Output to println to the logging with the Critical priority.
 func (me *Logging) Criticalln(v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -310,7 +310,7 @@ func (me *Logging) Criticalln(v ...interface{}) {
 	}
 }
 
-// Calls Output to print to the logging with the Print priority.
+// Print calls Output to print to the logging with the Print priority.
 func (me *Logging) Print(v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -327,7 +327,7 @@ func (me *Logging) Print(v ...interface{}) {
 	}
 }
 
-// Calls Output to printf to the logging with the Print priority.
+// Printf calls Output to printf to the logging with the Print priority.
 func (me *Logging) Printf(format string, v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {
@@ -344,7 +344,7 @@ func (me *Logging) Printf(format string, v ...interface{}) {
 	}
 }
 
-// Calls Output to println to the logging with the Print priority.
+// Println calls Output to println to the logging with the Print priority.
 func (me *Logging) Println(v ...interface{}) {
 	me.pre()
 	if me.outputs&Oconsole != 0 {

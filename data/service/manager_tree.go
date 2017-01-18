@@ -28,16 +28,16 @@ func (me *TreeManager) Save(p xtype.Principal, e entity.Interface) error {
 		return err
 	}
 	if strings.IsBlank(e.Get(e.Table().Primary().Name()).(string)) {
-		if strings.IsNotBlank(p.Id) {
-			e.SetString(creater, p.Id)
-			e.SetString(modifier, p.Id)
+		if strings.IsNotBlank(p.ID) {
+			e.SetString(creater, p.ID)
+			e.SetString(modifier, p.ID)
 		}
 		e.SetString(created, times.NowUnixStr())
 		e.SetString(modified, times.NowUnixStr())
 		_, err = me.DB().Insert(e)
 	} else {
-		if strings.IsNotBlank(p.Id) {
-			e.SetString(modifier, p.Id)
+		if strings.IsNotBlank(p.ID) {
+			e.SetString(modifier, p.ID)
 		}
 		e.SetString(modified, times.NowUnixStr())
 		_, err = me.DB().Update(e)
@@ -65,8 +65,8 @@ func (me *TreeManager) Disable(p xtype.Principal, e entity.Interface) (int64, er
 	if err != nil {
 		return 0, err
 	}
-	if strings.IsNotBlank(p.Id) {
-		e.SetString(modifier, p.Id)
+	if strings.IsNotBlank(p.ID) {
+		e.SetString(modifier, p.ID)
 		e.SetString(modified, times.NowUnixStr())
 	}
 	r, err := me.DB().Disable(e)
@@ -253,7 +253,7 @@ func (me *TreeManager) getParents(currentId, rootId string) (parents []xtype.Tre
 		checked = true
 	}
 	tree := xtype.Tree{
-		Id:      currentId,
+		ID:      currentId,
 		Name:    current.Get(defaultName).(string),
 		Checked: checked,
 	}

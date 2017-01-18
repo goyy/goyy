@@ -4,6 +4,7 @@
 
 package xtype
 
+// Dict dict.
 type Dict struct {
 	Mkey    string `json:"mkey"`
 	Mval    string `json:"mval"`

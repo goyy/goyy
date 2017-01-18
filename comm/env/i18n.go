@@ -16,7 +16,7 @@ func SetLocale(locale string) {
 var i18N = i18n.New(locales)
 
 var locales = map[string]map[string]string{
-	i18n.Locale_zh_CN: map[string]string{
+	i18n.LocaleZhCN: map[string]string{
 		"empty.environments.default":               "environments.default: 不允许为空！",
 		"empty.environments.environment.database":  "environments.environment.database[@name='%s']: 不允许为空！",
 		"empty.environments.environment.mail":      "environments.environment.mail[@name='%s']: 不允许为空！",
@@ -34,7 +34,7 @@ var locales = map[string]map[string]string{
 		"empty.environments.environment.log":       "environments.environment.log[@name='%s']: 不允许为空！",
 		"empty.environments.environment.secure":    "environments.environment.secure[@name='%s']: 不允许为空！",
 	},
-	i18n.Locale_en_US: map[string]string{
+	i18n.LocaleEnUS: map[string]string{
 		"empty.environments.default":               "environments.default: can not be empty!",
 		"empty.environments.environment.database":  "environments.environment.database[@name='%s']: can not be empty!",
 		"empty.environments.environment.mail":      "environments.environment.mail[@name='%s']: can not be empty!",

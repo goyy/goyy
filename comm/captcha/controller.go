@@ -18,6 +18,7 @@ const (
 	sessionkey = "gs-captcha-key"
 )
 
+// Controller captcha controller.
 type Controller struct {
 	ImgWidth  int
 	ImgHeight int
@@ -54,7 +55,7 @@ func (me *Controller) Build(c xhttp.Context) {
 	}
 }
 
-// Ajax verify captcha
+// Verify Ajax verify captcha
 func (me *Controller) Verify(c xhttp.Context) {
 	if Verify(c, false) {
 		c.JSON(xhttp.StatusOK, me.SuccessMessage(c, "Verification code matching correctly"))
@@ -64,7 +65,7 @@ func (me *Controller) Verify(c xhttp.Context) {
 	return
 }
 
-// verify captcha
+// Verify verify captcha
 func Verify(c xhttp.Context, clear bool) bool {
 	if c == nil {
 		return false

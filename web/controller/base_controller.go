@@ -253,7 +253,7 @@ func (me *baseController) Box(c xhttp.Context, mgr service.Service) (out []xtype
 		}
 		boxTime = times.FormatUnixYYMDHMS(datas.Index(i).Get("created").(int64))
 		out = append(out, xtype.Box{
-			Id:   boxId,
+			ID:   boxId,
 			Name: boxName,
 			Time: boxTime,
 		})

@@ -11,12 +11,14 @@ func (me IntHeap) Len() int           { return len(me) }
 func (me IntHeap) Less(i, j int) bool { return me[i] < me[j] }
 func (me IntHeap) Swap(i, j int)      { me[i], me[j] = me[j], me[i] }
 
+// Push push value.
 func (me *IntHeap) Push(x interface{}) {
 	// Push and Pop use pointer receivers because they modify the slice's length,
 	// not just its contents.
 	*me = append(*me, x.(int))
 }
 
+// Pop pop value.
 func (me *IntHeap) Pop() interface{} {
 	old := *me
 	n := len(old)

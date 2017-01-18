@@ -108,7 +108,7 @@ func (me *Manager) SelectCount(dql string, args ...interface{}) (int, error) {
 	if me.Pre != nil {
 		me.Pre()
 	}
-	countSql := sqls.ParseCountSql(dql)
+	countSql := sqls.ParseCountSQL(dql)
 	return me.SelectInt(countSql, args...)
 }
 
@@ -175,7 +175,7 @@ func (me *Manager) SelectCountByNamed(dql string, args map[string]interface{}) (
 	if me.Pre != nil {
 		me.Pre()
 	}
-	countSql := sqls.ParseCountSql(dql)
+	countSql := sqls.ParseCountSQL(dql)
 	return me.SelectIntByNamed(countSql, args)
 }
 
@@ -245,9 +245,9 @@ func (me *Manager) SelectCountBySift(sifts ...domain.Sift) (int, error) {
 
 func (me *Manager) save(p xtype.Principal, e entity.Interface) error {
 	if strings.IsBlank(e.Get(e.Table().Primary().Name()).(string)) {
-		if strings.IsNotBlank(p.Id) {
-			e.SetString(creater, p.Id)
-			e.SetString(modifier, p.Id)
+		if strings.IsNotBlank(p.ID) {
+			e.SetString(creater, p.ID)
+			e.SetString(modifier, p.ID)
 		}
 		e.SetString(created, times.NowUnixStr())
 		e.SetString(modified, times.NowUnixStr())
@@ -256,8 +256,8 @@ func (me *Manager) save(p xtype.Principal, e entity.Interface) error {
 			return err
 		}
 	} else {
-		if strings.IsNotBlank(p.Id) {
-			e.SetString(modifier, p.Id)
+		if strings.IsNotBlank(p.ID) {
+			e.SetString(modifier, p.ID)
 		}
 		e.SetString(modified, times.NowUnixStr())
 		_, err := me.DB().Update(e)
@@ -306,8 +306,8 @@ func (me *Manager) disable(p xtype.Principal, e entity.Interface) (int64, error)
 	if strings.IsBlank(e.Get(e.Table().Primary().Name()).(string)) {
 		return 0, errors.New("Gets the primary key value failed")
 	}
-	if strings.IsNotBlank(p.Id) {
-		e.SetString(modifier, p.Id)
+	if strings.IsNotBlank(p.ID) {
+		e.SetString(modifier, p.ID)
 		e.SetString(modified, times.NowUnixStr())
 	}
 	return me.DB().Disable(e)

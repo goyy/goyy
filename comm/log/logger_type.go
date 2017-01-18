@@ -9,6 +9,7 @@ import (
 	"log"
 )
 
+// Logger logger.
 type Logger struct {
 	isConsole bool
 	prefix    string
@@ -16,7 +17,7 @@ type Logger struct {
 	logger    *log.Logger
 }
 
-// New creates a new Logger.
+// NewLogger creates a new Logger.
 func NewLogger(out io.Writer) *Logger {
 	return &Logger{logger: log.New(out, "", log.LstdFlags)}
 }

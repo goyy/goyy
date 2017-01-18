@@ -7,9 +7,10 @@ package xtype
 import (
 	"encoding/json"
 	"errors"
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"io/ioutil"
 	"net/http"
+
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 // Boxes returns the []xtype.Box by the http.

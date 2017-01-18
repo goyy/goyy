@@ -4,6 +4,7 @@
 
 package xtype
 
+// Map map.
 type Map struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`

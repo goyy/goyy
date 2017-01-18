@@ -176,7 +176,7 @@ func ApiExport(project, module string) string {
 // ----------------------------------------------------------
 
 func Permit(id string, profiles ...string) *xtype.Permission {
-	return &xtype.Permission{Id: id, Profiles: profiles}
+	return &xtype.Permission{ID: id, Profiles: profiles}
 }
 
 func PermitBy(project, module, name string, profiles ...string) *xtype.Permission {

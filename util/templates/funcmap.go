@@ -129,41 +129,41 @@ var exist = func(m map[string]interface{}, key string) (ok bool) {
 
 var zhstate = func(t string) string {
 	switch t {
-	case enIndex:
+	case EnIndex:
 		return zhAdd
-	case enShow:
+	case EnShow:
 		return zhShow
-	case enAdd:
+	case EnAdd:
 		return zhAdd
-	case enEdit:
+	case EnEdit:
 		return zhEdit
 	}
 	return ""
 }
 
 var eqindex = func(t string) bool {
-	if enIndex == t {
+	if EnIndex == t {
 		return true
 	}
 	return false
 }
 
 var eqshow = func(t string) bool {
-	if enShow == t {
+	if EnShow == t {
 		return true
 	}
 	return false
 }
 
 var eqadd = func(t string) bool {
-	if enAdd == t {
+	if EnAdd == t {
 		return true
 	}
 	return false
 }
 
 var eqedit = func(t string) bool {
-	if enEdit == t {
+	if EnEdit == t {
 		return true
 	}
 	return false

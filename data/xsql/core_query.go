@@ -187,7 +187,7 @@ func (me *query) val(out interface{}) error {
 
 // Retrieve a single row mapped from the dql and args.
 func (me *query) Page(content entity.Interfaces, pageable domain.Pageable) (domain.Page, error) {
-	dqlCount := sqls.ParseCountSql(me.dql)
+	dqlCount := sqls.ParseCountSQL(me.dql)
 	queryCount := me.db.Query(dqlCount, me.args...)
 	totalElements, err := queryCount.Int()
 	if err != nil {

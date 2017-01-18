@@ -54,7 +54,7 @@ func (me *router) Use(middlewares ...Handler) Router {
 }
 
 func (me *router) isPermission(c Context, permission *xtype.Permission) bool {
-	if permission == nil || strings.IsBlank(permission.Id) {
+	if permission == nil || strings.IsBlank(permission.ID) {
 		return false
 	}
 	if permission.Profiles != nil && len(permission.Profiles) > 0 && !profile.Accepts(permission.Profiles...) {
@@ -65,7 +65,7 @@ func (me *router) isPermission(c Context, permission *xtype.Permission) bool {
 	}
 	if p, err := c.Session().Principal(); err == nil {
 		if permission.Profiles == nil || len(permission.Profiles) == 0 || profile.Accepts(permission.Profiles...) {
-			ps := strings.Split(permission.Id, ",")
+			ps := strings.Split(permission.ID, ",")
 			if strings.ContainsSliceAny(p.Permissions, ps) {
 				return true
 			}

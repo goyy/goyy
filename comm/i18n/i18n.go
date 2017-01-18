@@ -13,7 +13,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
-var defaultLocale string = Locale_zh_CN
+var defaultLocale = LocaleZhCN
 
 // I18n is the interface that wraps the operation i18n method.
 type I18n interface {
@@ -63,12 +63,12 @@ func (me *i18N) Message(key string) string {
 			return s
 		}
 	} else {
-		if v, ok := me.locales[Locale_en_US]; ok {
+		if v, ok := me.locales[LocaleEnUS]; ok {
 			if s, ok := v[key]; ok {
 				return s
 			}
 		} else {
-			if v, ok := me.locales[Locale_zh_CN]; ok {
+			if v, ok := me.locales[LocaleZhCN]; ok {
 				if s, ok := v[key]; ok {
 					return s
 				}
@@ -122,17 +122,17 @@ func (me *i18N) SetLocale(locale string) {
 	}
 }
 
-// Gets the default locale.
+// DefaultLocale gets the default locale.
 func DefaultLocale() string {
 	return defaultLocale
 }
 
-// Sets the default locale.
+// SetDefaultLocale sets the default locale.
 func SetDefaultLocale(locale string) {
 	if strings.IsNotBlank(locale) {
 		defaultLocale = transformLocale(locale)
 		if strings.IsBlank(defaultLocale) {
-			defaultLocale = Locale_zh_CN
+			defaultLocale = LocaleZhCN
 		}
 	}
 }
@@ -140,63 +140,63 @@ func SetDefaultLocale(locale string) {
 func transformLocale(locale string) string {
 	switch locale {
 	case "cs_CZ":
-		return Locale_cs_CZ
+		return LocaleCsCZ
 	case "da_DK":
-		return Locale_da_DK
+		return LocaleDaDK
 	case "de_DE":
-		return Locale_de_DE
+		return LocaleDeDE
 	case "en_GB":
-		return Locale_en_GB
+		return LocaleEnGB
 	case "en_US":
-		return Locale_en_US
+		return LocaleEnUS
 	case "en_XM":
-		return Locale_en_XM
+		return LocaleEnXM
 	case "es_ES":
-		return Locale_es_ES
+		return LocaleEsES
 	case "es_LA":
-		return Locale_es_LA
+		return LocaleEsLA
 	case "es_MX":
-		return Locale_es_MX
+		return LocaleEsMX
 	case "es_NA":
-		return Locale_es_NA
+		return LocaleEsNA
 	case "fi_FI":
-		return Locale_fi_FI
+		return LocaleFiFI
 	case "fr_CA":
-		return Locale_fr_CA
+		return LocaleFrCA
 	case "fr_FR":
-		return Locale_fr_FR
+		return LocaleFrFR
 	case "fr_XM":
-		return Locale_fr_XM
+		return LocaleFrXM
 	case "hu_HU":
-		return Locale_hu_HU
+		return LocaleHuHU
 	case "it_IT":
-		return Locale_it_IT
+		return LocaleItIT
 	case "ja_JP":
-		return Locale_ja_JP
+		return LocaleJaJP
 	case "ko_KR":
-		return Locale_ko_KR
+		return LocaleKoKR
 	case "nb_NO":
-		return Locale_nb_NO
+		return LocaleNbNO
 	case "nl_NL":
-		return Locale_nl_NL
+		return LocaleNlNL
 	case "pl_PL":
-		return Locale_pl_PL
+		return LocalePlPL
 	case "pt_BR":
-		return Locale_pt_BR
+		return LocalePtBR
 	case "ro_RO":
-		return Locale_ro_RO
+		return LocaleRoRO
 	case "ru_RU":
-		return Locale_ru_RU
+		return LocaleRuRU
 	case "sv_SE":
-		return Locale_sv_SE
+		return LocaleSvSE
 	case "tr_TR":
-		return Locale_tr_TR
+		return LocaleTrTR
 	case "uk_UA":
-		return Locale_uk_UA
+		return LocaleUkUA
 	case "zh_CN":
-		return Locale_zh_CN
+		return LocaleZhCN
 	case "zh_TW":
-		return Locale_zh_TW
+		return LocaleZhTW
 	default:
 		return "" // Get the latest default locale when the value is blank
 		//return defaultLocale

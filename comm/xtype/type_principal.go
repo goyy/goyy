@@ -4,9 +4,9 @@
 
 package xtype
 
-// The subject's principal
+// Principal the subject's principal
 type Principal struct {
-	Id          string
+	ID          string
 	Name        string
 	LoginName   string
 	LoginTime   string

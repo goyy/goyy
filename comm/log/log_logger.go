@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-var console *Logger = NewLogger(os.Stderr)
+var console = NewLogger(os.Stderr)
 
 func init() {
 	console.isConsole = true

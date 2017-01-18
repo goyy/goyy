@@ -106,12 +106,12 @@ func (me *db) Query(dql string, args ...interface{}) Query {
 // New NamedQuery
 func (me *db) NamedQuery(dql string, args map[string]interface{}) (Query, error) {
 	fdql := sqls.FormatSpace(dql)
-	sql, err := sqls.ParseTemplateSql(fdql, args)
+	sql, err := sqls.ParseTemplateSQL(fdql, args)
 	if err != nil {
 		logger.Error(err.Error())
 		return nil, err
 	}
-	d, a, err := sqls.ParseNamedSql(me.dialect, sql, args)
+	d, a, err := sqls.ParseNamedSQL(me.dialect, sql, args)
 	if err != nil {
 		logger.Error(err.Error())
 		return nil, err

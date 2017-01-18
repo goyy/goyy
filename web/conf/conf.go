@@ -92,7 +92,7 @@ var Conf = &conf{
 		Enable:     true,
 		Dir:        "templates",
 		Extensions: []string{"html"},
-		Funcs:      []template.FuncMap{templates.Html.FuncMap},
+		Funcs:      []template.FuncMap{templates.HTML.FuncMap},
 		Delims: templateDelims{
 			Left:  "<%",
 			Right: "%>",

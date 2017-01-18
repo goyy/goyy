@@ -122,7 +122,7 @@ func initTemplate(envName string) {
 		Conf.Template.Enable = v.Enable
 		Conf.Template.Reloaded = v.Reloaded
 		if v.Enable {
-			templates.GetApis = func() string { return Conf.Api.URL }
+			templates.GetAPIs = func() string { return Conf.Api.URL }
 			templates.GetAssets = func() string { return Conf.Asset.URL }
 			templates.GetDevelopers = func() string { return Conf.Developer.URL }
 			templates.GetOperations = func() string { return Conf.Operation.URL }
