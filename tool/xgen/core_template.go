@@ -38,93 +38,84 @@ var (
 		"ctlvar": func(name, relationship string) string { // controller var name
 			if relationship == "master" {
 				return "ctl"
-			} else {
-				if strings.HasSuffix(name, "Entity") {
-					name = strings.Before(name, "Entity")
-				}
-				return strings.ToLowerFirst(name) + "Ctl"
 			}
+			if strings.HasSuffix(name, "Entity") {
+				name = strings.Before(name, "Entity")
+			}
+			return strings.ToLowerFirst(name) + "Ctl"
 		},
 		"ctlname": func(name, relationship string) string { // controller struct name
 			if relationship == "master" {
 				return "Controller"
-			} else {
-				if strings.HasSuffix(name, "Entity") {
-					name = strings.Before(name, "Entity")
-				}
-				return name + "Controller"
 			}
+			if strings.HasSuffix(name, "Entity") {
+				name = strings.Before(name, "Entity")
+			}
+			return name + "Controller"
 		},
 		"mgrvar": func(name, relationship string) string { // manager var name
 			if relationship == "master" {
 				return "Mgr"
-			} else {
-				if strings.HasSuffix(name, "Entity") {
-					name = strings.Before(name, "Entity")
-				}
-				return name + "Mgr"
 			}
+			if strings.HasSuffix(name, "Entity") {
+				name = strings.Before(name, "Entity")
+			}
+			return name + "Mgr"
 		},
 		"mgrname": func(name, relationship string) string { // manager struct name
 			if relationship == "master" {
 				return "Manager"
-			} else {
-				if strings.HasSuffix(name, "Entity") {
-					name = strings.Before(name, "Entity")
-				}
-				return name + "Manager"
 			}
+			if strings.HasSuffix(name, "Entity") {
+				name = strings.Before(name, "Entity")
+			}
+			return name + "Manager"
 		},
 		"dtoname": func(name, relationship string) string { // DTO struct name
 			if relationship == "master" {
 				return "DTO"
-			} else {
-				if strings.HasSuffix(name, "Entity") {
-					name = strings.Before(name, "Entity")
-				}
-				return name + "DTO"
 			}
+			if strings.HasSuffix(name, "Entity") {
+				name = strings.Before(name, "Entity")
+			}
+			return name + "DTO"
 		},
 		"dtosname": func(name, relationship string) string { // DTOs struct name
 			if relationship == "master" {
 				return "DTOs"
-			} else {
-				if strings.HasSuffix(name, "Entity") {
-					name = strings.Before(name, "Entity")
-				}
-				return name + "DTOs"
 			}
+			if strings.HasSuffix(name, "Entity") {
+				name = strings.Before(name, "Entity")
+			}
+			return name + "DTOs"
 		},
 		"tstname": func(name, relationship string) string { // test func name
 			if relationship == "master" {
 				return ""
-			} else {
-				if strings.HasSuffix(name, "Entity") {
-					name = strings.Before(name, "Entity")
-				}
-				return name
 			}
+			if strings.HasSuffix(name, "Entity") {
+				name = strings.Before(name, "Entity")
+			}
+			return name
 		},
 		"mname": func(name, pkg string) string { // settings module name
 			if name == "Entity" || name == "entity" {
 				return pkg
-			} else {
-				name = strings.ToLowerFirst(name)
-				if strings.HasSuffix(name, "Entity") {
-					name = strings.Before(name, "Entity")
-				}
-				return pkg + "." + name
 			}
+			name = strings.ToLowerFirst(name)
+			if strings.HasSuffix(name, "Entity") {
+				name = strings.Before(name, "Entity")
+			}
+			return pkg + "." + name
 		},
 		"entities": func(name string) string { // settings module name
 			if name == "Entity" || name == "entity" {
 				return "Entities"
-			} else {
-				if strings.HasSuffix(name, "Entity") {
-					name = strings.Before(name, "Entity")
-				}
-				return name + "Entities"
 			}
+			if strings.HasSuffix(name, "Entity") {
+				name = strings.Before(name, "Entity")
+			}
+			return name + "Entities"
 		},
 		"message": func(key string) string { // get message for i18n
 			return i18N.Message(key)
@@ -188,15 +179,14 @@ var (
 			}
 		},
 		"jsonmf": func(f *field) string { // The format verbs
-			name := f.Json.Name
+			name := f.JSON.Name
 			if strings.IsBlank(name) {
 				name = f.Name
 			}
 			if f.Type == "string" || f.Type == "time" {
 				return "`,\"" + name + "\":\"` + jsons.Format(me.GetString(\"" + f.Name + "\")) + `\"`"
-			} else {
-				return "`,\"" + name + "\":` + me.GetString(\"" + f.Name + "\")"
 			}
+			return "`,\"" + name + "\":` + me.GetString(\"" + f.Name + "\")"
 		},
 		"existcol": func(e *entity, colname string) bool { // Whether there is a name in the entity
 			for _, f := range e.Fields {

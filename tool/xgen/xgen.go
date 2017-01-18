@@ -18,39 +18,39 @@ func main() {
 	hasService := flag.Bool("service", false, "is generated service")
 	hasController := flag.Bool("controller", false, "is generated controller")
 	hasDto := flag.Bool("dto", false, "is generated dto")
-	hasApi := flag.Bool("api", false, "is generated api")
-	hasSql := flag.Bool("sql", false, "is generated sql")
+	hasAPI := flag.Bool("api", false, "is generated api")
+	hasSQL := flag.Bool("sql", false, "is generated sql")
 	hasLog := flag.Bool("log", false, "is generated log")
 	hasUtil := flag.Bool("util", false, "is generated util")
 	hasConst := flag.Bool("const", false, "is generated const")
-	hasHtml := flag.Bool("html", false, "is generated html")
+	hasHTML := flag.Bool("html", false, "is generated html")
 	hasJs := flag.Bool("js", false, "is generated js")
 	flag.Parse()
 	f := factory{
-		Clipath:          *clipath,
-		Apipath:          *apipath,
-		Tstpath:          *tstpath,
+		CliPath:          *clipath,
+		APIPath:          *apipath,
+		TstPath:          *tstpath,
 		HasGenService:    *hasService,
 		HasGenController: *hasController,
 		HasGenDto:        *hasDto,
-		HasGenApi:        *hasApi,
-		HasGenSql:        *hasSql,
+		HasGenAPI:        *hasAPI,
+		HasGenSQL:        *hasSQL,
 		HasGenLog:        *hasLog,
 		HasGenUtil:       *hasUtil,
 		HasGenConst:      *hasConst,
-		HasGenHtml:       *hasHtml,
+		HasGenHTML:       *hasHTML,
 		HasGenJs:         *hasJs,
 	}
 	if *hasScaffold {
 		f.HasGenService = true
 		f.HasGenController = true
 		f.HasGenDto = false
-		f.HasGenApi = true
-		f.HasGenSql = true
+		f.HasGenAPI = true
+		f.HasGenSQL = true
 		f.HasGenLog = true
 		f.HasGenUtil = true
 		f.HasGenConst = true
-		f.HasGenHtml = true
+		f.HasGenHTML = true
 		f.HasGenJs = true
 	}
 	if err := f.Init(*epath); err != nil {

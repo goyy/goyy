@@ -17,8 +17,8 @@ type xmlField struct {
 	Ignored   bool   // Field is ignored by this package
 }
 
-// newXmlField analysis of tag to create a new xmlField struct.
-func newXmlField(f *field, tag string) (*xmlField, bool) {
+// newXMLField analysis of tag to create a new xmlField struct.
+func newXMLField(f *field, tag string) (*xmlField, bool) {
 	if strings.IsBlank(tag) {
 		return nil, false
 	}

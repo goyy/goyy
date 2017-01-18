@@ -9,7 +9,7 @@ var tmplControllerTest = `package <%.PackageName%><%with $ := .%>
 import (
 	"testing"
 
-	_ "<%.Tstpath%>"
+	_ "<%.TstPath%>"
 	"gopkg.in/goyy/goyy.v0/test/assert"
 )<%range $i, $e := .Entities%>
 

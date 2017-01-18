@@ -4,7 +4,7 @@
 
 package main
 
-var tmplHtmlMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
+var tmplHTMLMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta name="description" content="">

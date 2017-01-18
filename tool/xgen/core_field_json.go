@@ -17,8 +17,8 @@ type jsonField struct {
 	Ignored   bool   // Field is ignored by this package
 }
 
-// newJsonField analysis of tag to create a new jsonField struct.
-func newJsonField(f *field, tag string) (*jsonField, bool) {
+// newJSONField analysis of tag to create a new jsonField struct.
+func newJSONField(f *field, tag string) (*jsonField, bool) {
 	if strings.IsBlank(tag) {
 		return nil, false
 	}

@@ -64,7 +64,6 @@ func (me entity) IsExcelColumns() bool {
 	s := me.GetExcelColumns()
 	if s == nil || len(s) == 0 {
 		return false
-	} else {
-		return true
 	}
+	return true
 }

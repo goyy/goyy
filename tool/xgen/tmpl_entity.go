@@ -118,8 +118,8 @@ func (me *<%$e.Name%>) initSetJson() {<%if eq $e.Extend "pk"%>
 		if t, ok := me.Tree.Type(c); ok {
 			t.Field().SetJson(entity.NewJsonBy(c))
 		}
-	}<%end%><%range $f := $e.Fields%><%if $f.IsJson%>
-	me.<%$f.Name%>.Field().SetJson(entity.NewJsonBy("<%$f.Json.Tag%>"))<%end%><%end%>
+	}<%end%><%range $f := $e.Fields%><%if $f.IsJSON%>
+	me.<%$f.Name%>.Field().SetJson(entity.NewJsonBy("<%$f.JSON.Tag%>"))<%end%><%end%>
 }
 
 func (me *<%$e.Name%>) initSetXml() {<%if eq $e.Extend "pk"%>
@@ -135,8 +135,8 @@ func (me *<%$e.Name%>) initSetXml() {<%if eq $e.Extend "pk"%>
 		if t, ok := me.Tree.Type(c); ok {
 			t.Field().SetXml(entity.NewXmlBy(c))
 		}
-	}<%end%><%range $f := $e.Fields%><%if $f.IsXml%>
-	me.<%$f.Name%>.Field().SetXml(entity.NewXmlBy("<%$f.Xml.Tag%>"))<%end%><%end%>
+	}<%end%><%range $f := $e.Fields%><%if $f.IsXML%>
+	me.<%$f.Name%>.Field().SetXml(entity.NewXmlBy("<%$f.XML.Tag%>"))<%end%><%end%>
 }
 
 func (me <%$e.Name%>) New() entity.Interface {
@@ -338,7 +338,7 @@ func (me *<%$e.Name%>) JSON() string {
 	b.WriteString("{")<%if eq $e.Extend "pk"%><%if not (existcol $e "id")%>
 	b.WriteString(<%jsonm "id"%>)<%end%><%else if eq $e.Extend "sys"%><%range $f := $.SysFields%><%if not (existfld $e $f)%>
 	b.WriteString(<%jsonm $f%>)<%end%><%end%><%else if eq $e.Extend "tree"%><%range $f := $.TreeFields%><%if not (existcol $e $f)%>
-	b.WriteString(<%jsonm $f%>)<%end%><%end%><%end%><%range $f := $e.Fields%><%if not $f.Json.Ignored%><%if $f.Json.Omitempty%>
+	b.WriteString(<%jsonm $f%>)<%end%><%end%><%end%><%range $f := $e.Fields%><%if not $f.JSON.Ignored%><%if $f.JSON.Omitempty%>
 	if strings.IsNotBlank(me.<%$f.Name%>.String()) {
 		b.WriteString(<%jsonmf $f%>)
 	}<%else%>

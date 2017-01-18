@@ -4,5 +4,5 @@
 
 package main
 
-var tmplSQLMain = `package <%.PackageName%>
+var tmplNewReadme = `# {{.}}
 `

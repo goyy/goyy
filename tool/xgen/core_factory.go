@@ -24,18 +24,18 @@ type factory struct {
 	Project           string
 	PackageName       string
 	Epath             string
-	Clipath           string
-	Apipath           string
-	Tstpath           string
+	CliPath           string
+	APIPath           string
+	TstPath           string
 	HasGenService     bool
 	HasGenController  bool
 	HasGenDto         bool
-	HasGenApi         bool
-	HasGenSql         bool
+	HasGenAPI         bool
+	HasGenSQL         bool
 	HasGenLog         bool
 	HasGenUtil        bool
 	HasGenConst       bool
-	HasGenHtml        bool
+	HasGenHTML        bool
 	HasGenJs          bool
 	IsTimeField       bool
 	IsValidationField bool
@@ -69,14 +69,14 @@ func (me *factory) Init(path string) error {
 		parser.ParseComments,
 	)
 	if err != nil {
-		fmt.Errorf("Unable to parse '%s': %s", path, err)
+		return fmt.Errorf("Unable to parse '%s': %s", path, err)
 	}
 
 	// get package name
 	if f.Name != nil {
 		me.PackageName = f.Name.Name
 	} else {
-		fmt.Errorf("Missing package name in '%s'", path)
+		return fmt.Errorf("Missing package name in '%s'", path)
 	}
 
 	// build list of entities
@@ -255,9 +255,9 @@ func (me *factory) Init(path string) error {
 					if strings.IsBlank(items) {
 						items = col.Name
 					}
-					if v, ok := newJsonField(col, items); ok {
-						col.Json = v
-						col.IsJson = true
+					if v, ok := newJSONField(col, items); ok {
+						col.JSON = v
+						col.IsJSON = true
 					} else {
 						return fmt.Errorf(
 							"Unable to parse tag '%s' from entity '%s' in '%s': %v",
@@ -274,9 +274,9 @@ func (me *factory) Init(path string) error {
 					if strings.IsBlank(items) {
 						items = col.Name
 					}
-					if v, ok := newXmlField(col, items); ok {
-						col.Xml = v
-						col.IsXml = true
+					if v, ok := newXMLField(col, items); ok {
+						col.XML = v
+						col.IsXML = true
 					} else {
 						return fmt.Errorf(
 							"Unable to parse tag '%s' from entity '%s' in '%s': %v",
@@ -337,21 +337,21 @@ func (me factory) Write() error {
 		if err := me.writeServiceMain(); err != nil {
 			return err
 		}
-		if strings.IsNotBlank(me.Tstpath) {
+		if strings.IsNotBlank(me.TstPath) {
 			if err := me.writeServiceTest(); err != nil {
 				return err
 			}
 		}
 	}
 	if me.HasGenController {
-		if strings.IsNotBlank(me.Apipath) {
+		if strings.IsNotBlank(me.APIPath) {
 			if err := me.writeControllerXgen(); err != nil {
 				return err
 			}
 			if err := me.writeControllerMain(); err != nil {
 				return err
 			}
-			if strings.IsNotBlank(me.Tstpath) {
+			if strings.IsNotBlank(me.TstPath) {
 				if err := me.writeControllerTest(); err != nil {
 					return err
 				}
@@ -366,24 +366,24 @@ func (me factory) Write() error {
 			return err
 		}
 	}
-	if me.HasGenApi {
-		if strings.IsNotBlank(me.Apipath) {
-			if err := me.writeApiMain(); err != nil {
+	if me.HasGenAPI {
+		if strings.IsNotBlank(me.APIPath) {
+			if err := me.writeAPIMain(); err != nil {
 				return err
 			}
 		}
 	}
-	if me.HasGenSql {
-		if err := me.writeSqlMain(); err != nil {
+	if me.HasGenSQL {
+		if err := me.writeSQLMain(); err != nil {
 			return err
 		}
 	}
 	if me.HasGenLog {
-		if err := me.writeLogJsonXgen(); err != nil {
+		if err := me.writeLogJSONXgen(); err != nil {
 			return err
 		}
-		if strings.IsNotBlank(me.Apipath) {
-			if err := me.writeLogApiXgen(); err != nil {
+		if strings.IsNotBlank(me.APIPath) {
+			if err := me.writeLogAPIXgen(); err != nil {
 				return err
 			}
 		}
@@ -398,8 +398,8 @@ func (me factory) Write() error {
 			return err
 		}
 	}
-	if me.HasGenHtml {
-		if err := me.writeHtmlMain(); err != nil {
+	if me.HasGenHTML {
+		if err := me.writeHTMLMain(); err != nil {
 			return err
 		}
 	}
@@ -412,16 +412,16 @@ func (me factory) Write() error {
 }
 
 func (me factory) writeBy(typ, content string) error {
-	clidir := "../../../" + strings.AfterLast(me.Clipath, "/")
+	clidir := "../../../" + strings.AfterLast(me.CliPath, "/")
 	// get the destination file
 	dir, file := filepath.Split(me.Epath)
 	f, name := me.genFileName(typ, file)
 	switch typ {
 	case xgenDto:
 		dir = clidir + "/internal/" + me.Project + "/" + me.PackageName
-	case mainApi, xgenLogApi:
+	case mainAPI, xgenLogAPI:
 		dir = "../../api/" + me.PackageName
-	case mainHtml:
+	case mainHTML:
 		dir = clidir + "/templates/" + me.Project + "/" + name
 	case mainJs:
 		dir = clidir + "/static/js/" + me.Project + "/" + name
@@ -481,16 +481,16 @@ func (me factory) writeControllerReg() error {
 	return me.writeBy(xgenCtlReg, tmplControllerReg)
 }
 
-func (me factory) writeSqlMain() error {
-	return me.writeBy(mainSql, tmplSqlMain)
+func (me factory) writeSQLMain() error {
+	return me.writeBy(mainSQL, tmplSQLMain)
 }
 
-func (me factory) writeLogJsonXgen() error {
-	return me.writeBy(xgenLogJson, tmplLogXgen)
+func (me factory) writeLogJSONXgen() error {
+	return me.writeBy(xgenLogJSON, tmplLogXgen)
 }
 
-func (me factory) writeLogApiXgen() error {
-	return me.writeBy(xgenLogApi, tmplLogXgen)
+func (me factory) writeLogAPIXgen() error {
+	return me.writeBy(xgenLogAPI, tmplLogXgen)
 }
 
 func (me factory) writeUtilMain() error {
@@ -501,8 +501,8 @@ func (me factory) writeConstMain() error {
 	return me.writeBy(mainConst, tmplConstMain)
 }
 
-func (me factory) writeHtmlMain() error {
-	return me.writeBy(mainHtml, tmplHtmlMain)
+func (me factory) writeHTMLMain() error {
+	return me.writeBy(mainHTML, tmplHTMLMain)
 }
 
 func (me factory) writeJsMain() error {
@@ -510,21 +510,21 @@ func (me factory) writeJsMain() error {
 }
 
 func (me factory) writeDtoXgen() error {
-	if strings.IsBlank(me.Clipath) {
+	if strings.IsBlank(me.CliPath) {
 		return nil
 	}
 	return me.writeBy(xgenDto, tmplDtoXgen)
 }
 
-func (me factory) writeApiMain() error {
-	return me.writeBy(mainApi, tmplApiMain)
+func (me factory) writeAPIMain() error {
+	return me.writeBy(mainAPI, tmplAPIMain)
 }
 
 func (me factory) genFileName(typ, name string) (string, string) {
 	switch typ {
-	case xgenLogJson, xgenLogApi:
+	case xgenLogJSON, xgenLogAPI:
 		return "log_xgen.go", name
-	case mainApi:
+	case mainAPI:
 		return me.PackageName + ".go", name
 	case mainUtil:
 		return me.PackageName + "_util.go", name
@@ -542,7 +542,7 @@ func (me factory) genFileName(typ, name string) (string, string) {
 	if name == "domain" || name == "entity" || name == "main.domain" || name == "main.entity" {
 		name = ""
 	} else {
-		if strings.IsNotBlank(name) && typ != mainHtml && typ != mainJs {
+		if strings.IsNotBlank(name) && typ != mainHTML && typ != mainJs {
 			name = name + "_"
 		}
 	}
@@ -551,7 +551,7 @@ func (me factory) genFileName(typ, name string) (string, string) {
 		typ = "controller"
 	case mainService:
 		typ = "manager"
-	case mainSql:
+	case mainSQL:
 		typ = "sql"
 	case xgenCtl:
 		typ, name = me.resetTypAndName("controller_xgen", name)
@@ -565,7 +565,7 @@ func (me factory) genFileName(typ, name string) (string, string) {
 		typ, name = me.resetTypAndName("dto_xgen", name)
 	}
 	switch typ {
-	case mainHtml:
+	case mainHTML:
 		return fmt.Sprintf("%s.html", name), name
 	case mainJs:
 		return fmt.Sprintf("%s.js", name), name

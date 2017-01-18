@@ -21,11 +21,11 @@ type field struct {
 	Default     string
 	Validations validations
 	Excel       *excelField
-	Json        *jsonField
-	Xml         *xmlField
+	JSON        *jsonField
+	XML         *xmlField
 	IsExcel     bool
-	IsJson      bool
-	IsXml       bool
+	IsJSON      bool
+	IsXML       bool
 	IsPrimary   bool
 	IsForeign   bool
 	IsVersion   bool
