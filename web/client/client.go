@@ -16,6 +16,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
+// Client client.Client.
 type Client struct {
 	URL         string
 	Params      url.Values
@@ -30,26 +31,32 @@ type Client struct {
 	OnCompleted func(*result.Client)
 }
 
+// DoGet execute the get request.
 func (me *Client) DoGet() {
 	me.do("GET")
 }
 
+// DoPost execute the post request.
 func (me *Client) DoPost() {
 	me.do("POST")
 }
 
+// GoGet thread to execute the get request.
 func (me *Client) GoGet() {
 	go me.doRecover("GET")
 }
 
+// GoPost thread to execute the post request.
 func (me *Client) GoPost() {
 	go me.doRecover("POST")
 }
 
+// QueueGet Queue to execute the get request.
 func (me *Client) QueueGet() {
 	go me.doRecover("GET")
 }
 
+// QueuePost Queue to execute the post request.
 func (me *Client) QueuePost() {
 	go me.doRecover("POST")
 }
@@ -120,7 +127,8 @@ func (me *Client) do(method string) {
 }
 
 func (me *Client) getRequest(method string) (*http.Request, error) {
-	if method == "GET" {
+	switch method {
+	case "GET":
 		url := me.URL
 		if me.Params != nil {
 			if strings.Contains(me.URL, "?") {
@@ -139,7 +147,7 @@ func (me *Client) getRequest(method string) (*http.Request, error) {
 			req.AddCookie(c)
 		}
 		return req, err
-	} else {
+	default:
 		var params io.Reader
 		url := me.URL
 		if strings.IsNotBlank(me.PostBody) {

@@ -9,6 +9,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
+// EncryptPasswd passwd encryption.
 func EncryptPasswd(passwd string) string {
 	if strings.IsNotBlank(passwd) {
 		npasswd, _ := aes.EncryptHex(passwd, passwdKey)

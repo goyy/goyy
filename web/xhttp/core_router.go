@@ -97,10 +97,9 @@ func (me *router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					if webs.IsXMLHttpRequest(r) { // AJAX
 						err407(w, r)
 						return
-					} else {
-						err401(w, r, c)
-						return
 					}
+					err401(w, r, c)
+					return
 				}
 			}
 			c.Next()

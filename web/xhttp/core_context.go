@@ -14,6 +14,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/web/session"
 )
 
+// NewContext new xhttp.Context from http.ResponseWriter and http.Request.
 func NewContext(w http.ResponseWriter, r *http.Request, h ...Handler) Context {
 	values, err := webs.Values(r)
 	if err != nil {

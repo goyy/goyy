@@ -6,6 +6,7 @@ package secure
 
 var passwdKey = "goyy2015"
 
+// SetPasswdKey set the passwdKey.
 func SetPasswdKey(key string) {
 	passwdKey = key
 }

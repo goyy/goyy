@@ -64,13 +64,21 @@ const (
 
 	noWritten = -1
 
+	// AbortIndex abort index.
 	AbortIndex int8 = math.MaxInt8 / 2
 
-	MIMEJSON              = "application/json"
-	MIMEHTML              = "text/html"
-	MIMEXML               = "application/xml"
-	MIMEXML2              = "text/xml"
-	MIMEPlain             = "text/plain"
-	MIMEPOSTForm          = "application/x-www-form-urlencoded"
+	// MIMEJSON application/json.
+	MIMEJSON = "application/json"
+	// MIMEHTML text/html.
+	MIMEHTML = "text/html"
+	// MIMEXML application/xml.
+	MIMEXML = "application/xml"
+	// MIMEXML2 text/xml.
+	MIMEXML2 = "text/xml"
+	// MIMEPlain text/plain.
+	MIMEPlain = "text/plain"
+	// MIMEPOSTForm application/x-www-form-urlencoded.
+	MIMEPOSTForm = "application/x-www-form-urlencoded"
+	// MIMEMultipartPOSTForm multipart/form-data.
 	MIMEMultipartPOSTForm = "multipart/form-data"
 )

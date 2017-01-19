@@ -16,7 +16,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
-var preRuns []func() = make([]func(), 10)
+var preRuns = make([]func(), 10)
 
 // GET adds a route for a HTTP GET request to the specified matching pattern.
 func GET(path string, handle Handle, permissions ...*xtype.Permission) {
@@ -59,6 +59,7 @@ func Use(middlewares ...Handler) Router {
 	return defaultEngine.Router
 }
 
+// RegisterPreRun the registration function is executed before running.
 func RegisterPreRun(preRun func()) {
 	if preRun != nil {
 		preRuns = append(preRuns, preRun)

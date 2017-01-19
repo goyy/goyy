@@ -12,6 +12,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/web/session"
 )
 
+// Conf conf.Conf.
 var Conf = &conf{
 	Addr: ":9090",
 	Err: &errOptions{

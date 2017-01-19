@@ -19,6 +19,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
+// JSONController controller.JSONController.
 type JSONController struct {
 	baseController
 	pre
@@ -27,6 +28,7 @@ type JSONController struct {
 	Mgr service.Service
 }
 
+// Index gets the list data for the JSON type.
 func (me *JSONController) Index(c xhttp.Context) {
 	r, err := me.baseController.Index(c, me.Mgr, me.PreIndex, me.PostIndex)
 	if err != nil {
@@ -40,6 +42,7 @@ func (me *JSONController) Index(c xhttp.Context) {
 	}
 }
 
+// Show gets the form data for the JSON type.
 func (me *JSONController) Show(c xhttp.Context) {
 	r, err := me.baseController.Show(c, me.Mgr, me.PreShow, me.PostShow)
 	if err != nil {
@@ -53,6 +56,7 @@ func (me *JSONController) Show(c xhttp.Context) {
 	}
 }
 
+// Add gets the form data for the JSON type.
 func (me *JSONController) Add(c xhttp.Context) {
 	r, err := me.baseController.Add(c, me.Mgr, me.PreAdd, me.PostAdd)
 	if err != nil {
@@ -66,6 +70,7 @@ func (me *JSONController) Add(c xhttp.Context) {
 	}
 }
 
+// Edit gets the form data for the JSON type.
 func (me *JSONController) Edit(c xhttp.Context) {
 	r, err := me.baseController.Edit(c, me.Mgr, me.PreEdit, me.PostEdit)
 	if err != nil {
@@ -79,6 +84,7 @@ func (me *JSONController) Edit(c xhttp.Context) {
 	}
 }
 
+// Save saves the data, but does not automatically commit the transaction.
 func (me *JSONController) Save(c xhttp.Context) {
 	r, err := me.baseController.Save(c, me.Mgr, me.PreSave, me.PostSave)
 	if err != nil {
@@ -92,6 +98,7 @@ func (me *JSONController) Save(c xhttp.Context) {
 	}
 }
 
+// SaveAndTx saves the data, but automatically commits the transaction.
 func (me *JSONController) SaveAndTx(c xhttp.Context) {
 	r, err := me.baseController.SaveAndTx(c, me.Mgr, me.PreSave, me.PostSave)
 	if err != nil {
@@ -105,6 +112,7 @@ func (me *JSONController) SaveAndTx(c xhttp.Context) {
 	}
 }
 
+// Disable delete the data, but does not automatically commit the transaction.
 func (me *JSONController) Disable(c xhttp.Context) {
 	r, err := me.baseController.Disable(c, me.Mgr, me.PreDisable, me.PostDisable)
 	if err != nil {
@@ -118,6 +126,7 @@ func (me *JSONController) Disable(c xhttp.Context) {
 	}
 }
 
+// DisableAndTx delete the data, but automatically commits the transaction.
 func (me *JSONController) DisableAndTx(c xhttp.Context) {
 	r, err := me.baseController.DisableAndTx(c, me.Mgr, me.PreDisable, me.PostDisable)
 	if err != nil {
@@ -131,6 +140,7 @@ func (me *JSONController) DisableAndTx(c xhttp.Context) {
 	}
 }
 
+// Box gets a list of box types and converts them to JSON.
 func (me *JSONController) Box(c xhttp.Context) {
 	out, err := me.baseController.Box(c, me.Mgr)
 	if err != nil {
@@ -144,6 +154,7 @@ func (me *JSONController) Box(c xhttp.Context) {
 	}
 }
 
+// Export export for the excel.
 func (me *JSONController) Export(c xhttp.Context) {
 	r, err := me.baseController.Export(c, me.Mgr, me.PreExport, me.PostExport)
 	if err != nil {
@@ -184,18 +195,18 @@ func (me *JSONController) excel(r entity.Interfaces) (string, error) {
 	}
 	if r == nil {
 		return "", errors.New(i18N.Message("exp.data.blank"))
-	} else { // header
-		e := r.New()
-		row = sheet.AddRow()
-		cw := 0
-		for _, n := range e.ExcelColumns() {
-			if t, ok := e.Type(n); ok {
-				sheet.SetColWidth(cw, cw, float64(t.Field().Excel().Width()))
-				cw++
-				cell = row.AddCell()
-				cell.Value = t.Field().Excel().Title()
-				cell.SetStyle(me.excelHeaderStyle(t.Field().Excel().Align()))
-			}
+	}
+	// header
+	e := r.New()
+	row = sheet.AddRow()
+	cw := 0
+	for _, n := range e.ExcelColumns() {
+		if t, ok := e.Type(n); ok {
+			sheet.SetColWidth(cw, cw, float64(t.Field().Excel().Width()))
+			cw++
+			cell = row.AddCell()
+			cell.Value = t.Field().Excel().Title()
+			cell.SetStyle(me.excelHeaderStyle(t.Field().Excel().Align()))
 		}
 	}
 	for i := 0; i < r.Len(); i++ { // body

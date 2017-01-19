@@ -8,4 +8,5 @@ import (
 	"gopkg.in/goyy/goyy.v0/web/conf"
 )
 
+// Conf web.Conf.
 var Conf = conf.Conf

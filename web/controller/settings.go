@@ -4,6 +4,7 @@
 
 package controller
 
+// Settings controller.Settings.
 type Settings struct {
 	Project string
 	Module  string

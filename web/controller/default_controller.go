@@ -10,6 +10,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
+// Controller controller.Controller.
 type Controller struct {
 	baseController
 	pre
@@ -18,6 +19,7 @@ type Controller struct {
 	Mgr service.Service
 }
 
+// Index displays the list of pages.
 func (me *Controller) Index(c xhttp.Context) {
 	out, err := me.baseController.Index(c, me.Mgr, me.PreIndex, me.PostIndex)
 	if err != nil {
@@ -31,6 +33,7 @@ func (me *Controller) Index(c xhttp.Context) {
 	}
 }
 
+// Show displays a non-editable form page.
 func (me *Controller) Show(c xhttp.Context) {
 	out, err := me.baseController.Show(c, me.Mgr, me.PreShow, me.PostShow)
 	if err != nil {
@@ -44,6 +47,7 @@ func (me *Controller) Show(c xhttp.Context) {
 	}
 }
 
+// Add the form page for adding is displayed.
 func (me *Controller) Add(c xhttp.Context) {
 	out, err := me.baseController.Add(c, me.Mgr, me.PreAdd, me.PostAdd)
 	if err != nil {
@@ -57,6 +61,7 @@ func (me *Controller) Add(c xhttp.Context) {
 	}
 }
 
+// Edit the form page for editing is displayed.
 func (me *Controller) Edit(c xhttp.Context) {
 	out, err := me.baseController.Edit(c, me.Mgr, me.PreEdit, me.PostEdit)
 	if err != nil {
@@ -70,6 +75,7 @@ func (me *Controller) Edit(c xhttp.Context) {
 	}
 }
 
+// Save used to save the form, but do not automatically commit the transaction.
 func (me *Controller) Save(c xhttp.Context) {
 	out, err := me.baseController.Save(c, me.Mgr, me.PreSave, me.PostSave)
 	if err != nil {
@@ -83,6 +89,7 @@ func (me *Controller) Save(c xhttp.Context) {
 	}
 }
 
+// SaveAndTx used to save the form, but automatically commit the transaction.
 func (me *Controller) SaveAndTx(c xhttp.Context) {
 	out, err := me.baseController.SaveAndTx(c, me.Mgr, me.PreSave, me.PostSave)
 	if err != nil {
@@ -96,6 +103,7 @@ func (me *Controller) SaveAndTx(c xhttp.Context) {
 	}
 }
 
+// Disable tsed to delete the records corresponding to the form, but do not automatically commit the transaction.
 func (me *Controller) Disable(c xhttp.Context) {
 	out, err := me.baseController.Disable(c, me.Mgr, me.PreDisable, me.PostDisable)
 	if err != nil {
@@ -109,6 +117,7 @@ func (me *Controller) Disable(c xhttp.Context) {
 	}
 }
 
+// DisableAndTx used to delete the record corresponding to the form, but automatically commit the transaction.
 func (me *Controller) DisableAndTx(c xhttp.Context) {
 	out, err := me.baseController.DisableAndTx(c, me.Mgr, me.PreDisable, me.PostDisable)
 	if err != nil {
@@ -122,6 +131,7 @@ func (me *Controller) DisableAndTx(c xhttp.Context) {
 	}
 }
 
+// Box gets a list of box types and converts them to JSON.
 func (me *Controller) Box(c xhttp.Context) {
 	out, err := me.baseController.Box(c, me.Mgr)
 	if err != nil {

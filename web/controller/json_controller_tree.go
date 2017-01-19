@@ -10,11 +10,13 @@ import (
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
+// JSONTreeController controller.JSONTreeController.
 type JSONTreeController struct {
 	baseTreeController
 	JSONController
 }
 
+// Index gets the list data for the JSON type.
 func (me *JSONTreeController) Index(c xhttp.Context) {
 	r, err := me.baseTreeController.Index(c, me.Mgr, me.PreIndex, me.PostIndex)
 	if err != nil {
@@ -35,6 +37,7 @@ func (me *JSONTreeController) Index(c xhttp.Context) {
 	}
 }
 
+// Save saves the data, but does not automatically commit the transaction.
 func (me *JSONTreeController) Save(c xhttp.Context) {
 	r, err := me.baseTreeController.Save(c, me.Mgr, me.PreSave, me.PostSave)
 	if err != nil {
@@ -48,6 +51,7 @@ func (me *JSONTreeController) Save(c xhttp.Context) {
 	}
 }
 
+// SaveAndTx saves the data, but automatically commits the transaction.
 func (me *JSONTreeController) SaveAndTx(c xhttp.Context) {
 	r, err := me.baseTreeController.SaveAndTx(c, me.Mgr, me.PreSave, me.PostSave)
 	if err != nil {
@@ -61,6 +65,7 @@ func (me *JSONTreeController) SaveAndTx(c xhttp.Context) {
 	}
 }
 
+// Disable delete the data, but does not automatically commit the transaction.
 func (me *JSONTreeController) Disable(c xhttp.Context) {
 	r, err := me.baseTreeController.Disable(c, me.Mgr, me.PreDisable, me.PostDisable)
 	if err != nil {
@@ -74,6 +79,7 @@ func (me *JSONTreeController) Disable(c xhttp.Context) {
 	}
 }
 
+// DisableAndTx delete the data, but automatically commits the transaction.
 func (me *JSONTreeController) DisableAndTx(c xhttp.Context) {
 	r, err := me.baseTreeController.DisableAndTx(c, me.Mgr, me.PreDisable, me.PostDisable)
 	if err != nil {
@@ -87,6 +93,7 @@ func (me *JSONTreeController) DisableAndTx(c xhttp.Context) {
 	}
 }
 
+// Tree gets a list of tree types and converts them to JSON.
 func (me *JSONTreeController) Tree(c xhttp.Context) {
 	out, err := me.baseTreeController.Tree(c, me.Mgr)
 	if err != nil {

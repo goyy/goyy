@@ -283,13 +283,12 @@ func (me *baseController) Page(c xhttp.Context, mgr service.Service) (out *resul
 			return nil, err
 		}
 		return &result.Page{Success: true, Data: data}, nil
-	} else {
-		data, err := mgr.SelectPageBySift(v, p, sifts...)
-		if err != nil {
-			return nil, err
-		}
-		return &result.Page{Success: true, Data: data}, nil
 	}
+	data, err := mgr.SelectPageBySift(v, p, sifts...)
+	if err != nil {
+		return nil, err
+	}
+	return &result.Page{Success: true, Data: data}, nil
 }
 
 func (me *baseController) Export(c xhttp.Context, mgr service.Service, pre func(c xhttp.Context) error, post func(c xhttp.Context, r entity.Interfaces) error) (out entity.Interfaces, err error) {

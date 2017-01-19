@@ -10,6 +10,7 @@ import (
 
 var logger = log.New("[client]")
 
+// SetPriority set the priority of the logger.
 func SetPriority(value int) {
 	logger.SetPriority(value)
 }

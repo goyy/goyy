@@ -148,31 +148,30 @@ func (me *baseTreeController) Breadcrumb(c xhttp.Context, mgr service.Service) (
 		}
 		ts[0] = t
 		return ts, nil
-	} else {
-		parentNames := e.Get(colParentNames).(string)
-		pIds := strings.Split(parentIds, ",")
-		pNames := strings.Split(parentNames, ",")
-		l := len(pIds)
-		if l == len(pNames) {
-			ts := make([]xtype.Box, l+1)
-			for i, pId := range pIds {
-				t := xtype.Box{
-					Id:     pId,
-					Name:   pNames[i],
-					Active: false,
-				}
-				ts[i] = t
-			}
-			id := e.Get(colId).(string)
-			name := e.Get(colName).(string)
+	}
+	parentNames := e.Get(colParentNames).(string)
+	pIds := strings.Split(parentIds, ",")
+	pNames := strings.Split(parentNames, ",")
+	l := len(pIds)
+	if l == len(pNames) {
+		ts := make([]xtype.Box, l+1)
+		for i, pId := range pIds {
 			t := xtype.Box{
-				Id:     id,
-				Name:   name,
-				Active: true,
+				Id:     pId,
+				Name:   pNames[i],
+				Active: false,
 			}
-			ts[l] = t
-			return ts, nil
+			ts[i] = t
 		}
+		id := e.Get(colId).(string)
+		name := e.Get(colName).(string)
+		t := xtype.Box{
+			Id:     id,
+			Name:   name,
+			Active: true,
+		}
+		ts[l] = t
+		return ts, nil
 	}
 	return nil, errors.Newf("'%s' does not match the parent node information", parentId)
 }
@@ -192,41 +191,40 @@ func (me *baseTreeController) setTreeInfo(c xhttp.Context, mgr service.Service) 
 	if err := mgr.Get(p); err != nil {
 		logger.Errorln(err)
 		return err
+	}
+	c.Params().Set(entityParentId, eParentId)
+	if eParentId == defaultTreeRoot {
+		if strings.IsBlank(eId) {
+			c.Params().Set(entityLeaf, "1")
+		}
+		c.Params().Set(entityGrade, "2")
+		c.Params().Set(entityFullname, c.Param(entityName))
+		c.Params().Set(entityParentIds, eParentId)
+		c.Params().Set(entityParentNames, p.GetString(entityName))
+		c.Params().Set(entityParentCodes, p.GetString(entityCode))
 	} else {
-		c.Params().Set(entityParentId, eParentId)
-		if eParentId == defaultTreeRoot {
-			if strings.IsBlank(eId) {
-				c.Params().Set(entityLeaf, "1")
-			}
-			c.Params().Set(entityGrade, "2")
-			c.Params().Set(entityFullname, c.Param(entityName))
-			c.Params().Set(entityParentIds, eParentId)
-			c.Params().Set(entityParentNames, p.GetString(entityName))
-			c.Params().Set(entityParentCodes, p.GetString(entityCode))
-		} else {
-			if strings.IsBlank(eId) {
-				c.Params().Set(entityLeaf, "1")
-			}
-			grade := p.GetString(entityGrade)
-			if strings.IsNotBlank(grade) {
-				if v, err := strconv.Atoi(grade); err == nil {
-					c.Params().Set(entityGrade, strconv.Itoa(v+1))
-				} else {
-					logger.Errorln(err)
-					return err
-				}
-			}
-			c.Params().Set(entityFullname, p.Get(colFullname).(string)+" - "+c.Param(entityName))
-			c.Params().Set(entityParentIds, p.Get(colParentIds).(string)+","+eParentId)
-			c.Params().Set(entityParentNames, p.Get(colParentNames).(string)+","+p.Get(colName).(string))
-			c.Params().Set(entityParentCodes, p.Get(colParentCodes).(string)+","+p.Get(colCode).(string))
+		if strings.IsBlank(eId) {
+			c.Params().Set(entityLeaf, "1")
 		}
-		leaf := p.GetString(entityLeaf)
-		if leaf != "0" {
-			p.SetString(entityLeaf, "0")
-			pr, _ := c.Session().Principal()
-			mgr.SaveAndTx(pr, p)
+		grade := p.GetString(entityGrade)
+		if strings.IsNotBlank(grade) {
+			if v, err := strconv.Atoi(grade); err == nil {
+				c.Params().Set(entityGrade, strconv.Itoa(v+1))
+			} else {
+				logger.Errorln(err)
+				return err
+			}
 		}
+		c.Params().Set(entityFullname, p.Get(colFullname).(string)+" - "+c.Param(entityName))
+		c.Params().Set(entityParentIds, p.Get(colParentIds).(string)+","+eParentId)
+		c.Params().Set(entityParentNames, p.Get(colParentNames).(string)+","+p.Get(colName).(string))
+		c.Params().Set(entityParentCodes, p.Get(colParentCodes).(string)+","+p.Get(colCode).(string))
+	}
+	leaf := p.GetString(entityLeaf)
+	if leaf != "0" {
+		p.SetString(entityLeaf, "0")
+		pr, _ := c.Session().Principal()
+		mgr.SaveAndTx(pr, p)
 	}
 	return nil
 }

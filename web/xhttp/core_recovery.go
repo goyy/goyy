@@ -32,11 +32,10 @@ func Recovery() Handler {
 				if strings.IsNotBlank(Conf.Err.Err500) {
 					http.Redirect(c.ResponseWriter(), c.Request(), Conf.Err.Err500, http.StatusFound)
 					return
-				} else {
-					msg := i18N.Message("err.500")
-					c.ResponseWriter().WriteHeader(500)
-					c.ResponseWriter().Write([]byte(msg))
 				}
+				msg := i18N.Message("err.500")
+				c.ResponseWriter().WriteHeader(500)
+				c.ResponseWriter().Write([]byte(msg))
 			}
 		}()
 		c.Next()

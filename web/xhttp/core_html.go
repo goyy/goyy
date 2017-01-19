@@ -117,7 +117,7 @@ var hsm = &htmlServeMux{
 
 var htmlMutex sync.Mutex
 
-var ver string = "ver=1"
+var ver = "ver=1"
 
 func (me *htmlServeMux) compile() error {
 	options := Conf.Html
@@ -132,9 +132,8 @@ func (me *htmlServeMux) compile() error {
 		if err != nil {
 			logger.Error(err.Error())
 			return err
-		} else {
-			r = strings.Replace(r, "\\", "/", -1)
 		}
+		r = strings.Replace(r, "\\", "/", -1)
 
 		ext := strings.ToLower(files.Extension(r))
 
@@ -326,34 +325,33 @@ func (me *htmlServeMux) isUseBrowserCache(w http.ResponseWriter, r *http.Request
 			// Tell the browser not to use cache
 			w.Header().Set(lastModified, fileModTime)
 			return false
-		} else {
-			var content string
-			if c, err := files.Read(filename); err == nil {
-				content = c
-			}
-			if me.isInclude(content) {
-				var includeFileModTimeUnix int64
-				directives := make([]directiveInfo, 0)
-				directives = me.buildDirectiveInfo(content, drtInclude, directives)
-				for _, v := range directives {
-					if val, err := files.ModTimeUnix(v.attr[attrFile]); err == nil {
-						if includeFileModTimeUnix < val {
-							includeFileModTimeUnix = val
-						}
+		}
+		var content string
+		if c, err := files.Read(filename); err == nil {
+			content = c
+		}
+		if me.isInclude(content) {
+			var includeFileModTimeUnix int64
+			directives := make([]directiveInfo, 0)
+			directives = me.buildDirectiveInfo(content, drtInclude, directives)
+			for _, v := range directives {
+				if val, err := files.ModTimeUnix(v.attr[attrFile]); err == nil {
+					if includeFileModTimeUnix < val {
+						includeFileModTimeUnix = val
 					}
 				}
-				if browserModTimeUnix < includeFileModTimeUnix {
-					// The actual last modification time of the include file
-					includeFileModTime := times.FormatUnixGMT(includeFileModTimeUnix)
-					// Tell the browser not to use cache
-					w.Header().Set(lastModified, includeFileModTime)
-					return false
-				}
 			}
-			// Tell the browser to use the cache
-			w.WriteHeader(304)
-			return true
+			if browserModTimeUnix < includeFileModTimeUnix {
+				// The actual last modification time of the include file
+				includeFileModTime := times.FormatUnixGMT(includeFileModTimeUnix)
+				// Tell the browser not to use cache
+				w.Header().Set(lastModified, includeFileModTime)
+				return false
+			}
 		}
+		// Tell the browser to use the cache
+		w.WriteHeader(304)
+		return true
 	}
 	return false
 }

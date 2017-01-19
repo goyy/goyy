@@ -10,6 +10,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
 )
 
+// Router xhttp.Router.
 type Router interface {
 	Use(middlewares ...Handler) Router
 

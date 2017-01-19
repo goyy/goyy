@@ -9,6 +9,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
+// IsPermission by permission to determine whether there is authority.
 func IsPermission(c xhttp.Context, permission string) bool {
 	if strings.IsBlank(permission) {
 		return false
@@ -27,6 +28,7 @@ func IsPermission(c xhttp.Context, permission string) bool {
 	return false
 }
 
+// IsAnyPermission by permissions to determine whether there is authority.
 func IsAnyPermission(c xhttp.Context, permissions string) bool {
 	if strings.IsBlank(permissions) {
 		return false

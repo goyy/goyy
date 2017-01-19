@@ -35,10 +35,9 @@ func (me *secureServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool
 			w.WriteHeader(StatusForbidden)
 			w.Write([]byte(c))
 			return true
-		} else {
-			http.Redirect(w, r, Conf.Secure.ForbidUrl, http.StatusFound)
-			return true
 		}
+		http.Redirect(w, r, Conf.Secure.ForbidUrl, http.StatusFound)
+		return true
 	}
 	if !s.IsLogin() {
 		if me.isRedirectLogin(path) {
@@ -48,22 +47,21 @@ func (me *secureServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool
 				w.WriteHeader(StatusUnauthorized)
 				w.Write([]byte(c))
 				return true
-			} else {
-				loginUrl := me.loginUrl
-				if strings.IsBlank(loginUrl) {
-					loginUrl = Conf.Secure.LoginUrl
-				}
-				// After login support to redirect to the URL before
-				if url, err := aes.EncryptHex(r.URL.String(), aes.DefaultKey); err == nil {
-					if strings.Index(loginUrl, "?") > 0 {
-						loginUrl = loginUrl + "&" + Conf.Asset.Ver + "&redirect=" + url
-					} else {
-						loginUrl = loginUrl + "?" + Conf.Asset.Ver + "&redirect=" + url
-					}
-				}
-				http.Redirect(w, r, loginUrl, http.StatusFound)
-				return true
 			}
+			loginUrl := me.loginUrl
+			if strings.IsBlank(loginUrl) {
+				loginUrl = Conf.Secure.LoginUrl
+			}
+			// After login support to redirect to the URL before
+			if url, err := aes.EncryptHex(r.URL.String(), aes.DefaultKey); err == nil {
+				if strings.Index(loginUrl, "?") > 0 {
+					loginUrl = loginUrl + "&" + Conf.Asset.Ver + "&redirect=" + url
+				} else {
+					loginUrl = loginUrl + "?" + Conf.Asset.Ver + "&redirect=" + url
+				}
+			}
+			http.Redirect(w, r, loginUrl, http.StatusFound)
+			return true
 		}
 	}
 	return false

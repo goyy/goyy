@@ -14,6 +14,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
+// New new session.Interface from http.ResponseWriter and http.Request.
 func New(w http.ResponseWriter, r *http.Request, o *Options) Interface {
 	// ignore error -> http: named cookie not present
 	cookie, _ := r.Cookie(cookieKey)

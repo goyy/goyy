@@ -11,6 +11,7 @@ import (
 
 var logger = log.New("[secure]")
 
+// SetPriority set the priority of the logger.
 func SetPriority(value int) {
 	logger.SetPriority(value)
 	internal.SetPriority(value)

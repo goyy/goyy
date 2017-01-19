@@ -120,9 +120,8 @@ func (me *renderer) compile() error {
 		if err != nil {
 			logger.Error(err.Error())
 			return err
-		} else {
-			r = strings.Replace(r, "\\", "/", -1)
 		}
+		r = strings.Replace(r, "\\", "/", -1)
 
 		ext := strings.ToLower(files.Extension(r))
 

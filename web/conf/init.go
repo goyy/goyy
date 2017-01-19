@@ -4,9 +4,7 @@
 
 package conf
 
-import (
-	_ "gopkg.in/goyy/goyy.v0/comm/profile/settings"
-)
+import _ "gopkg.in/goyy/goyy.v0/comm/profile/settings"
 import _ "gopkg.in/goyy/goyy.v0/comm/log/settings"
 
 import (
@@ -178,7 +176,7 @@ func initSecure(envName string) {
 }
 
 func assetVersion() string {
-	var ver string = "ver=1"
+	var ver = "ver=1"
 	fver := Conf.Html.Dir + "/version.html"
 	if files.IsExist(fver) {
 		if c, err := files.Read(fver); err == nil {

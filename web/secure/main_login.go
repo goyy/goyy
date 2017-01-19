@@ -19,62 +19,61 @@ import (
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
 )
 
+// Login use the user name and password to log in.
 func Login(c xhttp.Context, loginName, passwd string) error {
 	if strings.IsBlank(passwd) {
 		return errors.NewNotBlank("passwd")
 	}
 	npasswd := EncryptPasswd(passwd)
 	checked := internal.UserMgr.CheckPasswd(loginName, npasswd)
-	if checked {
-		u, err := internal.UserMgr.SelectUser(loginName)
-		if err != nil {
-			return err
-		}
-		ps, err := internal.PermissionMgr.SelectPermission(u.Id())
-		if err != nil {
-			return err
-		}
-		if loginName == "admin" {
-			ps = "sys:user:admin," + ps
-		}
-		rs, err := internal.RoleMgr.SelectRole(u.Id())
-		if err != nil {
-			return err
-		}
-		var funcs, datas bytes.Buffer
-		for _, r := range rs {
-			if r.Genre() == "10" {
-				if funcs.Len() > 0 {
-					funcs.WriteString(",")
-				}
-				funcs.WriteString(r.Id())
-			} else {
-				if datas.Len() > 0 {
-					datas.WriteString(",")
-				}
-				datas.WriteString(r.Id())
-			}
-		}
-		p := xtype.Principal{
-			Id:          u.Id(),
-			Name:        u.Name(),
-			LoginName:   u.LoginName(),
-			LoginTime:   times.NowUnixStr(),
-			Permissions: ps,
-			Roles: struct {
-				Func string
-				Data string
-			}{
-				Func: funcs.String(),
-				Data: datas.String(),
-			},
-		}
-		setCookies(c, p)
-		return c.Session().SetPrincipal(p)
-	} else {
+	if !checked {
 		return errors.New(i18N.Message("err.login"))
 	}
-	return nil
+	u, err := internal.UserMgr.SelectUser(loginName)
+	if err != nil {
+		return err
+	}
+	ps, err := internal.PermissionMgr.SelectPermission(u.Id())
+	if err != nil {
+		return err
+	}
+	if loginName == "admin" {
+		ps = "sys:user:admin," + ps
+	}
+	rs, err := internal.RoleMgr.SelectRole(u.Id())
+	if err != nil {
+		return err
+	}
+	var funcs, datas bytes.Buffer
+	for _, r := range rs {
+		if r.Genre() == "10" {
+			if funcs.Len() > 0 {
+				funcs.WriteString(",")
+			}
+			funcs.WriteString(r.Id())
+		} else {
+			if datas.Len() > 0 {
+				datas.WriteString(",")
+			}
+			datas.WriteString(r.Id())
+		}
+	}
+	p := xtype.Principal{
+		Id:          u.Id(),
+		Name:        u.Name(),
+		LoginName:   u.LoginName(),
+		LoginTime:   times.NowUnixStr(),
+		Permissions: ps,
+		Roles: struct {
+			Func string
+			Data string
+		}{
+			Func: funcs.String(),
+			Data: datas.String(),
+		},
+	}
+	setCookies(c, p)
+	return c.Session().SetPrincipal(p)
 }
 
 func setCookies(c xhttp.Context, p xtype.Principal) {
@@ -142,6 +141,7 @@ func clearCookies(c xhttp.Context) {
 	}
 }
 
+// Logout exit the login operation.
 func Logout(c xhttp.Context) error {
 	clearCookies(c)
 	return c.Session().ResetPrincipal()

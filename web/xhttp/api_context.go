@@ -5,12 +5,14 @@
 package xhttp
 
 import (
-	"gopkg.in/goyy/goyy.v0/data/entity"
-	"gopkg.in/goyy/goyy.v0/web/session"
 	"net/http"
 	"net/url"
+
+	"gopkg.in/goyy/goyy.v0/data/entity"
+	"gopkg.in/goyy/goyy.v0/web/session"
 )
 
+// Context xhttp.Context.
 type Context interface {
 	Request() *http.Request
 	Session() session.Interface

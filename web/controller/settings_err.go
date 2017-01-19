@@ -8,6 +8,7 @@ import (
 	"fmt"
 )
 
+// PreError controller.PreError.
 type PreError struct {
 	Code    string
 	Message string

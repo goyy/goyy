@@ -4,9 +4,13 @@
 
 package xhttp
 
+// Handler xhttp.Handler.
 type Handler func(Context)
+
+// Handlers xhttp.Handlers.
 type Handlers []Handler
 
+// Last get the lash xhttp.Handler.
 func (me Handlers) Last() Handler {
 	length := len(me)
 	if length > 0 {

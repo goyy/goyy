@@ -16,21 +16,21 @@ func (me *Controller) Error(c xhttp.Context, err error) {
 	if strings.IsNotBlank(xhttp.Conf.Err.Err500) {
 		c.Redirect(xhttp.Conf.Err.Err500, xhttp.StatusFound)
 		return
-	} else {
-		status := xhttp.StatusInternalServerError
-		switch err.(type) {
-		case *PreError:
-			status = xhttp.StatusPreconditionFailed
-		default:
-			status = xhttp.StatusInternalServerError
-		}
-		c.ResponseWriter().WriteHeader(status)
-		c.ResponseWriter().Write([]byte(default500Body))
-		return
 	}
+	status := xhttp.StatusInternalServerError
+	switch err.(type) {
+	case *PreError:
+		status = xhttp.StatusPreconditionFailed
+	default:
+		status = xhttp.StatusInternalServerError
+	}
+	c.ResponseWriter().WriteHeader(status)
+	c.ResponseWriter().Write([]byte(default500Body))
+	return
 }
 
-func (me *Controller) ErrorJson(c xhttp.Context, err error) {
+// ErrorJSON error to JSON.
+func (me *Controller) ErrorJSON(c xhttp.Context, err error) {
 	//go errorSave(c.Request(), err)
 	logger.Error(err.Error())
 	switch t := err.(type) {
