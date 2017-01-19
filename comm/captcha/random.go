@@ -98,8 +98,8 @@ func randomBytesMod(length int, mod byte) (b []byte) {
 
 }
 
-// randomID returns a new random id string.
-func randomID() string {
+// randomId returns a new random id string.
+func randomId() string {
 	b := randomBytesMod(idLen, byte(len(idChars)))
 	for i, c := range b {
 		b[i] = idChars[c]

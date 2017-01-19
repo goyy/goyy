@@ -8,11 +8,13 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/bytes"
 )
 
+// String string type.
 type String struct {
 	base
 	value []byte
 }
 
+// Value gets the value.
 func (me *String) Value() string {
 	if me.value == nil || len(me.value) == 0 {
 		return ""
@@ -20,34 +22,39 @@ func (me *String) Value() string {
 	return string(me.value)
 }
 
+// ValuePtr gets the value of the pointer type.
 func (me *String) ValuePtr() *[]byte {
 	return &me.value
 }
 
+// SetValue sets the value.
 func (me *String) SetValue(v string) {
 	me.value = []byte(v)
 	me.field.SetModified(true)
 }
 
+// SetDefault sets the default value.
 func (me *String) SetDefault(v string) error {
 	me.value = []byte(v)
 	return nil
 }
 
+// SetString sets the value of the string type.
 func (me *String) SetString(v string) error {
 	if err := me.SetDefault(v); err != nil {
 		return err
-	} else {
-		me.field.SetModified(true)
-		return nil
 	}
+	me.field.SetModified(true)
+	return nil
 }
 
+// String gets the value of the string type.
 func (me *String) String() string {
 	out := bytes.TrimRightNul(me.value)
 	return string(out)
 }
 
+// Name gets the name of the type.
 func (me *String) Name() string {
 	return "string"
 }

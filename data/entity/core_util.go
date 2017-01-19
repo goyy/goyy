@@ -10,10 +10,12 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
+// FormatJSON entity.Interface to Json.
 func FormatJSON(e Interface) string {
 	return e.JSON()
 }
 
+// ParseJSON Json to entity.Interface.
 func ParseJSON(out Interface, json string) error {
 	// JSON format validation
 	if strings.IsBlank(json) {

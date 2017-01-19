@@ -13,10 +13,12 @@ type Json interface {
 	Ignored() bool   // Field is ignored by this package
 }
 
+// NewJson returns the Json.
 func NewJson() Json {
 	return &json{}
 }
 
+// NewJsonBy returns the Json from tag.
 func NewJsonBy(tag string) Json {
 	v := &json{}
 	v.SetTag(tag)

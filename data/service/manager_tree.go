@@ -15,10 +15,12 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/times"
 )
 
+// TreeManager service.TreeManager.
 type TreeManager struct {
 	Manager
 }
 
+// Save save data, but do not commit transaction.
 func (me *TreeManager) Save(p xtype.Principal, e entity.Interface) error {
 	if me.Pre != nil {
 		me.Pre()
@@ -28,16 +30,16 @@ func (me *TreeManager) Save(p xtype.Principal, e entity.Interface) error {
 		return err
 	}
 	if strings.IsBlank(e.Get(e.Table().Primary().Name()).(string)) {
-		if strings.IsNotBlank(p.ID) {
-			e.SetString(creater, p.ID)
-			e.SetString(modifier, p.ID)
+		if strings.IsNotBlank(p.Id) {
+			e.SetString(creater, p.Id)
+			e.SetString(modifier, p.Id)
 		}
 		e.SetString(created, times.NowUnixStr())
 		e.SetString(modified, times.NowUnixStr())
 		_, err = me.DB().Insert(e)
 	} else {
-		if strings.IsNotBlank(p.ID) {
-			e.SetString(modifier, p.ID)
+		if strings.IsNotBlank(p.Id) {
+			e.SetString(modifier, p.Id)
 		}
 		e.SetString(modified, times.NowUnixStr())
 		_, err = me.DB().Update(e)
@@ -54,6 +56,7 @@ func (me *TreeManager) Save(p xtype.Principal, e entity.Interface) error {
 	return nil
 }
 
+// Disable delete data, but do not commit transaction.
 func (me *TreeManager) Disable(p xtype.Principal, e entity.Interface) (int64, error) {
 	if me.Pre != nil {
 		me.Pre()
@@ -65,8 +68,8 @@ func (me *TreeManager) Disable(p xtype.Principal, e entity.Interface) (int64, er
 	if err != nil {
 		return 0, err
 	}
-	if strings.IsNotBlank(p.ID) {
-		e.SetString(modifier, p.ID)
+	if strings.IsNotBlank(p.Id) {
+		e.SetString(modifier, p.Id)
 		e.SetString(modified, times.NowUnixStr())
 	}
 	r, err := me.DB().Disable(e)
@@ -82,7 +85,7 @@ func (me *TreeManager) Disable(p xtype.Principal, e entity.Interface) (int64, er
 	return r, nil
 }
 
-// Modify system field information : ParentIds、ParentCodes、ParentNames、fullname、leaf、grade
+// modifyParents modify system field information : ParentIds、ParentCodes、ParentNames、fullname、leaf、grade
 func (me *TreeManager) modifyParents(p xtype.Principal, e entity.Interface) {
 	parentId := e.Get(defaultParentId).(string)
 	if strings.IsBlank(parentId) {
@@ -144,7 +147,7 @@ func (me *TreeManager) modifyParents4Childs(p xtype.Principal, id string) {
 	}
 }
 
-// Modify system field information : ParentIds、ParentCodes、ParentNames、fullname、leaf、grade
+// modifyOldParents modify system field information : ParentIds、ParentCodes、ParentNames、fullname、leaf、grade
 func (me *TreeManager) modifyOldParents(p xtype.Principal, e entity.Interface) {
 	id := e.Get(defaultId).(string)
 	if strings.IsBlank(id) {
@@ -176,7 +179,7 @@ func (me *TreeManager) modifyOldParents(p xtype.Principal, e entity.Interface) {
 	return
 }
 
-// Whether the parent node is a leaf node.
+// setParentLeaf whether the parent node is a leaf node.
 func (me *TreeManager) setParentLeaf(p xtype.Principal, e entity.Interface) {
 	parentId := e.Get(defaultParentId).(string)
 	if strings.IsBlank(parentId) {
@@ -198,7 +201,7 @@ func (me *TreeManager) setParentLeaf(p xtype.Principal, e entity.Interface) {
 	}
 }
 
-// Get the leaf value based on id.
+// getLeaf get the leaf value based on id.
 func (me *TreeManager) getLeaf(id string) string {
 	if strings.IsBlank(id) {
 		return leafYes
@@ -213,7 +216,7 @@ func (me *TreeManager) getLeaf(id string) string {
 	return leafYes
 }
 
-// Recursive method for obtaining all the parent nodes of the current node.
+// getParents recursive method for obtaining all the parent nodes of the current node.
 func (me *TreeManager) getParents(currentId, rootId string) (parents []xtype.Tree, err error) {
 	if strings.IsBlank(currentId) || strings.IsBlank(rootId) {
 		return
@@ -238,14 +241,14 @@ func (me *TreeManager) getParents(currentId, rootId string) (parents []xtype.Tre
 			logger.Debug(err.Error())
 			return
 		}
-		if ps, perr := me.getParents(parentId, rootId); perr != nil {
+		ps, perr := me.getParents(parentId, rootId)
+		if perr != nil {
 			err = perr
 			logger.Debug(err.Error())
 			return
-		} else {
-			for _, v := range ps {
-				parents = append(parents, v)
-			}
+		}
+		for _, v := range ps {
+			parents = append(parents, v)
 		}
 	}
 	checked := false
@@ -253,7 +256,7 @@ func (me *TreeManager) getParents(currentId, rootId string) (parents []xtype.Tre
 		checked = true
 	}
 	tree := xtype.Tree{
-		ID:      currentId,
+		Id:      currentId,
 		Name:    current.Get(defaultName).(string),
 		Checked: checked,
 	}

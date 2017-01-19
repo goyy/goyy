@@ -15,6 +15,7 @@ const (
 	defaultPageNot = -1
 )
 
+// Pagination result.Pagination.
 type Pagination struct {
 	PageNo        int         `json:"pageNo"`
 	PageSize      int         `json:"pageSize"`
@@ -25,48 +26,49 @@ type Pagination struct {
 	Slice         interface{} `json:"slice"`
 }
 
+// First get the first page.
 func (me *Pagination) First() int {
 	return defaultPageNo
 }
 
+// Previous get the previous page.
 func (me *Pagination) Previous() int {
 	if me.PageNo == me.First() {
 		return me.PageNo
-	} else {
-		return me.PageNo - 1
 	}
+	return me.PageNo - 1
 }
 
+// Last get the last page.
 func (me *Pagination) Last() int {
 	if me.PageSize == defaultPageNot || me.TotalElements == defaultPageNot || me.TotalElements == 0 {
 		return defaultPageNo
-	} else {
-		last := me.TotalElements / me.PageSize
-		if me.TotalElements%me.PageSize == 0 {
-			return last
-		} else {
-			return last + 1
-		}
 	}
+	last := me.TotalElements / me.PageSize
+	if me.TotalElements%me.PageSize == 0 {
+		return last
+	}
+	return last + 1
 }
 
+// Next get the next page.
 func (me *Pagination) Next() int {
 	if me.PageNo == me.Last() {
 		return me.PageNo
-	} else {
-		return me.PageNo + 1
 	}
+	return me.PageNo + 1
 }
 
+// JSON result.Pagination to JSON.
 func (me *Pagination) JSON() (string, error) {
 	b, err := json.Marshal(me)
-	if err == nil {
-		return string(b), nil
-	} else {
+	if err != nil {
 		return "", err
 	}
+	return string(b), nil
 }
 
+// ParseJSON JSON to result.Pagination.
 func (me *Pagination) ParseJSON(jsons string) error {
 	if strings.IsBlank(jsons) {
 		return nil

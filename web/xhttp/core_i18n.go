@@ -15,7 +15,7 @@ func SetLocale(locale string) {
 var i18N = i18n.New(locales)
 
 var locales = map[string]map[string]string{
-	i18n.Locale_zh_CN: map[string]string{
+	i18n.LocaleZhCN: map[string]string{
 		"err.illegal": "存在非法字符，请检查输入内容！",
 		"err.401":     "您没有权限访问该页面，请先登录！",
 		"err.403":     "访问被拒绝！",
@@ -24,7 +24,7 @@ var locales = map[string]map[string]string{
 		"err.407":     "无权操作，请联系管理员！",
 		"err.500":     "抱歉，您访问的页面出现了问题！",
 	},
-	i18n.Locale_en_US: map[string]string{
+	i18n.LocaleEnUS: map[string]string{
 		"err.illegal": "There are illegal characters, please check your input!",
 		"err.401":     "401 Unauthorized",
 		"err.403":     "403 Forbidden",

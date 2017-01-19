@@ -9,18 +9,22 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
+// Pk database primary key.
 type Pk struct {
 	id String `db:"column=id&primary=true"`
 }
 
+// Id get Pk.id.
 func (me *Pk) Id() string {
 	return me.id.Value()
 }
 
+// SetId set Pk.id.
 func (me *Pk) SetId(v string) {
 	me.id.SetValue(v)
 }
 
+// Get according to the database column to obtain values.
 func (me *Pk) Get(column string) interface{} {
 	switch column {
 	case "id":
@@ -30,6 +34,7 @@ func (me *Pk) Get(column string) interface{} {
 	}
 }
 
+// GetPtr gets the value of a pointer type according to the database column name.
 func (me *Pk) GetPtr(column string) interface{} {
 	switch column {
 	case "id":
@@ -38,6 +43,7 @@ func (me *Pk) GetPtr(column string) interface{} {
 	return nil
 }
 
+// GetString gets the value according to the entity property name.
 func (me *Pk) GetString(field string) string {
 	switch strings.ToLowerFirst(field) {
 	case "id":
@@ -46,6 +52,7 @@ func (me *Pk) GetString(field string) string {
 	return ""
 }
 
+// SetString sets the value according to the entity property name.
 func (me *Pk) SetString(field, value string) error {
 	switch strings.ToLowerFirst(field) {
 	case "id":
@@ -54,6 +61,7 @@ func (me *Pk) SetString(field, value string) error {
 	return nil
 }
 
+// Type get entity.Type through the column of the database.
 func (me *Pk) Type(column string) (Type, bool) {
 	switch column {
 	case "id":
@@ -62,6 +70,7 @@ func (me *Pk) Type(column string) (Type, bool) {
 	return nil, false
 }
 
+// Column get schema.Column by the name of the entity attribute.
 func (me *Pk) Column(field string) (schema.Column, bool) {
 	switch strings.ToLowerFirst(field) {
 	case "id":

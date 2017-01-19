@@ -8,7 +8,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/comm/i18n"
 )
 
-// SetLocale set the i18n locale
+// SetLocale set the i18n locale.
 func SetLocale(locale string) {
 	i18N.SetLocale(locale)
 }

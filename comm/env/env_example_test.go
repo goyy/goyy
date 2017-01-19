@@ -10,8 +10,8 @@ import (
 	"gopkg.in/goyy/goyy.v0/comm/env"
 )
 
-func ExampleDatabase() {
-	db, _ := env.Database("env")
+func ExampleParseDatabase() {
+	db, _ := env.ParseDatabase("env")
 	fmt.Println(db.DriverName)
 	fmt.Println(db.DataSourceName)
 	fmt.Println(db.MaxIdleConns)
@@ -24,8 +24,8 @@ func ExampleDatabase() {
 	// 100
 }
 
-func ExampleMail() {
-	m, _ := env.Mail("env")
+func ExampleParseMail() {
+	m, _ := env.ParseMail("env")
 	fmt.Println(m.Secret)
 	fmt.Println(m.Protocol)
 	fmt.Println(m.Username)
@@ -42,8 +42,8 @@ func ExampleMail() {
 	// 110
 }
 
-func ExampleSession() {
-	s, _ := env.Session("env")
+func ExampleParseSession() {
+	s, _ := env.ParseSession("env")
 	fmt.Println(s.Addr)
 	fmt.Println(s.Password)
 

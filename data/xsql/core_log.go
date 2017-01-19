@@ -29,6 +29,7 @@ func init() {
 	}
 }
 
+// SetPriority set the priority of the logger.
 func SetPriority(value int) {
 	isResetPriority = true
 	logger.SetPriority(value)

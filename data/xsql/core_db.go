@@ -33,7 +33,7 @@ func New(dialect dialect.Interface, name string) (DB, error) {
 	return r, err
 }
 
-// New DB
+// NewDB new DB.
 func NewDB(name string) (DB, error) {
 	r := &db{
 		name: name,
@@ -56,7 +56,7 @@ type db struct {
 
 // init
 func (me *db) init() error {
-	dbconf, err := env.Database(me.name)
+	dbconf, err := env.ParseDatabase(me.name)
 	if err != nil {
 		return err
 	}
@@ -106,12 +106,12 @@ func (me *db) Query(dql string, args ...interface{}) Query {
 // New NamedQuery
 func (me *db) NamedQuery(dql string, args map[string]interface{}) (Query, error) {
 	fdql := sqls.FormatSpace(dql)
-	sql, err := sqls.ParseTemplateSQL(fdql, args)
+	sql, err := sqls.ParseTemplateSql(fdql, args)
 	if err != nil {
 		logger.Error(err.Error())
 		return nil, err
 	}
-	d, a, err := sqls.ParseNamedSQL(me.dialect, sql, args)
+	d, a, err := sqls.ParseNamedSql(me.dialect, sql, args)
 	if err != nil {
 		logger.Error(err.Error())
 		return nil, err

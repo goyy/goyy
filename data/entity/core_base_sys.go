@@ -9,6 +9,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
+// SysColumns default column for Sys structure.
 var SysColumns = [...]string{
 	"id",
 	"memo",
@@ -23,6 +24,7 @@ var SysColumns = [...]string{
 	"history",
 }
 
+// SysFields default field for Sys structure.
 var SysFields = [...]string{
 	"id",
 	"memo",
@@ -37,6 +39,7 @@ var SysFields = [...]string{
 	"history",
 }
 
+// Sys sys structure used for inheritance.
 type Sys struct {
 	Pk
 	memo      String `db:"column=memo"`
@@ -51,86 +54,107 @@ type Sys struct {
 	history   Int    `db:"column=history"`
 }
 
+// Memo gets the value of the memo attribute in the entity.Sys.
 func (me *Sys) Memo() string {
 	return me.memo.Value()
 }
 
+// SetMemo sets the value of the memo attribute in the entity.Sys.
 func (me *Sys) SetMemo(v string) {
 	me.memo.SetValue(v)
 }
 
+// Creates gets the value of the creates attribute in the entity.Sys.
 func (me *Sys) Creates() string {
 	return me.creates.Value()
 }
 
+// SetCreates sets the value of the creates attribute in the entity.Sys.
 func (me *Sys) SetCreates(v string) {
 	me.creates.SetValue(v)
 }
 
+// Creater gets the value of the creater attribute in the entity.Sys.
 func (me *Sys) Creater() string {
 	return me.creater.Value()
 }
 
+// SetCreater sets the value of the creater attribute in the entity.Sys.
 func (me *Sys) SetCreater(v string) {
 	me.creater.SetValue(v)
 }
 
+// Created gets the value of the created attribute in the entity.Sys.
 func (me *Sys) Created() int64 {
 	return me.created.Value()
 }
 
+// SetCreated sets the value of the created attribute in the entity.Sys.
 func (me *Sys) SetCreated(v int64) {
 	me.created.SetValue(v)
 }
 
+// Modifier gets the value of the nodifier attribute in the entity.Sys.
 func (me *Sys) Modifier() string {
 	return me.modifier.Value()
 }
 
+// SetModifier sets the value of the nodifier attribute in the entity.Sys.
 func (me *Sys) SetModifier(v string) {
 	me.modifier.SetValue(v)
 }
 
+// Modified gets the value of the modified attribute in the entity.Sys.
 func (me *Sys) Modified() int64 {
 	return me.modified.Value()
 }
 
+// SetModified sets the value of the modified attribute in the entity.Sys.
 func (me *Sys) SetModified(v int64) {
 	me.modified.SetValue(v)
 }
 
+// Version gets the value of the version attribute in the entity.Sys.
 func (me *Sys) Version() int {
 	return me.version.Value()
 }
 
+// SetVersion sets the value of the version attribute in the entity.Sys.
 func (me *Sys) SetVersion(v int) {
 	me.version.SetValue(v)
 }
 
+// Deletion gets the value of the deletion attribute in the entity.Sys.
 func (me *Sys) Deletion() int {
 	return me.deletion.Value()
 }
 
+// SetDeletion sets the value of the deletion attribute in the entity.Sys.
 func (me *Sys) SetDeletion(v int) {
 	me.deletion.SetValue(v)
 }
 
+// Artifical gets the value of the artifical attribute in the entity.Sys.
 func (me *Sys) Artifical() int {
 	return me.artifical.Value()
 }
 
+// SetArtifical sets the value of the artifical attribute in the entity.Sys.
 func (me *Sys) SetArtifical(v int) {
 	me.artifical.SetValue(v)
 }
 
+// History gets the value of the history attribute in the entity.Sys.
 func (me *Sys) History() int {
 	return me.history.Value()
 }
 
+// SetHistory sets the value of the history attribute in the entity.Sys.
 func (me *Sys) SetHistory(v int) {
 	me.history.SetValue(v)
 }
 
+// Get gets the value of the column in the database.
 func (me *Sys) Get(column string) interface{} {
 	switch column {
 	case "memo":
@@ -157,6 +181,7 @@ func (me *Sys) Get(column string) interface{} {
 	return me.Pk.Get(column)
 }
 
+// GetPtr gets the value of the pointer type through the database column.
 func (me *Sys) GetPtr(column string) interface{} {
 	switch column {
 	case "memo":
@@ -183,6 +208,7 @@ func (me *Sys) GetPtr(column string) interface{} {
 	return me.Pk.GetPtr(column)
 }
 
+// GetString gets the value of the attribute in the struct.
 func (me *Sys) GetString(field string) string {
 	switch strings.ToLowerFirst(field) {
 	case "memo":
@@ -209,6 +235,7 @@ func (me *Sys) GetString(field string) string {
 	return me.Pk.GetString(field)
 }
 
+// SetString sets the value of the attribute in the struct.
 func (me *Sys) SetString(field, value string) error {
 	switch strings.ToLowerFirst(field) {
 	case "memo":
@@ -235,6 +262,7 @@ func (me *Sys) SetString(field, value string) error {
 	return me.Pk.SetString(field, value)
 }
 
+// Type get entity.Type through the column of the database.
 func (me *Sys) Type(column string) (Type, bool) {
 	switch column {
 	case "memo":
@@ -261,6 +289,7 @@ func (me *Sys) Type(column string) (Type, bool) {
 	return me.Pk.Type(column)
 }
 
+// Column get schema.Column by the name of the entity attribute.
 func (me *Sys) Column(field string) (schema.Column, bool) {
 	switch strings.ToLowerFirst(field) {
 	case "memo":

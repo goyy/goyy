@@ -110,7 +110,7 @@ func (me *renderer) compile() error {
 	me.t = template.Must(me.t.Parse("xhttp"))
 
 	// add our funcmaps
-	me.t.Funcs(templates.HTML.FuncMap)
+	me.t.Funcs(templates.Html.FuncMap)
 	for _, funcs := range options.Funcs {
 		me.t.Funcs(funcs)
 	}

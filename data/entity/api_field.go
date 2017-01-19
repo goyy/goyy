@@ -4,6 +4,7 @@
 
 package entity
 
+// Field entity.Field.
 type Field interface {
 	Insertable() bool
 	SetInsertable(v bool)

@@ -14,6 +14,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
+// Entities result.Entities.
 type Entities struct {
 	Success bool              `json:"success"`
 	Token   string            `json:"token"`
@@ -24,6 +25,7 @@ type Entities struct {
 	Data    entity.Interfaces `json:"data"`
 }
 
+// Json result.Entities to Json.
 func (me *Entities) JSON() string {
 	var b bytes.Buffer
 	b.WriteString(`{"success":` + strconv.FormatBool(me.Success) + ",")
@@ -45,6 +47,7 @@ func (me *Entities) JSON() string {
 	return b.String()
 }
 
+// ParseJSON Json to result.Entities.
 func (me *Entities) ParseJSON(json string) error {
 	if strings.IsBlank(json) {
 		return nil

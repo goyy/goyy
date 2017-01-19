@@ -4,6 +4,7 @@
 
 package schema
 
+// Column schema.Column.
 type Column interface {
 	Table() Table
 	Name() string
@@ -21,4 +22,5 @@ type Column interface {
 	String() string
 }
 
+// ParseDict get dictionary values by genre and mkey.
 var ParseDict func(genre, mkey string) string

@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	if v, err := env.Settings(); err == nil {
+	if v, err := env.ParseSettings(); err == nil {
 		profile.SetDefault(v.Profile.Default)
 		actives := strings.Split(v.Profile.Actives, ",")
 		profile.SetActives(actives...)

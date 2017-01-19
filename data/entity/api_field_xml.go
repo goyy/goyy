@@ -13,10 +13,12 @@ type Xml interface {
 	Ignored() bool   // Field is ignored by this package
 }
 
+// NewXml returns the Xml.
 func NewXml() Xml {
 	return &xml{}
 }
 
+// NewXmlBy returns the Xml from name.
 func NewXmlBy(name string) Xml {
 	v := &xml{}
 	v.SetTag(name)

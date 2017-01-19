@@ -61,6 +61,7 @@ func (me *field) SetXml(v Xml) {
 	me.xml = v
 }
 
+// DefaultField default field.
 func DefaultField() Field {
 	return &field{insertable: true, updateable: true}
 }

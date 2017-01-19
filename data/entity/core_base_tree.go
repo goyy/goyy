@@ -9,6 +9,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
+// TreeColumns default column for Tree structure.
 var TreeColumns = [...]string{
 	"id",
 	"code",
@@ -34,6 +35,7 @@ var TreeColumns = [...]string{
 	"history",
 }
 
+// TreeFields default field for Tree structure.
 var TreeFields = [...]string{
 	"id",
 	"code",
@@ -59,6 +61,7 @@ var TreeFields = [...]string{
 	"history",
 }
 
+// Tree tree structure used for inheritance.
 type Tree struct {
 	Sys
 	code        String `db:"column=code"`
@@ -74,94 +77,117 @@ type Tree struct {
 	parentNames String `db:"column=parent_mames"`
 }
 
+// Code gets the value of the code attribute in the entity.Tree.
 func (me *Tree) Code() string {
 	return me.code.Value()
 }
 
+// SetCode sets the value of the code attribute in the entity.Tree.
 func (me *Tree) SetCode(v string) {
 	me.code.SetValue(v)
 }
 
+// Name gets the value of the name attribute in the entity.Tree.
 func (me *Tree) Name() string {
 	return me.name.Value()
 }
 
+// SetName sets the value of the name attribute in the entity.Tree.
 func (me *Tree) SetName(v string) {
 	me.name.SetValue(v)
 }
 
+// Fullname gets the value of the fullname attribute in the entity.Tree.
 func (me *Tree) Fullname() string {
 	return me.fullname.Value()
 }
 
+// SetFullname sets the value of the fullname attribute in the entity.Tree.
 func (me *Tree) SetFullname(v string) {
 	me.fullname.SetValue(v)
 }
 
+// Genre gets the value of the genre attribute in the entity.Tree.
 func (me *Tree) Genre() string {
 	return me.genre.Value()
 }
 
+// SetGenre sets the value of the genre attribute in the entity.Tree.
 func (me *Tree) SetGenre(v string) {
 	me.genre.SetValue(v)
 }
 
+// Leaf gets the value of the leaf attribute in the entity.Tree.
 func (me *Tree) Leaf() int {
 	return me.leaf.Value()
 }
 
+// SetLeaf sets the value of the leaf attribute in the entity.Tree.
 func (me *Tree) SetLeaf(v int) {
 	me.leaf.SetValue(v)
 }
 
+// Grade gets the value of the grade attribute in the entity.Tree.
 func (me *Tree) Grade() int {
 	return me.grade.Value()
 }
 
+// SetGrade sets the value of the grade attribute in the entity.Tree.
 func (me *Tree) SetGrade(v int) {
 	me.grade.SetValue(v)
 }
 
+// Ordinal gets the value of the ordinal attribute in the entity.Tree.
 func (me *Tree) Ordinal() string {
 	return me.ordinal.Value()
 }
 
+// SetOrdinal sets the value of the ordinal attribute in the entity.Tree.
 func (me *Tree) SetOrdinal(v string) {
 	me.ordinal.SetValue(v)
 }
 
+// ParentId gets the value of the parentId attribute in the entity.Tree.
 func (me *Tree) ParentId() string {
 	return me.parentId.Value()
 }
 
+// SetParentId sets the value of the parentId attribute in the entity.Tree.
 func (me *Tree) SetParentId(v string) {
 	me.parentId.SetValue(v)
 }
 
+// ParentIds gets the value of the parentIds attribute in the entity.Tree.
 func (me *Tree) ParentIds() string {
 	return me.parentIds.Value()
 }
 
+// SetParentIds sets the value of the parentIds attribute in the entity.Tree.
 func (me *Tree) SetParentIds(v string) {
 	me.parentIds.SetValue(v)
 }
 
+// ParentCodes gets the value of the parentCodes attribute in the entity.Tree.
 func (me *Tree) ParentCodes() string {
 	return me.parentCodes.Value()
 }
 
+// SetParentCodes sets the value of the parentCodes attribute in the entity.Tree.
 func (me *Tree) SetParentCodes(v string) {
 	me.parentCodes.SetValue(v)
 }
 
+// ParentNames gets the value of the parentNames attribute in the entity.Tree.
 func (me *Tree) ParentNames() string {
 	return me.parentNames.Value()
 }
 
+// SetParentNames sets the value of the parentNames attribute in the entity.Tree.
 func (me *Tree) SetParentNames(v string) {
 	me.parentNames.SetValue(v)
 }
 
+// Get gets the value of the column in the database.
 func (me *Tree) Get(column string) interface{} {
 	switch column {
 	case "code":
@@ -190,6 +216,7 @@ func (me *Tree) Get(column string) interface{} {
 	return me.Sys.Get(column)
 }
 
+// GetPtr gets the value of the pointer type through the database column.
 func (me *Tree) GetPtr(column string) interface{} {
 	switch column {
 	case "code":
@@ -218,6 +245,7 @@ func (me *Tree) GetPtr(column string) interface{} {
 	return me.Sys.GetPtr(column)
 }
 
+// GetString gets the value of the attribute in the struct.
 func (me *Tree) GetString(field string) string {
 	switch strings.ToLowerFirst(field) {
 	case "code":
@@ -246,6 +274,7 @@ func (me *Tree) GetString(field string) string {
 	return me.Sys.GetString(field)
 }
 
+// SetString sets the value of the attribute in the struct.
 func (me *Tree) SetString(field, value string) error {
 	switch strings.ToLowerFirst(field) {
 	case "code":
@@ -274,6 +303,7 @@ func (me *Tree) SetString(field, value string) error {
 	return me.Sys.SetString(field, value)
 }
 
+// Type get entity.Type through the column of the database.
 func (me *Tree) Type(column string) (Type, bool) {
 	switch column {
 	case "code":
@@ -302,6 +332,7 @@ func (me *Tree) Type(column string) (Type, bool) {
 	return me.Sys.Type(column)
 }
 
+// Column get schema.Column by the name of the entity attribute.
 func (me *Tree) Column(field string) (schema.Column, bool) {
 	switch strings.ToLowerFirst(field) {
 	case "code":

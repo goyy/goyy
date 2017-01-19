@@ -11,7 +11,7 @@ import (
 var i18N = i18n.NewByEnv(locales)
 
 var locales = map[string]map[string]string{
-	i18n.Locale_zh_CN: map[string]string{
+	i18n.LocaleZhCN: map[string]string{
 		"setting.empty":                     xsettings + ":configuration.settings:不能为空！",
 		"setting.statement.empty":           xsettings + ":configuration.settings.statement:不能为空！",
 		"setting.statement.seperator.empty": xsettings + ":configuration.settings.statement.@seperator:不能为空！",
@@ -64,7 +64,7 @@ var locales = map[string]map[string]string{
 		"tmpl.menu.manage":                  "管理",
 		"tmpl.menu.data.root":               "菜单",
 	},
-	i18n.Locale_en_US: map[string]string{
+	i18n.LocaleEnUS: map[string]string{
 		"setting.empty":                     xsettings + ":configuration.settings:can not be empty!",
 		"setting.statement.empty":           xsettings + ":configuration.settings.statement:can not be empty!",
 		"setting.statement.seperator.empty": xsettings + ":configuration.settings.statement.@seperator:can not be empty!",

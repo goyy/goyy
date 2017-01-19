@@ -6,7 +6,7 @@ package xtype
 
 // Box box.
 type Box struct {
-	ID     string `json:"id"`
+	Id     string `json:"id"`
 	Name   string `json:"name"`
 	Active bool   `json:"active"`
 	Time   string `json:"time"`

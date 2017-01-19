@@ -5,29 +5,35 @@
 package entity
 
 import (
+	"strconv"
+
 	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/strings"
-	"strconv"
 )
 
+// Int int type.
 type Int struct {
 	base
 	value int
 }
 
+// Value gets the value.
 func (me *Int) Value() int {
 	return me.value
 }
 
+// ValuePtr gets the value of the pointer type.
 func (me *Int) ValuePtr() *int {
 	return &me.value
 }
 
+// SetValue sets the value.
 func (me *Int) SetValue(v int) {
 	me.value = v
 	me.field.SetModified(true)
 }
 
+// SetDefault sets the default value.
 func (me *Int) SetDefault(v string) error {
 	if strings.IsBlank(v) {
 		return errors.NewNotBlank("v")
@@ -41,19 +47,21 @@ func (me *Int) SetDefault(v string) error {
 	return nil
 }
 
+// SetString sets the value of the string type.
 func (me *Int) SetString(v string) error {
 	if err := me.SetDefault(v); err != nil {
 		return err
-	} else {
-		me.field.SetModified(true)
-		return nil
 	}
+	me.field.SetModified(true)
+	return nil
 }
 
+// String gets the value of the string type.
 func (me *Int) String() string {
 	return strconv.Itoa(me.value)
 }
 
+// Name gets the name of the type.
 func (me *Int) Name() string {
 	return "int"
 }

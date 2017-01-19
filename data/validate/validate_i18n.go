@@ -8,6 +8,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/comm/i18n"
 )
 
+// SetLocale set the i18n locale.
 func SetLocale(locale string) {
 	i18N.SetLocale(locale)
 }
@@ -16,7 +17,7 @@ var i18N = i18n.New(locales)
 
 // Validation errors.
 var locales = map[string]map[string]string{
-	i18n.Locale_zh_CN: map[string]string{
+	i18n.LocaleZhCN: map[string]string{
 		typRequired:    "非空.",
 		typMin:         "不能小于 %d.",
 		typMax:         "不能大于 %d.",
@@ -49,7 +50,7 @@ var locales = map[string]map[string]string{
 		typPhone:       "必须是有效的手机号或固定电话号.",
 		typZipcode:     "必须是有效的邮政编码.",
 	},
-	i18n.Locale_en_US: map[string]string{
+	i18n.LocaleEnUS: map[string]string{
 		typRequired:    "Expecting a non empty value.",
 		typMin:         "Expecting a value greater than or equal to %d.",
 		typMax:         "Expecting a value less than or equal to %d.",

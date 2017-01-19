@@ -8,6 +8,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/schema"
 )
 
+// Type entity.Type.
 type Type interface {
 	Name() string
 	Column() schema.Column

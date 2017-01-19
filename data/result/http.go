@@ -10,6 +10,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
+// Http result.Http.
 type Http struct {
 	Success bool              `json:"success"`
 	Token   string            `json:"token"`
@@ -22,15 +23,16 @@ type Http struct {
 	Data    interface{}       `json:"data"`
 }
 
+// JSON result.Http to JSON.
 func (me *Http) JSON() (string, error) {
 	b, err := json.Marshal(me)
-	if err == nil {
-		return string(b), nil
-	} else {
+	if err != nil {
 		return "", err
 	}
+	return string(b), nil
 }
 
+// ParseJSON JSON to result.Http.
 func (me *Http) ParseJSON(jsons string) error {
 	if strings.IsBlank(jsons) {
 		return nil

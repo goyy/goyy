@@ -6,14 +6,16 @@ package result
 
 import (
 	"bytes"
+	"strconv"
+
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/jsons"
 	"gopkg.in/goyy/goyy.v0/util/strings"
-	"strconv"
 )
 
+// Page result.Page.
 type Page struct {
 	Success bool        `json:"success"`
 	Id      string      `json:"id"`
@@ -25,6 +27,7 @@ type Page struct {
 	Data    domain.Page `json:"data"`
 }
 
+// Json result.Page to Json.
 func (me *Page) JSON() string {
 	var b bytes.Buffer
 	b.WriteString(`{"success":` + strconv.FormatBool(me.Success) + ",")
@@ -56,6 +59,7 @@ func (me *Page) JSON() string {
 	return b.String()
 }
 
+// ParseJSON Json to result.Page.
 func (me *Page) ParseJSON(json string) error {
 	if strings.IsBlank(json) {
 		return nil

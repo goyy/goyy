@@ -68,9 +68,8 @@ func (me *table) Comment() string {
 func (me *table) Column(columnName string) Column {
 	if c, ok := me.columns[columnName]; ok {
 		return c
-	} else {
-		return nil
 	}
+	return nil
 }
 
 func (me *table) Columns() []Column {
@@ -168,12 +167,11 @@ func (me *table) newColumn(columnName, comment string) *column {
 	name := strings.ToLower(columnName)
 	if v, ok := me.columns[name]; ok {
 		return v
-	} else {
-		c := new(column)
-		c.name = name
-		c.comment = comment
-		c.table = me
-		me.columns[name] = c
-		return c
 	}
+	c := new(column)
+	c.name = name
+	c.comment = comment
+	c.table = me
+	me.columns[name] = c
+	return c
 }

@@ -13,6 +13,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/result"
 )
 
+// Service service.Service.
 type Service interface {
 	NewEntity() entity.Interface
 	NewEntities() entity.Interfaces

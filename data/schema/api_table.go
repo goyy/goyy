@@ -4,6 +4,7 @@
 
 package schema
 
+// Table schema.Table.
 type Table interface {
 	Name() string
 	Comment() string

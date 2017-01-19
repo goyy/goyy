@@ -114,8 +114,8 @@ func (me *baseTreeController) Tree(c xhttp.Context, mgr service.Service) (out []
 			isOpen = false
 		}
 		out = append(out, xtype.Tree{
-			ID:       treeId,
-			ParentID: treePid,
+			Id:       treeId,
+			ParentId: treePid,
 			Name:     treeName,
 			Open:     isOpen,
 		})
@@ -142,7 +142,7 @@ func (me *baseTreeController) Breadcrumb(c xhttp.Context, mgr service.Service) (
 		id := e.Get(colId).(string)
 		name := e.Get(colName).(string)
 		t := xtype.Box{
-			ID:     id,
+			Id:     id,
 			Name:   name,
 			Active: true,
 		}
@@ -157,7 +157,7 @@ func (me *baseTreeController) Breadcrumb(c xhttp.Context, mgr service.Service) (
 			ts := make([]xtype.Box, l+1)
 			for i, pId := range pIds {
 				t := xtype.Box{
-					ID:     pId,
+					Id:     pId,
 					Name:   pNames[i],
 					Active: false,
 				}
@@ -166,7 +166,7 @@ func (me *baseTreeController) Breadcrumb(c xhttp.Context, mgr service.Service) (
 			id := e.Get(colId).(string)
 			name := e.Get(colName).(string)
 			t := xtype.Box{
-				ID:     id,
+				Id:     id,
 				Name:   name,
 				Active: true,
 			}

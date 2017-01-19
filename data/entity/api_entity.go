@@ -8,6 +8,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/schema"
 )
 
+// Interface entity.Interface.
 type Interface interface {
 	New() Interface
 	Get(column string) interface{}
@@ -24,6 +25,7 @@ type Interface interface {
 	ExcelColumns() []string
 }
 
+// Interfaces entity.Interfaces.
 type Interfaces interface {
 	Make(v int)
 	New() Interface

@@ -9,6 +9,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/entity"
 )
 
+// Sifter xsql.Sifter.
 type Sifter interface {
 	Rows(out entity.Interfaces) error
 	Row(out entity.Interface) error

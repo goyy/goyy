@@ -14,9 +14,9 @@ var en_US = map[string]string{
 	"sayf": "Hello, %s!",
 }
 var locales = map[string]map[string]string{
-	i18n.Locale_en_US: en_US,
+	i18n.LocaleEnUS: en_US,
 }
-var i18N = i18n.New(locales, i18n.Locale_en_US)
+var i18N = i18n.New(locales, i18n.LocaleEnUS)
 
 func TestMessage(t *testing.T) {
 	key := "say"

@@ -8,6 +8,7 @@ import (
 	"database/sql"
 )
 
+// Tx xsql.Tx.
 type Tx interface {
 	Exec(dml string, args ...interface{}) (sql.Result, error)
 	Commit() error

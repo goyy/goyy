@@ -4,52 +4,52 @@
 
 package env
 
-// XMLConfiguration configuration.
-type XMLConfiguration struct {
-	Settings     XMLSettings     `xml:"settings"`
-	Environments XMLEnvironments `xml:"environments"`
+// Configuration configuration.
+type Configuration struct {
+	Settings     Settings     `xml:"settings"`
+	Environments Environments `xml:"environments"`
 }
 
-// XMLEnvironments environments.
-type XMLEnvironments struct {
-	Default     string           `xml:"default,attr"`
-	Environment []XMLEnvironment `xml:"environment"`
+// Environments environments.
+type Environments struct {
+	Default     string        `xml:"default,attr"`
+	Environment []Environment `xml:"environment"`
 }
 
-// XMLSettings settings.
-type XMLSettings struct {
-	Name    string     `xml:"name,attr"`
-	Profile XMLProfile `xml:"profile"`
+// Settings settings.
+type Settings struct {
+	Name    string  `xml:"name,attr"`
+	Profile Profile `xml:"profile"`
 }
 
-// XMLProfile profile.
-type XMLProfile struct {
+// Profile profile.
+type Profile struct {
 	Default string `xml:"default,attr"`
 	Actives string `xml:"actives,attr"`
 }
 
-// XMLEnvironment environment.
-type XMLEnvironment struct {
-	ID         string        `xml:"id,attr"`
-	Databases  []XMLDatabase `xml:"database"`
-	Mails      []XMLMail     `xml:"mail"`
-	Sessions   []XMLSession  `xml:"session"`
-	APIs       []XMLAPI      `xml:"api"`
-	Assets     []XMLStatic   `xml:"asset"`
-	Statics    []XMLStatic   `xml:"static"`
-	Developers []XMLStatic   `xml:"developer"`
-	Operations []XMLStatic   `xml:"operation"`
-	Uploads    []XMLUpload   `xml:"upload"`
-	Exports    []XMLExport   `xml:"export"`
-	Htmls      []XMLTemplate `xml:"html"`
-	Templates  []XMLTemplate `xml:"template"`
-	Illegals   []XMLIllegal  `xml:"illegal"`
-	Logs       []XMLLog      `xml:"log"`
-	Secures    []XMLSecure   `xml:"secure"`
+// Environment environment.
+type Environment struct {
+	Id         string     `xml:"id,attr"`
+	Databases  []Database `xml:"database"`
+	Mails      []Mail     `xml:"mail"`
+	Sessions   []Session  `xml:"session"`
+	Apis       []Api      `xml:"api"`
+	Assets     []Static   `xml:"asset"`
+	Statics    []Static   `xml:"static"`
+	Developers []Static   `xml:"developer"`
+	Operations []Static   `xml:"operation"`
+	Uploads    []Upload   `xml:"upload"`
+	Exports    []Export   `xml:"export"`
+	Htmls      []Template `xml:"html"`
+	Templates  []Template `xml:"template"`
+	Illegals   []Illegal  `xml:"illegal"`
+	Logs       []Log      `xml:"log"`
+	Secures    []Secure   `xml:"secure"`
 }
 
-// XMLDatabase database.
-type XMLDatabase struct {
+// Database database.
+type Database struct {
 	Name           string `xml:"name,attr"`
 	DriverName     string `xml:"driverName"`
 	DataSourceName string `xml:"dataSourceName"`
@@ -57,8 +57,8 @@ type XMLDatabase struct {
 	MaxOpenConns   int    `xml:"maxOpenConns"`
 }
 
-// XMLMail mail.
-type XMLMail struct {
+// Mail mail.
+type Mail struct {
 	Name     string `xml:"name,attr"`
 	Secret   string `xml:"secret"`
 	Protocol string `xml:"protocol"`
@@ -68,29 +68,29 @@ type XMLMail struct {
 	Port     string `xml:"port"`
 }
 
-// XMLSession session.
-type XMLSession struct {
+// Session session.
+type Session struct {
 	Name     string `xml:"name,attr"`
 	Addr     string `xml:"addr"`
 	Password string `xml:"password"`
 }
 
-// XMLAPI api.
-type XMLAPI struct {
+// Api api.
+type Api struct {
 	Name string `xml:"name,attr"`
 	URL  string `xml:"url"`
 }
 
-// XMLStatic static.
-type XMLStatic struct {
+// Static static.
+type Static struct {
 	Name   string `xml:"name,attr"`
 	Enable bool   `xml:"enable"`
 	Dir    string `xml:"dir"`
 	URL    string `xml:"url"`
 }
 
-// XMLUpload upload.
-type XMLUpload struct {
+// Upload upload.
+type Upload struct {
 	Name    string `xml:"name,attr"`
 	Enable  bool   `xml:"enable"`
 	Dir     string `xml:"dir"`
@@ -98,29 +98,29 @@ type XMLUpload struct {
 	MaxSize string `xml:"maxSize"`
 }
 
-// XMLExport export.
-type XMLExport struct {
+// Export export.
+type Export struct {
 	Name string `xml:"name,attr"`
 	Dir  string `xml:"dir"`
 }
 
-// XMLTemplate template.
-type XMLTemplate struct {
+// Template template.
+type Template struct {
 	Name     string `xml:"name,attr"`
 	Enable   bool   `xml:"enable"`
 	Reloaded bool   `xml:"reloaded"`
 }
 
-// XMLIllegal illegal.
-type XMLIllegal struct {
+// Illegal illegal.
+type Illegal struct {
 	Name     string `xml:"name,attr"`
 	Enable   bool   `xml:"enable"`
 	Excludes string `xml:"excludes"`
 	Values   string `xml:"values"`
 }
 
-// XMLLog log.
-type XMLLog struct {
+// Log log.
+type Log struct {
 	Name     string `xml:"name,attr"`
 	Priority int    `xml:"priority"`
 	Layout   int    `xml:"layout"`
@@ -128,23 +128,23 @@ type XMLLog struct {
 	Dir      string `xml:"dir"`
 }
 
-// XMLSecure secure.
-type XMLSecure struct {
-	Name       string     `xml:"name,attr"`
-	Enable     bool       `xml:"enable"`
-	LoginURL   string     `xml:"login-url"`
-	ForbidURL  string     `xml:"forbid-url"`
-	SuccessURL string     `xml:"success-url"`
-	Filters    XMLFilters `xml:"filters"`
+// Secure secure.
+type Secure struct {
+	Name       string  `xml:"name,attr"`
+	Enable     bool    `xml:"enable"`
+	LoginUrl   string  `xml:"login-url"`
+	ForbidUrl  string  `xml:"forbid-url"`
+	SuccessUrl string  `xml:"success-url"`
+	Filters    Filters `xml:"filters"`
 }
 
-// XMLFilters filters.
-type XMLFilters struct {
-	InterceptURL []XMLInterceptURL `xml:"intercept-url"`
+// Filters filters.
+type Filters struct {
+	InterceptUrl []InterceptUrl `xml:"intercept-url"`
 }
 
-// XMLInterceptURL interceptURL.
-type XMLInterceptURL struct {
+// InterceptUrl interceptUrl.
+type InterceptUrl struct {
 	Pattern string `xml:"pattern,attr"`
 	Access  string `xml:"access,attr"`
 }

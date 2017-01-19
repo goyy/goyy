@@ -6,5 +6,5 @@ package dto
 
 // Pk pk.
 type Pk struct {
-	ID string `json:"id"`
+	Id string `json:"id"`
 }

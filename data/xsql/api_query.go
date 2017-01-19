@@ -5,11 +5,13 @@
 package xsql
 
 import (
+	"time"
+
 	"gopkg.in/goyy/goyy.v0/data/domain"
 	"gopkg.in/goyy/goyy.v0/data/entity"
-	"time"
 )
 
+// Query xsql.Query.
 type Query interface {
 	Rows(out entity.Interfaces) error
 	Row(out entity.Interface) error

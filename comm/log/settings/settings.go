@@ -10,8 +10,8 @@ import (
 )
 
 func init() {
-	if v, err := env.Settings(); err == nil {
-		if l, err := env.Log(v.Name); err == nil {
+	if v, err := env.ParseSettings(); err == nil {
+		if l, err := env.ParseLog(v.Name); err == nil {
 			log.SetDefaultPriority(l.Priority)
 			log.SetDefaultLayout(l.Layout)
 			log.SetDefaultOutput(l.Output)

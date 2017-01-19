@@ -12,6 +12,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/data/entity"
 )
 
+// DB xsql.DB.
 type DB interface {
 	Query(dql string, args ...interface{}) Query
 	NamedQuery(dql string, args map[string]interface{}) (Query, error)

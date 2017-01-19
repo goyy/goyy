@@ -11,10 +11,10 @@ func SetLocale(locale string) {
 var i18N = i18n.New(locales)
 
 var locales = map[string]map[string]string{
-	i18n.Locale_zh_CN: map[string]string{
+	i18n.LocaleZhCN: map[string]string{
 		"not.logged.err": "未登录！",
 	},
-	i18n.Locale_en_US: map[string]string{
+	i18n.LocaleEnUS: map[string]string{
 		"not.logged.err": "Not logged in!",
 	},
 }

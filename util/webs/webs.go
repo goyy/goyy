@@ -155,8 +155,8 @@ func ParseQuery(params url.Values) string {
 	return b.String()
 }
 
-// ParseURLSpecialChars parse url.
-func ParseURLSpecialChars(s string) string {
+// ParseUrlSpecialChars parse url.
+func ParseUrlSpecialChars(s string) string {
 	b := bytes.NewBuffer()
 	// Count %, check that they're well-formed.
 	for i := 0; i < len(s); i++ {

@@ -22,10 +22,12 @@ type Excel interface {
 	SetWidth(v int)     // SetWidth
 }
 
+// NewExcel returns the Excel.
 func NewExcel() Excel {
 	return &excel{width: 20}
 }
 
+// NewExcelBy returns the Excel from value, title, format, genre, align, sort, width.
 func NewExcelBy(value, title, format string, genre, align, sort, width int) Excel {
 	return &excel{
 		value:  value,

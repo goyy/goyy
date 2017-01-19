@@ -16,8 +16,8 @@ import (
 // Text text funcMap
 var Text = text{funcMapText}
 
-// HTML html funcMap
-var HTML = html{funcMapHTML}
+// Html html funcMap
+var Html = html{funcMapHtml}
 
 type text struct {
 	FuncMap ttmpl.FuncMap
@@ -58,7 +58,7 @@ var funcMapText = ttmpl.FuncMap{
 	"needit":    needit,
 
 	"profile":    getProfile,    // profile[production|development|test]
-	"apis":       getAPIs,       // The URL of the apis.
+	"apis":       getApis,       // The URL of the apis.
 	"assets":     getAssets,     // The URL of the static file.
 	"statics":    getStatics,    // static file[web|wap|adm]
 	"developers": getDevelopers, // The URL of the development of relevant documents
@@ -66,7 +66,7 @@ var funcMapText = ttmpl.FuncMap{
 	"uploads":    getUploads,    // The URL of the uploaded file.
 }
 
-var funcMapHTML = htmpl.FuncMap{
+var funcMapHtml = htmpl.FuncMap{
 	"yymd":     times.FormatYYMD,
 	"yymdhms":  times.FormatYYMDHMS,
 	"yymdhm":   times.FormatYYMDHM,
@@ -94,7 +94,7 @@ var funcMapHTML = htmpl.FuncMap{
 	"needit":    needit,
 
 	"profile":    getProfile,    // profile[production|development|test]
-	"apis":       getAPIs,       // The URL of the apis.
+	"apis":       getApis,       // The URL of the apis.
 	"assets":     getAssets,     // The URL of the static file.
 	"statics":    getStatics,    // static file[web|wap|adm]
 	"developers": getDevelopers, // The URL of the development of relevant documents
@@ -194,8 +194,8 @@ func getProfile() string {
 }
 
 var (
-	// GetAPIs return to apis in static resources
-	GetAPIs func() string
+	// GetApis return to apis in static resources
+	GetApis func() string
 	// GetAssets return to assets in static resources
 	GetAssets func() string
 	// GetStatics return to statics in static resources
@@ -208,11 +208,11 @@ var (
 	GetUploads func() string
 )
 
-func getAPIs() string {
-	if GetAPIs == nil {
+func getApis() string {
+	if GetApis == nil {
 		return ""
 	}
-	return GetAPIs()
+	return GetApis()
 }
 
 func getAssets() string {

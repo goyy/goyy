@@ -6,8 +6,8 @@ package xtype
 
 // Tree tree.
 type Tree struct {
-	ID       string `json:"id"`
-	ParentID string `json:"pId"`
+	Id       string `json:"id"`
+	ParentId string `json:"pId"`
 	Name     string `json:"name"`
 	Open     bool   `json:"open"`
 	IsParent bool   `json:"isParent"`

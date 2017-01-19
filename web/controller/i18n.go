@@ -15,14 +15,14 @@ func SetLocale(locale string) {
 var i18N = i18n.New(locales)
 
 var locales = map[string]map[string]string{
-	i18n.Locale_zh_CN: map[string]string{
+	i18n.LocaleZhCN: map[string]string{
 		"msg.save":         "保存成功",
 		"msg.disable":      "删除成功",
 		"msg.disable.leaf": "非叶子节点不允许删除",
 		"exp.limit":        "导出记录数不能大于10000",
 		"exp.data.blank":   "导出数据参数不能为空",
 	},
-	i18n.Locale_en_US: map[string]string{
+	i18n.LocaleEnUS: map[string]string{
 		"msg.save":         "Save success",
 		"msg.disable":      "Delete success",
 		"msg.disable.leaf": "Delete is not allowed because it is a non leaf node",

@@ -48,7 +48,7 @@ func (me *inits) Settings() {
 func (me *inits) Projects() {
 	xconf := util.DecodeXML(xprojects)
 	for _, xp := range xconf.Projects.Project {
-		db, err := env.Database(xp.Database)
+		db, err := env.ParseDatabase(xp.Database)
 		if err != nil {
 			log.Fatal(err)
 		}

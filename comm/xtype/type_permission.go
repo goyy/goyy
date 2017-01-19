@@ -6,6 +6,6 @@ package xtype
 
 // Permission permission.
 type Permission struct {
-	ID       string
+	Id       string
 	Profiles []string
 }

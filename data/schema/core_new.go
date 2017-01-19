@@ -8,7 +8,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
-// new Table
+// TABLE new schema.Table.
 func TABLE(name, comment string) Table {
 	if strings.IsBlank(name) {
 		panic("Table name are not allowed to empty.")

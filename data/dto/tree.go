@@ -14,8 +14,8 @@ type Tree struct {
 	Leaf        int    `json:"leaf"`
 	Grade       int    `json:"grade"`
 	Ordinal     string `json:"ordinal"`
-	ParentID    string `json:"parentId"`
-	ParentIDs   string `json:"parentIds"`
+	ParentId    string `json:"parentId"`
+	ParentIds   string `json:"parentIds"`
 	ParentCodes string `json:"parentCodes"`
 	ParentNames string `json:"parentNames"`
 }

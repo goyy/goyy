@@ -11,7 +11,7 @@ import (
 var i18N = i18n.NewByEnv(locales)
 
 var locales = map[string]map[string]string{
-	i18n.Locale_zh_CN: map[string]string{
+	i18n.LocaleZhCN: map[string]string{
 		"col.comment.id":           "标识",
 		"col.comment.memo":         "备注",
 		"col.comment.creates":      "创建机构",
@@ -42,7 +42,7 @@ var locales = map[string]map[string]string{
 		"html.list.del":            "删除",
 		"html.form.save":           "保存",
 	},
-	i18n.Locale_en_US: map[string]string{
+	i18n.LocaleEnUS: map[string]string{
 		"col.comment.id":           "ID",
 		"col.comment.memo":         "MEMO",
 		"col.comment.creates":      "CREATES",

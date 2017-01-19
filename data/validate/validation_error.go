@@ -8,20 +8,24 @@ import (
 	"fmt"
 )
 
+// Error validate.Error.
 type Error struct {
 	field   string
 	typ     string
 	message string
 }
 
+// Field gets the Error.field.
 func (me *Error) Field() string {
 	return me.field
 }
 
+// Type gets the Error.type.
 func (me *Error) Type() string {
 	return me.typ
 }
 
+// Message gets the Error.message.
 func (me *Error) Message() string {
 	return me.message
 }
