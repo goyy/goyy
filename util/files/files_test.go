@@ -139,7 +139,7 @@ func TestModTime(t *testing.T) {
 
 func TestSize(t *testing.T) {
 	filename := "./README.md"
-	expected := int64(750)
+	expected := int64(754)
 	if out, _ := files.Size(filename); out != expected {
 		t.Errorf(`Size("%s") = %v, want %v`, filename, out, expected)
 	}

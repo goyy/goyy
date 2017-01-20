@@ -4,15 +4,19 @@
     "go.buildOnSave": true,
     "go.lintOnSave": true,
     "go.vetOnSave": true,
+    "go.buildTags": "",
     "go.buildFlags": [],
-    "go.lintFlags": [],
+    "go.lintTool": "golint",
+    "go.lintFlags": ["--disable-all"],
     "go.vetFlags": [],
     "go.coverOnSave": false,
     "go.useCodeSnippetsOnFunctionSuggest": false,
-    "go.formatOnSave": true,
+    "go.formatOnSave": true, 
     "go.formatTool": "goreturns",
+    "go.formatFlags": [],
     "go.goroot": "C:\\go",
     "go.gopath": "E:\\gopath",
+    "go.gocodeAutoBuild": false,
     // code-runner
     "code-runner.fileDirectoryAsCwd": true
 }
