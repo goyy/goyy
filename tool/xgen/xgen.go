@@ -7,10 +7,14 @@ package main
 import (
 	"flag"
 	"log"
+	"strings"
+
+	"gopkg.in/goyy/goyy.v0/util/files"
 )
 
 func main() {
-	epath := flag.String("entity", "", "entity file path")
+	// entity
+	entipath := flag.String("entity", "", "entity file path")
 	clipath := flag.String("clipath", "", "import path for client project")
 	apipath := flag.String("apipath", "", "import path for api project")
 	tstpath := flag.String("tstpath", "", "import path for test project")
@@ -25,6 +29,8 @@ func main() {
 	hasConst := flag.Bool("const", false, "is generated const")
 	hasHTML := flag.Bool("html", false, "is generated html")
 	hasJs := flag.Bool("js", false, "is generated js")
+	// new project
+	newProjName := flag.String("new", "", "name of new project")
 	flag.Parse()
 	f := factory{
 		CliPath:          *clipath,
@@ -40,6 +46,7 @@ func main() {
 		HasGenConst:      *hasConst,
 		HasGenHTML:       *hasHTML,
 		HasGenJs:         *hasJs,
+		NewProjName:      *newProjName,
 	}
 	if *hasScaffold {
 		f.HasGenService = true
@@ -53,9 +60,20 @@ func main() {
 		f.HasGenHTML = true
 		f.HasGenJs = true
 	}
-	if err := f.Init(*epath); err != nil {
-		log.Printf("%v", err)
-		return
+	if strings.TrimSpace(*entipath) != "" {
+		f.HasGenEntity = true
+		if err := f.Init(*entipath); err != nil {
+			log.Printf("%v", err)
+			return
+		}
+	}
+	if strings.TrimSpace(*newProjName) != "" {
+		dir, err := files.AbsDir(".")
+		if err != nil {
+			log.Println(err.Error())
+		}
+		f.HasGenProj = true
+		f.NewProjPath = dir
 	}
 	if err := f.Write(); err != nil {
 		log.Printf("%v", err)

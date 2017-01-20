@@ -12,6 +12,7 @@ const (
 
 // gen type
 const (
+	newProj      = "new.proj"
 	xgenCtl      = "xgen.controller"
 	xgenCtlReg   = "xgen.controller.reg"
 	xgenDto      = "xgen.dto"

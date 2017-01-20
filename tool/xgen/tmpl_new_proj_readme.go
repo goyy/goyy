@@ -4,5 +4,5 @@
 
 package main
 
-var tmplNewReadme = `# {{.}}
+var tmplNewProjReadme = `# <%.NewProjName%>
 `

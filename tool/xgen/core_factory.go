@@ -14,7 +14,7 @@ import (
 	"io/ioutil"
 	"path/filepath"
 
-	e "gopkg.in/goyy/goyy.v0/data/entity"
+	enti "gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/files"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
@@ -23,10 +23,12 @@ import (
 type factory struct {
 	Project           string
 	PackageName       string
-	Epath             string
+	EntiPath          string
 	CliPath           string
 	APIPath           string
 	TstPath           string
+	HasGenProj        bool
+	HasGenEntity      bool
 	HasGenService     bool
 	HasGenController  bool
 	HasGenDto         bool
@@ -40,6 +42,8 @@ type factory struct {
 	IsTimeField       bool
 	IsValidationField bool
 	IsExtend          bool
+	NewProjName       string // Name of new project
+	NewProjPath       string // Path of new project
 	Entities          []*entity
 	SysColumns        []string // goyy>data>entity:SysColumns
 	SysFields         []string // goyy>data>entity:SysFields
@@ -50,14 +54,14 @@ type factory struct {
 // Init initializes an File from a path.
 func (me *factory) Init(path string) error {
 	// Set up the inheritance list of column names
-	me.SysColumns = e.SysColumns[:]
-	me.SysFields = e.SysFields[:]
-	me.TreeColumns = e.TreeColumns[:]
-	me.TreeFields = e.TreeFields[:]
+	me.SysColumns = enti.SysColumns[:]
+	me.SysFields = enti.SysFields[:]
+	me.TreeColumns = enti.TreeColumns[:]
+	me.TreeFields = enti.TreeFields[:]
 
 	// set the path
 	if strings.HasSuffix(path, ".go") {
-		me.Epath = strings.TrimSuffix(path, ".go")
+		me.EntiPath = strings.TrimSuffix(path, ".go")
 	} else {
 		return fmt.Errorf("File '%s' is not a Go file.", path)
 	}
@@ -324,11 +328,18 @@ func (me *factory) Init(path string) error {
 }
 
 func (me factory) Write() error {
-	if err := me.writeEntityXgen(); err != nil {
-		return err
+	if me.HasGenProj {
+		if err := me.writeNewProj(); err != nil {
+			return err
+		}
 	}
-	if err := me.writeEntitiesXgen(); err != nil {
-		return err
+	if me.HasGenEntity {
+		if err := me.writeEntityXgen(); err != nil {
+			return err
+		}
+		if err := me.writeEntitiesXgen(); err != nil {
+			return err
+		}
 	}
 	if me.HasGenService {
 		if err := me.writeServiceXgen(); err != nil {
@@ -412,23 +423,36 @@ func (me factory) Write() error {
 }
 
 func (me factory) writeBy(typ, content string) error {
-	clidir := "../../../" + strings.AfterLast(me.CliPath, "/")
-	// get the destination file
-	dir, file := filepath.Split(me.Epath)
-	f, name := me.genFileName(typ, file)
-	switch typ {
-	case xgenDto:
-		dir = clidir + "/internal/" + me.Project + "/" + me.PackageName
-	case mainAPI, xgenLogAPI:
-		dir = "../../api/" + me.PackageName
-	case mainHTML:
-		dir = clidir + "/templates/" + me.Project + "/" + name
-	case mainJs:
-		dir = clidir + "/static/js/" + me.Project + "/" + name
-	case xgenCtlReg:
-		dir = "../../"
+	var dir, dstfile string
+	if me.HasGenEntity {
+		clidir := "../../../" + strings.AfterLast(me.CliPath, "/")
+		// get the destination file
+		dir, file := filepath.Split(me.EntiPath)
+		f, name := me.genFileName(typ, file)
+		switch typ {
+		case xgenDto:
+			dir = clidir + "/internal/" + me.Project + "/" + me.PackageName
+		case mainAPI, xgenLogAPI:
+			dir = "../../api/" + me.PackageName
+		case mainHTML:
+			dir = clidir + "/templates/" + me.Project + "/" + name
+		case mainJs:
+			dir = clidir + "/static/js/" + me.Project + "/" + name
+		case xgenCtlReg:
+			dir = "../../"
+		}
+		dstfile = filepath.Join(dir, f)
 	}
-	dstfile := filepath.Join(dir, f)
+	if me.HasGenProj {
+		switch typ {
+		case newProj + ".README":
+			dir = "."
+			dstfile = "README.md"
+		case newProj + ".tst":
+			dir = "."
+			dstfile = "README.md"
+		}
+	}
 	if files.IsExist(dstfile) {
 		if strings.HasPrefix(typ, typXgen) {
 			files.Remove(dstfile)
@@ -443,6 +467,16 @@ func (me factory) writeBy(typ, content string) error {
 	tmpl := newTmpl(content)
 	tmpl.Execute(&buf, me)
 	return ioutil.WriteFile(dstfile, buf.Bytes(), 0644)
+}
+
+func (me factory) writeNewProj() error {
+	if err := me.writeBy(newProj+".README", tmplNewProjReadme); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".tst", tmplNewProjTst); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (me factory) writeEntityXgen() error {

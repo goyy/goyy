@@ -10,6 +10,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"os/exec"
+	"path/filepath"
 	"time"
 
 	"gopkg.in/goyy/goyy.v0/util/errors"
@@ -94,6 +96,37 @@ func Rename(oldname, newname string) error {
 // If there is an error, it will be of type *PathError.
 func Remove(name string) error {
 	return os.Remove(name)
+}
+
+// LookPath searches for an executable binary named file
+// in the directories named by the PATH environment variable.
+// If file contains a slash, it is tried directly and the PATH is not consulted.
+// The result may be an absolute path or a path relative to the current directory.
+func LookPath(file string) (string, error) {
+	return exec.LookPath(file)
+}
+
+// Dir returns all but the last element of path, typically the path's directory.
+// After dropping the final element, Dir calls Clean on the path and trailing
+// slashes are removed.
+// If the path is empty, Dir returns ".".
+// If the path consists entirely of separators, Dir returns a single separator.
+// The returned path does not end in a separator unless it is the root directory.
+func Dir(file string) string {
+	return filepath.Dir(file)
+}
+
+// Abs returns an absolute representation of path.
+// If the path is not absolute it will be joined with the current
+// working directory to turn it into an absolute path. The absolute
+// path name for a given file is not guaranteed to be unique.
+// Abs calls Clean on the result.
+func AbsDir(file string) (string, error) {
+	dir, err := filepath.Abs(filepath.Dir(file))
+	if err != nil {
+		return "", err
+	}
+	return strings.Replace(dir, "\\", "/", -1), nil
 }
 
 // Extension returns the <a href="http://en.wikipedia.org/wiki/Filename_extension">file

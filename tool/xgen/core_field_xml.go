@@ -5,7 +5,7 @@
 package main
 
 import (
-	e "gopkg.in/goyy/goyy.v0/data/entity"
+	enti "gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
@@ -22,7 +22,7 @@ func newXMLField(f *field, tag string) (*xmlField, bool) {
 	if strings.IsBlank(tag) {
 		return nil, false
 	}
-	v := e.NewXmlBy(tag)
+	v := enti.NewXmlBy(tag)
 	xf := &xmlField{
 		Tag:       v.Tag(),
 		Name:      v.Name(),

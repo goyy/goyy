@@ -5,7 +5,7 @@
 package main
 
 import (
-	e "gopkg.in/goyy/goyy.v0/data/entity"
+	enti "gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
@@ -22,7 +22,7 @@ func newJSONField(f *field, tag string) (*jsonField, bool) {
 	if strings.IsBlank(tag) {
 		return nil, false
 	}
-	v := e.NewJsonBy(tag)
+	v := enti.NewJsonBy(tag)
 	jf := &jsonField{
 		Tag:       v.Tag(),
 		Name:      v.Name(),
