@@ -14,8 +14,6 @@
     "go.formatOnSave": true, 
     "go.formatTool": "goreturns",
     "go.formatFlags": [],
-    "go.goroot": "C:\\go",
-    "go.gopath": "E:\\gopath",
     "go.gocodeAutoBuild": false,
     // code-runner
     "code-runner.fileDirectoryAsCwd": true
