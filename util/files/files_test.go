@@ -48,7 +48,7 @@ func TestWrite(t *testing.T) {
 		"build bigger and better idiot-proof programs, and the Universe trying " +
 		"to produce bigger and better idiots. So far, the Universe is winning."
 
-	if err := files.Write(filename, data, 0644); err != nil {
+	if err := files.Write(filename, data, 0744); err != nil {
 		t.Fatalf("Write %s: %v", filename, err)
 	}
 
@@ -62,18 +62,18 @@ func TestWrite(t *testing.T) {
 	}
 
 	// recover
-	files.Write(filename, "Hello world!", 0644)
+	files.Write(filename, "Hello world!", 0744)
 }
 
 func TestCopy(t *testing.T) {
 	dst := "./copy.txt"
 	src := "./example.txt"
-	err := files.Copy(dst, src, 0644)
+	err := files.Copy(dst, src, 0744)
 	if err != nil {
 		t.Fatalf("Copy %s %s: %v", dst, src, err)
 	}
 	if files.IsExist(dst) == false {
-		t.Errorf(`Copy("%s", "%s", %v) error`, dst, src, 0644)
+		t.Errorf(`Copy("%s", "%s", %v) error`, dst, src, 0744)
 	}
 	files.Remove(dst)
 }
@@ -102,7 +102,7 @@ func TestRename(t *testing.T) {
 func TestRemove(t *testing.T) {
 	filename := "./remove.txt"
 	expected := false
-	if err := files.Write(filename, "remove", 0644); err != nil {
+	if err := files.Write(filename, "remove", 0744); err != nil {
 		t.Fatalf("Remove:Write %s: %v", filename, err)
 	}
 	err := files.Remove(filename)

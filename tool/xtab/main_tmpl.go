@@ -18,7 +18,7 @@ func write(tmpls, dstfile string) {
 		buf := bytes.Buffer{}
 		tmpl := newTmpl(tmpls)
 		tmpl.Execute(&buf, nil)
-		ioutil.WriteFile(dstfile, buf.Bytes(), 0644)
+		ioutil.WriteFile(dstfile, buf.Bytes(), 0744)
 	}
 }
 

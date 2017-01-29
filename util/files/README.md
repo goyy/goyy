@@ -23,10 +23,10 @@ file library for Go
 
 	filename := "./example.txt"
 	data := "Hello goyy!"
-	if err := files.Write(filename, data, 0644); err != nil {
+	if err := files.Write(filename, data, 0744); err != nil {
 		log.Fatalf("Write %s: %v", filename, err)
 	}
 	s, _ := files.Read(filename)
 	fmt.Println(s)
-	files.Write(filename, "Hello world!", 0644) // recover
+	files.Write(filename, "Hello world!", 0744) // recover
 	// Output: Hello goyy!

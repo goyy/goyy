@@ -449,9 +449,11 @@ func (me factory) writeBy(typ, content string) error {
 			dir = "."
 			dstfile = "README.md"
 		case newProj + ".tst":
-			dir = "."
-			dstfile = "README.md"
+			dir = me.NewProjPath + "/" + me.NewProjName + "-tst/"
+			dstfile = "tst.go"
+			fmt.Println(dir)
 		}
+		dstfile = filepath.Join(dir, dstfile)
 	}
 	if files.IsExist(dstfile) {
 		if strings.HasPrefix(typ, typXgen) {
@@ -460,13 +462,13 @@ func (me factory) writeBy(typ, content string) error {
 			return nil
 		}
 	} else {
-		files.MkdirAll(dir, 0644)
+		files.MkdirAll(dir, 0744)
 	}
 
 	buf := bytes.Buffer{}
 	tmpl := newTmpl(content)
 	tmpl.Execute(&buf, me)
-	return ioutil.WriteFile(dstfile, buf.Bytes(), 0644)
+	return ioutil.WriteFile(dstfile, buf.Bytes(), 0744)
 }
 
 func (me factory) writeNewProj() error {

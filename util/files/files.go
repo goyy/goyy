@@ -201,7 +201,7 @@ func Upload(w http.ResponseWriter, r *http.Request, field, confdir, filedir stri
 	}
 	filename := uuids.New() + "." + Extension(handler.Filename)
 	filepath := dir + filename
-	err = ioutil.WriteFile(filepath, data, 0644)
+	err = ioutil.WriteFile(filepath, data, 0744)
 	if err != nil {
 		logger.Error(err.Error())
 		return

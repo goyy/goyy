@@ -26,7 +26,7 @@ func genMenu() {
 		dir := clidir + "/templates/core/include/"
 		dstfile := dir + "header.html"
 		if !files.IsExist(dstfile) {
-			files.MkdirAll(dir, 0644)
+			files.MkdirAll(dir, 0744)
 		}
 		data := map[string]interface{}{
 			"Project": p,
@@ -36,7 +36,7 @@ func genMenu() {
 		buf := bytes.Buffer{}
 		tmpl := newTmpl(tmplMenu)
 		tmpl.Execute(&buf, data)
-		ioutil.WriteFile(dstfile, buf.Bytes(), 0644)
+		ioutil.WriteFile(dstfile, buf.Bytes(), 0744)
 	}
 	// insert into sys_menu
 	for _, p := range conf.projects {

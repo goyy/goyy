@@ -70,7 +70,7 @@ func (me *utils) Case(in string) (out string) {
 }
 
 func (me *utils) WriteString(filename, content string) {
-	f, ferr := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE, 0644)
+	f, ferr := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE, 0744)
 	defer f.Close()
 	if ferr != nil {
 		log.Fatal(ferr)
