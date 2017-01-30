@@ -460,6 +460,24 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".tst.db":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-tst/conf/env/"
 			dstfile = "db.xml"
+		case newProj + ".schema.bin.sql.sh":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/bin/"
+			dstfile = "exp-sql.sh"
+		case newProj + ".schema.bin.sql.bat":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/bin/"
+			dstfile = "exp-sql.bat"
+		case newProj + ".schema.bin.menu.sh":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/bin/"
+			dstfile = "exp-menu.sh"
+		case newProj + ".schema.bin.menu.bat":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/bin/"
+			dstfile = "exp-menu.bat"
+		case newProj + ".schema.bin.entity.sh":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/bin/"
+			dstfile = "exp-entity.sh"
+		case newProj + ".schema.bin.entity.bat":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/bin/"
+			dstfile = "exp-entity.bat"
 		}
 		dstfile = filepath.Join(dir, dstfile)
 	}
@@ -493,6 +511,24 @@ func (me factory) writeNewProj() error {
 		return err
 	}
 	if err := me.writeBy(newProj+".tst.db", tmplNewProjTstDB); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".schema.bin.sql.sh", tmplNewProjSchemaBinSqlSh); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".schema.bin.sql.bat", tmplNewProjSchemaBinSqlBat); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".schema.bin.menu.sh", tmplNewProjSchemaBinMenuSh); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".schema.bin.menu.bat", tmplNewProjSchemaBinMenuBat); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".schema.bin.entity.sh", tmplNewProjSchemaBinEntitySh); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".schema.bin.entity.bat", tmplNewProjSchemaBinEntityBat); err != nil {
 		return err
 	}
 	return nil
