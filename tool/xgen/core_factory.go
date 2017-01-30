@@ -451,7 +451,15 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".tst":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-tst/"
 			dstfile = "tst.go"
-			fmt.Println(dir)
+		case newProj + ".tst.settings":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-tst/conf/env/"
+			dstfile = "settings.xml"
+		case newProj + ".tst.session":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-tst/conf/env/"
+			dstfile = "session.xml"
+		case newProj + ".tst.db":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-tst/conf/env/"
+			dstfile = "db.xml"
 		}
 		dstfile = filepath.Join(dir, dstfile)
 	}
@@ -476,6 +484,15 @@ func (me factory) writeNewProj() error {
 		return err
 	}
 	if err := me.writeBy(newProj+".tst", tmplNewProjTst); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".tst.settings", tmplNewProjTstSettings); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".tst.session", tmplNewProjTstSession); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".tst.db", tmplNewProjTstDB); err != nil {
 		return err
 	}
 	return nil
