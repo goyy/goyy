@@ -10,12 +10,12 @@ import (
 
 type valids struct{}
 
-func (me *valids) IsExistXML() {
+func (me *valids) IsExistXML(name string) {
 	isExit := false
 	if me.IsExistSettings() == false {
 		isExit = true
 	}
-	if me.IsExistEnvironments() == false {
+	if me.IsExistEnvironments(name) == false {
 		isExit = true
 	}
 	if me.IsExistProjects() == false {
@@ -56,28 +56,34 @@ func (me *valids) IsExistSettings() bool {
 	return util.InitFile(xsettings, content)
 }
 
-func (me *valids) IsExistEnvironments() bool {
+func (me *valids) IsExistEnvironments(name string) bool {
 	content := `<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE env PUBLIC "-//GOYY//DTD ENV 1.0//EN" "http://goyy.org/dtd/env-1.0.dtd">
 <configuration>
 	<environments default="development">
 		<environment id="development">
-			<dataSource name="xtab">
+			<database name="` + name + `">
 				<driverName>mysql</driverName>
-				<dataSourceName>root:root@/xtab_development?charset=utf8</dataSourceName>
-			</dataSource>
+				<dataSourceName>root:root@tcp(127.0.0.1:3306)/` + name + `_development</dataSourceName>
+				<maxIdleConns>10</maxIdleConns>
+				<maxOpenConns>100</maxOpenConns>
+			</database>
 		</environment>
 		<environment id="test">
-			<dataSource name="xtab">
+			<database name="` + name + `">
 				<driverName>mysql</driverName>
-				<dataSourceName>xtab:xtab@/xtab_test?charset=utf8</dataSourceName>
-			</dataSource>
+				<dataSourceName>root:root@tcp(127.0.0.1:3306)/` + name + `_test</dataSourceName>
+				<maxIdleConns>10</maxIdleConns>
+				<maxOpenConns>100</maxOpenConns>
+			</database>
 		</environment>
 		<environment id="production">
-			<dataSource name="xtab">
+			<database name="` + name + `">
 				<driverName>mysql</driverName>
-				<dataSourceName>xtab:xtab@tcp(localhost:3306)/xtab_production?charset=utf8</dataSourceName>
-			</dataSource>
+				<dataSourceName>root:root@tcp(127.0.0.1:3306)/` + name + `_production</dataSourceName>
+				<maxIdleConns>10</maxIdleConns>
+				<maxOpenConns>100</maxOpenConns>
+			</database>
 		</environment>
 	</environments>
 </configuration>

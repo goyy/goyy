@@ -14,9 +14,12 @@ import (
 var conf = &configuration{}
 var util = &utils{}
 
-func init() {
+func initgen(name string) {
+	if strings.IsBlank(name) {
+		name = "goyy"
+	}
 	valid := &valids{}
-	valid.IsExistXML()
+	valid.IsExistXML(name)
 	valid.IsOkXML()
 
 	data := &inits{}

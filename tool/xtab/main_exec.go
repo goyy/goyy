@@ -12,7 +12,9 @@ func main() {
 	isEntity := flag.Bool("entity", false, "is generated entity")
 	isSQL := flag.Bool("sql", false, "is generated SQL")
 	isMenu := flag.Bool("menu", false, "is generated menu")
+	proj := flag.String("proj", "goyy", "project name")
 	flag.Parse()
+	initgen(*proj)
 	if *isSQL {
 		logger.Println("Exporting sql : start")
 		expSQL()

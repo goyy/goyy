@@ -6,10 +6,11 @@ package main
 
 import (
 	"encoding/xml"
-	"gopkg.in/goyy/goyy.v0/util/files"
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"log"
 	"os"
+
+	"gopkg.in/goyy/goyy.v0/util/files"
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
 type utils struct{}
@@ -83,6 +84,9 @@ func (me *utils) WriteString(filename, content string) {
 
 func (me *utils) InitFile(filename, content string) bool {
 	if files.IsExist(filename) == false {
+		if err := files.MkdirAll(filename, 0744); err != nil {
+			logger.Criticalln(err)
+		}
 		me.WriteString(filename, content)
 		return false
 	}

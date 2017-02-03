@@ -73,7 +73,7 @@ func Copy(dstfile string, srcfile string, perm os.FileMode) error {
 // Mkdir creates a new directory with the specified name and permission bits.
 // If there is an error, it will be of type *PathError.
 func Mkdir(name string, perm os.FileMode) error {
-	return os.Mkdir(name, perm)
+	return os.Mkdir(Dir(name), perm)
 }
 
 // MkdirAll creates a directory named path, along with any necessary parents,
@@ -81,7 +81,7 @@ func Mkdir(name string, perm os.FileMode) error {
 // The permission bits perm are used for all directories that MkdirAll creates.
 // If path is already a directory, MkdirAll does nothing and returns nil.
 func MkdirAll(name string, perm os.FileMode) error {
-	return os.MkdirAll(name, perm)
+	return os.MkdirAll(Dir(name), perm)
 }
 
 // Rename renames (moves) oldpath to newpath.
