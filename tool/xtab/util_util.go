@@ -5,7 +5,9 @@
 package main
 
 import (
+	"bytes"
 	"encoding/xml"
+	"html/template"
 	"log"
 	"os"
 
@@ -87,10 +89,25 @@ func (me *utils) InitFile(filename, content string) bool {
 		if err := files.MkdirAll(filename, 0744); err != nil {
 			logger.Criticalln(err)
 		}
+		content = me.ParseTemplate(content)
 		me.WriteString(filename, content)
 		return false
 	}
 	return true
+}
+
+func (me *utils) ParseTemplate(content string) string {
+	filters := template.FuncMap{
+		"message": func(key string) string { // get message for i18n
+			return i18N.Message(key)
+		},
+	}
+	buf := bytes.Buffer{}
+	t := template.New("T")
+	t = t.Delims("<%", "%>")
+	tmpl := template.Must(t.Funcs(filters).Parse(content))
+	tmpl.Execute(&buf, nil)
+	return buf.String()
 }
 
 func (me *utils) DecodeXML(filename string) *xConfiguration {

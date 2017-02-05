@@ -63,6 +63,8 @@ var locales = map[string]map[string]string{
 		"tmpl.menu.exit":                    "退出",
 		"tmpl.menu.manage":                  "管理",
 		"tmpl.menu.data.root":               "菜单",
+		"tmpl.project.name":                 "演示",
+		"tmpl.project.memo":                 "演示项目",
 	},
 	i18n.LocaleEnUS: map[string]string{
 		"setting.empty":                     xsettings + ":configuration.settings:can not be empty!",
@@ -116,5 +118,7 @@ var locales = map[string]map[string]string{
 		"tmpl.menu.exit":                    "exit",
 		"tmpl.menu.manage":                  " manage",
 		"tmpl.menu.data.root":               "menu",
+		"tmpl.project.name":                 "DEMO",
+		"tmpl.project.memo":                 "project for demonstration",
 	},
 }

@@ -14,12 +14,15 @@ import (
 var conf = &configuration{}
 var util = &utils{}
 
-func initgen(name string) {
+func initgen(name, pkg string) {
 	if strings.IsBlank(name) {
 		name = "goyy"
 	}
+	if strings.IsBlank(pkg) {
+		pkg = "gopkg.in/goyy/goyy.v0/app"
+	}
 	valid := &valids{}
-	valid.IsExistXML(name)
+	valid.IsExistXML(name, pkg)
 	valid.IsOkXML()
 
 	data := &inits{}

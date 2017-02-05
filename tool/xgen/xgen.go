@@ -7,6 +7,7 @@ package main
 import (
 	"flag"
 	"log"
+	"os"
 	"strings"
 
 	"gopkg.in/goyy/goyy.v0/util/files"
@@ -31,6 +32,7 @@ func main() {
 	hasJs := flag.Bool("js", false, "is generated js")
 	// new project
 	newProjName := flag.String("new", "", "name of new project")
+	newProjPkg := flag.String("pkg", "", "path to package for new project")
 	flag.Parse()
 	f := factory{
 		CliPath:          *clipath,
@@ -74,6 +76,17 @@ func main() {
 		}
 		f.HasGenProj = true
 		f.NewProjPath = dir
+	}
+	if strings.TrimSpace(*newProjPkg) == "" {
+		dir, err := files.AbsDir(".")
+		if err != nil {
+			log.Println(err.Error())
+		}
+		dir = strings.Replace(dir, "\\", "/", -1)
+		gopath := os.Getenv("GOPATH")
+		gopath = strings.Replace(gopath, "\\", "/", -1)
+		f.HasGenProj = true
+		f.NewProjPkg = strings.Replace(dir, gopath+"/src/", "", 1)
 	}
 	if err := f.Write(); err != nil {
 		log.Printf("%v", err)

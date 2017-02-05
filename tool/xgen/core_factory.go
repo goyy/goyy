@@ -44,6 +44,7 @@ type factory struct {
 	IsExtend          bool
 	NewProjName       string // Name of new project
 	NewProjPath       string // Path of new project
+	NewProjPkg        string // Pkg Path of new project
 	Entities          []*entity
 	SysColumns        []string // goyy>data>entity:SysColumns
 	SysFields         []string // goyy>data>entity:SysFields

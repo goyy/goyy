@@ -10,7 +10,7 @@ import (
 
 type valids struct{}
 
-func (me *valids) IsExistXML(name string) {
+func (me *valids) IsExistXML(name, pkg string) {
 	isExit := false
 	if me.IsExistSettings() == false {
 		isExit = true
@@ -18,7 +18,7 @@ func (me *valids) IsExistXML(name string) {
 	if me.IsExistEnvironments(name) == false {
 		isExit = true
 	}
-	if me.IsExistProjects() == false {
+	if me.IsExistProjects(name, pkg) == false {
 		isExit = true
 	}
 	if me.IsExistModules() == false {
@@ -91,12 +91,12 @@ func (me *valids) IsExistEnvironments(name string) bool {
 	return util.InitFile(xenvironments, content)
 }
 
-func (me *valids) IsExistProjects() bool {
+func (me *valids) IsExistProjects(name, pkg string) bool {
 	content := `<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
 <configuration>
 	<projects>
-		<project id="demo" name="DEMO" database="xtab" generate="true" comment="Project demo"/>
+		<project id="demo" name="<% message "tmpl.project.name" %>" database="xtab" generate="true" comment="<% message "tmpl.project.memo" %>" clipath="` + pkg + `/` + name + `-adm" tstpath="` + pkg + `/` + name + `-tst"/>
 	</projects>
 </configuration>
 `

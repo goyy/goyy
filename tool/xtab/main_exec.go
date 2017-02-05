@@ -13,8 +13,9 @@ func main() {
 	isSQL := flag.Bool("sql", false, "is generated SQL")
 	isMenu := flag.Bool("menu", false, "is generated menu")
 	proj := flag.String("proj", "goyy", "project name")
+	pkg := flag.String("pkg", "", "path to package for new project")
 	flag.Parse()
-	initgen(*proj)
+	initgen(*proj, *pkg)
 	if *isSQL {
 		logger.Println("Exporting sql : start")
 		expSQL()

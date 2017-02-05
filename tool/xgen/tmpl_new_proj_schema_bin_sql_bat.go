@@ -10,7 +10,7 @@ echo [INFO] Create DDL SQL Files.
 cd %~dp0
 cd ..
 set I18N_LOCALE=zh_CN
-call xtab -proj=<%.NewProjName%> -sql
+call xtab -proj=<%.NewProjName%> -pkg=<%.NewProjPkg%> -sql
 
 pause
 `
