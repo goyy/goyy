@@ -101,13 +101,20 @@ func (me *utils) ParseTemplate(content string) string {
 		"message": func(key string) string { // get message for i18n
 			return i18N.Message(key)
 		},
+		"comments": func(key1, key2 string) string { // get message for i18n
+			return strings.ToLower(i18N.Message(key1)) + i18N.Message(key2)
+		},
 	}
 	buf := bytes.Buffer{}
-	t := template.New("T")
-	t = t.Delims("<%", "%>")
-	tmpl := template.Must(t.Funcs(filters).Parse(content))
-	tmpl.Execute(&buf, nil)
-	return buf.String()
+	tmpl, err := template.New("t-xtab").Funcs(filters).Parse(content)
+	if err != nil {
+		logger.Criticalln(err)
+	}
+	err = tmpl.Execute(&buf, nil)
+	if err != nil {
+		logger.Criticalln(err)
+	}
+	return strings.Replace(buf.String(), "&lt;?", "<?", 1)
 }
 
 func (me *utils) DecodeXML(filename string) *xConfiguration {

@@ -21,7 +21,7 @@ func (me *valids) IsExistXML(name, pkg string) {
 	if me.IsExistProjects(name, pkg) == false {
 		isExit = true
 	}
-	if me.IsExistModules() == false {
+	if me.IsExistModules(name, pkg) == false {
 		isExit = true
 	}
 	if me.IsExistButtons() == false {
@@ -96,20 +96,20 @@ func (me *valids) IsExistProjects(name, pkg string) bool {
 <!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
 <configuration>
 	<projects>
-		<project id="demo" name="<% message "tmpl.project.name" %>" database="xtab" generate="true" comment="<% message "tmpl.project.memo" %>" clipath="` + pkg + `/` + name + `-adm" tstpath="` + pkg + `/` + name + `-tst"/>
+		<project id="` + name + `" name="{{message "tmpl.proj.name"}}" database="` + name + `" generate="true" comment="{{message "tmpl.proj.memo"}}" admpath="` + pkg + `/` + name + `-adm" tstpath="` + pkg + `/` + name + `-tst"/>
 	</projects>
 </configuration>
 `
 	return util.InitFile(xprojects, content)
 }
 
-func (me *valids) IsExistModules() bool {
+func (me *valids) IsExistModules(name, pkg string) bool {
 	content := `<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
 <configuration>
 	<modules>
-		<module id="sys" name="SYS" prefix="sys" project="demo" generate="true" comment="System tables"/>
-		<module id="app" name="APP" prefix="app" project="demo" generate="true" comment="Application business tables"/>
+		<module id="sys" name="{{message "tmpl.mod.sys.name"}}" prefix="sys" project="` + name + `" generate="true" comment="{{message "tmpl.mod.sys.memo"}}" apipath="` + pkg + `/` + name + `-sys"/>
+		<module id="app" name="{{message "tmpl.mod.app.name"}}" prefix="app" project="` + name + `" generate="true" comment="{{message "tmpl.mod.app.memo"}}" apipath="` + pkg + `/` + name + `-app"/>
 	</modules>
 </configuration>
 `
@@ -121,11 +121,11 @@ func (me *valids) IsExistButtons() bool {
 <!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
 <configuration>
 	<buttons>
-		<button id="view"    name="VIEW"   comment="view"/>
-		<button id="add"     name="ADD"    comment="add"/>
-		<button id="edit"    name="ADD"    comment="edit"/>
-		<button id="disable" name="DELETE" comment="delete"/>
-		<button id="export"  name="ADD"    comment="export"/>
+		<button id="view"    name="{{message "tmpl.btn.view.name"}}" comment="{{comments "tmpl.btn.view.name" "tmpl.btn.memo"}}"/>
+		<button id="add"     name="{{message "tmpl.btn.add.name"}}" comment="{{comments "tmpl.btn.add.name" "tmpl.btn.memo"}}"/>
+		<button id="edit"    name="{{message "tmpl.btn.edit.name"}}" comment="{{comments "tmpl.btn.edit.name" "tmpl.btn.memo"}}"/>
+		<button id="disable" name="{{message "tmpl.btn.disable.name"}}" comment="{{comments "tmpl.btn.disable.name" "tmpl.btn.memo"}}"/>
+		<button id="export"  name="{{message "tmpl.btn.export.name"}}" comment="{{comments "tmpl.btn.export.name" "tmpl.btn.memo"}}"/>
 	</buttons>
 </configuration>
 `
@@ -162,67 +162,68 @@ func (me *valids) IsExistColumns() bool {
 <!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
 <configuration>
 	<columns>
-		<column id="id"           name="ID"           domain="id"     comment="primary key"/>
-		<column id="code"         name="CODE"         domain="code"   comment="code"/>
-		<column id="name"         name="NAME"         domain="name"   comment="name"/>
-		<column id="nickname"     name="NICKNAME"     domain="code"   comment="nickname"/>
-		<column id="fullname"     name="FULLNAME"     domain="memo"   comment="fullname"/>
-		<column id="genre"        name="GENRE"        domain="code"   comment="genre"/>
-		<column id="classify"     name="CLASSIFY"     domain="code"   comment="classify"/>
-		<column id="content"      name="CONTENT"      domain="descr"  comment="content"/>
-		<column id="memo"         name="MEMO"         domain="memo"   comment="memo"/>
-		<column id="descr"        name="DESCR"        domain="descr"  comment="description"/>
-		<column id="remark"       name="REMARK"       domain="remark" comment="remark"/>
-		<column id="timed"        name="TIME"         domain="time"   comment="time"/>
-		<column id="passwd"       name="PASSWD"       domain="name"   comment="password"/>
-		<column id="email"        name="EMAIL"        domain="name"   comment="email"/>
-		<column id="mobile"       name="MOBILE"       domain="code"   comment="mobile"/>
-		<column id="tel"          name="TEL"          domain="code"   comment="telephone"/>
-		<column id="contact"      name="CONTACT"      domain="name"   comment="contact"/>
-		<column id="sex"          name="SEX"          domain="flag"   comment="sex"/>
-		<column id="birthday"     name="BIRTHDAY"     domain="long"   comment="birthday"/>
-		<column id="receiver"     name="RECEIVER"     domain="code"   comment="receiver"/>
-		<column id="address"      name="ADDRESS"      domain="memo"   comment="address"/>
-		<column id="zipcode"      name="ZIPCODE"      domain="code"   comment="zipcode"/>
-		<column id="intro"        name="INTRODUCTION" domain="remark" comment="introduction"/>
-		<column id="weight"       name="WEIGHT"       domain="int"    comment="weight"/>
-		<column id="city"         name="CITY"         domain="id"     comment="city"/>
-		<column id="ordinal"      name="ORDINAL"      domain="code"   comment="ordinal"/>
-		<column id="img"          name="IMAGES"       domain="name"   comment="images"/>
-		<column id="usable"       name="USABLE"       domain="flag"   comment="usable"/>
-		<column id="status"       name="STATUS"       domain="flag"   comment="status"/>
-		<column id="mark"         name="MARK"         domain="flag"   comment="mark"/>
-		<column id="source"       name="SOURCE"       domain="flag"   comment="source"/>
-		<column id="mkey"         name="MKEY"         domain="flag"   comment="map key"/>
-		<column id="mval"         name="MVAL"         domain="name"   comment="map value"/>
-		<column id="params"       name="PARAMS"       domain="name"   comment="params"/>
-		<column id="filters"      name="FILTERS"      domain="name"   comment="filters"/>
-		<column id="begin_time"   name="BEGIN_TIME"   domain="long"   comment="begin time"/>
-		<column id="end_time"     name="END_TIME"     domain="long"   comment="end time"/>
-		<column id="area_id"      name="AREA_ID"      domain="id"     comment="the identity of the area table"/>
-		<column id="org_id"       name="ORG_ID"       domain="id"     comment="the identity of the org table"/>
-		<column id="user_id"      name="USER_ID"      domain="id"     comment="the identity of the user table"/>
-		<column id="role_id"      name="ROLE_ID"      domain="id"     comment="the identity of the role table"/>
-		<column id="post_id"      name="POST_ID"      domain="id"     comment="the identity of the post table"/>
-		<column id="menu_id"      name="MENU_ID"      domain="id"     comment="the identity of the menu table"/>
-		<column id="parent_id"    name="PARENT_ID"    domain="id"     comment="the identity of the parent table"/>
-		<column id="parent_ids"   name="PARENT_IDS"   domain="memo"   comment="all the identity of the parent table"/>
-		<column id="parent_codes" name="PARENT_CODES" domain="memo"   comment="all the code of the parent table"/>
-		<column id="parent_names" name="PARENT_NAMES" domain="memo"   comment="all the name of the parent table"/>
-		<column id="leaf"         name="LEAF"         domain="int"    comment="whether is the leaf node of the tree"/>
-		<column id="grade"        name="GRADE"        domain="int"    comment="The level of the tree node"/>
-		<column id="creates"      name="CREATES"      domain="id"     comment="created org"/>
-		<column id="creater"      name="CREATER"      domain="id"     comment="created user"/>
-		<column id="created"      name="CREATED"      domain="long"   comment="created time"/>
-		<column id="modifier"     name="MODIFIER"     domain="id"     comment="modified user"/>
-		<column id="modified"     name="MODIFIED"     domain="long"   comment="modified time"/>
-		<column id="version"      name="VERSION"      domain="int"    comment="optimistic locking" default="0"/>
-		<column id="deletion"     name="DELETION"     domain="bool"   comment="logic delete flag"  default="0"/>
-		<column id="artifical"    name="ARTIFICAL"    domain="bool"   comment="artificial data"    default="0"/>
-		<column id="history"      name="HISTORY"      domain="bool"   comment="history data"       default="0"/>
+		<column id="id"           domain="id"     name="{{message "tmpl.col.id.name"}}" comment="{{message "tmpl.col.id.memo"}}"/>
+		<column id="code"         domain="code"   name="{{message "tmpl.col.code.name"}}" comment="{{message "tmpl.col.code.memo"}}"/>
+		<column id="name"         domain="name"   name="{{message "tmpl.col.name.name"}}" comment="{{message "tmpl.col.name.memo"}}"/>
+		<column id="nickname"     domain="code"   name="{{message "tmpl.col.nickname.name"}}" comment="{{message "tmpl.col.nickname.memo"}}"/>
+		<column id="fullname"     domain="memo"   name="{{message "tmpl.col.fullname.name"}}" comment="{{message "tmpl.col.fullname.memo"}}"/>
+		<column id="genre"        domain="code"   name="{{message "tmpl.col.genre.name"}}" comment="{{message "tmpl.col.genre.memo"}}"/>
+		<column id="classify"     domain="code"   name="{{message "tmpl.col.classify.name"}}" comment="{{message "tmpl.col.classify.memo"}}"/>
+		<column id="content"      domain="descr"  name="{{message "tmpl.col.content.name"}}" comment="{{message "tmpl.col.content.memo"}}"/>
+		<column id="memo"         domain="memo"   name="{{message "tmpl.col.memo.name"}}" comment="{{message "tmpl.col.memo.memo"}}"/>
+		<column id="descr"        domain="descr"  name="{{message "tmpl.col.descr.name"}}" comment="{{message "tmpl.col.descr.memo"}}"/>
+		<column id="remark"       domain="remark" name="{{message "tmpl.col.remark.name"}}" comment="{{message "tmpl.col.remark.memo"}}"/>
+		<column id="timed"        domain="time"   name="{{message "tmpl.col.timed.name"}}" comment="{{message "tmpl.col.timed.memo"}}"/>
+		<column id="passwd"       domain="name"   name="{{message "tmpl.col.passwd.name"}}" comment="{{message "tmpl.col.passwd.memo"}}"/>
+		<column id="email"        domain="name"   name="{{message "tmpl.col.email.name"}}" comment="{{message "tmpl.col.email.memo"}}"/>
+		<column id="mobile"       domain="code"   name="{{message "tmpl.col.mobile.name"}}" comment="{{message "tmpl.col.mobile.memo"}}"/>
+		<column id="tel"          domain="code"   name="{{message "tmpl.col.tel.name"}}" comment="{{message "tmpl.col.tel.memo"}}"/>
+		<column id="contact"      domain="name"   name="{{message "tmpl.col.contact.name"}}" comment="{{message "tmpl.col.contact.memo"}}"/>
+		<column id="sex"          domain="flag"   name="{{message "tmpl.col.sex.name"}}" comment="{{message "tmpl.col.sex.memo"}}"/>
+		<column id="birthday"     domain="long"   name="{{message "tmpl.col.birthday.name"}}" comment="{{message "tmpl.col.birthday.memo"}}"/>
+		<column id="receiver"     domain="code"   name="{{message "tmpl.col.receiver.name"}}" comment="{{message "tmpl.col.receiver.memo"}}"/>
+		<column id="address"      domain="memo"   name="{{message "tmpl.col.address.name"}}" comment="{{message "tmpl.col.address.memo"}}"/>
+		<column id="zipcode"      domain="code"   name="{{message "tmpl.col.zipcode.name"}}" comment="{{message "tmpl.col.zipcode.memo"}}"/>
+		<column id="intro"        domain="remark" name="{{message "tmpl.col.intro.name"}}" comment="{{message "tmpl.col.intro.memo"}}"/>
+		<column id="weight"       domain="int"    name="{{message "tmpl.col.weight.name"}}" comment="{{message "tmpl.col.weight.memo"}}"/>
+		<column id="city"         domain="id"     name="{{message "tmpl.col.city.name"}}" comment="{{message "tmpl.col.city.memo"}}"/>
+		<column id="ordinal"      domain="code"   name="{{message "tmpl.col.ordinal.name"}}" comment="{{message "tmpl.col.ordinal.memo"}}"/>
+		<column id="img"          domain="name"   name="{{message "tmpl.col.img.name"}}" comment="{{message "tmpl.col.img.memo"}}"/>
+		<column id="usable"       domain="flag"   name="{{message "tmpl.col.usable.name"}}" comment="{{message "tmpl.col.usable.memo"}}"/>
+		<column id="status"       domain="flag"   name="{{message "tmpl.col.status.name"}}" comment="{{message "tmpl.col.status.memo"}}"/>
+		<column id="mark"         domain="flag"   name="{{message "tmpl.col.mark.name"}}" comment="{{message "tmpl.col.mark.memo"}}"/>
+		<column id="source"       domain="flag"   name="{{message "tmpl.col.source.name"}}" comment="{{message "tmpl.col.source.memo"}}"/>
+		<column id="mkey"         domain="flag"   name="{{message "tmpl.col.mkey.name"}}" comment="{{message "tmpl.col.mkey.memo"}}"/>
+		<column id="mval"         domain="name"   name="{{message "tmpl.col.mval.name"}}" comment="{{message "tmpl.col.mval.memo"}}"/>
+		<column id="params"       domain="name"   name="{{message "tmpl.col.params.name"}}" comment="{{message "tmpl.col.params.memo"}}"/>
+		<column id="filters"      domain="name"   name="{{message "tmpl.col.filters.name"}}" comment="{{message "tmpl.col.filters.memo"}}"/>
+		<column id="begin_time"   domain="long"   name="{{message "tmpl.col.begin_time.name"}}" comment="{{message "tmpl.col.begin_time.memo"}}"/>
+		<column id="end_time"     domain="long"   name="{{message "tmpl.col.end_time.name"}}" comment="{{message "tmpl.col.end_time.memo"}}"/>
+		<column id="area_id"      domain="id"     name="{{message "tmpl.col.area_id.name"}}" comment="{{message "tmpl.col.area_id.memo"}}"/>
+		<column id="org_id"       domain="id"     name="{{message "tmpl.col.org_id.name"}}" comment="{{message "tmpl.col.org_id.memo"}}"/>
+		<column id="user_id"      domain="id"     name="{{message "tmpl.col.user_id.name"}}" comment="{{message "tmpl.col.user_id.memo"}}"/>
+		<column id="role_id"      domain="id"     name="{{message "tmpl.col.role_id.name"}}" comment="{{message "tmpl.col.role_id.memo"}}"/>
+		<column id="post_id"      domain="id"     name="{{message "tmpl.col.post_id.name"}}" comment="{{message "tmpl.col.post_id.memo"}}"/>
+		<column id="menu_id"      domain="id"     name="{{message "tmpl.col.menu_id.name"}}" comment="{{message "tmpl.col.menu_id.memo"}}"/>
+		<column id="parent_id"    domain="id"     name="{{message "tmpl.col.parent_id.name"}}" comment="{{message "tmpl.col.parent_id.memo"}}"/>
+		<column id="parent_ids"   domain="memo"   name="{{message "tmpl.col.parent_ids.name"}}" comment="{{message "tmpl.col.parent_ids.memo"}}"/>
+		<column id="parent_codes" domain="memo"   name="{{message "tmpl.col.parent_codes.name"}}" comment="{{message "tmpl.col.parent_codes.memo"}}"/>
+		<column id="parent_names" domain="memo"   name="{{message "tmpl.col.parent_names.name"}}" comment="{{message "tmpl.col.parent_names.memo"}}"/>
+		<column id="leaf"         domain="int"    name="{{message "tmpl.col.leaf.name"}}" comment="{{message "tmpl.col.leaf.memo"}}"/>
+		<column id="grade"        domain="int"    name="{{message "tmpl.col.grade.name"}}" comment="{{message "tmpl.col.grade.memo"}}"/>
+		<column id="creates"      domain="id"     name="{{message "tmpl.col.creates.name"}}" comment="{{message "tmpl.col.creates.memo"}}"/>
+		<column id="creater"      domain="id"     name="{{message "tmpl.col.creater.name"}}" comment="{{message "tmpl.col.creater.memo"}}"/>
+		<column id="created"      domain="long"   name="{{message "tmpl.col.created.name"}}" comment="{{message "tmpl.col.created.memo"}}"/>
+		<column id="modifier"     domain="id"     name="{{message "tmpl.col.modifier.name"}}" comment="{{message "tmpl.col.modifier.memo"}}"/>
+		<column id="modified"     domain="long"   name="{{message "tmpl.col.modified.name"}}" comment="{{message "tmpl.col.modified.memo"}}"/>
+		<column id="version"      domain="int"    name="{{message "tmpl.col.version.name"}}" comment="{{message "tmpl.col.version.memo"}}" default="0"/>
+		<column id="deletion"     domain="bool"   name="{{message "tmpl.col.deletion.name"}}" comment="{{message "tmpl.col.deletion.memo"}}" default="0"/>
+		<column id="artifical"    domain="bool"   name="{{message "tmpl.col.artifical.name"}}" comment="{{message "tmpl.col.artifical.memo"}}" default="0"/>
+		<column id="history"      domain="bool"   name="{{message "tmpl.col.history.name"}}" comment="{{message "tmpl.col.history.memo"}}" default="0"/>
 	</columns>
 </configuration>
 `
+
 	return util.InitFile(xcolumns, content)
 }
 
@@ -231,10 +232,10 @@ func (me *valids) IsExistTables() bool {
 <!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
 <configuration>
 	<tables>
-		<table id="pk" name="PK" comment="primary key table">
+		<table id="pk" name="{{message "tmpl.tab.pk.name"}}" comment="{{message "tmpl.tab.pk.memo"}}">
 			<column extends="id"/>
 		</table>
-		<table id="sys" name="SYS" extends="pk" comment="sys table">
+		<table id="sys" name="{{message "tmpl.tab.sys.name"}}" extends="pk" comment="{{message "tmpl.tab.sys.memo"}}">
 			<column extends="memo"/>
 			<column extends="creates"/>
 			<column extends="creater"/>
@@ -246,7 +247,7 @@ func (me *valids) IsExistTables() bool {
 			<column extends="artifical"/>
 			<column extends="history"/>
 		</table>
-		<table id="tree" name="TREE" extends="sys" comment="tree table">
+		<table id="tree" name="{{message "tmpl.tab.tree.name"}}" extends="sys" comment="{{message "tmpl.tab.tree.memo"}}">
 			<column extends="code"/>
 			<column extends="name"/>
 			<column extends="fullname"/>

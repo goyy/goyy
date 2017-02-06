@@ -24,7 +24,7 @@ type factory struct {
 	Project           string
 	PackageName       string
 	EntiPath          string
-	CliPath           string
+	AdmPath           string
 	APIPath           string
 	TstPath           string
 	HasGenProj        bool
@@ -426,19 +426,19 @@ func (me factory) Write() error {
 func (me factory) writeBy(typ, content string) error {
 	var dir, dstfile string
 	if me.HasGenEntity {
-		clidir := "../../../" + strings.AfterLast(me.CliPath, "/")
+		admdir := "../../../" + strings.AfterLast(me.AdmPath, "/")
 		// get the destination file
 		dir, file := filepath.Split(me.EntiPath)
 		f, name := me.genFileName(typ, file)
 		switch typ {
 		case xgenDto:
-			dir = clidir + "/internal/" + me.Project + "/" + me.PackageName
+			dir = admdir + "/internal/" + me.Project + "/" + me.PackageName
 		case mainAPI, xgenLogAPI:
 			dir = "../../api/" + me.PackageName
 		case mainHTML:
-			dir = clidir + "/templates/" + me.Project + "/" + name
+			dir = admdir + "/templates/" + me.Project + "/" + name
 		case mainJs:
-			dir = clidir + "/static/js/" + me.Project + "/" + name
+			dir = admdir + "/static/js/" + me.Project + "/" + name
 		case xgenCtlReg:
 			dir = "../../"
 		}
@@ -606,7 +606,7 @@ func (me factory) writeJsMain() error {
 }
 
 func (me factory) writeDtoXgen() error {
-	if strings.IsBlank(me.CliPath) {
+	if strings.IsBlank(me.AdmPath) {
 		return nil
 	}
 	return me.writeBy(xgenDto, tmplDtoXgen)

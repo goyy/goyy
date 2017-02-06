@@ -8,6 +8,7 @@ import (
 	"flag"
 	"log"
 	"os"
+	"runtime"
 	"strings"
 
 	"gopkg.in/goyy/goyy.v0/util/files"
@@ -16,7 +17,7 @@ import (
 func main() {
 	// entity
 	entipath := flag.String("entity", "", "entity file path")
-	clipath := flag.String("clipath", "", "import path for client project")
+	admPath := flag.String("admPath", "", "import path for admin project")
 	apipath := flag.String("apipath", "", "import path for api project")
 	tstpath := flag.String("tstpath", "", "import path for test project")
 	hasScaffold := flag.Bool("scaffold", false, "is generated service and controller")
@@ -35,7 +36,7 @@ func main() {
 	newProjPkg := flag.String("pkg", "", "path to package for new project")
 	flag.Parse()
 	f := factory{
-		CliPath:          *clipath,
+		AdmPath:          *admPath,
 		APIPath:          *apipath,
 		TstPath:          *tstpath,
 		HasGenService:    *hasService,
@@ -84,9 +85,21 @@ func main() {
 		}
 		dir = strings.Replace(dir, "\\", "/", -1)
 		gopath := os.Getenv("GOPATH")
+		split := ":"
+		if strings.ToLower(runtime.GOOS) == "windows" {
+			split = ";"
+			gopath = strings.ToLower(gopath)
+			dir = strings.ToLower(dir)
+		}
 		gopath = strings.Replace(gopath, "\\", "/", -1)
 		f.HasGenProj = true
-		f.NewProjPkg = strings.Replace(dir, gopath+"/src/", "", 1)
+		gopaths := strings.Split(gopath, split)
+		for _, v := range gopaths {
+			if strings.Contains(dir, v) {
+				f.NewProjPkg = strings.Replace(dir, v+"/src/", "", 1)
+				break
+			}
+		}
 	}
 	if err := f.Write(); err != nil {
 		log.Printf("%v", err)
