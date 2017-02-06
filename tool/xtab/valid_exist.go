@@ -325,7 +325,7 @@ func (me *valids) IsExistProjectTables() bool {
 			<column extends="area_id"/>
 		</table>
 		<table id="user" name="{{message "tmpl.tab.sys.user.name"}}" extends="sys" generate="true" comment="{{message "tmpl.tab.sys.user.memo"}}">
-			<column extends="name"/>
+			<column extends="name" unique="true"/>
 			<column extends="code"/>
 			<column extends="passwd"/>
 			<column extends="genre"/>
@@ -334,7 +334,7 @@ func (me *valids) IsExistProjectTables() bool {
 			<column extends="mobile"/>
 			<column extends="area_id"/>
 			<column extends="org_id"/>
-			<column id="login_name" name="{{message "tmpl.tab.sys.user.login_name.name"}}" domain="code" comment="{{message "tmpl.tab.sys.user.login_name.memo"}}"/>
+			<column id="login_name" name="{{message "tmpl.tab.sys.user.login_name.name"}}" domain="code" comment="{{message "tmpl.tab.sys.user.login_name.memo"}}" unique="true"/>
 			<column id="login_ip" name="{{message "tmpl.tab.sys.user.login_ip.name"}}" domain="code" comment="{{message "tmpl.tab.sys.user.login_ip.memo"}}"/>
 			<column id="login_time" name="{{message "tmpl.tab.sys.user.login_time.name"}}" domain="long" comment="{{message "tmpl.tab.sys.user.login_time.memo"}}"/>
 		</table>

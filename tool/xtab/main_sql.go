@@ -49,6 +49,11 @@ func expSQL() {
 				content += dialect.CreateIndex(t)
 			}
 		}
+		for _, t := range conf.tables {
+			if t.module.project.ID() == p.ID() && t.Generate() == "true" {
+				content += dialect.CreateUniqueIndex(t)
+			}
+		}
 		f.WriteString(content)
 	}
 }

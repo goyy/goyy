@@ -37,6 +37,18 @@ func (me *sqlservers) CreateIndex(t *table) (sql string) {
 	return
 }
 
+func (me *sqlservers) CreateUniqueIndex(t *table) (sql string) {
+	tid := util.Case(t.IDs())
+	for _, c := range t.Columns() {
+		if c.Unique() == "true" {
+			cid := util.Case(c.ID())
+			index := util.Case("ui_" + t.IDs() + "_" + cid)
+			sql += fmt.Sprintf("create unique index %s on %s(%s)%s\n\n", index, tid, cid, me.Seperator)
+		}
+	}
+	return
+}
+
 func (me *sqlservers) CreateTableColumns(t *table) (sql string) {
 	var id, pk string
 	var b bool

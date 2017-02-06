@@ -8,4 +8,5 @@ type dialects interface {
 	DropTable(t *table) string
 	CreateTable(t *table) string
 	CreateIndex(t *table) string
+	CreateUniqueIndex(t *table) string
 }

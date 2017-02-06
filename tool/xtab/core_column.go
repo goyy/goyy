@@ -18,6 +18,7 @@ type xColumn struct {
 	Name     string `xml:"name,attr"`
 	Domain   string `xml:"domain,attr"`
 	Index    string `xml:"index,attr"`
+	Unique   string `xml:"unique,attr"`
 	Comment  string `xml:"comment,attr"`
 	Defaults string `xml:"default,attr"`
 	Nullable string `xml:"nullable,attr"`
@@ -29,6 +30,7 @@ type column struct {
 	name     string
 	domain   *domain
 	index    string
+	unique   string
 	comment  string
 	defaults string
 	nullable string
@@ -140,6 +142,17 @@ func (me *column) Index() string { // column.index: this -> parent
 
 func (me *column) SetIndex(value string) {
 	me.index = value
+}
+
+func (me *column) Unique() string { // column.unique: this -> parent
+	if strings.TrimSpace(me.unique) == "" && me.parent != nil {
+		return me.parent.Unique()
+	}
+	return me.unique
+}
+
+func (me *column) SetUnique(value string) {
+	me.unique = value
 }
 
 func (me *column) Comment() string { // column.comment: this -> parent -> domain
