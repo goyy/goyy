@@ -109,7 +109,7 @@ func (me *valids) IsExistModules(name, pkg string) bool {
 <configuration>
 	<modules>
 		<module id="sys" name="{{message "tmpl.mod.sys.name"}}" prefix="sys" project="` + name + `" generate="true" comment="{{message "tmpl.mod.sys.memo"}}" apipath="` + pkg + `/` + name + `-sys"/>
-		<module id="app" name="{{message "tmpl.mod.app.name"}}" prefix="app" project="` + name + `" generate="true" comment="{{message "tmpl.mod.app.memo"}}" apipath="` + pkg + `/` + name + `-app"/>
+		<module id="example" name="{{message "tmpl.mod.eg.name"}}" prefix="eg" project="` + name + `" generate="true" comment="{{message "tmpl.mod.eg.memo"}}" apipath="` + pkg + `/` + name + `-example"/>
 	</modules>
 </configuration>
 `
@@ -170,6 +170,7 @@ func (me *valids) IsExistColumns() bool {
 		<column id="genre"        domain="code"   name="{{message "tmpl.col.genre.name"}}" comment="{{message "tmpl.col.genre.memo"}}"/>
 		<column id="classify"     domain="code"   name="{{message "tmpl.col.classify.name"}}" comment="{{message "tmpl.col.classify.memo"}}"/>
 		<column id="content"      domain="descr"  name="{{message "tmpl.col.content.name"}}" comment="{{message "tmpl.col.content.memo"}}"/>
+		<column id="title"        domain="name"   name="{{message "tmpl.col.title.name"}}" comment="{{message "tmpl.col.title.memo"}}"/>
 		<column id="memo"         domain="memo"   name="{{message "tmpl.col.memo.name"}}" comment="{{message "tmpl.col.memo.memo"}}"/>
 		<column id="descr"        domain="descr"  name="{{message "tmpl.col.descr.name"}}" comment="{{message "tmpl.col.descr.memo"}}"/>
 		<column id="remark"       domain="remark" name="{{message "tmpl.col.remark.name"}}" comment="{{message "tmpl.col.remark.memo"}}"/>
@@ -186,6 +187,7 @@ func (me *valids) IsExistColumns() bool {
 		<column id="zipcode"      domain="code"   name="{{message "tmpl.col.zipcode.name"}}" comment="{{message "tmpl.col.zipcode.memo"}}"/>
 		<column id="intro"        domain="remark" name="{{message "tmpl.col.intro.name"}}" comment="{{message "tmpl.col.intro.memo"}}"/>
 		<column id="weight"       domain="int"    name="{{message "tmpl.col.weight.name"}}" comment="{{message "tmpl.col.weight.memo"}}"/>
+		<column id="price"        domain="float"  name="{{message "tmpl.col.price.name"}}" comment="{{message "tmpl.col.price.memo"}}"/>
 		<column id="city"         domain="id"     name="{{message "tmpl.col.city.name"}}" comment="{{message "tmpl.col.city.memo"}}"/>
 		<column id="ordinal"      domain="code"   name="{{message "tmpl.col.ordinal.name"}}" comment="{{message "tmpl.col.ordinal.memo"}}"/>
 		<column id="img"          domain="name"   name="{{message "tmpl.col.img.name"}}" comment="{{message "tmpl.col.img.memo"}}"/>
@@ -267,25 +269,23 @@ func (me *valids) IsExistTables() bool {
 }
 
 func (me *valids) IsExistProjectTables() bool {
-	app := `<?xml version="1.0" encoding="UTF-8" ?>
+	eg := `<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
 <configuration>
 	<tables>
-		<table id="product" name="PRODUCT" extends="base" comment="product table">
-			<column id="title"       name="TITLE"       domain="memo"   comment="product title"/>
-			<column id="description" name="DESCRIPTION" domain="remark" comment="product description"/>
-			<column id="price"       name="PRICE"       domain="float"  comment="product price"/>
-		</table>
-		<table id="order" name="ORDER" extends="base" comment="order table">
+		<table id="product" name="{{message "tmpl.tab.eg.product.name"}}" extends="sys" generate="true" comment="{{message "tmpl.tab.eg.product.memo"}}">
 			<column extends="name"/>
-			<column extends="email"/>
-			<column extends="address"/>
+			<column id="num" name="{{message "tmpl.tab.eg.product.num.name"}}" domain="int" comment="{{message "tmpl.tab.eg.product.num.memo"}}"/>
+			<column extends="price"/>
 		</table>
-		<table id="order_product" name="ORDER_PRODUCT" extends="base" comment="order product">
-			<column id="order_id"   name="ORDER_ID"   domain="id"    comment="product title"/>
-			<column id="product_id" name="PRODUCT_ID" domain="id"    comment="product description"/>
-			<column id="quantity"   name="QUANTITY"   domain="int"   comment="product quantity"/>
-			<column id="unit_price" name="UNIT_PRICE" domain="float" comment="product unit price"/>
+		<table id="discount" name="{{message "tmpl.tab.eg.discount.name"}}" extends="sys" generate="false" comment="{{message "tmpl.tab.eg.discount.memo"}}">
+			<column id="extent" name="{{message "tmpl.tab.eg.discount.extent.name"}}" domain="float" comment="{{message "tmpl.tab.eg.discount.extent.memo"}}" default="1"/>
+		</table>
+		<table id="order" name="{{message "tmpl.tab.eg.order.name"}}" extends="sys" generate="true" comment="{{message "tmpl.tab.eg.order.memo"}}">
+			<column id="product_id" name="{{message "tmpl.tab.eg.order.product_id.name"}}" domain="id" comment="{{message "tmpl.tab.eg.order.product_id.memo"}}"/>
+			<column id="discount_id" name="{{message "tmpl.tab.eg.order.discount_id.name"}}" domain="id" comment="{{message "tmpl.tab.eg.order.discount_id.memo"}}"/>
+			<column id="num" name="{{message "tmpl.tab.eg.order.num.name"}}" domain="int" comment="{{message "tmpl.tab.eg.order.num.memo"}}" default="1"/>
+			<column extends="price"/>
 		</table>
 	</tables>
 </configuration>
@@ -294,16 +294,77 @@ func (me *valids) IsExistProjectTables() bool {
 <!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
 <configuration>
 	<tables>
-		<table id="user" name="USER" extends="base" comment="user table">
-			<column extends="name" index="true"/>
-			<column extends="passwd"/>
+		<table id="menu" name="{{message "tmpl.tab.sys.menu.name"}}" extends="tree" generate="true" comment="{{message "tmpl.tab.sys.menu.memo"}}">
+			<column id="href" name="{{message "tmpl.tab.sys.menu.href.name"}}" domain="memo" comment="{{message "tmpl.tab.sys.menu.href.memo"}}"/>
+			<column id="target" name="{{message "tmpl.tab.sys.menu.target.name"}}" domain="code" comment="{{message "tmpl.tab.sys.menu.target.memo"}}"/>
+			<column id="icon" name="{{message "tmpl.tab.sys.menu.icon.name"}}" domain="code" comment="{{message "tmpl.tab.sys.menu.icon.memo"}}"/>
+			<column id="hidden" name="{{message "tmpl.tab.sys.menu.hidden.name"}}" domain="bool" comment="{{message "tmpl.tab.sys.menu.hidden.memo"}}"/>
+			<column id="permission" name="{{message "tmpl.tab.sys.menu.perm.name"}}" domain="memo" comment="{{message "tmpl.tab.sys.menu.perm.memo"}}"/>
 		</table>
-		<table id="role" name="ROLE" extends="base" comment="role table">
+		<table id="post" name="{{message "tmpl.tab.sys.post.name"}}" extends="tree" generate="true" comment="{{message "tmpl.tab.sys.post.memo"}}">
+		</table>
+		<table id="post_menu" name="{{message "tmpl.tab.sys.post_menu.name"}}" extends="sys" generate="true" menu="false" comment="{{message "tmpl.tab.sys.post_menu.memo"}}" master="post" slave="menu">
+			<column extends="post_id"/>
+			<column extends="menu_id"/>
+		</table>
+		<table id="role" name="{{message "tmpl.tab.sys.role.name"}}" extends="sys" generate="true" comment="{{message "tmpl.tab.sys.role.memo"}}">
 			<column extends="name"/>
+			<column extends="code"/>
+			<column extends="genre" name="{{message "tmpl.tab.sys.role.genre.name"}}" comment="{{message "tmpl.tab.sys.role.genre.memo"}}"/>
+			<column extends="classify" name="{{message "tmpl.tab.sys.role.classify.name"}}" comment="{{message "tmpl.tab.sys.role.classify.memo"}}"/>
+			<column extends="ordinal"/>
 		</table>
-		<table id="user_role" name="USER_ROLE" extends="pk" comment="user role associated table">
-			<column id="user_id" name="USER_ID" domain="id" comment="user table identifies"/>
-			<column id="role_id" name="ROLE_ID" domain="id" comment="role table identifies"/>
+		<table id="role_post" name="{{message "tmpl.tab.sys.role_post.name"}}" extends="sys" generate="true" menu="false" comment="{{message "tmpl.tab.sys.role_post.memo"}}" master="role" slave="post">
+			<column extends="role_id"/>
+			<column extends="post_id"/>
+		</table>
+		<table id="-" name="-" generate="false" menu="true" permissions="sys:area:view,sys:org:view,sys:user:view"/>
+		<table id="area" name="{{message "tmpl.tab.sys.area.name"}}" extends="tree" generate="true" comment="{{message "tmpl.tab.sys.area.memo"}}">
+		</table>
+		<table id="org" name="{{message "tmpl.tab.sys.org.name"}}" extends="tree" generate="true" comment="{{message "tmpl.tab.sys.org.memo"}}">
+			<column extends="area_id"/>
+		</table>
+		<table id="user" name="{{message "tmpl.tab.sys.user.name"}}" extends="sys" generate="true" comment="{{message "tmpl.tab.sys.user.memo"}}">
+			<column extends="name"/>
+			<column extends="code"/>
+			<column extends="passwd"/>
+			<column extends="genre"/>
+			<column extends="email"/>
+			<column extends="tel"/>
+			<column extends="mobile"/>
+			<column extends="area_id"/>
+			<column extends="org_id"/>
+			<column id="login_name" name="{{message "tmpl.tab.sys.user.login_name.name"}}" domain="code" comment="{{message "tmpl.tab.sys.user.login_name.memo"}}"/>
+			<column id="login_ip" name="{{message "tmpl.tab.sys.user.login_ip.name"}}" domain="code" comment="{{message "tmpl.tab.sys.user.login_ip.memo"}}"/>
+			<column id="login_time" name="{{message "tmpl.tab.sys.user.login_time.name"}}" domain="long" comment="{{message "tmpl.tab.sys.user.login_time.memo"}}"/>
+		</table>
+		<table id="user_role" name="{{message "tmpl.tab.sys.user_role.name"}}" extends="sys" generate="true" menu="false" comment="{{message "tmpl.tab.sys.user_role.memo"}}" master="user" slave="role">
+			<column extends="user_id"/>
+			<column extends="role_id"/>
+		</table>
+		<table id="-" name="-" generate="false" menu="true" permissions="sys:dict:view"/>
+		<table id="dict" name="{{message "tmpl.tab.sys.dict.name"}}" extends="sys" generate="true" comment="{{message "tmpl.tab.sys.dict.memo"}}">
+			<column extends="genre"/>
+			<column extends="descr"/>
+			<column extends="mkey"/>
+			<column extends="mval"/>
+			<column extends="filters"/>
+			<column extends="ordinal"/>
+		</table>
+		<table id="-" name="-" generate="false" menu="true" permissions="sys:cache:view"/>
+		<table id="cache" name="{{message "tmpl.tab.sys.cache"}}" generate="false" menu="true"/>
+		<table id="blacklist" name="{{message "tmpl.tab.sys.blacklist.name"}}" extends="sys" generate="true" menu="false" comment="{{message "tmpl.tab.sys.blacklist.memo"}}">
+			<column extends="name"/>
+			<column extends="genre"/>
+			<column extends="usable"/>
+		</table>
+		<table id="conf" name="{{message "tmpl.tab.sys.conf.name"}}" extends="sys" generate="true" menu="false" comment="{{message "tmpl.tab.sys.conf.name"}}">
+			<column extends="name"/>
+			<column extends="code"/>
+			<column extends="content"/>
+			<column extends="genre"/>
+			<column extends="usable"/>
+			<column extends="ordinal"/>
 		</table>
 	</tables>
 </configuration>
@@ -312,9 +373,8 @@ func (me *valids) IsExistProjectTables() bool {
 <!DOCTYPE xtab PUBLIC "-//GOYY//DTD XTAB 1.0//EN" "http://goyy.org/dtd/xtab-1.0.dtd">
 <configuration>
 	<tables>
-		<table id="table1" name="TABLE1" extends="base" comment="table1">
-			<column extends="memo"/>
-			<column id="column1" name="COLUMN1" domain="code" comment="column1"/>
+		<table id="table1" name="TABLE1" extends="sys" comment="table1">
+			<column extends="name"/>
 		</table>
 	</tables>
 </configuration>
@@ -322,12 +382,12 @@ func (me *valids) IsExistProjectTables() bool {
 	xconf := util.DecodeXML(xmodules)
 	isExist := true
 	for _, v := range xconf.Modules.Module {
-		if v.Project == "demo" && v.ID == "app" {
-			if util.InitFile("./conf/schema/tables-demo-app.xml", app) == false {
+		if v.ID == "example" {
+			if util.InitFile("./conf/schema/tables-"+v.Project+"-example.xml", eg) == false {
 				isExist = false
 			}
-		} else if v.Project == "demo" && v.ID == "sys" {
-			if util.InitFile("./conf/schema/tables-demo-sys.xml", sys) == false {
+		} else if v.ID == "sys" {
+			if util.InitFile("./conf/schema/tables-"+v.Project+"-sys.xml", sys) == false {
 				isExist = false
 			}
 		} else {
