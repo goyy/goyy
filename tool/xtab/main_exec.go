@@ -12,10 +12,21 @@ func main() {
 	isEntity := flag.Bool("entity", false, "is generated entity")
 	isSQL := flag.Bool("sql", false, "is generated SQL")
 	isMenu := flag.Bool("menu", false, "is generated menu")
+
+	isMerge := flag.Bool("merge", false, "is merged file")
+	fileRegexp := flag.String("regexp", `^insert.[\S]+.sql$`, "file regexp")
+	newfile := flag.String("newfile", "init.sql", "merged new file name")
+
 	proj := flag.String("proj", "goyy", "project name")
 	pkg := flag.String("pkg", "", "path to package for new project")
 	flag.Parse()
-	initgen(*proj, *pkg)
+	if *isMerge {
+		logger.Println("Merging file : start")
+		mergeFile(".", *fileRegexp, *newfile)
+		logger.Println("Merged file : end")
+	} else {
+		initgen(*proj, *pkg)
+	}
 	if *isSQL {
 		logger.Println("Exporting sql : start")
 		expSQL()

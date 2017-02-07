@@ -63,14 +63,15 @@ func expSQL() {
 }
 
 func expDataSQL() {
+	var dir = "./conf/data/"
 	types := []string{"area", "org", "dict", "post", "post.menu", "role", "role.post", "user", "user.role"}
 	for _, typ := range types {
-		writeBy("data." + typ)
+		writeBy("data."+typ, dir)
 	}
+	mergeFile(dir, `^insert.[\S]+.sql$`, "init.sql")
 }
 
-func writeBy(typ string) error {
-	var dir = "./conf/data/"
+func writeBy(typ, dir string) error {
 	var tmpl string
 	var dstfile string
 	switch typ {

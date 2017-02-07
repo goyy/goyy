@@ -129,6 +129,15 @@ func AbsDir(file string) (string, error) {
 	return strings.Replace(dir, "\\", "/", -1), nil
 }
 
+// Abs returns an absolute representation of path.
+// If the path is not absolute it will be joined with the current
+// working directory to turn it into an absolute path. The absolute
+// path name for a given file is not guaranteed to be unique.
+// Abs calls Clean on the result.
+func Abs(path string) (string, error) {
+	return filepath.Abs(path)
+}
+
 // Extension returns the <a href="http://en.wikipedia.org/wiki/Filename_extension">file
 // extension</a> for the given file name, or the empty string if the file has
 // no extension.  The result does not include the '{@code .}'.
