@@ -20,7 +20,7 @@ type xProject struct {
 	Generate string `xml:"generate,attr"`
 	Menu     string `xml:"menu,attr"`
 	Comment  string `xml:"comment,attr"`
-	Clipath  string `xml:"clipath,attr"`
+	Admpath  string `xml:"admpath,attr"`
 	Apipath  string `xml:"apipath,attr"`
 	Tstpath  string `xml:"tstpath,attr"`
 }
@@ -33,7 +33,7 @@ type project struct {
 	generate string
 	menu     string
 	comment  string
-	clipath  string
+	admpath  string
 	apipath  string
 	tstpath  string
 }
@@ -92,12 +92,12 @@ func (me *project) SetComment(value string) {
 	me.comment = value
 }
 
-func (me *project) Clipath() string {
-	return me.clipath
+func (me *project) Admpath() string {
+	return me.admpath
 }
 
-func (me *project) SetClipath(value string) {
-	me.clipath = value
+func (me *project) SetAdmpath(value string) {
+	me.admpath = value
 }
 
 func (me *project) Apipath() string {

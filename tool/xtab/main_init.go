@@ -66,7 +66,7 @@ func (me *inits) Projects() {
 			generate: xp.Generate,
 			menu:     xp.Menu,
 			comment:  xp.Comment,
-			clipath:  xp.Clipath,
+			admpath:  xp.Admpath,
 			apipath:  xp.Apipath,
 			tstpath:  xp.Tstpath,
 		}
@@ -91,7 +91,7 @@ func (me *inits) Modules() {
 			generate: xm.Generate,
 			menu:     xm.Menu,
 			comment:  xm.Comment,
-			clipath:  xm.Clipath,
+			admpath:  xm.Admpath,
 			apipath:  xm.Apipath,
 			tstpath:  xm.Tstpath,
 		}

@@ -20,7 +20,7 @@ type xModule struct {
 	Generate string `xml:"generate,attr"`
 	Menu     string `xml:"menu,attr"`
 	Comment  string `xml:"comment,attr"`
-	Clipath  string `xml:"clipath,attr"`
+	Admpath  string `xml:"admpath,attr"`
 	Apipath  string `xml:"apipath,attr"`
 	Tstpath  string `xml:"tstpath,attr"`
 }
@@ -33,7 +33,7 @@ type module struct {
 	generate string
 	menu     string
 	comment  string
-	clipath  string
+	admpath  string
 	apipath  string
 	tstpath  string
 }
@@ -95,15 +95,15 @@ func (me *module) SetComment(value string) {
 	me.comment = value
 }
 
-func (me *module) Clipath() string { // module.clipath: this -> project
-	if strings.TrimSpace(me.clipath) == "" && me.project != nil {
-		return me.project.Clipath()
+func (me *module) Admpath() string { // module.admpath: this -> project
+	if strings.TrimSpace(me.admpath) == "" && me.project != nil {
+		return me.project.Admpath()
 	}
-	return me.clipath
+	return me.admpath
 }
 
-func (me *module) SetClipath(value string) {
-	me.clipath = value
+func (me *module) SetAdmpath(value string) {
+	me.admpath = value
 }
 
 func (me *module) Apipath() string { // module.apipath: this -> project

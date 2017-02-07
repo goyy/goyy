@@ -22,7 +22,7 @@ import (
 func genMenu() {
 	// generate the header.html
 	for _, p := range conf.projects {
-		clidir := "../" + strings.AfterLast(p.Clipath(), "/")
+		clidir := "../" + strings.AfterLast(p.Admpath(), "/")
 		dir := clidir + "/templates/core/include/"
 		dstfile := dir + "header.html"
 		if !files.IsExist(dstfile) {
