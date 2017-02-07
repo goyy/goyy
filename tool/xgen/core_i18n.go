@@ -41,7 +41,6 @@ var locales = map[string]map[string]string{
 		"html.list.edit":           "修改",
 		"html.list.del":            "删除",
 		"html.form.save":           "保存",
-		"tmpl.schema.data.area":    "区域",
 	},
 	i18n.LocaleEnUS: map[string]string{
 		"col.comment.id":           "ID",
@@ -73,6 +72,5 @@ var locales = map[string]map[string]string{
 		"html.list.edit":           "edit",
 		"html.list.del":            "delete",
 		"html.form.save":           "save",
-		"tmpl.schema.data.area":    "AREA",
 	},
 }

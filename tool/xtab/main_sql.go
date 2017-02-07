@@ -7,9 +7,13 @@ package main
 import (
 	"log"
 	"os"
+	"path/filepath"
+
+	"gopkg.in/goyy/goyy.v0/util/files"
 )
 
 func expSQL() {
+	expDataSQL()
 	for _, p := range conf.projects {
 		var dialect dialects
 		switch p.database.driverName {
@@ -56,4 +60,52 @@ func expSQL() {
 		}
 		f.WriteString(content)
 	}
+}
+
+func expDataSQL() {
+	types := []string{"area", "org", "dict", "post", "post.menu", "role", "role.post", "user", "user.role"}
+	for _, typ := range types {
+		writeBy("data." + typ)
+	}
+}
+
+func writeBy(typ string) error {
+	var dir = "./conf/data/"
+	var tmpl string
+	var dstfile string
+	switch typ {
+	case "data.area":
+		tmpl = tmplDataArea
+		dstfile = "insert.sys_area.sql"
+	case "data.org":
+		tmpl = tmplDataOrg
+		dstfile = "insert.sys_org.sql"
+	case "data.dict":
+		tmpl = tmplDataDict
+		dstfile = "insert.sys_dict.sql"
+	case "data.post":
+		tmpl = tmplDataPost
+		dstfile = "insert.sys_post.sql"
+	case "data.post.menu":
+		tmpl = tmplDataPostMenu
+		dstfile = "insert.sys_post_menu.sql"
+	case "data.role":
+		tmpl = tmplDataRole
+		dstfile = "insert.sys_role.sql"
+	case "data.role.post":
+		tmpl = tmplDataRolePost
+		dstfile = "insert.sys_role_post.sql"
+	case "data.user":
+		tmpl = tmplDataUser
+		dstfile = "insert.sys_user.sql"
+	case "data.user.role":
+		tmpl = tmplDataUserRole
+		dstfile = "insert.sys_user_role.sql"
+	}
+	dstfile = filepath.Join(dir, dstfile)
+	if !files.IsExist(dir) {
+		files.MkdirAll(dir, 0744)
+	}
+
+	return write(tmpl, dstfile)
 }

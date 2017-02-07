@@ -11,19 +11,23 @@ import (
 
 	"gopkg.in/goyy/goyy.v0/util/files"
 	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/util/times"
 )
 
-func write(tmpls, dstfile string) {
+var now = times.NowUnixStr()
+
+func write(tmpls, dstfile string) error {
 	if files.IsExist(dstfile) == false {
 		buf := bytes.Buffer{}
 		tmpl := newTmpl(tmpls)
 		tmpl.Execute(&buf, nil)
-		ioutil.WriteFile(dstfile, buf.Bytes(), 0744)
+		return ioutil.WriteFile(dstfile, buf.Bytes(), 0744)
 	}
+	return nil
 }
 
 func newTmpl(s string) *template.Template {
-	return template.Must(template.New("T").Funcs(funcs).Parse(s))
+	return template.Must(template.New("t-xtab").Funcs(funcs).Parse(s))
 }
 
 var (
@@ -37,14 +41,21 @@ var (
 		"padname": func(s string, size int) string {
 			return strings.PadRight(s, size, " ")
 		},
-		"blank":    func(s string) bool { return strings.IsBlank(s) },
-		"notblank": func(s string) bool { return strings.IsNoneBlank(s) },
-		"padright": func(s string, size int) string { return strings.PadRight(s, size, " ") },
-		"lower":    func(s string) string { return strings.ToLower(s) },
-		"lower1":   func(s string) string { return strings.ToLowerFirst(s) },
-		"upper":    func(s string) string { return strings.ToUpper(s) },
-		"upper1":   func(s string) string { return strings.ToUpperFirst(s) },
-		"camel":    func(s string) string { return strings.Camel(s) },
-		"uncamel":  func(s string) string { return strings.UnCamel(s, "_") },
+		"blank":     func(s string) bool { return strings.IsBlank(s) },
+		"notblank":  func(s string) bool { return strings.IsNoneBlank(s) },
+		"padright":  func(s string, size int) string { return strings.PadRight(s, size, " ") },
+		"lower":     func(s string) string { return strings.ToLower(s) },
+		"lower1":    func(s string) string { return strings.ToLowerFirst(s) },
+		"upper":     func(s string) string { return strings.ToUpper(s) },
+		"upper1":    func(s string) string { return strings.ToUpperFirst(s) },
+		"camel":     func(s string) string { return strings.Camel(s) },
+		"uncamel":   func(s string) string { return strings.UnCamel(s, "_") },
+		"seperator": func() string { return conf.Settings.Statement.Seperator },
+		"case": func(s string) string {
+			if strings.ToLower(conf.Settings.Statement.Case) == "upper" {
+				return strings.ToUpper(s)
+			}
+			return strings.ToLower(s)
+		},
 	}
 )

@@ -482,9 +482,6 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".schema.conf.db":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/conf/env/"
 			dstfile = "db.xml"
-		case newProj + ".schema.data.area":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/conf/data/"
-			dstfile = "insert.sys_area.sql"
 		}
 		dstfile = filepath.Join(dir, dstfile)
 	}
@@ -539,9 +536,6 @@ func (me factory) writeNewProj() error {
 		return err
 	}
 	if err := me.writeBy(newProj+".schema.conf.db", tmplNewProjTstDB); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".schema.data.area", tmplNewProjSchemaDataArea); err != nil {
 		return err
 	}
 	return nil
