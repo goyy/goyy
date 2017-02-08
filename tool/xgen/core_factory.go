@@ -554,8 +554,8 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".web.static.js.core":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/js/core/"
 			dstfile = "README.md"
-		case newProj + ".web.static.libs":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/libs/"
+		case newProj + ".web.static.lib":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/lib/"
 			dstfile = "README.md"
 		case newProj + ".web.templates.comm":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-web/templates/comm/"
@@ -575,6 +575,108 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".web.templates.ver":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-web/templates/"
 			dstfile = "version.html"
+		case newProj + ".adm":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/"
+			dstfile = "adm.go"
+		case newProj + ".adm.bin.restart":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/bin/"
+			dstfile = "restart.sh"
+		case newProj + ".adm.bin.startup":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/bin/"
+			dstfile = "startup.sh"
+		case newProj + ".adm.bin.shutdown":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/bin/"
+			dstfile = "shutdown.sh"
+		case newProj + ".adm.conf.api":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/conf/env/"
+			dstfile = "api.xml"
+		case newProj + ".adm.conf.db":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/conf/env/"
+			dstfile = "db.xml"
+		case newProj + ".adm.conf.export":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/conf/env/"
+			dstfile = "export.xml"
+		case newProj + ".adm.conf.log":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/conf/env/"
+			dstfile = "log.xml"
+		case newProj + ".adm.conf.secure":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/conf/env/"
+			dstfile = "secure.xml"
+		case newProj + ".adm.conf.sensitive":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/conf/env/"
+			dstfile = "sensitive.xml"
+		case newProj + ".adm.conf.session":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/conf/env/"
+			dstfile = "session.xml"
+		case newProj + ".adm.conf.settings":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/conf/env/"
+			dstfile = "settings.xml"
+		case newProj + ".adm.conf.static":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/conf/env/"
+			dstfile = "static.xml"
+		case newProj + ".adm.conf.template":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/conf/env/"
+			dstfile = "template.xml"
+		case newProj + ".adm.conf.upload":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/conf/env/"
+			dstfile = "upload.xml"
+		case newProj + ".adm.static.css.comm":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/css/comm/"
+			dstfile = "comm.css"
+		case newProj + ".adm.static.css.navbar":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/css/comm/"
+			dstfile = "navbar.css"
+		case newProj + ".adm.static.img.comm":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/images/comm/"
+			dstfile = "README.md"
+		case newProj + ".adm.static.img.core":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/images/core/"
+			dstfile = "README.md"
+		case newProj + ".adm.static.js.comm.form":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/comm/"
+			dstfile = "jquery.form.js"
+		case newProj + ".adm.static.js.comm.page":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/comm/"
+			dstfile = "jquery.page.js"
+		case newProj + ".adm.static.js.comm.util":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/comm/"
+			dstfile = "jquery.util.js"
+		case newProj + ".adm.static.js.sys.area":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/area/"
+			dstfile = "area.js"
+		case newProj + ".adm.static.js.sys.blacklist":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/blacklist/"
+			dstfile = "blacklist.js"
+		case newProj + ".adm.static.js.sys.cache":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/cache/"
+			dstfile = "cache.js"
+		case newProj + ".adm.static.js.sys.conf":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/conf/"
+			dstfile = "conf.js"
+		case newProj + ".adm.static.js.sys.dict":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/dict/"
+			dstfile = "dict.js"
+		case newProj + ".adm.static.js.sys.menu":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/menu/"
+			dstfile = "menu.js"
+		case newProj + ".adm.static.js.sys.org":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/org/"
+			dstfile = "org.js"
+		case newProj + ".adm.static.js.sys.post":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/post/"
+			dstfile = "post.js"
+		case newProj + ".adm.static.js.sys.role":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/role/"
+			dstfile = "role.js"
+		case newProj + ".adm.static.js.sys.user":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/user/"
+			dstfile = "user.js"
+		case newProj + ".adm.static.js.home":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/"
+			dstfile = "home.js"
+		case newProj + ".adm.static.js.login":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/"
+			dstfile = "login.js"
 		}
 		dstfile = filepath.Join(dir, dstfile)
 	}
@@ -703,7 +805,7 @@ func (me factory) writeNewProj() error {
 	if err := me.writeBy(newProj+".web.static.js.core", tmplNewProjWebStaticJSCore); err != nil {
 		return err
 	}
-	if err := me.writeBy(newProj+".web.static.libs", tmplNewProjWebStaticLibs); err != nil {
+	if err := me.writeBy(newProj+".web.static.lib", tmplNewProjWebStaticLib); err != nil {
 		return err
 	}
 	if err := me.writeBy(newProj+".web.templates.comm", tmplNewProjWebTemplatesComm); err != nil {
@@ -722,6 +824,108 @@ func (me factory) writeNewProj() error {
 		return err
 	}
 	if err := me.writeBy(newProj+".web.templates.ver", tmplNewProjWebTemplatesVer); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm", tmplNewProjAdm); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.bin.restart", tmplNewProjAdmBinRestart); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.bin.startup", tmplNewProjAdmBinStartup); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.bin.shutdown", tmplNewProjAdmBinShutdown); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.conf.api", tmplNewProjAdmConfAPI); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.conf.db", tmplNewProjTstDB); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.conf.export", tmplNewProjAdmConfExport); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.conf.log", tmplNewProjAdmConfLog); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.conf.secure", tmplNewProjAdmConfSecure); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.conf.sensitive", tmplNewProjAdmConfSensitive); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.conf.session", tmplNewProjAdmConfSession); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.conf.settings", tmplNewProjAdmConfSettings); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.conf.static", tmplNewProjAdmConfStatic); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.conf.template", tmplNewProjAdmConfTemplate); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.conf.upload", tmplNewProjAdmConfUpload); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.css.comm", tmplNewProjAdmStaticCssComm); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.css.navbar", tmplNewProjAdmStaticCssNavbar); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.img.comm", tmplNewProjAdmStaticImgComm); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.img.core", tmplNewProjAdmStaticImgCore); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.js.comm.form", tmplNewProjAdmStaticJSCommForm); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.js.comm.page", tmplNewProjAdmStaticJSCommPage); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.js.comm.util", tmplNewProjAdmStaticJSCommUtil); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.js.sys.area", tmplNewProjAdmStaticJSSysArea); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.js.sys.blacklist", tmplNewProjAdmStaticJSSysBlacklist); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.js.sys.cache", tmplNewProjAdmStaticJSSysCache); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.js.sys.conf", tmplNewProjAdmStaticJSSysConf); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.js.sys.dict", tmplNewProjAdmStaticJSSysDict); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.js.sys.menu", tmplNewProjAdmStaticJSSysMenu); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.js.sys.org", tmplNewProjAdmStaticJSSysOrg); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.js.sys.post", tmplNewProjAdmStaticJSSysPost); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.js.sys.role", tmplNewProjAdmStaticJSSysRole); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.js.sys.user", tmplNewProjAdmStaticJSSysUser); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.js.home", tmplNewProjAdmStaticJSHome); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.js.login", tmplNewProjAdmStaticJSLogin); err != nil {
 		return err
 	}
 	return nil

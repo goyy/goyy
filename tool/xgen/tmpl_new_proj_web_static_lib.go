@@ -4,5 +4,5 @@
 
 package main
 
-var tmplNewProjWebStaticLibs = `# js libs
+var tmplNewProjWebStaticLib = `# js lib
 `
