@@ -488,6 +488,27 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".schema.conf.data.merge.bat":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/conf/data/"
 			dstfile = "merge-file.bat"
+		case newProj + ".web":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/"
+			dstfile = "web.go"
+		case newProj + ".web.bin.restart":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/bin/"
+			dstfile = "restart.sh"
+		case newProj + ".web.bin.startup":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/bin/"
+			dstfile = "startup.sh"
+		case newProj + ".web.bin.shutdown":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/bin/"
+			dstfile = "shutdown.sh"
+		case newProj + ".web.conf.api":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/conf/env/"
+			dstfile = "api.xml"
+		case newProj + ".web.conf.db":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/conf/env/"
+			dstfile = "db.xml"
+		case newProj + ".web.conf.export":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/conf/env/"
+			dstfile = "export.xml"
 		}
 		dstfile = filepath.Join(dir, dstfile)
 	}
@@ -548,6 +569,27 @@ func (me factory) writeNewProj() error {
 		return err
 	}
 	if err := me.writeBy(newProj+".schema.conf.data.merge.bat", tmplNewProjSchemaDataMergeBat); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web", tmplNewProjWeb); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.bin.restart", tmplNewProjWebBinRestart); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.bin.startup", tmplNewProjWebBinStartup); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.bin.shutdown", tmplNewProjWebBinShutdown); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.conf.api", tmplNewProjWebConfAPI); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.conf.db", tmplNewProjTstDB); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.conf.export", tmplNewProjWebConfExport); err != nil {
 		return err
 	}
 	return nil
