@@ -533,6 +533,48 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".web.conf.upload":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-web/conf/env/"
 			dstfile = "upload.xml"
+		case newProj + ".web.internal.doc":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/internal/"
+			dstfile = "doc.go"
+		case newProj + ".web.static.css.comm":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/css/comm/"
+			dstfile = "comm.css"
+		case newProj + ".web.static.css.core":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/css/core/"
+			dstfile = "global.css"
+		case newProj + ".web.static.img.comm":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/images/comm/"
+			dstfile = "README.md"
+		case newProj + ".web.static.img.core":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/images/core/"
+			dstfile = "README.md"
+		case newProj + ".web.static.js.comm":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/js/comm/"
+			dstfile = "README.md"
+		case newProj + ".web.static.js.core":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/js/core/"
+			dstfile = "README.md"
+		case newProj + ".web.static.libs":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/libs/"
+			dstfile = "README.md"
+		case newProj + ".web.templates.comm":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/templates/comm/"
+			dstfile = "README.md"
+		case newProj + ".web.templates.core":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/templates/core/"
+			dstfile = "README.md"
+		case newProj + ".web.templates.home":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/templates/"
+			dstfile = "home.html"
+		case newProj + ".web.templates.login":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/templates/"
+			dstfile = "login.html"
+		case newProj + ".web.templates.title":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/templates/"
+			dstfile = "title.html"
+		case newProj + ".web.templates.ver":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/templates/"
+			dstfile = "version.html"
 		}
 		dstfile = filepath.Join(dir, dstfile)
 	}
@@ -638,6 +680,48 @@ func (me factory) writeNewProj() error {
 		return err
 	}
 	if err := me.writeBy(newProj+".web.conf.upload", tmplNewProjWebConfUpload); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.internal.doc", tmplNewProjWebInternalDoc); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.static.css.comm", tmplNewProjWebStaticCssComm); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.static.css.core", tmplNewProjWebStaticCssCore); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.static.img.comm", tmplNewProjWebStaticImgComm); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.static.img.core", tmplNewProjWebStaticImgCore); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.static.js.comm", tmplNewProjWebStaticJSComm); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.static.js.core", tmplNewProjWebStaticJSCore); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.static.libs", tmplNewProjWebStaticLibs); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.templates.comm", tmplNewProjWebTemplatesComm); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.templates.core", tmplNewProjWebTemplatesCore); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.templates.home", tmplNewProjWebTemplatesHome); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.templates.login", tmplNewProjWebTemplatesLogin); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.templates.title", tmplNewProjWebTemplatesTitle); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.templates.ver", tmplNewProjWebTemplatesVer); err != nil {
 		return err
 	}
 	return nil

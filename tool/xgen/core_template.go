@@ -9,11 +9,13 @@ import (
 
 	"gopkg.in/goyy/goyy.v0/comm/i18n"
 	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/util/times"
 )
 
 var (
 	filters = template.FuncMap{
 		"iszhcn":   func() bool { return i18N.Locale() == i18n.LocaleZhCN },
+		"year":     func() string { return times.Format("2006", times.Now()) },
 		"blank":    func(s string) bool { return strings.IsBlank(s) },
 		"notblank": func(s string) bool { return strings.IsNoneBlank(s) },
 		"padright": func(s string, size int) string { return strings.PadRight(s, size, " ") },

@@ -13,6 +13,7 @@ import _ "gopkg.in/goyy/goyy.v0/app/sys/api/dict"
 import (
 	_ "<%.NewProjPkg%>/<%.NewProjName%>-web/internal"
 	_ "gopkg.in/goyy/goyy.v0/app/comm/controller/captcha"
+	_ "gopkg.in/goyy/goyy.v0/app/comm/controller/home"
 	_ "gopkg.in/goyy/goyy.v0/app/sys"
 	"gopkg.in/goyy/goyy.v0/comm/log"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"
