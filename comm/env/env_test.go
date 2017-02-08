@@ -121,7 +121,7 @@ func TestParseTemplate(t *testing.T) {
 	}
 }
 
-func TestParseIllegal(t *testing.T) {
+func TestParseSensitive(t *testing.T) {
 	in := "env"
 	out1 := "env"
 	out2 := true
@@ -130,11 +130,11 @@ func TestParseIllegal(t *testing.T) {
 	exclude := "/login"
 	value := "FileOutputStream,"
 
-	v, _ := env.ParseIllegal(in)
+	v, _ := env.ParseSensitive(in)
 	out3 := strings.Index(v.Excludes, exclude)
 	out4 := strings.Index(v.Values, value)
 	if v.Name != out1 || v.Enable != out2 || out3 == notExpected || out4 == notExpected {
-		format := "env.ParseIllegal(%s) = %s, %t, %v, %v; want %s, %t, %s, %s"
+		format := "env.ParseSensitive(%s) = %s, %t, %v, %v; want %s, %t, %s, %s"
 		t.Errorf(format, in, v.Name, v.Enable, out3, out4, out1, out2, ">0", ">0")
 	}
 }

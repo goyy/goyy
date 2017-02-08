@@ -242,20 +242,20 @@ func ParseTemplate(name string) (out Template, err error) {
 	return
 }
 
-// ParseIllegal get the illegal based on the environment profiles.
-func ParseIllegal(name string) (out Illegal, err error) {
-	xEnv, err := parse(conf + "/env/illegal.xml")
+// ParseSensitive get the sensitive word based on the environment profiles.
+func ParseSensitive(name string) (out Sensitive, err error) {
+	xEnv, err := parse(conf + "/env/sensitive.xml")
 	if err != nil {
 		return
 	}
-	outs := xEnv.Illegals
+	outs := xEnv.Sensitives
 	for _, v := range outs {
 		if v.Name == name {
 			out = v
 			return
 		}
 	}
-	err = errors.New(i18N.Messagef("empty.environments.environment.illegal", name))
+	err = errors.New(i18N.Messagef("empty.environments.environment.sensitive", name))
 	return
 }
 

@@ -30,22 +30,22 @@ type Profile struct {
 
 // Environment environment.
 type Environment struct {
-	Id         string     `xml:"id,attr"`
-	Databases  []Database `xml:"database"`
-	Mails      []Mail     `xml:"mail"`
-	Sessions   []Session  `xml:"session"`
-	Apis       []Api      `xml:"api"`
-	Assets     []Static   `xml:"asset"`
-	Statics    []Static   `xml:"static"`
-	Developers []Static   `xml:"developer"`
-	Operations []Static   `xml:"operation"`
-	Uploads    []Upload   `xml:"upload"`
-	Exports    []Export   `xml:"export"`
-	Htmls      []Template `xml:"html"`
-	Templates  []Template `xml:"template"`
-	Illegals   []Illegal  `xml:"illegal"`
-	Logs       []Log      `xml:"log"`
-	Secures    []Secure   `xml:"secure"`
+	Id         string      `xml:"id,attr"`
+	Databases  []Database  `xml:"database"`
+	Mails      []Mail      `xml:"mail"`
+	Sessions   []Session   `xml:"session"`
+	Apis       []Api       `xml:"api"`
+	Assets     []Static    `xml:"asset"`
+	Statics    []Static    `xml:"static"`
+	Developers []Static    `xml:"developer"`
+	Operations []Static    `xml:"operation"`
+	Uploads    []Upload    `xml:"upload"`
+	Exports    []Export    `xml:"export"`
+	Htmls      []Template  `xml:"html"`
+	Templates  []Template  `xml:"template"`
+	Sensitives []Sensitive `xml:"sensitive"`
+	Logs       []Log       `xml:"log"`
+	Secures    []Secure    `xml:"secure"`
 }
 
 // Database database.
@@ -111,8 +111,8 @@ type Template struct {
 	Reloaded bool   `xml:"reloaded"`
 }
 
-// Illegal illegal.
-type Illegal struct {
+// Sensitive sensitive word.
+type Sensitive struct {
 	Name     string `xml:"name,attr"`
 	Enable   bool   `xml:"enable"`
 	Excludes string `xml:"excludes"`

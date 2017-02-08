@@ -133,7 +133,7 @@ func initTemplate(envName string) {
 }
 
 func initIllegal(envName string) {
-	if v, err := env.ParseIllegal(envName); err == nil {
+	if v, err := env.ParseSensitive(envName); err == nil {
 		Conf.Illegal.Enable = v.Enable
 		if v.Enable {
 			Conf.Illegal.Excludes = []string{v.Excludes}
