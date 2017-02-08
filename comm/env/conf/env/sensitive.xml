@@ -8,8 +8,7 @@
 				<excludes>
 				<![CDATA[
 				/,
-				/login,
-				/sys/user/info
+				/login
 				]]>
 				</excludes>
 				<values>
@@ -34,8 +33,7 @@
 				<excludes>
 				<![CDATA[
 				/,
-				/login,
-				/sys/user/info
+				/login
 				]]>
 				</excludes>
 				<values>

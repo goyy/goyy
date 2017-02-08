@@ -4,24 +4,25 @@
 
 package main
 
-var tmplNewProjWebConfExport = `<?xml version="1.0" encoding="UTF-8" ?>
+var tmplNewProjWebConfSession = `<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE env PUBLIC "-//GOYY//DTD ENV 1.0//EN" "http://goyy.org/dtd/env-1.0.dtd">
 <configuration>
 	<environments default="development">
 		<environment id="development">
-			<export name="<%.NewProjName%>">
-				<dir>/app/assets/<%.NewProjName%>dev/export/excel</dir>
-			</export>
+			<session name="<%.NewProjName%>">
+				<addr>127.0.0.1:6379</addr>
+			</session>
 		</environment>
 		<environment id="test">
-			<export name="<%.NewProjName%>">
-				<dir>/app/assets/<%.NewProjName%>dev/export/excel</dir>
-			</export>
+			<session name="<%.NewProjName%>">
+				<addr>127.0.0.1:6379</addr>
+			</session>
 		</environment>
 		<environment id="production">
-			<export name="<%.NewProjName%>">
-				<dir>/app/assets/<%.NewProjName%>dev/export/excel</dir>
-			</export>
+			<session name="<%.NewProjName%>">
+				<addr>127.0.0.1:6379</addr>
+				<password><%.NewProjName%></password>
+			</session>
 		</environment>
 	</environments>
 </configuration>

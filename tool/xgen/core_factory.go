@@ -509,6 +509,30 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".web.conf.export":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-web/conf/env/"
 			dstfile = "export.xml"
+		case newProj + ".web.conf.log":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/conf/env/"
+			dstfile = "log.xml"
+		case newProj + ".web.conf.secure":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/conf/env/"
+			dstfile = "secure.xml"
+		case newProj + ".web.conf.sensitive":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/conf/env/"
+			dstfile = "sensitive.xml"
+		case newProj + ".web.conf.session":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/conf/env/"
+			dstfile = "session.xml"
+		case newProj + ".web.conf.settings":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/conf/env/"
+			dstfile = "settings.xml"
+		case newProj + ".web.conf.static":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/conf/env/"
+			dstfile = "static.xml"
+		case newProj + ".web.conf.template":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/conf/env/"
+			dstfile = "template.xml"
+		case newProj + ".web.conf.upload":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/conf/env/"
+			dstfile = "upload.xml"
 		}
 		dstfile = filepath.Join(dir, dstfile)
 	}
@@ -590,6 +614,30 @@ func (me factory) writeNewProj() error {
 		return err
 	}
 	if err := me.writeBy(newProj+".web.conf.export", tmplNewProjWebConfExport); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.conf.log", tmplNewProjWebConfLog); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.conf.secure", tmplNewProjWebConfSecure); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.conf.sensitive", tmplNewProjWebConfSensitive); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.conf.session", tmplNewProjWebConfSession); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.conf.settings", tmplNewProjWebConfSettings); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.conf.static", tmplNewProjWebConfStatic); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.conf.template", tmplNewProjWebConfTemplate); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".web.conf.upload", tmplNewProjWebConfUpload); err != nil {
 		return err
 	}
 	return nil
