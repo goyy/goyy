@@ -12,6 +12,7 @@ import (
 	"go/printer"
 	"go/token"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -432,7 +433,7 @@ func (me factory) writeBy(typ, content string) error {
 	if me.HasGenEntity {
 		admdir := "../../../" + strings.AfterLast(me.AdmPath, "/")
 		// get the destination file
-		dir, file := filepath.Split(me.EntiPath)
+		_, file := filepath.Split(me.EntiPath)
 		f, name := me.genFileName(typ, file)
 		switch typ {
 		case xgenDto:
@@ -446,7 +447,7 @@ func (me factory) writeBy(typ, content string) error {
 		case xgenCtlReg:
 			dir = "../../"
 		}
-		dstfile = filepath.Join(dir, f)
+		dstfile = files.Join(dir, f)
 	}
 	if me.HasGenProj {
 		switch typ {
@@ -785,8 +786,6 @@ func (me factory) writeBy(typ, content string) error {
 	if files.IsExist(dstfile) {
 		if strings.HasPrefix(typ, typXgen) {
 			files.Remove(dstfile)
-		} else {
-			return nil
 		}
 	} else {
 		files.MkdirAll(dir, 0755)

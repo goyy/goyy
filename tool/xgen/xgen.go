@@ -15,9 +15,10 @@ import (
 )
 
 func main() {
+	log.SetFlags(log.LstdFlags | log.Llongfile)
 	// entity
 	entipath := flag.String("entity", "", "entity file path")
-	admPath := flag.String("admPath", "", "import path for admin project")
+	admPath := flag.String("admpath", "", "import path for admin project")
 	apipath := flag.String("apipath", "", "import path for api project")
 	tstpath := flag.String("tstpath", "", "import path for test project")
 	hasScaffold := flag.Bool("scaffold", false, "is generated service and controller")
@@ -82,46 +83,47 @@ func main() {
 		f.HasGenProj = true
 		f.NewProjPath = dir
 	}
-	if strings.TrimSpace(*newProjPkg) == "" {
-		dir, err := files.AbsDir(".")
-		if err != nil {
-			log.Println(err.Error())
-		}
-		dir = strings.Replace(dir, "\\", "/", -1)
-		gopath := os.Getenv("GOPATH")
-		split := ":"
-		if strings.ToLower(runtime.GOOS) == "windows" {
-			split = ";"
-			gopath = strings.ToLower(gopath)
-			dir = strings.ToLower(dir)
-		}
-		gopath = strings.Replace(gopath, "\\", "/", -1)
-		f.HasGenProj = true
-		gopaths := strings.Split(gopath, split)
-		for _, v := range gopaths {
-			if strings.Contains(dir, v) {
-				f.NewProjPkg = strings.Replace(dir, v+"/src/", "", 1)
-				break
+	if f.HasGenProj {
+		if strings.TrimSpace(*newProjPkg) == "" {
+			dir, err := files.AbsDir(".")
+			if err != nil {
+				log.Println(err.Error())
+			}
+			dir = strings.Replace(dir, "\\", "/", -1)
+			gopath := os.Getenv("GOPATH")
+			split := ":"
+			if strings.ToLower(runtime.GOOS) == "windows" {
+				split = ";"
+				gopath = strings.ToLower(gopath)
+				dir = strings.ToLower(dir)
+			}
+			gopath = strings.Replace(gopath, "\\", "/", -1)
+			gopaths := strings.Split(gopath, split)
+			for _, v := range gopaths {
+				if strings.Contains(dir, v) {
+					f.NewProjPkg = strings.Replace(dir, v+"/src/", "", 1)
+					break
+				}
 			}
 		}
-	}
-	if strings.TrimSpace(*newProjTitle) == "" {
-		f.NewProjTitle = f.NewProjName
-	}
-	if strings.TrimSpace(*newProjHost) == "" {
-		f.NewProjHost = f.NewProjName + ".com"
-	} else {
-		host := strings.ToLower(*newProjHost)
-		if strings.HasPrefix(host, "http://") {
-			host = strings.TrimLeft(host, "http://")
+		if strings.TrimSpace(*newProjTitle) == "" {
+			f.NewProjTitle = f.NewProjName
 		}
-		if strings.HasPrefix(host, "https://") {
-			host = strings.TrimLeft(host, "https://")
+		if strings.TrimSpace(*newProjHost) == "" {
+			f.NewProjHost = f.NewProjName + ".com"
+		} else {
+			host := strings.ToLower(*newProjHost)
+			if strings.HasPrefix(host, "http://") {
+				host = strings.TrimLeft(host, "http://")
+			}
+			if strings.HasPrefix(host, "https://") {
+				host = strings.TrimLeft(host, "https://")
+			}
+			if strings.HasPrefix(host, "www.") {
+				host = strings.TrimLeft(host, "www.")
+			}
+			f.NewProjHost = host
 		}
-		if strings.HasPrefix(host, "www.") {
-			host = strings.TrimLeft(host, "www.")
-		}
-		f.NewProjHost = host
 	}
 	if err := f.Write(); err != nil {
 		log.Printf("%v", err)

@@ -4,43 +4,39 @@
 
 package main
 
-import (
-	"log"
-)
-
 type valids struct{}
 
 func (me *valids) IsExistXML(name, pkg string) {
-	isExit := false
+	isPrint := false
 	if me.IsExistSettings() == false {
-		isExit = true
+		isPrint = true
 	}
 	if me.IsExistEnvironments(name) == false {
-		isExit = true
+		isPrint = true
 	}
 	if me.IsExistProjects(name, pkg) == false {
-		isExit = true
+		isPrint = true
 	}
 	if me.IsExistModules(name, pkg) == false {
-		isExit = true
+		isPrint = true
 	}
 	if me.IsExistButtons() == false {
-		isExit = true
+		isPrint = true
 	}
 	if me.IsExistDomains() == false {
-		isExit = true
+		isPrint = true
 	}
 	if me.IsExistColumns() == false {
-		isExit = true
+		isPrint = true
 	}
 	if me.IsExistTables() == false {
-		isExit = true
+		isPrint = true
 	}
 	if me.IsExistProjectTables() == false {
-		isExit = true
+		isPrint = true
 	}
-	if isExit == true {
-		log.Fatal("Create and initialize the xmlfiles")
+	if isPrint == true {
+		logger.Println("Create and initialize the xmlfiles")
 	}
 }
 
