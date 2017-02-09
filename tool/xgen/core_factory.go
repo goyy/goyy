@@ -6,13 +6,13 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/printer"
 	"go/token"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -625,6 +625,9 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".adm.conf.upload":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/conf/env/"
 			dstfile = "upload.xml"
+		case newProj + ".adm.internal.doc":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/internal/"
+			dstfile = "doc.go"
 		case newProj + ".adm.static.css.comm":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/css/comm/"
 			dstfile = "comm.css"
@@ -690,6 +693,7 @@ func (me factory) writeBy(typ, content string) error {
 					return err
 				}
 			}
+			return nil
 		case newProj + ".adm.templates.home":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/"
 			dstfile = "home.html"
@@ -794,7 +798,11 @@ func (me factory) writeBy(typ, content string) error {
 	buf := bytes.Buffer{}
 	tmpl := newTmpl(content)
 	tmpl.Execute(&buf, me)
-	return ioutil.WriteFile(dstfile, buf.Bytes(), 0755)
+	err := ioutil.WriteFile(dstfile, buf.Bytes(), 0755)
+	if err != nil {
+		return errors.New("typ=" + typ + " err=" + err.Error())
+	}
+	return nil
 }
 
 func (me factory) writeNewProj() error {
@@ -970,6 +978,9 @@ func (me factory) writeNewProj() error {
 		return err
 	}
 	if err := me.writeBy(newProj+".adm.conf.upload", tmplNewProjAdmConfUpload); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.internal.doc", tmplNewProjAdmInternalDoc); err != nil {
 		return err
 	}
 	if err := me.writeBy(newProj+".adm.static.css.comm", tmplNewProjAdmStaticCssComm); err != nil {
