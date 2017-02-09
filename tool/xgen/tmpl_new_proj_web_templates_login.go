@@ -7,7 +7,7 @@ package main
 var tmplNewProjWebTemplatesLogin = `<!DOCTYPE html>
 <html>
 <head>
-<title><%.NewProjName%></title>
+<title><%.NewProjTitle%></title>
 </head>
 <body>
 <h1>Login</h1>

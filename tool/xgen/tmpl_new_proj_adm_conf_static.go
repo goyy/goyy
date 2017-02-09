@@ -34,44 +34,44 @@ var tmplNewProjAdmConfStatic = `<?xml version="1.0" encoding="UTF-8" ?>
 			<asset name="<%.NewProjName%>">
 				<enable>false</enable>
 				<dir>/app/assets</dir>
-				<url>http://assets.test.<%.NewProjName%>.com</url>
+				<url>http://assets.test.<%.NewProjHost%></url>
 			</asset>
 			<static name="<%.NewProjName%>">
 				<enable>false</enable>
 				<dir>/app/assets/<%.NewProjName%>adm</dir>
-				<url>http://assets.test.<%.NewProjName%>.com/<%.NewProjName%>adm</url>
+				<url>http://assets.test.<%.NewProjHost%>/<%.NewProjName%>adm</url>
 			</static>
 			<developer name="<%.NewProjName%>">
 				<enable>false</enable>
 				<dir>/app/assets/<%.NewProjName%>dev</dir>
-				<url>http://assets.test.<%.NewProjName%>.com/<%.NewProjName%>dev</url>
+				<url>http://assets.test.<%.NewProjHost%>/<%.NewProjName%>dev</url>
 			</developer>
 			<operation name="<%.NewProjName%>">
 				<enable>false</enable>
 				<dir>/app/assets/<%.NewProjName%>opr</dir>
-				<url>http://assets.test.<%.NewProjName%>.com/<%.NewProjName%>opr</url>
+				<url>http://assets.test.<%.NewProjHost%>/<%.NewProjName%>opr</url>
 			</operation>
 		</environment>
 		<environment id="production">
 			<asset name="<%.NewProjName%>">
 				<enable>false</enable>
 				<dir>/app/assets</dir>
-				<url>http://assets.<%.NewProjName%>.com</url>
+				<url>http://assets.<%.NewProjHost%></url>
 			</asset>
 			<static name="<%.NewProjName%>">
 				<enable>false</enable>
 				<dir>/app/assets/<%.NewProjName%>adm</dir>
-				<url>http://assets.<%.NewProjName%>.com/<%.NewProjName%>adm</url>
+				<url>http://assets.<%.NewProjHost%>/<%.NewProjName%>adm</url>
 			</static>
 			<developer name="<%.NewProjName%>">
 				<enable>false</enable>
 				<dir>/app/assets/<%.NewProjName%>dev</dir>
-				<url>http://assets.<%.NewProjName%>.com/<%.NewProjName%>dev</url>
+				<url>http://assets.<%.NewProjHost%>/<%.NewProjName%>dev</url>
 			</developer>
 			<operation name="<%.NewProjName%>">
 				<enable>false</enable>
 				<dir>/app/assets/<%.NewProjName%>opr</dir>
-				<url>http://assets.<%.NewProjName%>.com/<%.NewProjName%>opr</url>
+				<url>http://assets.<%.NewProjHost%>/<%.NewProjName%>opr</url>
 			</operation>
 		</environment>
 	</environments>

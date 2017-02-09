@@ -4,4 +4,4 @@
 
 package main
 
-var tmplNewProjWebTemplatesTitle = `_<%.NewProjName%>`
+var tmplNewProjWebTemplatesTitle = `_<%.NewProjTitle%>`

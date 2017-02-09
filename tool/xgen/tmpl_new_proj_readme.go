@@ -5,4 +5,5 @@
 package main
 
 var tmplNewProjReadme = `# <%.NewProjName%>
+<%.NewProjTitle%>
 `

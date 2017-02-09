@@ -4,13 +4,4 @@
 
 package main
 
-var tmplNewProjWebTemplatesHome = `<!DOCTYPE html>
-<html>
-<head>
-<title><%.NewProjTitle%></title>
-</head>
-<body>
-<h1>Home</h1>
-</body>
-</html>
-`
+var tmplNewProjAdmTemplatesTitle = `_<%.NewProjTitle%>`

@@ -20,7 +20,7 @@ var tmplNewProjWebConfUpload = `<?xml version="1.0" encoding="UTF-8" ?>
 			<upload name="<%.NewProjName%>">
 				<enable>false</enable>
 				<dir>/app/assets/<%.NewProjName%>upl</dir>
-				<url>http://assets.test.<%.NewProjName%>.com/<%.NewProjName%>upl</url>
+				<url>http://assets.test.<%.NewProjHost%>/<%.NewProjName%>upl</url>
 				<maxSize>5242880</maxSize>
 			</upload>
 		</environment>
@@ -28,7 +28,7 @@ var tmplNewProjWebConfUpload = `<?xml version="1.0" encoding="UTF-8" ?>
 			<upload name="<%.NewProjName%>">
 				<enable>false</enable>
 				<dir>/app/assets/<%.NewProjName%>upl</dir>
-				<url>http://assets.<%.NewProjName%>.com/<%.NewProjName%>upl</url>
+				<url>http://assets.<%.NewProjHost%>/<%.NewProjName%>upl</url>
 				<maxSize>5242880</maxSize>
 			</upload>
 		</environment>

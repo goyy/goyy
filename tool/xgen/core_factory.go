@@ -45,6 +45,8 @@ type factory struct {
 	NewProjName       string // Name of new project
 	NewProjPath       string // Path of new project
 	NewProjPkg        string // Pkg Path of new project
+	NewProjTitle      string // Title of new project
+	NewProjHost       string // Host of new project
 	Entities          []*entity
 	SysColumns        []string // goyy>data>entity:SysColumns
 	SysFields         []string // goyy>data>entity:SysFields
@@ -677,6 +679,18 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".adm.static.js.login":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/"
 			dstfile = "login.js"
+		case newProj + ".adm.templates.home":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/"
+			dstfile = "home.html"
+		case newProj + ".adm.templates.login":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/"
+			dstfile = "login.html"
+		case newProj + ".adm.templates.title":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/"
+			dstfile = "title.html"
+		case newProj + ".adm.templates.ver":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/"
+			dstfile = "version.html"
 		}
 		dstfile = filepath.Join(dir, dstfile)
 	}
@@ -926,6 +940,18 @@ func (me factory) writeNewProj() error {
 		return err
 	}
 	if err := me.writeBy(newProj+".adm.static.js.login", tmplNewProjAdmStaticJSLogin); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.home", tmplNewProjAdmTemplatesHome); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.login", tmplNewProjAdmTemplatesLogin); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.title", tmplNewProjAdmTemplatesTitle); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.ver", tmplNewProjAdmTemplatesVer); err != nil {
 		return err
 	}
 	return nil

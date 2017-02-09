@@ -34,6 +34,8 @@ func main() {
 	// new project
 	newProjName := flag.String("new", "", "name of new project")
 	newProjPkg := flag.String("pkg", "", "path to package for new project")
+	newProjTitle := flag.String("title", "", "title of new project")
+	newProjHost := flag.String("host", "", "host of new project")
 	flag.Parse()
 	f := factory{
 		AdmPath:          *admPath,
@@ -50,6 +52,8 @@ func main() {
 		HasGenHTML:       *hasHTML,
 		HasGenJs:         *hasJs,
 		NewProjName:      *newProjName,
+		NewProjTitle:     *newProjTitle,
+		NewProjHost:      *newProjHost,
 	}
 	if *hasScaffold {
 		f.HasGenService = true
@@ -100,6 +104,24 @@ func main() {
 				break
 			}
 		}
+	}
+	if strings.TrimSpace(*newProjTitle) == "" {
+		f.NewProjTitle = f.NewProjName
+	}
+	if strings.TrimSpace(*newProjHost) == "" {
+		f.NewProjHost = f.NewProjName + ".com"
+	} else {
+		host := strings.ToLower(*newProjHost)
+		if strings.HasPrefix(host, "http://") {
+			host = strings.TrimLeft(host, "http://")
+		}
+		if strings.HasPrefix(host, "https://") {
+			host = strings.TrimLeft(host, "https://")
+		}
+		if strings.HasPrefix(host, "www.") {
+			host = strings.TrimLeft(host, "www.")
+		}
+		f.NewProjHost = host
 	}
 	if err := f.Write(); err != nil {
 		log.Printf("%v", err)
