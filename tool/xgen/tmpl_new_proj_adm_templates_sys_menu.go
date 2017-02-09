@@ -122,7 +122,7 @@ var tmplNewProjAdmTemplatesSysMenu = `<!DOCTYPE html>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label"><%message "tmpl.sys.col.herf"%></label>
+						<label class="control-label"><%message "tmpl.sys.col.href"%></label>
 						<div>
 							<input class="form-control" id="href" name="href" value="{{href}}"/>
 						</div>

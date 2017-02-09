@@ -11,7 +11,7 @@ import _ "gopkg.in/goyy/goyy.v0/web/conf"
 import _ "gopkg.in/goyy/goyy.v0/app/sys/api/dict"
 
 import (
-	_ "<%.NewProjPkg%>/<%.NewProjName%>-web/internal"
+	_ "<%.NewProjPkg%>/<%.NewProjName%>-adm/internal"
 	_ "gopkg.in/goyy/goyy.v0/app/comm/controller/assets"
 	_ "gopkg.in/goyy/goyy.v0/app/comm/controller/captcha"
 	_ "gopkg.in/goyy/goyy.v0/app/comm/controller/home"
