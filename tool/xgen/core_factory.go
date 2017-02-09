@@ -12,7 +12,9 @@ import (
 	"go/printer"
 	"go/token"
 	"io/ioutil"
+	"os"
 	"path/filepath"
+	"runtime"
 
 	enti "gopkg.in/goyy/goyy.v0/data/entity"
 	"gopkg.in/goyy/goyy.v0/util/files"
@@ -679,6 +681,14 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".adm.static.js.login":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/"
 			dstfile = "login.js"
+		case newProj + ".adm.static.lib":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static"
+			zipfile := me.libzip()
+			if strings.IsNotBlank(zipfile) {
+				if err := files.Unzip(zipfile, dir); err != nil {
+					return err
+				}
+			}
 		case newProj + ".adm.templates.home":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/"
 			dstfile = "home.html"
@@ -779,13 +789,13 @@ func (me factory) writeBy(typ, content string) error {
 			return nil
 		}
 	} else {
-		files.MkdirAll(dir, 0744)
+		files.MkdirAll(dir, 0755)
 	}
 
 	buf := bytes.Buffer{}
 	tmpl := newTmpl(content)
 	tmpl.Execute(&buf, me)
-	return ioutil.WriteFile(dstfile, buf.Bytes(), 0744)
+	return ioutil.WriteFile(dstfile, buf.Bytes(), 0755)
 }
 
 func (me factory) writeNewProj() error {
@@ -1018,6 +1028,9 @@ func (me factory) writeNewProj() error {
 		return err
 	}
 	if err := me.writeBy(newProj+".adm.static.js.login", tmplNewProjAdmStaticJSLogin); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.static.lib", ""); err != nil {
 		return err
 	}
 	if err := me.writeBy(newProj+".adm.templates.home", tmplNewProjAdmTemplatesHome); err != nil {
@@ -1327,4 +1340,20 @@ func (me factory) printerType(e ast.Expr) string {
 	default:
 		return "err"
 	}
+}
+
+func (me *factory) libzip() string {
+	gopath := os.Getenv("GOPATH")
+	split := ":"
+	if strings.ToLower(runtime.GOOS) == "windows" {
+		split = ";"
+	}
+	gopaths := strings.Split(gopath, split)
+	for _, v := range gopaths {
+		zipfile := files.Join(v, "/src/gopkg.in/goyy/goyy.v0/tool/xgen/assets/lib.zip")
+		if files.IsExist(zipfile) {
+			return zipfile
+		}
+	}
+	return ""
 }

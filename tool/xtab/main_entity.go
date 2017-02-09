@@ -27,12 +27,12 @@ func genEntity() {
 				if files.IsExist(dstfile) {
 					continue
 				} else {
-					files.MkdirAll(dir, 0744)
+					files.MkdirAll(dir, 0755)
 				}
 				buf := bytes.Buffer{}
 				tmpl := newTmpl(tmplEntity)
 				tmpl.Execute(&buf, t)
-				ioutil.WriteFile(dstfile, buf.Bytes(), 0744)
+				ioutil.WriteFile(dstfile, buf.Bytes(), 0755)
 				write(tmplEntityBat, dir+"generate.bat")
 				write(tmplEntitySh, dir+"generate.sh")
 			}

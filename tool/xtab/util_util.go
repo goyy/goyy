@@ -73,7 +73,7 @@ func (me *utils) Case(in string) (out string) {
 }
 
 func (me *utils) WriteString(filename, content string) {
-	f, ferr := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE, 0744)
+	f, ferr := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE, 0755)
 	defer f.Close()
 	if ferr != nil {
 		log.Fatal(ferr)
@@ -86,7 +86,8 @@ func (me *utils) WriteString(filename, content string) {
 
 func (me *utils) InitFile(filename, content string) bool {
 	if files.IsExist(filename) == false {
-		if err := files.MkdirAll(filename, 0744); err != nil {
+		dir := files.Dir(filename)
+		if err := files.MkdirAll(dir, 0755); err != nil {
 			logger.Criticalln(err)
 		}
 		content = me.ParseTemplate(content)

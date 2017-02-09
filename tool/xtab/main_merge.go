@@ -46,5 +46,5 @@ func mergeFile(dir, fileRegexp, newfile string) {
 			return
 		}
 	}
-	files.Write(initfile, b.String(), 0744)
+	files.Write(initfile, b.String(), 0755)
 }

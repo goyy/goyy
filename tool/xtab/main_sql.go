@@ -33,7 +33,7 @@ func expSQL() {
 		filename := p.ID() + ".sql"
 		os.Remove(filename)
 		var content string
-		f, ferr := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE, 0744)
+		f, ferr := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE, 0755)
 		defer f.Close()
 		if ferr != nil {
 			log.Fatal(ferr)
@@ -105,7 +105,7 @@ func writeBy(typ, dir string) error {
 	}
 	dstfile = filepath.Join(dir, dstfile)
 	if !files.IsExist(dir) {
-		files.MkdirAll(dir, 0744)
+		files.MkdirAll(dir, 0755)
 	}
 
 	return write(tmpl, dstfile)

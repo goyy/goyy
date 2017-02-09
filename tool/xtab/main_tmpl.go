@@ -21,7 +21,7 @@ func write(tmpls, dstfile string) error {
 		buf := bytes.Buffer{}
 		tmpl := newTmpl(tmpls)
 		tmpl.Execute(&buf, nil)
-		return ioutil.WriteFile(dstfile, buf.Bytes(), 0744)
+		return ioutil.WriteFile(dstfile, buf.Bytes(), 0755)
 	}
 	return nil
 }

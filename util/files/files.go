@@ -6,6 +6,7 @@
 package files
 
 import (
+	"archive/zip"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -73,7 +74,7 @@ func Copy(dstfile string, srcfile string, perm os.FileMode) error {
 // Mkdir creates a new directory with the specified name and permission bits.
 // If there is an error, it will be of type *PathError.
 func Mkdir(name string, perm os.FileMode) error {
-	return os.Mkdir(Dir(name), perm)
+	return os.Mkdir(name, perm)
 }
 
 // MkdirAll creates a directory named path, along with any necessary parents,
@@ -81,7 +82,7 @@ func Mkdir(name string, perm os.FileMode) error {
 // The permission bits perm are used for all directories that MkdirAll creates.
 // If path is already a directory, MkdirAll does nothing and returns nil.
 func MkdirAll(name string, perm os.FileMode) error {
-	return os.MkdirAll(Dir(name), perm)
+	return os.MkdirAll(name, perm)
 }
 
 // Rename renames (moves) oldpath to newpath.
@@ -178,6 +179,109 @@ func Size(file string) (int64, error) {
 	return f.Size(), nil
 }
 
+// Join joins any number of path elements into a single path, adding
+// a Separator if necessary. Join calls Clean on the result; in particular,
+// all empty strings are ignored.
+// On Windows, the result is a UNC path if and only if the first path
+// element is a UNC path.
+func Join(elem ...string) string {
+	return filepath.Join(elem...)
+}
+
+// Zip compresses and archives a files.
+func Zip(files []*os.File, dest string) error {
+	d, _ := os.Create(dest)
+	defer d.Close()
+	w := zip.NewWriter(d)
+	defer w.Close()
+	for _, file := range files {
+		err := compress(file, "", w)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func compress(file *os.File, prefix string, zw *zip.Writer) error {
+	info, err := file.Stat()
+	if err != nil {
+		return err
+	}
+	if info.IsDir() {
+		prefix = prefix + "/" + info.Name()
+		fileInfos, err := file.Readdir(-1)
+		if err != nil {
+			return err
+		}
+		for _, fi := range fileInfos {
+			f, err := os.Open(file.Name() + "/" + fi.Name())
+			if err != nil {
+				return err
+			}
+			err = compress(f, prefix, zw)
+			if err != nil {
+				return err
+			}
+		}
+	} else {
+		header, err := zip.FileInfoHeader(info)
+		header.Name = prefix + "/" + header.Name
+		if err != nil {
+			return err
+		}
+		writer, err := zw.CreateHeader(header)
+		if err != nil {
+			return err
+		}
+		_, err = io.Copy(writer, file)
+		file.Close()
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// Unzip decompresses and unarchives a ZIP archive.
+func Unzip(zipFile, destDir string) error {
+	reader, err := zip.OpenReader(zipFile)
+	if err != nil {
+		return err
+	}
+	defer reader.Close()
+	MkdirAll(destDir, 0755)
+	for _, file := range reader.File {
+		rc, err := file.Open()
+		if err != nil {
+			return err
+		}
+		filename := filepath.Join(destDir, file.Name)
+		if file.FileInfo().IsDir() {
+			err = MkdirAll(filename, file.Mode())
+			if err != nil {
+				rc.Close()
+				return err
+			}
+		} else {
+			w, err := os.Create(filename)
+			if err != nil {
+				rc.Close()
+				return err
+			}
+			_, err = io.Copy(w, rc)
+			if err != nil {
+				w.Close()
+				rc.Close()
+				return err
+			}
+			w.Close()
+		}
+		rc.Close()
+	}
+	return nil
+}
+
 // Upload uploads a file.
 // eg.
 // confdir : /assets
@@ -210,7 +314,7 @@ func Upload(w http.ResponseWriter, r *http.Request, field, confdir, filedir stri
 	}
 	filename := uuids.New() + "." + Extension(handler.Filename)
 	filepath := dir + filename
-	err = ioutil.WriteFile(filepath, data, 0744)
+	err = ioutil.WriteFile(filepath, data, 0755)
 	if err != nil {
 		logger.Error(err.Error())
 		return
