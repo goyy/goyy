@@ -691,6 +691,84 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".adm.templates.ver":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/"
 			dstfile = "version.html"
+		case newProj + ".adm.templates.core.comm.action":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
+			dstfile = "action.html"
+		case newProj + ".adm.templates.core.comm.alert":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
+			dstfile = "alert.html"
+		case newProj + ".adm.templates.core.comm.breadcrumb":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
+			dstfile = "breadcrumb.html"
+		case newProj + ".adm.templates.core.comm.ckeditor":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
+			dstfile = "ckeditor.html"
+		case newProj + ".adm.templates.core.comm.dialog":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
+			dstfile = "dialog.html"
+		case newProj + ".adm.templates.core.comm.disable":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
+			dstfile = "disable.html"
+		case newProj + ".adm.templates.core.comm.formtree":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
+			dstfile = "formtree.html"
+		case newProj + ".adm.templates.core.comm.navtabs":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
+			dstfile = "navtabs.html"
+		case newProj + ".adm.templates.core.comm.navtabs.list":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
+			dstfile = "navtabs.list.html"
+		case newProj + ".adm.templates.core.comm.page":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
+			dstfile = "page.html"
+		case newProj + ".adm.templates.core.include.footer":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/include/"
+			dstfile = "footer.html"
+		case newProj + ".adm.templates.core.include.head":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/include/"
+			dstfile = "head.html"
+		case newProj + ".adm.templates.err.401":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/err/"
+			dstfile = "401.html"
+		case newProj + ".adm.templates.err.403":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/err/"
+			dstfile = "403.html"
+		case newProj + ".adm.templates.err.404":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/err/"
+			dstfile = "404.html"
+		case newProj + ".adm.templates.err.500":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/err/"
+			dstfile = "500.html"
+		case newProj + ".adm.templates.sys.area":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/area/"
+			dstfile = "area.html"
+		case newProj + ".adm.templates.sys.blacklist":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/blacklist/"
+			dstfile = "blacklist.html"
+		case newProj + ".adm.templates.sys.cache":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/cache/"
+			dstfile = "cache.html"
+		case newProj + ".adm.templates.sys.conf":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/conf/"
+			dstfile = "conf.html"
+		case newProj + ".adm.templates.sys.dict":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/dict/"
+			dstfile = "dict.html"
+		case newProj + ".adm.templates.sys.menu":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/menu/"
+			dstfile = "menu.html"
+		case newProj + ".adm.templates.sys.org":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/org/"
+			dstfile = "org.html"
+		case newProj + ".adm.templates.sys.post":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/post/"
+			dstfile = "post.html"
+		case newProj + ".adm.templates.sys.role":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/role/"
+			dstfile = "role.html"
+		case newProj + ".adm.templates.sys.user":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/user/"
+			dstfile = "user.html"
 		}
 		dstfile = filepath.Join(dir, dstfile)
 	}
@@ -952,6 +1030,84 @@ func (me factory) writeNewProj() error {
 		return err
 	}
 	if err := me.writeBy(newProj+".adm.templates.ver", tmplNewProjAdmTemplatesVer); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.core.comm.action", tmplNewProjAdmTemplatesCoreCommAction); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.core.comm.alert", tmplNewProjAdmTemplatesCoreCommAlert); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.core.comm.breadcrumb", tmplNewProjAdmTemplatesCoreCommBreadcrumb); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.core.comm.ckeditor", tmplNewProjAdmTemplatesCoreCommCkeditor); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.core.comm.dialog", tmplNewProjAdmTemplatesCoreCommDialog); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.core.comm.disable", tmplNewProjAdmTemplatesCoreCommDisable); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.core.comm.formtree", tmplNewProjAdmTemplatesCoreCommFormtree); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.core.comm.navtabs", tmplNewProjAdmTemplatesCoreCommNavtabs); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.core.comm.navtabs.list", tmplNewProjAdmTemplatesCoreCommNavtabsList); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.core.comm.page", tmplNewProjAdmTemplatesCoreCommPage); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.core.include.footer", tmplNewProjAdmTemplatesCoreIncludeFooter); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.core.include.head", tmplNewProjAdmTemplatesCoreIncludeHead); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.err.401", tmplNewProjAdmTemplatesErr401); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.err.403", tmplNewProjAdmTemplatesErr403); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.err.404", tmplNewProjAdmTemplatesErr404); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.err.500", tmplNewProjAdmTemplatesErr500); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.sys.area", tmplNewProjAdmTemplatesSysArea); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.sys.blacklist", tmplNewProjAdmTemplatesSysBlacklist); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.sys.cache", tmplNewProjAdmTemplatesSysCache); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.sys.conf", tmplNewProjAdmTemplatesSysConf); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.sys.dict", tmplNewProjAdmTemplatesSysDict); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.sys.menu", tmplNewProjAdmTemplatesSysMenu); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.sys.org", tmplNewProjAdmTemplatesSysOrg); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.sys.post", tmplNewProjAdmTemplatesSysPost); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.sys.role", tmplNewProjAdmTemplatesSysRole); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".adm.templates.sys.user", tmplNewProjAdmTemplatesSysUser); err != nil {
 		return err
 	}
 	return nil
