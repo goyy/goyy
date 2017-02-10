@@ -30,8 +30,12 @@ func expSQL() {
 		default:
 			dialect = &mysqls{conf.Settings.Statement.Seperator, conf.Settings.Statement.Case}
 		}
-		filename := p.ID() + ".sql"
-		os.Remove(filename)
+		filename := "./sql/ddl/" + p.ID() + ".sql"
+		dir := files.Dir(filename)
+		if !files.IsExist(dir) {
+			files.MkdirAll(dir, 0755)
+		}
+		files.Remove(filename)
 		var content string
 		f, ferr := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE, 0755)
 		defer f.Close()
@@ -63,12 +67,12 @@ func expSQL() {
 }
 
 func expDataSQL() {
-	var dir = "./conf/data/"
+	var dir = "./sql/dml/"
 	types := []string{"area", "org", "dict", "post", "post.menu", "role", "role.post", "user", "user.role"}
 	for _, typ := range types {
 		writeBy("data."+typ, dir)
 	}
-	mergeFile(dir, `^insert.[\S]+.sql$`, "init.sql")
+	mergeFile(dir, `^insert.[\S]+.sql$`, "merge-file.sql")
 }
 
 func writeBy(typ, dir string) error {

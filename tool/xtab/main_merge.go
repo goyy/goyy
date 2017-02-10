@@ -19,7 +19,7 @@ func mergeFile(dir, fileRegexp, newfile string) {
 		fileRegexp = `^insert.[\S]+.sql$`
 	}
 	if strings.IsBlank(newfile) {
-		newfile = "init.sql"
+		newfile = "merge-file.sql"
 	}
 	var b bytes.Buffer
 	filepath.Walk(dir, func(subpath string, f os.FileInfo, err error) error {

@@ -487,11 +487,11 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".schema.conf.db":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/conf/env/"
 			dstfile = "db.xml"
-		case newProj + ".schema.conf.data.merge.sh":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/conf/data/"
+		case newProj + ".schema.sql.dml.merge.sh":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/sql/dml/"
 			dstfile = "merge-file.sh"
-		case newProj + ".schema.conf.data.merge.bat":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/conf/data/"
+		case newProj + ".schema.sql.dml.merge.bat":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/sql/dml/"
 			dstfile = "merge-file.bat"
 		case newProj + ".web":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-web/"
@@ -842,10 +842,10 @@ func (me factory) writeNewProj() error {
 	if err := me.writeBy(newProj+".schema.conf.db", tmplNewProjTstDB); err != nil {
 		return err
 	}
-	if err := me.writeBy(newProj+".schema.conf.data.merge.sh", tmplNewProjSchemaDataMergeSh); err != nil {
+	if err := me.writeBy(newProj+".schema.sql.dml.merge.sh", tmplNewProjSchemaSQLMergeSh); err != nil {
 		return err
 	}
-	if err := me.writeBy(newProj+".schema.conf.data.merge.bat", tmplNewProjSchemaDataMergeBat); err != nil {
+	if err := me.writeBy(newProj+".schema.sql.dml.merge.bat", tmplNewProjSchemaSQLMergeBat); err != nil {
 		return err
 	}
 	if err := me.writeBy(newProj+".web", tmplNewProjWeb); err != nil {

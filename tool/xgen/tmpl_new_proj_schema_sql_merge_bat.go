@@ -4,10 +4,12 @@
 
 package main
 
-var tmplNewProjSchemaDataMergeSh = `#!/bin/sh
-
+var tmplNewProjSchemaSQLMergeBat = `@echo off
 echo [INFO] Merged SQL Files.
 
-export I18N_LOCALE=zh_CN
-xtab -regexp=^insert.[\S]+.sql$ -newfile=init.sql -merge
+cd %~dp0
+set I18N_LOCALE=zh_CN
+call xtab -regexp=^insert.[\S]+.sql$ -newfile=merge-file.sql -merge
+
+pause
 `
