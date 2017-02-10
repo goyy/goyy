@@ -11,6 +11,7 @@ import (
 	"sync"
 
 	_ "github.com/go-sql-driver/mysql"
+	"gopkg.in/goyy/goyy.v0/comm/log"
 	"gopkg.in/goyy/goyy.v0/data/dialect"
 	"gopkg.in/goyy/goyy.v0/data/xsql"
 	"gopkg.in/goyy/goyy.v0/util/files"
@@ -20,6 +21,7 @@ import (
 )
 
 func genMenu() {
+	xsql.SetPriority(log.Perror)
 	// generate the header.html
 	for _, p := range conf.projects {
 		clidir := "../" + strings.AfterLast(p.Admpath(), "/")

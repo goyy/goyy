@@ -487,6 +487,9 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".schema.conf.db":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/conf/env/"
 			dstfile = "db.xml"
+		case newProj + ".schema.conf.project":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/conf/schema/"
+			dstfile = "projects.xml"
 		case newProj + ".schema.sql.dml.merge.sh":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/sql/dml/"
 			dstfile = "merge-file.sh"
@@ -840,6 +843,9 @@ func (me factory) writeNewProj() error {
 		return err
 	}
 	if err := me.writeBy(newProj+".schema.conf.db", tmplNewProjTstDB); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".schema.conf.project", tmplNewProjSchemaConfProject); err != nil {
 		return err
 	}
 	if err := me.writeBy(newProj+".schema.sql.dml.merge.sh", tmplNewProjSchemaSQLMergeSh); err != nil {
