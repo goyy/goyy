@@ -271,6 +271,7 @@ func (me *valids) IsExistProjectTables() bool {
 	<tables>
 		<table id="product" name="{{message "tmpl.tab.eg.product.name"}}" extends="sys" generate="true" comment="{{message "tmpl.tab.eg.product.memo"}}">
 			<column extends="name"/>
+			<column extends="genre"/>
 			<column id="num" name="{{message "tmpl.tab.eg.product.num.name"}}" domain="int" comment="{{message "tmpl.tab.eg.product.num.memo"}}"/>
 			<column extends="price"/>
 		</table>
