@@ -254,6 +254,28 @@ var tmplNewProjAdmStaticJSCommUtil = `/* jQuery util */
 		}
 	};
 	
+	// 导出excel
+	$.fn.export=function(project,module){
+		var options={
+			url:apis+"/"+project+"/"+module+"/export",
+			type:"get",
+			success:function(result,statusText){
+				if(result.success){
+					window.open(developers+"/export/excel/"+result.data);
+				}else{
+					alert(result.message);
+				}
+			},
+			error:function(result){
+				console.log(result);
+				alert('<%message "tmpl.form.util.export.err"%>');
+			},
+			dataType:"json"
+		};
+		$(this).ajaxSubmit(options);
+		return false;
+	};
+	
 	// 判断是否登录
 	$.isLogin=function(){
 		var user = $.cookie('GSESSIONUSER');
