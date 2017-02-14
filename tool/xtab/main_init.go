@@ -5,8 +5,6 @@
 package main
 
 import (
-	"log"
-
 	"gopkg.in/goyy/goyy.v0/comm/env"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
@@ -56,7 +54,8 @@ func (me *inits) Projects() {
 	for _, xp := range xconf.Projects.Project {
 		db, err := env.ParseDatabase(xp.Database)
 		if err != nil {
-			log.Fatal(err)
+			logger.Error(err)
+			return
 		}
 		d := &database{xp.Database, db.DriverName, db.DataSourceName}
 		p := &project{

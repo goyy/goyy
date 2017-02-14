@@ -5,7 +5,6 @@
 package main
 
 import (
-	"log"
 	"os"
 	"strings"
 )
@@ -44,18 +43,18 @@ func (me *valids) IsOkXML() {
 func (me *valids) IsOkSettings() (isExit bool) {
 	xconf := util.DecodeXML(xsettings)
 	if xconf.Settings == nil {
-		log.Fatal(i18N.Message("setting.empty"))
+		logger.Errorln(i18N.Message("setting.empty"))
 	}
 	if xconf.Settings.Statement == nil {
-		log.Fatal(i18N.Message("setting.statement.empty"))
+		logger.Errorln(i18N.Message("setting.statement.empty"))
 	}
 	if strings.TrimSpace(xconf.Settings.Statement.Seperator) == "" {
 		isExit = true
-		log.Println(i18N.Message("setting.statement.seperator.empty"))
+		logger.Errorln(i18N.Message("setting.statement.seperator.empty"))
 	}
 	if strings.TrimSpace(xconf.Settings.Statement.Case) == "" {
 		isExit = true
-		log.Println(i18N.Message("setting.statement.case.empty"))
+		logger.Errorln(i18N.Message("setting.statement.case.empty"))
 	}
 	return
 }
@@ -63,23 +62,23 @@ func (me *valids) IsOkSettings() (isExit bool) {
 func (me *valids) IsOkProjects() (isExit bool) {
 	xconf := util.DecodeXML(xprojects)
 	if xconf.Projects == nil {
-		log.Fatal(i18N.Message("project.empty"))
+		logger.Errorln(i18N.Message("project.empty"))
 	}
 	if xconf.Projects.Project == nil {
-		log.Fatal(i18N.Message("project.project.empty"))
+		logger.Errorln(i18N.Message("project.project.empty"))
 	}
 	for _, xp := range xconf.Projects.Project {
 		if strings.TrimSpace(xp.ID) == "" {
 			isExit = true
-			log.Println(i18N.Message("project.id.empty"))
+			logger.Errorln(i18N.Message("project.id.empty"))
 		}
 		if strings.TrimSpace(xp.Name) == "" {
 			isExit = true
-			log.Println(i18N.Message("project.name.empty"))
+			logger.Errorln(i18N.Message("project.name.empty"))
 		}
 		if strings.TrimSpace(xp.Database) == "" {
 			isExit = true
-			log.Println(i18N.Message("project.database.empty"))
+			logger.Errorln(i18N.Message("project.database.empty"))
 		}
 	}
 	return
@@ -88,23 +87,23 @@ func (me *valids) IsOkProjects() (isExit bool) {
 func (me *valids) IsOkModules() (isExit bool) {
 	xconf := util.DecodeXML(xmodules)
 	if xconf.Modules == nil {
-		log.Fatal(i18N.Message("module.empty"))
+		logger.Errorln(i18N.Message("module.empty"))
 	}
 	if xconf.Modules.Module == nil {
-		log.Fatal(i18N.Message("module.module.empty"))
+		logger.Errorln(i18N.Message("module.module.empty"))
 	}
 	for _, xm := range xconf.Modules.Module {
 		if strings.TrimSpace(xm.ID) == "" {
 			isExit = true
-			log.Println(i18N.Message("module.id.empty"))
+			logger.Errorln(i18N.Message("module.id.empty"))
 		}
 		if strings.TrimSpace(xm.Name) == "" {
 			isExit = true
-			log.Println(i18N.Message("module.name.empty"))
+			logger.Errorln(i18N.Message("module.name.empty"))
 		}
 		if strings.TrimSpace(xm.Project) == "" {
 			isExit = true
-			log.Println(i18N.Message("module.project.empty"))
+			logger.Errorln(i18N.Message("module.project.empty"))
 		}
 		hasExist := false
 		xcfg := util.DecodeXML(xprojects)
@@ -115,7 +114,7 @@ func (me *valids) IsOkModules() (isExit bool) {
 		}
 		if hasExist == false {
 			isExit = true
-			log.Println(i18N.Messagef("module.project.errorf", xm.Project))
+			logger.Errorln(i18N.Messagef("module.project.errorf", xm.Project))
 		}
 	}
 	return
@@ -124,19 +123,19 @@ func (me *valids) IsOkModules() (isExit bool) {
 func (me *valids) IsOkButtons() (isExit bool) {
 	xconf := util.DecodeXML(xbuttons)
 	if xconf.Buttons == nil {
-		log.Fatal(i18N.Message("button.empty"))
+		logger.Errorln(i18N.Message("button.empty"))
 	}
 	if xconf.Buttons.Button == nil {
-		log.Fatal(i18N.Message("button.button.empty"))
+		logger.Errorln(i18N.Message("button.button.empty"))
 	}
 	for _, xb := range xconf.Buttons.Button {
 		if strings.TrimSpace(xb.ID) == "" {
 			isExit = true
-			log.Println(i18N.Message("button.id.empty"))
+			logger.Errorln(i18N.Message("button.id.empty"))
 		}
 		if strings.TrimSpace(xb.Name) == "" {
 			isExit = true
-			log.Println(i18N.Message("button.name.empty"))
+			logger.Errorln(i18N.Message("button.name.empty"))
 		}
 	}
 	return
@@ -145,34 +144,34 @@ func (me *valids) IsOkButtons() (isExit bool) {
 func (me *valids) IsOkDomains() (isExit bool) {
 	xconf := util.DecodeXML(xdomains)
 	if xconf.Domains == nil {
-		log.Fatal(i18N.Message("domain.empty"))
+		logger.Errorln(i18N.Message("domain.empty"))
 	}
 	if xconf.Domains.Domain == nil {
-		log.Fatal(i18N.Message("domain.domain.empty"))
+		logger.Errorln(i18N.Message("domain.domain.empty"))
 	}
 	for _, xd := range xconf.Domains.Domain {
 		if strings.TrimSpace(xd.ID) == "" {
 			isExit = true
-			log.Println(i18N.Message("domain.id.empty"))
+			logger.Errorln(i18N.Message("domain.id.empty"))
 		}
 		if strings.TrimSpace(xd.Types) == "" {
 			isExit = true
-			log.Println(i18N.Message("domain.types.empty"))
+			logger.Errorln(i18N.Message("domain.types.empty"))
 		}
 		switch xd.Types {
 		case "string":
 			if xd.Length == 0 {
 				isExit = true
-				log.Println(i18N.Messagef("domain.length.emptyf", xd.ID))
+				logger.Errorln(i18N.Messagef("domain.length.emptyf", xd.ID))
 			}
 		case "float":
 			if xd.Length <= 0 {
 				isExit = true
-				log.Println(i18N.Messagef("domain.length.emptyf", xd.ID))
+				logger.Errorln(i18N.Messagef("domain.length.emptyf", xd.ID))
 			}
 			if xd.Precision < 0 {
 				isExit = true
-				log.Println(i18N.Messagef("domain.precision.emptyf", xd.ID))
+				logger.Errorln(i18N.Messagef("domain.precision.emptyf", xd.ID))
 			}
 		}
 	}
@@ -182,27 +181,27 @@ func (me *valids) IsOkDomains() (isExit bool) {
 func (me *valids) IsOkColumns() (isExit bool) {
 	xconf := util.DecodeXML(xcolumns)
 	if xconf.Columns == nil {
-		log.Fatal(i18N.Message("column.empty"))
+		logger.Errorln(i18N.Message("column.empty"))
 	}
 	if xconf.Columns.Column == nil {
-		log.Fatal(i18N.Message("column.column.empty"))
+		logger.Errorln(i18N.Message("column.column.empty"))
 	}
 	for _, xc := range xconf.Columns.Column {
 		if strings.TrimSpace(xc.ID) == "" {
 			isExit = true
-			log.Println(i18N.Message("column.id.empty"))
+			logger.Errorln(i18N.Message("column.id.empty"))
 		}
 		if strings.TrimSpace(xc.Name) == "" {
 			isExit = true
-			log.Println(i18N.Message("column.name.empty"))
+			logger.Errorln(i18N.Message("column.name.empty"))
 		}
 		if strings.TrimSpace(xc.Comment) == "" {
 			isExit = true
-			log.Println(i18N.Message("column.comment.empty"))
+			logger.Errorln(i18N.Message("column.comment.empty"))
 		}
 		if strings.TrimSpace(xc.Domain) == "" {
 			isExit = true
-			log.Println(i18N.Message("column.domain.empty"))
+			logger.Errorln(i18N.Message("column.domain.empty"))
 		}
 		hasExist := false
 		xcfg := util.DecodeXML(xdomains)
@@ -213,7 +212,7 @@ func (me *valids) IsOkColumns() (isExit bool) {
 		}
 		if hasExist == false {
 			isExit = true
-			log.Println(i18N.Messagef("column.domain.errorf", xc.Domain))
+			logger.Errorln(i18N.Messagef("column.domain.errorf", xc.Domain))
 		}
 	}
 	return
@@ -222,42 +221,42 @@ func (me *valids) IsOkColumns() (isExit bool) {
 func (me *valids) IsOkTables() (isExit bool) {
 	xconf := util.DecodeXML(xtables)
 	if xconf.Tables == nil {
-		log.Fatal(i18N.Messagef("table.emptyf", xtables))
+		logger.Errorln(i18N.Messagef("table.emptyf", xtables))
 	}
 	if xconf.Tables.Table == nil {
-		log.Fatal(i18N.Messagef("table.table.emptyf", xtables))
+		logger.Errorln(i18N.Messagef("table.table.emptyf", xtables))
 	}
 	for _, xt := range xconf.Tables.Table {
 		if strings.TrimSpace(xt.ID) == "" {
 			isExit = true
-			log.Println(i18N.Message("table.id.empty"))
+			logger.Errorln(i18N.Message("table.id.empty"))
 		}
 		if strings.TrimSpace(xt.Extends) == "" {
 			if strings.TrimSpace(xt.Name) == "" {
 				isExit = true
-				log.Println(i18N.Message("table.name.empty"))
+				logger.Errorln(i18N.Message("table.name.empty"))
 			}
 			if strings.TrimSpace(xt.Comment) == "" {
 				isExit = true
-				log.Println(i18N.Message("table.comment.empty"))
+				logger.Errorln(i18N.Message("table.comment.empty"))
 			}
 			for _, xc := range xt.Columns {
 				if strings.TrimSpace(xc.Extends) == "" {
 					if strings.TrimSpace(xc.ID) == "" {
 						isExit = true
-						log.Println(i18N.Messagef("table.column.id.emptyf", xtables, xt.ID))
+						logger.Errorln(i18N.Messagef("table.column.id.emptyf", xtables, xt.ID))
 					}
 					if strings.TrimSpace(xc.Name) == "" {
 						isExit = true
-						log.Println(i18N.Messagef("table.column.name.emptyf", xtables, xt.ID))
+						logger.Errorln(i18N.Messagef("table.column.name.emptyf", xtables, xt.ID))
 					}
 					if strings.TrimSpace(xc.Comment) == "" {
 						isExit = true
-						log.Println(i18N.Messagef("table.column.comment.emptyf", xtables, xt.ID))
+						logger.Errorln(i18N.Messagef("table.column.comment.emptyf", xtables, xt.ID))
 					}
 					if strings.TrimSpace(xc.Domain) == "" {
 						isExit = true
-						log.Println(i18N.Messagef("table.column.domain.emptyf", xtables, xt.ID))
+						logger.Errorln(i18N.Messagef("table.column.domain.emptyf", xtables, xt.ID))
 					}
 				}
 				me.IsExistColumn(xtables, xt.ID, xc.Extends, &isExit)
@@ -277,19 +276,19 @@ func (me *valids) IsOkChildTables(xconf *xConfiguration, parent *xTable, isExit 
 				if strings.TrimSpace(xc.Extends) == "" {
 					if strings.TrimSpace(xc.ID) == "" {
 						*isExit = true
-						log.Println(i18N.Messagef("table.column.id.emptyf", xtables, xt.ID))
+						logger.Errorln(i18N.Messagef("table.column.id.emptyf", xtables, xt.ID))
 					}
 					if strings.TrimSpace(xc.Name) == "" {
 						*isExit = true
-						log.Println(i18N.Messagef("table.column.name.emptyf", xtables, xt.ID))
+						logger.Errorln(i18N.Messagef("table.column.name.emptyf", xtables, xt.ID))
 					}
 					if strings.TrimSpace(xc.Comment) == "" {
 						*isExit = true
-						log.Println(i18N.Messagef("table.column.comment.emptyf", xtables, xt.ID))
+						logger.Errorln(i18N.Messagef("table.column.comment.emptyf", xtables, xt.ID))
 					}
 					if strings.TrimSpace(xc.Domain) == "" {
 						*isExit = true
-						log.Println(i18N.Messagef("table.column.domain.emptyf", xtables, xt.ID))
+						logger.Errorln(i18N.Messagef("table.column.domain.emptyf", xtables, xt.ID))
 					}
 				}
 				me.IsExistColumn(xtables, xt.ID, xc.Extends, isExit)
@@ -308,34 +307,34 @@ func (me *valids) IsOkProjectTables() (isExit bool) {
 		filename := "./conf/schema/tables-" + m.Project + "-" + m.ID + ".xml"
 		xcfg := util.DecodeXML(filename)
 		if xcfg.Tables == nil {
-			log.Fatal(i18N.Messagef("table.emptyf", filename))
+			logger.Errorln(i18N.Messagef("table.emptyf", filename))
 		}
 		if xcfg.Tables.Table == nil {
-			log.Fatal(i18N.Messagef("table.table.emptyf", filename))
+			logger.Errorln(i18N.Messagef("table.table.emptyf", filename))
 		}
 		for _, xt := range xcfg.Tables.Table {
 			if strings.TrimSpace(xt.ID) == "" {
 				isExit = true
-				log.Println(i18N.Messagef("table.id.emptyf", filename))
+				logger.Errorln(i18N.Messagef("table.id.emptyf", filename))
 			}
 			me.IsExistTable(filename, xt.ID, xt.Extends, &isExit)
 			for _, xc := range xt.Columns {
 				if strings.TrimSpace(xc.Extends) == "" {
 					if strings.TrimSpace(xc.ID) == "" {
 						isExit = true
-						log.Println(i18N.Messagef("table.column.id.emptyf", filename, xt.ID))
+						logger.Errorln(i18N.Messagef("table.column.id.emptyf", filename, xt.ID))
 					}
 					if strings.TrimSpace(xc.Name) == "" {
 						isExit = true
-						log.Println(i18N.Messagef("table.column.name.emptyf", filename, xt.ID))
+						logger.Errorln(i18N.Messagef("table.column.name.emptyf", filename, xt.ID))
 					}
 					if strings.TrimSpace(xc.Comment) == "" {
 						isExit = true
-						log.Println(i18N.Messagef("table.column.comment.emptyf", filename, xt.ID))
+						logger.Errorln(i18N.Messagef("table.column.comment.emptyf", filename, xt.ID))
 					}
 					if strings.TrimSpace(xc.Domain) == "" {
 						isExit = true
-						log.Println(i18N.Messagef("table.column.domain.emptyf", filename, xt.ID))
+						logger.Errorln(i18N.Messagef("table.column.domain.emptyf", filename, xt.ID))
 					}
 				}
 				me.IsExistColumn(filename, xt.ID, xc.Extends, &isExit)
@@ -358,7 +357,7 @@ func (me *valids) IsExistTable(filename, tableID, extends string, isExit *bool) 
 		}
 		if hasExist == false {
 			*isExit = true
-			log.Println(i18N.Messagef("table.extends.errorf", filename, tableID, extends))
+			logger.Errorln(i18N.Messagef("table.extends.errorf", filename, tableID, extends))
 		}
 	}
 }
@@ -374,7 +373,7 @@ func (me *valids) IsExistColumn(filename, tableID, columnID string, isExit *bool
 		}
 		if hasExist == false {
 			*isExit = true
-			log.Println(i18N.Messagef("table.column.extends.errorf", filename, tableID, columnID))
+			logger.Errorln(i18N.Messagef("table.column.extends.errorf", filename, tableID, columnID))
 		}
 	}
 }
@@ -390,7 +389,7 @@ func (me *valids) IsExistDomain(filename, tableID, domainID string, isExit *bool
 		}
 		if hasExist == false {
 			*isExit = true
-			log.Println(i18N.Messagef("table.column.domain.errorf", filename, tableID, domainID))
+			logger.Errorln(i18N.Messagef("table.column.domain.errorf", filename, tableID, domainID))
 		}
 	}
 }
@@ -411,7 +410,7 @@ func (me *valids) IsExistButton(filename, tableID, buttonIDs string, isExit *boo
 			}
 			if hasExist == false {
 				*isExit = true
-				log.Println(i18N.Messagef("table.buttons.errorf", filename, tableID, button))
+				logger.Errorln(i18N.Messagef("table.buttons.errorf", filename, tableID, button))
 			}
 		}
 	}

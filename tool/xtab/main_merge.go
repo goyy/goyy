@@ -14,7 +14,7 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
-func mergeFile(dir, fileRegexp, newfile string) {
+func mergeFile(dir, fileRegexp, newfile string) error {
 	if strings.IsBlank(fileRegexp) {
 		fileRegexp = `^insert.[\S]+.sql$`
 	}
@@ -43,8 +43,8 @@ func mergeFile(dir, fileRegexp, newfile string) {
 		err := files.Remove(initfile)
 		if err != nil {
 			logger.Error(err)
-			return
+			return err
 		}
 	}
-	files.Write(initfile, b.String(), 0755)
+	return files.Write(initfile, b.String(), 0755)
 }

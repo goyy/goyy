@@ -466,6 +466,12 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".tst.db":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-tst/conf/env/"
 			dstfile = "db.xml"
+		case newProj + ".schema.bin.db.sh":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/bin/"
+			dstfile = "exp-db.sh"
+		case newProj + ".schema.bin.db.bat":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/bin/"
+			dstfile = "exp-db.bat"
 		case newProj + ".schema.bin.sql.sh":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/bin/"
 			dstfile = "exp-sql.sh"
@@ -824,6 +830,12 @@ func (me factory) writeNewProj() error {
 		return err
 	}
 	if err := me.writeBy(newProj+".tst.db", tmplNewProjTstDB); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".schema.bin.db.sh", tmplNewProjSchemaBinDbSh); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".schema.bin.db.bat", tmplNewProjSchemaBinDbBat); err != nil {
 		return err
 	}
 	if err := me.writeBy(newProj+".schema.bin.sql.sh", tmplNewProjSchemaBinSqlSh); err != nil {

@@ -8,7 +8,6 @@ import (
 	"bytes"
 	"encoding/xml"
 	"html/template"
-	"log"
 	"os"
 
 	"gopkg.in/goyy/goyy.v0/util/files"
@@ -73,14 +72,16 @@ func (me *utils) Case(in string) (out string) {
 }
 
 func (me *utils) WriteString(filename, content string) {
-	f, ferr := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE, 0755)
+	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE, 0755)
 	defer f.Close()
-	if ferr != nil {
-		log.Fatal(ferr)
+	if err != nil {
+		logger.Error(err)
+		os.Exit(1)
 	}
-	_, werr := f.WriteString(content)
-	if werr != nil {
-		log.Fatal(werr)
+	_, err = f.WriteString(content)
+	if err != nil {
+		logger.Error(err)
+		os.Exit(1)
 	}
 }
 
@@ -119,15 +120,17 @@ func (me *utils) ParseTemplate(content string) string {
 }
 
 func (me *utils) DecodeXML(filename string) *xConfiguration {
-	f, ferr := os.Open(filename)
+	f, err := os.Open(filename)
 	defer f.Close()
-	if ferr != nil {
-		log.Fatal(ferr)
+	if err != nil {
+		logger.Error(err)
+		os.Exit(1)
 	}
 	decoder := xml.NewDecoder(f)
 	var xconf *xConfiguration
-	if derr := decoder.Decode(&xconf); derr != nil {
-		log.Fatal(derr)
+	if err := decoder.Decode(&xconf); err != nil {
+		logger.Error(err)
+		os.Exit(1)
 	}
 	return xconf
 }

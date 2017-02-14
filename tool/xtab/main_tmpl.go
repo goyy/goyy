@@ -7,7 +7,6 @@ package main
 import (
 	"bytes"
 	"html/template"
-	"io/ioutil"
 
 	"gopkg.in/goyy/goyy.v0/util/files"
 	"gopkg.in/goyy/goyy.v0/util/strings"
@@ -16,14 +15,27 @@ import (
 
 var now = times.NowUnixStr()
 
-func write(tmpls, dstfile string) error {
+func writeTmpl(tmpls, dstfile string, params map[string]string) error {
 	if files.IsExist(dstfile) == false {
-		buf := bytes.Buffer{}
-		tmpl := newTmpl(tmpls)
-		tmpl.Execute(&buf, nil)
-		return ioutil.WriteFile(dstfile, buf.Bytes(), 0755)
+		content, err := parseTmpl(tmpls, params)
+		if err != nil {
+			return err
+		}
+		return files.Write(dstfile, content, 0755)
 	}
 	return nil
+}
+
+func parseTmpl(tmpls string, params map[string]string) (string, error) {
+	buf := &bytes.Buffer{}
+	tmpl := newTmpl(tmpls)
+	err := tmpl.Execute(buf, params)
+	if err != nil {
+		return "", err
+	}
+	content := buf.String()
+	content = strings.Replace(content, "&#39;", "'", -1)
+	return content, nil
 }
 
 func newTmpl(s string) *template.Template {
@@ -56,6 +68,22 @@ var (
 				return strings.ToUpper(s)
 			}
 			return strings.ToLower(s)
+		},
+		"uuid": func(driverName string) string {
+			switch driverName {
+			case "mymysql", "mysql":
+				return "replace(uuid(), '-', '')"
+			case "oci8", "oracle":
+				return "sys_guid()"
+			case "postgres":
+				return "replace(uuid_generate_v4(), '-', '')"
+			case "sqlserver":
+				return "replace(newId(), '-', '')"
+			case "sqlite", "sqlite3":
+				return "uuid()"
+			default:
+				return "replace(uuid(), '-', '')"
+			}
 		},
 	}
 )

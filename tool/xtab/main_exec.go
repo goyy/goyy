@@ -6,12 +6,17 @@ package main
 
 import (
 	"flag"
+
+	"gopkg.in/goyy/goyy.v0/comm/log"
+	"gopkg.in/goyy/goyy.v0/data/xsql"
 )
 
 func main() {
+	xsql.SetPriority(log.Perror)
 	isEntity := flag.Bool("entity", false, "is generated entity")
 	isSQL := flag.Bool("sql", false, "is generated SQL")
 	isMenu := flag.Bool("menu", false, "is generated menu")
+	isDB := flag.Bool("db", false, "is generated DB")
 
 	isMerge := flag.Bool("merge", false, "is merged file")
 	fileRegexp := flag.String("regexp", `^insert.[\S]+.sql$`, "file regexp")
@@ -41,5 +46,10 @@ func main() {
 		logger.Println("Generating menu : start")
 		genMenu()
 		logger.Println("Generated menu : end")
+	}
+	if *isDB {
+		logger.Println("Initialize db : start")
+		expDB()
+		logger.Println("Initialize db : end")
 	}
 }

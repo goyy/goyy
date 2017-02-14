@@ -8,11 +8,9 @@ import (
 	"bytes"
 	"io/ioutil"
 	"strconv"
-	"sync"
 
 	_ "github.com/go-sql-driver/mysql"
 	"gopkg.in/goyy/goyy.v0/comm/log"
-	"gopkg.in/goyy/goyy.v0/data/dialect"
 	"gopkg.in/goyy/goyy.v0/data/xsql"
 	"gopkg.in/goyy/goyy.v0/util/files"
 	"gopkg.in/goyy/goyy.v0/util/strings"
@@ -42,7 +40,7 @@ func genMenu() {
 	}
 	// insert into sys_menu
 	for _, p := range conf.projects {
-		insertRootMenu(p.ID())
+		insertRootMenu(p.database.driverName, p.ID())
 		for mi, m := range conf.modules {
 			if p.ID() == m.project.ID() && m.Menu() == "true" {
 				root := &menu{
@@ -52,17 +50,17 @@ func genMenu() {
 					ordinal: "00",
 				}
 				po := strings.PadLeft(strconv.Itoa(mi+1), 2, "0")
-				pp := addMenu(p.ID(), m.ID(), "", m.Name(), po, "10", root) // module
+				pp := addMenu(p.database.driverName, p.ID(), m.ID(), "", m.Name(), po, "10", root) // module
 				for ti, t := range conf.tables {
 					if m.ID() == t.module.ID() && t.Menu() == "true" && t.ID() != "-" {
 						to := strings.PadLeft(strconv.Itoa(ti+1), 2, "0")
-						mp := addMenu(p.ID(), m.ID(), t.ID(), t.Name(), to, "20", pp) // table
+						mp := addMenu(p.database.driverName, p.ID(), m.ID(), t.ID(), t.Name(), to, "20", pp) // table
 						buttons := strings.Split(t.Buttons(), ",")
 						for i, button := range buttons {
 							if strings.IsBlank(button) {
 								continue
 							}
-							addMenu(p.ID(), m.ID(), t.ID(), button, strconv.Itoa((i+2)*5), "30", mp)
+							addMenu(p.database.driverName, p.ID(), m.ID(), t.ID(), button, strconv.Itoa((i+2)*5), "30", mp)
 						}
 					}
 				}
@@ -71,8 +69,8 @@ func genMenu() {
 	}
 }
 
-func insertRootMenu(pid string) {
-	db := getDB(pid)
+func insertRootMenu(driverName, pid string) {
+	db := getDB(driverName, pid)
 	csql := "SELECT count(1) FROM sys_menu WHERE id = ?"
 
 	sql := `INSERT INTO sys_menu
@@ -96,8 +94,8 @@ func insertRootMenu(pid string) {
 	}
 }
 
-func addMenu(pid, mid, tid, xname, ordinal, genre string, parent *menu) *menu {
-	db := getDB(pid)
+func addMenu(driverName, pid, mid, tid, xname, ordinal, genre string, parent *menu) *menu {
+	db := getDB(driverName, pid)
 	id := uuids.New()
 	now := times.NowUnix()
 	m := &menu{
@@ -184,19 +182,4 @@ func addMenu(pid, mid, tid, xname, ordinal, genre string, parent *menu) *menu {
 
 type menu struct {
 	id, href, hidden, permission, code, name, fullname, genre, ordinal, parentID, parentIDs, parentCodes, parentNames, leaf, grade string
-}
-
-var once sync.Once
-var xdb xsql.DB
-
-func getDB(pid string) xsql.DB {
-	once.Do(func() {
-		v, err := xsql.New(&dialect.MySQL{}, pid)
-		if err != nil {
-			panic(err)
-		} else {
-			xdb = v
-		}
-	})
-	return xdb
 }

@@ -33,8 +33,8 @@ func genEntity() {
 				tmpl := newTmpl(tmplEntity)
 				tmpl.Execute(&buf, t)
 				ioutil.WriteFile(dstfile, buf.Bytes(), 0755)
-				write(tmplEntityBat, dir+"generate.bat")
-				write(tmplEntitySh, dir+"generate.sh")
+				writeTmpl(tmplEntityBat, dir+"generate.bat", nil)
+				writeTmpl(tmplEntitySh, dir+"generate.sh", nil)
 			}
 		}
 	}
