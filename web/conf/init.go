@@ -25,7 +25,7 @@ func init() {
 		initExport(v.Name)
 		initSession(v.Name)
 		initTemplate(v.Name)
-		initIllegal(v.Name)
+		initSensitive(v.Name)
 		initSecure(v.Name)
 	} else {
 		log.Println(err.Error())
@@ -132,12 +132,12 @@ func initTemplate(envName string) {
 	}
 }
 
-func initIllegal(envName string) {
+func initSensitive(envName string) {
 	if v, err := env.ParseSensitive(envName); err == nil {
-		Conf.Illegal.Enable = v.Enable
+		Conf.Sensitive.Enable = v.Enable
 		if v.Enable {
-			Conf.Illegal.Excludes = []string{v.Excludes}
-			Conf.Illegal.Values = []string{v.Values}
+			Conf.Sensitive.Excludes = []string{v.Excludes}
+			Conf.Sensitive.Values = []string{v.Values}
 		}
 	} else {
 		log.Println(err.Error())

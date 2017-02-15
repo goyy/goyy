@@ -76,8 +76,8 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	if Conf.Illegal.Enable {
-		if ism.ServeHTTP(w, r) { // illegalServeMux
+	if Conf.Sensitive.Enable {
+		if ssm.ServeHTTP(w, r) { // sensitiveServeMux
 			return
 		}
 	}

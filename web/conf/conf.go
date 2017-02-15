@@ -58,7 +58,7 @@ var Conf = &conf{
 		Dir: "/assets/devs/export",
 		Del: 600,
 	},
-	Illegal: &illegalOptions{
+	Sensitive: &sensitiveOptions{
 		Enable:   false,
 		Values:   []string{},
 		Excludes: []string{},
@@ -103,20 +103,20 @@ var Conf = &conf{
 }
 
 type conf struct {
-	Addr      string           // the TCP network address
-	Err       *errOptions      // Error options
-	Api       *apiOptions      // Apis options
-	Asset     *staticOptions   // Asset options
-	Static    *staticOptions   // Static resource options
-	Developer *staticOptions   // Developer static resource options
-	Operation *staticOptions   // Operation static resource options
-	Upload    *uploadOptions   // Upload options
-	Export    *exportOptions   // Export options
-	Illegal   *illegalOptions  // Illegal character options
-	Html      *htmlOptions     // Html resource options
-	Session   *sessionOptions  // the session TCP network address
-	Secure    *secureOptions   // url secure options
-	Template  *templateOptions // template options
+	Addr      string            // the TCP network address
+	Err       *errOptions       // Error options
+	Api       *apiOptions       // Apis options
+	Asset     *staticOptions    // Asset options
+	Static    *staticOptions    // Static resource options
+	Developer *staticOptions    // Developer static resource options
+	Operation *staticOptions    // Operation static resource options
+	Upload    *uploadOptions    // Upload options
+	Export    *exportOptions    // Export options
+	Sensitive *sensitiveOptions // Sensitive word options
+	Html      *htmlOptions      // Html resource options
+	Session   *sessionOptions   // the session TCP network address
+	Secure    *secureOptions    // url secure options
+	Template  *templateOptions  // template options
 }
 
 type errOptions struct {
@@ -149,10 +149,10 @@ type exportOptions struct {
 	Del int    // Interval delete time(second)
 }
 
-type illegalOptions struct {
+type sensitiveOptions struct {
 	// Whether service is enabled
 	Enable bool
-	// Need to scan the illegal character(Multiple characters using "," separated)
+	// Need to scan the sensitive word(Multiple characters using "," separated)
 	Values []string
 	// Excluded URL
 	Excludes []string

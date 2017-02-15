@@ -13,19 +13,19 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/webs"
 )
 
-// illegal character
-type illegalServeMux struct {
+// sensitive word
+type sensitiveServeMux struct {
 	values []string
 }
 
-var ism = &illegalServeMux{}
+var ssm = &sensitiveServeMux{}
 
-var illegalMutex sync.Mutex
+var sensitiveMutex sync.Mutex
 
-func (me *illegalServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool {
+func (me *sensitiveServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool {
 	// Excluded URL
-	if Conf.Illegal.Excludes != nil && len(Conf.Illegal.Excludes) > 0 {
-		for _, e := range Conf.Illegal.Excludes {
+	if Conf.Sensitive.Excludes != nil && len(Conf.Sensitive.Excludes) > 0 {
+		for _, e := range Conf.Sensitive.Excludes {
 			for _, v := range strings.Split(e, ",") {
 				v = strings.TrimSpace(v)
 				if strings.IsBlank(v) {
@@ -64,7 +64,7 @@ func (me *illegalServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) boo
 					value := strings.TrimSpace(strings.ToLower(unescape2))
 					for _, val := range me.values {
 						if strings.Contains(value, val) {
-							logger.Printf("The content of the input contains illegal characters:%s -> %s \r\n", val, r.URL.Path)
+							logger.Printf("The content of the input contains sensitive words:%s -> %s \r\n", val, r.URL.Path)
 							me.write(w, r)
 							return true
 						}
@@ -76,8 +76,8 @@ func (me *illegalServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) boo
 	return false
 }
 
-func (me *illegalServeMux) write(w http.ResponseWriter, r *http.Request) {
-	msg := i18N.Message("err.illegal")
+func (me *sensitiveServeMux) write(w http.ResponseWriter, r *http.Request) {
+	msg := i18N.Message("err.sensitive")
 	if webs.IsXMLHttpRequest(r) { // AJAX
 		c := `{"success":false,"message":"` + msg + `"}`
 		w.WriteHeader(451)
@@ -89,12 +89,12 @@ func (me *illegalServeMux) write(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (me *illegalServeMux) setValues() {
-	if Conf.Illegal.Enable && me.values == nil {
-		illegalMutex.Lock()
+func (me *sensitiveServeMux) setValues() {
+	if Conf.Sensitive.Enable && me.values == nil {
+		sensitiveMutex.Lock()
 		if me.values == nil {
-			if Conf.Illegal.Values != nil && len(Conf.Illegal.Values) > 0 {
-				for _, val := range Conf.Illegal.Values {
+			if Conf.Sensitive.Values != nil && len(Conf.Sensitive.Values) > 0 {
+				for _, val := range Conf.Sensitive.Values {
 					if strings.IsNotBlank(val) {
 						vs := strings.Split(val, ",")
 						for _, v := range vs {
@@ -108,6 +108,6 @@ func (me *illegalServeMux) setValues() {
 				}
 			}
 		}
-		illegalMutex.Unlock()
+		sensitiveMutex.Unlock()
 	}
 }
