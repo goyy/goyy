@@ -11,31 +11,35 @@ import (
 )
 
 var (
-	ENTITY            = schema.TABLE("sys_user", "USER")
-	ENTITY_ID         = ENTITY.PRIMARY("id", "ID")
-	ENTITY_MEMO       = ENTITY.COLUMN("memo", "MEMO")
-	ENTITY_CREATES    = ENTITY.COLUMN("creates", "CREATES")
-	ENTITY_CREATER    = ENTITY.CREATER("creater", "CREATER")
-	ENTITY_CREATED    = ENTITY.CREATED("created", "CREATED")
-	ENTITY_MODIFIER   = ENTITY.MODIFIER("modifier", "MODIFIER")
-	ENTITY_MODIFIED   = ENTITY.MODIFIED("modified", "MODIFIED")
-	ENTITY_VERSION    = ENTITY.VERSION("version", "VERSION")
-	ENTITY_DELETION   = ENTITY.DELETION("deletion", "DELETION")
-	ENTITY_ARTIFICAL  = ENTITY.COLUMN("artifical", "ARTIFICAL")
-	ENTITY_HISTORY    = ENTITY.COLUMN("history", "HISTORY")
-	ENTITY_NAME       = ENTITY.COLUMN("name", "NAME")
-	ENTITY_CODE       = ENTITY.COLUMN("code", "CODE")
-	ENTITY_PASSWD     = ENTITY.COLUMN("passwd", "PASSWD")
-	ENTITY_GENRE      = ENTITY.COLUMN("genre", "GENRE")
-	ENTITY_EMAIL      = ENTITY.COLUMN("email", "EMAIL")
-	ENTITY_TEL        = ENTITY.COLUMN("tel", "TEL")
-	ENTITY_MOBILE     = ENTITY.COLUMN("mobile", "MOBILE")
-	ENTITY_AREA_ID    = ENTITY.COLUMN("area_id", "AREA_ID")
-	ENTITY_ORG_ID     = ENTITY.COLUMN("org_id", "ORG_ID")
-	ENTITY_LOGIN_NAME = ENTITY.COLUMN("login_name", "LOGIN NAME")
-	ENTITY_LOGIN_IP   = ENTITY.COLUMN("login_ip", "LOGIN IP")
-	ENTITY_LOGIN_TIME = ENTITY.COLUMN("login_time", "LOGIN TIME")
-	ENTITY_ROLE_IDS   = ENTITY.TRANSIENT("role_ids", "ROLE_IDS")
+	ENTITY                = schema.TABLE("sys_user", "USER")
+	ENTITY_ID             = ENTITY.PRIMARY("id", "ID")
+	ENTITY_MEMO           = ENTITY.COLUMN("memo", "MEMO")
+	ENTITY_CREATES        = ENTITY.COLUMN("creates", "CREATES")
+	ENTITY_CREATER        = ENTITY.CREATER("creater", "CREATER")
+	ENTITY_CREATED        = ENTITY.CREATED("created", "CREATED")
+	ENTITY_MODIFIER       = ENTITY.MODIFIER("modifier", "MODIFIER")
+	ENTITY_MODIFIED       = ENTITY.MODIFIED("modified", "MODIFIED")
+	ENTITY_VERSION        = ENTITY.VERSION("version", "VERSION")
+	ENTITY_DELETION       = ENTITY.DELETION("deletion", "DELETION")
+	ENTITY_ARTIFICAL      = ENTITY.COLUMN("artifical", "ARTIFICAL")
+	ENTITY_HISTORY        = ENTITY.COLUMN("history", "HISTORY")
+	ENTITY_NAME           = ENTITY.COLUMN("name", "NAME")
+	ENTITY_CODE           = ENTITY.COLUMN("code", "CODE")
+	ENTITY_PASSWD         = ENTITY.COLUMN("passwd", "PASSWD")
+	ENTITY_GENRE          = ENTITY.COLUMN("genre", "GENRE")
+	ENTITY_EMAIL          = ENTITY.COLUMN("email", "EMAIL")
+	ENTITY_TEL            = ENTITY.COLUMN("tel", "TEL")
+	ENTITY_MOBILE         = ENTITY.COLUMN("mobile", "MOBILE")
+	ENTITY_AREA_ID        = ENTITY.COLUMN("area_id", "AREA_ID")
+	ENTITY_ORG_ID         = ENTITY.COLUMN("org_id", "ORG_ID")
+	ENTITY_LOGIN_NAME     = ENTITY.COLUMN("login_name", "LOGIN NAME")
+	ENTITY_LOGIN_IP       = ENTITY.COLUMN("login_ip", "LOGIN IP")
+	ENTITY_LOGIN_TIME     = ENTITY.COLUMN("login_time", "LOGIN TIME")
+	ENTITY_DIMISSION      = ENTITY.COLUMN("dimission", "DIMISSION")
+	ENTITY_DIMISSION_TIME = ENTITY.COLUMN("dimission_time", "DIMISSION TIME")
+	ENTITY_FREEZE         = ENTITY.COLUMN("freeze", "FREEZE")
+	ENTITY_FREEZE_TIME    = ENTITY.COLUMN("freeze_time", "FREEZE TIME")
+	ENTITY_ROLE_IDS       = ENTITY.TRANSIENT("role_ids", "ROLE_IDS")
 )
 
 func NewEntity() *Entity {
@@ -140,6 +144,38 @@ func (me *Entity) SetLoginTime(v int64) {
 	me.loginTime.SetValue(v)
 }
 
+func (me *Entity) Dimission() string {
+	return me.dimission.Value()
+}
+
+func (me *Entity) SetDimission(v string) {
+	me.dimission.SetValue(v)
+}
+
+func (me *Entity) DimissionTime() int64 {
+	return me.dimissionTime.Value()
+}
+
+func (me *Entity) SetDimissionTime(v int64) {
+	me.dimissionTime.SetValue(v)
+}
+
+func (me *Entity) Freeze() string {
+	return me.freeze.Value()
+}
+
+func (me *Entity) SetFreeze(v string) {
+	me.freeze.SetValue(v)
+}
+
+func (me *Entity) FreezeTime() int64 {
+	return me.freezeTime.Value()
+}
+
+func (me *Entity) SetFreezeTime(v int64) {
+	me.freezeTime.SetValue(v)
+}
+
 func (me *Entity) RoleIds() string {
 	return me.roleIds.Value()
 }
@@ -208,6 +244,10 @@ func (me *Entity) initSetColumn() {
 	me.loginName.SetColumn(ENTITY_LOGIN_NAME)
 	me.loginIp.SetColumn(ENTITY_LOGIN_IP)
 	me.loginTime.SetColumn(ENTITY_LOGIN_TIME)
+	me.dimission.SetColumn(ENTITY_DIMISSION)
+	me.dimissionTime.SetColumn(ENTITY_DIMISSION_TIME)
+	me.freeze.SetColumn(ENTITY_FREEZE)
+	me.freezeTime.SetColumn(ENTITY_FREEZE_TIME)
 	me.roleIds.SetColumn(ENTITY_ROLE_IDS)
 }
 
@@ -238,6 +278,10 @@ func (me *Entity) initSetField() {
 	me.loginName.SetField(entity.DefaultField())
 	me.loginIp.SetField(entity.DefaultField())
 	me.loginTime.SetField(entity.DefaultField())
+	me.dimission.SetField(entity.DefaultField())
+	me.dimissionTime.SetField(entity.DefaultField())
+	me.freeze.SetField(entity.DefaultField())
+	me.freezeTime.SetField(entity.DefaultField())
 	me.roleIds.SetField(entity.DefaultField())
 }
 
@@ -262,6 +306,10 @@ func (me *Entity) initSetJson() {
 	me.loginName.Field().SetJson(entity.NewJsonBy("loginName"))
 	me.loginIp.Field().SetJson(entity.NewJsonBy("loginIp"))
 	me.loginTime.Field().SetJson(entity.NewJsonBy("loginTime"))
+	me.dimission.Field().SetJson(entity.NewJsonBy("dimission"))
+	me.dimissionTime.Field().SetJson(entity.NewJsonBy("dimissionTime"))
+	me.freeze.Field().SetJson(entity.NewJsonBy("freeze"))
+	me.freezeTime.Field().SetJson(entity.NewJsonBy("freezeTime"))
 	me.roleIds.Field().SetJson(entity.NewJsonBy("roleIds"))
 }
 
@@ -283,6 +331,10 @@ func (me *Entity) initSetXml() {
 	me.loginName.Field().SetXml(entity.NewXmlBy("loginName"))
 	me.loginIp.Field().SetXml(entity.NewXmlBy("loginIp"))
 	me.loginTime.Field().SetXml(entity.NewXmlBy("loginTime"))
+	me.dimission.Field().SetXml(entity.NewXmlBy("dimission"))
+	me.dimissionTime.Field().SetXml(entity.NewXmlBy("dimissionTime"))
+	me.freeze.Field().SetXml(entity.NewXmlBy("freeze"))
+	me.freezeTime.Field().SetXml(entity.NewXmlBy("freezeTime"))
 	me.roleIds.Field().SetXml(entity.NewXmlBy("roleIds"))
 }
 
@@ -316,6 +368,14 @@ func (me *Entity) Get(column string) interface{} {
 		return me.loginIp.Value()
 	case ENTITY_LOGIN_TIME.Name():
 		return me.loginTime.Value()
+	case ENTITY_DIMISSION.Name():
+		return me.dimission.Value()
+	case ENTITY_DIMISSION_TIME.Name():
+		return me.dimissionTime.Value()
+	case ENTITY_FREEZE.Name():
+		return me.freeze.Value()
+	case ENTITY_FREEZE_TIME.Name():
+		return me.freezeTime.Value()
 	case ENTITY_ROLE_IDS.Name():
 		return me.roleIds.Value()
 	}
@@ -348,6 +408,14 @@ func (me *Entity) GetPtr(column string) interface{} {
 		return me.loginIp.ValuePtr()
 	case ENTITY_LOGIN_TIME.Name():
 		return me.loginTime.ValuePtr()
+	case ENTITY_DIMISSION.Name():
+		return me.dimission.ValuePtr()
+	case ENTITY_DIMISSION_TIME.Name():
+		return me.dimissionTime.ValuePtr()
+	case ENTITY_FREEZE.Name():
+		return me.freeze.ValuePtr()
+	case ENTITY_FREEZE_TIME.Name():
+		return me.freezeTime.ValuePtr()
 	case ENTITY_ROLE_IDS.Name():
 		return me.roleIds.ValuePtr()
 	}
@@ -380,6 +448,14 @@ func (me *Entity) GetString(field string) string {
 		return me.loginIp.String()
 	case "loginTime":
 		return me.loginTime.String()
+	case "dimission":
+		return me.dimission.String()
+	case "dimissionTime":
+		return me.dimissionTime.String()
+	case "freeze":
+		return me.freeze.String()
+	case "freezeTime":
+		return me.freezeTime.String()
 	case "roleIds":
 		return me.roleIds.String()
 	}
@@ -412,6 +488,14 @@ func (me *Entity) SetString(field, value string) error {
 		return me.loginIp.SetString(value)
 	case "loginTime":
 		return me.loginTime.SetString(value)
+	case "dimission":
+		return me.dimission.SetString(value)
+	case "dimissionTime":
+		return me.dimissionTime.SetString(value)
+	case "freeze":
+		return me.freeze.SetString(value)
+	case "freezeTime":
+		return me.freezeTime.SetString(value)
 	case "roleIds":
 		return me.roleIds.SetString(value)
 	}
@@ -448,6 +532,14 @@ func (me *Entity) Type(column string) (entity.Type, bool) {
 		return &me.loginIp, true
 	case ENTITY_LOGIN_TIME.Name():
 		return &me.loginTime, true
+	case ENTITY_DIMISSION.Name():
+		return &me.dimission, true
+	case ENTITY_DIMISSION_TIME.Name():
+		return &me.dimissionTime, true
+	case ENTITY_FREEZE.Name():
+		return &me.freeze, true
+	case ENTITY_FREEZE_TIME.Name():
+		return &me.freezeTime, true
 	case ENTITY_ROLE_IDS.Name():
 		return &me.roleIds, true
 	}
@@ -480,6 +572,14 @@ func (me *Entity) Column(field string) (schema.Column, bool) {
 		return ENTITY_LOGIN_IP, true
 	case "loginTime":
 		return ENTITY_LOGIN_TIME, true
+	case "dimission":
+		return ENTITY_DIMISSION, true
+	case "dimissionTime":
+		return ENTITY_DIMISSION_TIME, true
+	case "freeze":
+		return ENTITY_FREEZE, true
+	case "freezeTime":
+		return ENTITY_FREEZE_TIME, true
 	case "roleIds":
 		return ENTITY_ROLE_IDS, true
 	}
@@ -511,6 +611,10 @@ func (me *Entity) Columns() []schema.Column {
 		ENTITY_LOGIN_NAME,
 		ENTITY_LOGIN_IP,
 		ENTITY_LOGIN_TIME,
+		ENTITY_DIMISSION,
+		ENTITY_DIMISSION_TIME,
+		ENTITY_FREEZE,
+		ENTITY_FREEZE_TIME,
 		ENTITY_ROLE_IDS,
 	}
 }
@@ -540,6 +644,10 @@ func (me *Entity) Names() []string {
 		"loginName",
 		"loginIp",
 		"loginTime",
+		"dimission",
+		"dimissionTime",
+		"freeze",
+		"freezeTime",
 		"roleIds",
 	}
 }
@@ -578,6 +686,10 @@ func (me *Entity) JSON() string {
 	b.WriteString(`,"loginName":"` + jsons.Format(me.GetString("loginName")) + `"`)
 	b.WriteString(`,"loginIp":"` + jsons.Format(me.GetString("loginIp")) + `"`)
 	b.WriteString(`,"loginTime":` + me.GetString("loginTime"))
+	b.WriteString(`,"dimission":"` + jsons.Format(me.GetString("dimission")) + `"`)
+	b.WriteString(`,"dimissionTime":` + me.GetString("dimissionTime"))
+	b.WriteString(`,"freeze":"` + jsons.Format(me.GetString("freeze")) + `"`)
+	b.WriteString(`,"freezeTime":` + me.GetString("freezeTime"))
 	b.WriteString(`,"roleIds":"` + jsons.Format(me.GetString("roleIds")) + `"`)
 	b.WriteString("}")
 	return b.String()
