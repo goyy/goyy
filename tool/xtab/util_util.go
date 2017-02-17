@@ -129,7 +129,7 @@ func (me *utils) DecodeXML(filename string) *xConfiguration {
 	decoder := xml.NewDecoder(f)
 	var xconf *xConfiguration
 	if err := decoder.Decode(&xconf); err != nil {
-		logger.Error(err)
+		logger.Error(filename, " ", err)
 		os.Exit(1)
 	}
 	return xconf
