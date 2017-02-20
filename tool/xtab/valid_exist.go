@@ -332,9 +332,9 @@ func (me *valids) IsExistProjectTables() bool {
 			<column extends="area_id"/>
 			<column extends="org_id"/>
 			<column id="dimission" name="{{message "tmpl.tab.sys.user.dimission.name"}}" domain="flag" comment="{{message "tmpl.tab.sys.user.dimission.memo"}}" default="0"/>
-			<column id="dimission_time" name="{{message "tmpl.tab.sys.user.dimission_time.name"}}" domain="long" comment="{{message "tmpl.tab.sys.user.dimission_time.memo"}}"/>
+			<column id="dimission_time" name="{{message "tmpl.tab.sys.user.dimission_time.name"}}" domain="long" comment="{{message "tmpl.tab.sys.user.dimission_time.memo"}}" default="-62135596800"/>
 			<column id="freeze" name="{{message "tmpl.tab.sys.user.freeze.name"}}" domain="flag" comment="{{message "tmpl.tab.sys.user.freeze.memo"}}" default="0"/>
-			<column id="freeze_time" name="{{message "tmpl.tab.sys.user.freeze_time.name"}}" domain="long" comment="{{message "tmpl.tab.sys.user.freeze_time.memo"}}"/>
+			<column id="freeze_time" name="{{message "tmpl.tab.sys.user.freeze_time.name"}}" domain="long" comment="{{message "tmpl.tab.sys.user.freeze_time.memo"}}" default="-62135596800"/>
 			<column id="login_name" name="{{message "tmpl.tab.sys.user.login_name.name"}}" domain="code" comment="{{message "tmpl.tab.sys.user.login_name.memo"}}" unique="true"/>
 			<column id="login_ip" name="{{message "tmpl.tab.sys.user.login_ip.name"}}" domain="code" comment="{{message "tmpl.tab.sys.user.login_ip.memo"}}"/>
 			<column id="login_time" name="{{message "tmpl.tab.sys.user.login_time.name"}}" domain="long" comment="{{message "tmpl.tab.sys.user.login_time.memo"}}"/>
