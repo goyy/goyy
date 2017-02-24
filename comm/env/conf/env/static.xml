@@ -5,67 +5,55 @@
 		<environment id="development">
 			<asset name="env">
 				<enable>true</enable>
-				<dir>/assets</dir>
-				<url>/assets</url>
+				<mappings url="/assets" dir="/app/assets"/>
 			</asset>
 			<static name="env">
 				<enable>true</enable>
-				<dir>static</dir>
-				<url>/statics</url>
+				<mappings url="/static" dir="static"/>
 			</static>
 			<developer name="env">
 				<enable>true</enable>
-				<dir>/assets/devs</dir>
-				<url>/devs</url>
+				<mappings url="/gydev" dir="/app/assets/gydev"/>
 			</developer>
 			<operation name="env">
 				<enable>true</enable>
-				<dir>/assets/oprs</dir>
-				<url>/oprs</url>
+				<mappings url="/gyopr" dir="/app/assets/gyopr"/>
 			</operation>
 		</environment>
 		<environment id="test">
 			<asset name="env">
 				<enable>false</enable>
-				<dir>/assets</dir>
-				<url>/assets</url>
+				<mappings url="/assets" dir="/app/assets"/>
 			</asset>
 			<static name="env">
 				<enable>false</enable>
-				<dir>static</dir>
-				<url>/statics</url>
+				<mappings url="/static" dir="static"/>
 			</static>
 			<developer name="env">
 				<enable>false</enable>
-				<dir>/assets/devs</dir>
-				<url>/devs</url>
+				<mappings url="/gydev" dir="/app/assets/gydev"/>
 			</developer>
 			<operation name="env">
 				<enable>false</enable>
-				<dir>/assets/oprs</dir>
-				<url>/oprs</url>
+				<mappings url="/gyopr" dir="/app/assets/gyopr"/>
 			</operation>
 		</environment>
 		<environment id="production">
 			<asset name="env">
 				<enable>false</enable>
-				<dir>/assets</dir>
-				<url>/assets</url>
+				<mappings url="/assets" dir="/app/assets"/>
 			</asset>
 			<static name="env">
 				<enable>false</enable>
-				<dir>static</dir>
-				<url>/statics</url>
+				<mappings url="/static" dir="static"/>
 			</static>
 			<developer name="env">
 				<enable>false</enable>
-				<dir>/assets/devs</dir>
-				<url>/devs</url>
+				<mappings url="/gydev" dir="/app/assets/gydev"/>
 			</developer>
 			<operation name="env">
 				<enable>false</enable>
-				<dir>/assets/oprs</dir>
-				<url>/oprs</url>
+				<mappings url="/gyopr" dir="/app/assets/gyopr"/>
 			</operation>
 		</environment>
 	</environments>

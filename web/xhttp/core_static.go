@@ -5,14 +5,19 @@
 package xhttp
 
 import (
-	"gopkg.in/goyy/goyy.v0/util/strings"
 	"net/http"
+
+	"gopkg.in/goyy/goyy.v0/util/strings"
 )
 
-var asts *staticServeMux
-var stas *staticServeMux
-var devs *staticServeMux
-var oprs *staticServeMux
+var asts staticServeMuxs
+var stas staticServeMuxs
+var devs staticServeMuxs
+var oprs staticServeMuxs
+
+type staticServeMuxs struct {
+	ServeMux []*staticServeMux
+}
 
 type staticServeMux struct {
 	urlPrefix string

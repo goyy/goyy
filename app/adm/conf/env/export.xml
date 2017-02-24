@@ -4,17 +4,17 @@
 	<environments default="development">
 		<environment id="development">
 			<export name="goyy">
-				<dir>/assets/devs/export/excel</dir>
+				<dir>/app/assets/gydev/export/excel</dir>
 			</export>
 		</environment>
 		<environment id="test">
 			<export name="goyy">
-				<dir>/app/assets/devs/export/excel</dir>
+				<dir>/app/assets/gydev/export/excel</dir>
 			</export>
 		</environment>
 		<environment id="production">
 			<export name="goyy">
-				<dir>/app/assets/devs/export/excel</dir>
+				<dir>/app/assets/gydev/export/excel</dir>
 			</export>
 		</environment>
 	</environments>

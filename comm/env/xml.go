@@ -4,6 +4,10 @@
 
 package env
 
+import (
+	"gopkg.in/goyy/goyy.v0/comm/xtype"
+)
+
 // Configuration configuration.
 type Configuration struct {
 	Settings     Settings     `xml:"settings"`
@@ -83,10 +87,9 @@ type Api struct {
 
 // Static static.
 type Static struct {
-	Name   string `xml:"name,attr"`
-	Enable bool   `xml:"enable"`
-	Dir    string `xml:"dir"`
-	URL    string `xml:"url"`
+	Name     string         `xml:"name,attr"`
+	Enable   bool           `xml:"enable"`
+	Mappings xtype.Mappings `xml:"mappings"`
 }
 
 // Upload upload.

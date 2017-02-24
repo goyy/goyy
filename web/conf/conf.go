@@ -27,35 +27,43 @@ var Conf = &conf{
 	Asset: &staticOptions{
 		Enable: false,
 		Ver:    "ver=1",
-		Dir:    "/assets",
-		URL:    "/assets",
+		Mappings: xtype.Mappings{
+			URL: "/assets",
+			Dir: "/app/assets",
+		},
 	},
 	Static: &staticOptions{
 		Enable: false,
 		Ver:    "ver=1",
-		Dir:    "static",
-		URL:    "/statics",
+		Mappings: xtype.Mappings{
+			URL: "/static",
+			Dir: "static",
+		},
 	},
 	Developer: &staticOptions{
 		Enable: false,
 		Ver:    "ver=1",
-		Dir:    "/assets/devs",
-		URL:    "/devs",
+		Mappings: xtype.Mappings{
+			URL: "/gydev",
+			Dir: "/app/assets/gydev",
+		},
 	},
 	Operation: &staticOptions{
 		Enable: false,
 		Ver:    "ver=1",
-		Dir:    "/assets/oprs",
-		URL:    "/oprs",
+		Mappings: xtype.Mappings{
+			URL: "/gyopr",
+			Dir: "/app/assets/gyopr",
+		},
 	},
 	Upload: &uploadOptions{
 		Enable:  false,
-		Dir:     "/assets/upls",
-		URL:     "/upls",
+		Dir:     "/app/assets/gyupl",
+		URL:     "/gyupl",
 		MaxSize: 5242880,
 	},
 	Export: &exportOptions{
-		Dir: "/assets/devs/export",
+		Dir: "/app/assets/gydev/export",
 		Del: 600,
 	},
 	Sensitive: &sensitiveOptions{
@@ -131,10 +139,9 @@ type apiOptions struct {
 }
 
 type staticOptions struct {
-	Enable bool   // Whether service is enabled
-	Ver    string // Static resource version
-	Dir    string // Static resource directory
-	URL    string // Static resource URL prefix
+	Enable   bool           // Whether service is enabled
+	Ver      string         // Static resource version
+	Mappings xtype.Mappings // Directory and URL mapping
 }
 
 type uploadOptions struct {

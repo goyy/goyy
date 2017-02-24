@@ -5,67 +5,55 @@
 		<environment id="development">
 			<asset name="goyy">
 				<enable>true</enable>
-				<dir>/assets</dir>
-				<url>/assets</url>
+				<mappings url="/assets" dir="/app/assets"/>
 			</asset>
 			<static name="goyy">
 				<enable>true</enable>
-				<dir>static</dir>
-				<url>/statics</url>
+				<mappings url="/static" dir="static"/>
 			</static>
 			<developer name="goyy">
 				<enable>true</enable>
-				<dir>/assets/yydev</dir>
-				<url>/devs</url>
+				<mappings url="/gydev" dir="/app/assets/gydev"/>
 			</developer>
 			<operation name="goyy">
 				<enable>true</enable>
-				<dir>/assets/yyopr</dir>
-				<url>/oprs</url>
+				<mappings url="/gyopr" dir="/app/assets/gyopr"/>
 			</operation>
 		</environment>
 		<environment id="test">
 			<asset name="goyy">
 				<enable>false</enable>
-				<dir>/assets</dir>
-				<url>http://127.0.0.1:9099</url>
+				<mappings url="http://127.0.0.1:9099" dir="/app/assets"/>
 			</asset>
 			<static name="goyy">
 				<enable>false</enable>
-				<dir>/assets/yyadm</dir>
-				<url>http://127.0.0.1:9099/yyadm</url>
+				<mappings url="http://127.0.0.1:9099/gyadm" dir="/app/assets/gyadm"/>
 			</static>
 			<developer name="goyy">
 				<enable>false</enable>
-				<dir>/assets/yydev</dir>
-				<url>http://127.0.0.1:9099/yydev</url>
+				<mappings url="http://127.0.0.1:9099/gydev" dir="/app/assets/gydev"/>
 			</developer>
 			<operation name="goyy">
 				<enable>false</enable>
-				<dir>/assets/yyopr</dir>
-				<url>http://127.0.0.1:9099/yyopr</url>
+				<mappings url="http://127.0.0.1:9099/gyopr" dir="/app/assets/gyopr"/>
 			</operation>
 		</environment>
 		<environment id="production">
 			<asset name="goyy">
 				<enable>false</enable>
-				<dir>/assets</dir>
-				<url>http://assets.goyy.org</url>
+				<mappings url="http://assets.goyy.org" dir="/app/assets"/>
 			</asset>
 			<static name="goyy">
 				<enable>false</enable>
-				<dir>/assets/yyadm</dir>
-				<url>http://assets.goyy.org/yyadm</url>
+				<mappings url="http://assets.goyy.org/gyadm" dir="/app/assets/gyadm"/>
 			</static>
 			<developer name="goyy">
 				<enable>false</enable>
-				<dir>/assets/yydev</dir>
-				<url>http://assets.goyy.org/yydev</url>
+				<mappings url="http://assets.goyy.org/gydev" dir="/app/assets/gydev"/>
 			</developer>
 			<operation name="goyy">
 				<enable>false</enable>
-				<dir>/assets/yyopr</dir>
-				<url>http://assets.goyy.org/yyopr</url>
+				<mappings url="http://assets.goyy.org/gyopr" dir="/app/assets/gyopr"/>
 			</operation>
 		</environment>
 	</environments>

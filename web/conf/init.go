@@ -49,8 +49,7 @@ func initAsset(envName string) {
 	if v, err := env.ParseAsset(envName); err == nil {
 		Conf.Asset.Enable = v.Enable
 		Conf.Asset.Ver = ver
-		Conf.Asset.Dir = v.Dir
-		Conf.Asset.URL = v.URL
+		Conf.Asset.Mappings = v.Mappings
 	} else {
 		log.Println(err.Error())
 	}
@@ -58,8 +57,7 @@ func initAsset(envName string) {
 	if v, err := env.ParseStatic(envName); err == nil {
 		Conf.Static.Enable = v.Enable
 		Conf.Static.Ver = ver
-		Conf.Static.Dir = v.Dir
-		Conf.Static.URL = v.URL
+		Conf.Static.Mappings = v.Mappings
 	} else {
 		log.Println(err.Error())
 	}
@@ -67,8 +65,7 @@ func initAsset(envName string) {
 	if v, err := env.ParseDeveloper(envName); err == nil {
 		Conf.Developer.Enable = v.Enable
 		Conf.Developer.Ver = ver
-		Conf.Developer.Dir = v.Dir
-		Conf.Developer.URL = v.URL
+		Conf.Developer.Mappings = v.Mappings
 	} else {
 		log.Println(err.Error())
 	}
@@ -76,8 +73,7 @@ func initAsset(envName string) {
 	if v, err := env.ParseOperation(envName); err == nil {
 		Conf.Operation.Enable = v.Enable
 		Conf.Operation.Ver = ver
-		Conf.Operation.Dir = v.Dir
-		Conf.Operation.URL = v.URL
+		Conf.Operation.Mappings = v.Mappings
 	} else {
 		log.Println(err.Error())
 	}
@@ -121,10 +117,10 @@ func initTemplate(envName string) {
 		Conf.Template.Reloaded = v.Reloaded
 		if v.Enable {
 			templates.GetApis = func() string { return Conf.Api.URL }
-			templates.GetAssets = func() string { return Conf.Asset.URL }
-			templates.GetDevelopers = func() string { return Conf.Developer.URL }
-			templates.GetOperations = func() string { return Conf.Operation.URL }
-			templates.GetStatics = func() string { return Conf.Static.URL }
+			templates.GetAssets = func() string { return Conf.Asset.Mappings.URL }
+			templates.GetDevelopers = func() string { return Conf.Developer.Mappings.URL }
+			templates.GetOperations = func() string { return Conf.Operation.Mappings.URL }
+			templates.GetStatics = func() string { return Conf.Static.Mappings.URL }
 			templates.GetUploads = func() string { return Conf.Upload.URL }
 		}
 	} else {

@@ -7,6 +7,8 @@ package xhttp
 import (
 	"net/http"
 	"runtime/debug"
+
+	"gopkg.in/goyy/goyy.v0/comm/xtype"
 )
 
 type engine struct {
@@ -22,48 +24,34 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			err500(w, r)
 		}
 	}()
-	if Conf.Asset.Enable { // assetServeMux
-		if asts == nil {
-			asts = &staticServeMux{
-				urlPrefix: Conf.Asset.URL,
-				static:    http.StripPrefix(Conf.Asset.URL, http.FileServer(http.Dir(Conf.Asset.Dir))),
-			}
-		}
-		if asts.ServeHTTP(w, r) {
-			return
-		}
-	}
 	if Conf.Static.Enable { // staticServeMux
-		if stas == nil {
-			stas = &staticServeMux{
-				urlPrefix: Conf.Static.URL,
-				static:    http.StripPrefix(Conf.Static.URL, http.FileServer(http.Dir(Conf.Static.Dir))),
-			}
+		if stas.ServeMux == nil {
+			me.staticMappings(&Conf.Static.Mappings)
 		}
-		if stas.ServeHTTP(w, r) {
-			return
+		for _, v := range stas.ServeMux {
+			if v.ServeHTTP(w, r) {
+				return
+			}
 		}
 	}
 	if Conf.Developer.Enable { // developerServeMux
-		if devs == nil {
-			devs = &staticServeMux{
-				urlPrefix: Conf.Developer.URL,
-				static:    http.StripPrefix(Conf.Developer.URL, http.FileServer(http.Dir(Conf.Developer.Dir))),
-			}
+		if devs.ServeMux == nil {
+			me.staticMappings(&Conf.Developer.Mappings)
 		}
-		if devs.ServeHTTP(w, r) {
-			return
+		for _, v := range devs.ServeMux {
+			if v.ServeHTTP(w, r) {
+				return
+			}
 		}
 	}
 	if Conf.Operation.Enable { // operationServeMux
-		if oprs == nil {
-			oprs = &staticServeMux{
-				urlPrefix: Conf.Operation.URL,
-				static:    http.StripPrefix(Conf.Operation.URL, http.FileServer(http.Dir(Conf.Operation.Dir))),
-			}
+		if oprs.ServeMux == nil {
+			me.staticMappings(&Conf.Operation.Mappings)
 		}
-		if oprs.ServeHTTP(w, r) {
-			return
+		for _, v := range oprs.ServeMux {
+			if v.ServeHTTP(w, r) {
+				return
+			}
 		}
 	}
 	if Conf.Upload.Enable { // uploadServeMux
@@ -94,4 +82,26 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if Conf.Template.Enable {
 		me.Router.ServeHTTP(w, r)
 	}
+}
+
+func (me *engine) staticMappings(mappings *xtype.Mappings) {
+	u := mappings.URL
+	d := mappings.Dir
+	m := mappings.Mapping
+	if m != nil && len(m) > 0 {
+		for _, v := range m {
+			p := u + v.Path
+			ssm := &staticServeMux{
+				urlPrefix: p,
+				static:    http.StripPrefix(p, http.FileServer(http.Dir(v.Dir))),
+			}
+			stas.ServeMux = append(stas.ServeMux, ssm)
+		}
+	}
+
+	ssm := &staticServeMux{
+		urlPrefix: u,
+		static:    http.StripPrefix(u, http.FileServer(http.Dir(d))),
+	}
+	stas.ServeMux = append(stas.ServeMux, ssm)
 }
