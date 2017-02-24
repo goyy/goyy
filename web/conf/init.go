@@ -51,8 +51,10 @@ func initAsset(envName string) {
 		Conf.Asset.Ver = ver
 		Conf.Asset.URL = v.URL
 		Conf.Asset.Dir = v.Dir
-		if v.Mappings.Mapping != nil {
-			Conf.Asset.Mappings = v.Mappings.Mapping
+		if v.Mappings.Mapping != nil && len(v.Mappings.Mapping) > 0 {
+			for _, m := range v.Mappings.Mapping {
+				Conf.Asset.Mappings.Add(m.Path, m.Dir)
+			}
 		}
 	} else {
 		log.Println(err.Error())
@@ -63,8 +65,10 @@ func initAsset(envName string) {
 		Conf.Static.Ver = ver
 		Conf.Static.URL = v.URL
 		Conf.Static.Dir = v.Dir
-		if v.Mappings.Mapping != nil {
-			Conf.Static.Mappings = v.Mappings.Mapping
+		if v.Mappings.Mapping != nil && len(v.Mappings.Mapping) > 0 {
+			for _, m := range v.Mappings.Mapping {
+				Conf.Static.Mappings.Add(m.Path, m.Dir)
+			}
 		}
 	} else {
 		log.Println(err.Error())
@@ -75,8 +79,10 @@ func initAsset(envName string) {
 		Conf.Developer.Ver = ver
 		Conf.Developer.URL = v.URL
 		Conf.Developer.Dir = v.Dir
-		if v.Mappings.Mapping != nil {
-			Conf.Developer.Mappings = v.Mappings.Mapping
+		if v.Mappings.Mapping != nil && len(v.Mappings.Mapping) > 0 {
+			for _, m := range v.Mappings.Mapping {
+				Conf.Developer.Mappings.Add(m.Path, m.Dir)
+			}
 		}
 	} else {
 		log.Println(err.Error())
@@ -87,8 +93,10 @@ func initAsset(envName string) {
 		Conf.Operation.Ver = ver
 		Conf.Operation.URL = v.URL
 		Conf.Operation.Dir = v.Dir
-		if v.Mappings.Mapping != nil {
-			Conf.Operation.Mappings = v.Mappings.Mapping
+		if v.Mappings.Mapping != nil && len(v.Mappings.Mapping) > 0 {
+			for _, m := range v.Mappings.Mapping {
+				Conf.Operation.Mappings.Add(m.Path, m.Dir)
+			}
 		}
 	} else {
 		log.Println(err.Error())
@@ -124,6 +132,14 @@ func initTemplate(envName string) {
 	if v, err := env.ParseHtml(envName); err == nil {
 		Conf.Html.Enable = v.Enable
 		Conf.Html.Reloaded = v.Reloaded
+		if strings.IsNotBlank(v.Dir) {
+			Conf.Html.Dir = v.Dir
+		}
+		if v.Mappings.Mapping != nil && len(v.Mappings.Mapping) > 0 {
+			for _, m := range v.Mappings.Mapping {
+				Conf.Html.Mappings.Add(m.Path, m.Dir)
+			}
+		}
 	} else {
 		log.Println(err.Error())
 	}
@@ -131,6 +147,9 @@ func initTemplate(envName string) {
 	if v, err := env.ParseTemplate(envName); err == nil {
 		Conf.Template.Enable = v.Enable
 		Conf.Template.Reloaded = v.Reloaded
+		if strings.IsNotBlank(v.Dir) {
+			Conf.Template.Dir = v.Dir
+		}
 		if v.Enable {
 			templates.GetApis = func() string { return Conf.Api.URL }
 			templates.GetAssets = func() string { return Conf.Asset.URL }

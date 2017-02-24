@@ -4,10 +4,6 @@
 
 package env
 
-import (
-	"gopkg.in/goyy/goyy.v0/comm/xtype"
-)
-
 // Configuration configuration.
 type Configuration struct {
 	Settings     Settings     `xml:"settings"`
@@ -87,15 +83,21 @@ type Api struct {
 
 // Mappings mappings.
 type Mappings struct {
-	Mapping []xtype.Mapping `xml:"mapping"`
+	Mapping []Mapping `xml:"mapping"`
+}
+
+// Mapping mapping.
+type Mapping struct {
+	Path string `xml:"path,attr"`
+	Dir  string `xml:"dir,attr"`
 }
 
 // Static static.
 type Static struct {
 	Name     string   `xml:"name,attr"`
 	Enable   bool     `xml:"enable"`
-	Dir      string   `xml:"dir"`
 	URL      string   `xml:"url"`
+	Dir      string   `xml:"dir"`
 	Mappings Mappings `xml:"mappings"`
 }
 
@@ -103,8 +105,8 @@ type Static struct {
 type Upload struct {
 	Name    string `xml:"name,attr"`
 	Enable  bool   `xml:"enable"`
-	Dir     string `xml:"dir"`
 	URL     string `xml:"url"`
+	Dir     string `xml:"dir"`
 	MaxSize string `xml:"maxSize"`
 }
 
@@ -116,9 +118,11 @@ type Export struct {
 
 // Template template.
 type Template struct {
-	Name     string `xml:"name,attr"`
-	Enable   bool   `xml:"enable"`
-	Reloaded bool   `xml:"reloaded"`
+	Name     string   `xml:"name,attr"`
+	Enable   bool     `xml:"enable"`
+	Reloaded bool     `xml:"reloaded"`
+	Dir      string   `xml:"dir"`
+	Mappings Mappings `xml:"mappings"`
 }
 
 // Sensitive sensitive word.

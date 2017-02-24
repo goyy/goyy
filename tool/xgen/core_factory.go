@@ -13,11 +13,10 @@ import (
 	"go/printer"
 	"go/token"
 	"io/ioutil"
-	"os"
 	"path/filepath"
-	"runtime"
 
 	enti "gopkg.in/goyy/goyy.v0/data/entity"
+	"gopkg.in/goyy/goyy.v0/util/envs"
 	"gopkg.in/goyy/goyy.v0/util/files"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 )
@@ -1373,17 +1372,10 @@ func (me factory) printerType(e ast.Expr) string {
 }
 
 func (me *factory) libzip() string {
-	gopath := os.Getenv("GOPATH")
-	split := ":"
-	if strings.ToLower(runtime.GOOS) == "windows" {
-		split = ";"
-	}
-	gopaths := strings.Split(gopath, split)
-	for _, v := range gopaths {
-		zipfile := files.Join(v, "/src/gopkg.in/goyy/goyy.v0/tool/xgen/assets/lib.zip")
-		if files.IsExist(zipfile) {
-			return zipfile
-		}
+	path := "%GOPATH%/src/gopkg.in/goyy/goyy.v0/tool/xgen/assets/lib.zip"
+	zippath := envs.ParseGOPATH(path)
+	if files.IsExist(zippath) {
+		return zippath
 	}
 	return ""
 }

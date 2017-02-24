@@ -5,67 +5,67 @@
 		<environment id="development">
 			<asset name="goyy">
 				<enable>true</enable>
-				<dir>/app/assets</dir>
 				<url>/assets</url>
+				<dir>/app/assets</dir>
 			</asset>
 			<static name="goyy">
 				<enable>true</enable>
-				<dir>static</dir>
 				<url>/static</url>
+				<dir>static</dir>
 			</static>
 			<developer name="goyy">
 				<enable>true</enable>
-				<dir>/app/assets/gydev</dir>
 				<url>/gydev</url>
+				<dir>/app/assets/gydev</dir>
 			</developer>
 			<operation name="goyy">
 				<enable>true</enable>
-				<dir>/app/assets/gyopr</dir>
 				<url>/gyopr</url>
+				<dir>/app/assets/gyopr</dir>
 			</operation>
 		</environment>
 		<environment id="test">
 			<asset name="goyy">
 				<enable>false</enable>
-				<dir>/app/assets</dir>
 				<url>http://127.0.0.1:9099</url>
+				<dir>/app/assets</dir>
 			</asset>
 			<static name="goyy">
 				<enable>false</enable>
-				<dir>/app/assets/gyadm</dir>
 				<url>http://127.0.0.1:9099/gyadm</url>
+				<dir>/app/assets/gyadm</dir>
 			</static>
 			<developer name="goyy">
 				<enable>false</enable>
-				<dir>/app/assets/gydev</dir>
 				<url>http://127.0.0.1:9099/gydev</url>
+				<dir>/app/assets/gydev</dir>
 			</developer>
 			<operation name="goyy">
 				<enable>false</enable>
-				<dir>/app/assets/gyopr</dir>
 				<url>http://127.0.0.1:9099/gyopr</url>
+				<dir>/app/assets/gyopr</dir>
 			</operation>
 		</environment>
 		<environment id="production">
 			<asset name="goyy">
 				<enable>false</enable>
-				<dir>/app/assets</dir>
 				<url>http://assets.goyy.org</url>
+				<dir>/app/assets</dir>
 			</asset>
 			<static name="goyy">
 				<enable>false</enable>
-				<dir>/app/assets/gyadm</dir>
 				<url>http://assets.goyy.org/gyadmyadm</url>
+				<dir>/app/assets/gyadm</dir>
 			</static>
 			<developer name="goyy">
 				<enable>false</enable>
-				<dir>/app/assets/gydev</dir>
 				<url>http://assets.goyy.org/gydev</url>
+				<dir>/app/assets/gydev</dir>
 			</developer>
 			<operation name="goyy">
 				<enable>false</enable>
-				<dir>/app/assets/gyopr</dir>
 				<url>http://assets.goyy.org/gyopr</url>
+				<dir>/app/assets/gyopr</dir>
 			</operation>
 		</environment>
 	</environments>

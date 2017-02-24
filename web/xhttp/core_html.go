@@ -13,6 +13,7 @@ import (
 
 	"gopkg.in/goyy/goyy.v0/comm/profile"
 	"gopkg.in/goyy/goyy.v0/util/crypto/md5"
+	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/files"
 	"gopkg.in/goyy/goyy.v0/util/strings"
 	"gopkg.in/goyy/goyy.v0/util/times"
@@ -127,8 +128,27 @@ func (me *htmlServeMux) compile() error {
 			ver = c
 		}
 	}
-	filepath.Walk(options.Dir, func(path string, info os.FileInfo, err error) error {
-		r, err := filepath.Rel(options.Dir, path)
+	if err := me.compileHtml("", options.Dir); err != nil {
+		return err
+	}
+	if options.Mappings.Len() > 0 {
+		err := options.Mappings.Each(func(path, dir string) error {
+			if err := me.compileHtml(path, dir); err != nil {
+				return err
+			}
+			return nil
+		})
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (me *htmlServeMux) compileHtml(path, dir string) error {
+	options := Conf.Html
+	filepath.Walk(dir, func(fpath string, info os.FileInfo, err error) error {
+		r, err := filepath.Rel(dir, fpath)
 		if err != nil {
 			logger.Error(err.Error())
 			return err
@@ -139,14 +159,14 @@ func (me *htmlServeMux) compile() error {
 
 		for _, extension := range options.Extensions {
 			if ext == extension {
-				if c, err := files.Read(path); err == nil {
+				if c, err := files.Read(fpath); err == nil {
 					lm := times.NowUnix()
-					if modTime, err := files.ModTimeUnix(path); err == nil {
+					if modTime, err := files.ModTimeUnix(fpath); err == nil {
 						lm = modTime
 					} else {
 						logger.Error(err.Error())
 					}
-					id := "/" + filepath.ToSlash(r)
+					id := path + "/" + filepath.ToSlash(r)
 					c, i, m := me.parseContent(c)
 					mls := m
 					if lm > mls {
@@ -174,23 +194,46 @@ func (me *htmlServeMux) compile() error {
 	return nil
 }
 
+func (me *htmlServeMux) parsePath(path string) string {
+	options := Conf.Html
+	filename := options.Dir + path
+	if files.IsExist(filename) {
+		return filename
+	}
+	if options.Mappings.Len() > 0 {
+		isFindFile := false
+		options.Mappings.Each(func(epath, dir string) error {
+			filename = dir + epath + path
+			if files.IsExist(filename) {
+				isFindFile = true
+				return errors.New("File has been found to terminate the execution cycle")
+			}
+			return nil
+		})
+		if isFindFile {
+			return filename
+		}
+	}
+	return ""
+}
+
 func (me *htmlServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool {
 	if me.isHtml(r.URL.Path) {
-		filename := Conf.Html.Dir + r.URL.Path
-		if files.IsExist(filename) {
+		if me.isCompiled == false {
+			htmlMutex.Lock()
 			if me.isCompiled == false {
-				htmlMutex.Lock()
-				if me.isCompiled == false {
-					if err := me.compile(); err != nil {
-						htmlMutex.Unlock()
-						logger.Error(err.Error())
-						return true
-					}
-					me.isCompiled = true
+				if err := me.compile(); err != nil {
+					htmlMutex.Unlock()
+					logger.Error(err.Error())
+					return true
 				}
-				htmlMutex.Unlock()
+				me.isCompiled = true
 			}
-			if Conf.Html.Reloaded {
+			htmlMutex.Unlock()
+		}
+		if Conf.Html.Reloaded {
+			filename := me.parsePath(r.URL.Path)
+			if files.IsExist(filename) {
 				if me.isUseBrowserCache(w, r, filename) {
 					return true
 				}
@@ -199,16 +242,16 @@ func (me *htmlServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool {
 				} else {
 					w.Write([]byte(me.parseFile(w, r, c)))
 				}
-			} else {
-				if ti, ok := me.templates[r.URL.Path]; ok {
-					if me.hasUseBrowserCache(w, r, ti.maxLastModified) {
-						return true
-					}
-					w.Write([]byte(ti.content))
-				}
 			}
-			return true
+		} else {
+			if ti, ok := me.templates[r.URL.Path]; ok {
+				if me.hasUseBrowserCache(w, r, ti.maxLastModified) {
+					return true
+				}
+				w.Write([]byte(ti.content))
+			}
 		}
+		return true
 	}
 	return false
 }

@@ -7,8 +7,6 @@ package xhttp
 import (
 	"net/http"
 	"runtime/debug"
-
-	"gopkg.in/goyy/goyy.v0/comm/xtype"
 )
 
 type engine struct {
@@ -26,7 +24,9 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}()
 	if Conf.Static.Enable { // staticServeMux
 		if stas.ServeMux == nil {
-			me.staticMappings(Conf.Static.URL, Conf.Static.Dir, Conf.Static.Mappings)
+			each := me.staticMappingsEach(Conf.Static.URL)
+			Conf.Static.Mappings.Each(each)
+			me.staticMappings(Conf.Static.URL, Conf.Static.Dir)
 		}
 		for _, v := range stas.ServeMux {
 			if v.ServeHTTP(w, r) {
@@ -36,7 +36,9 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	if Conf.Developer.Enable { // developerServeMux
 		if devs.ServeMux == nil {
-			me.staticMappings(Conf.Developer.URL, Conf.Developer.Dir, Conf.Developer.Mappings)
+			each := me.staticMappingsEach(Conf.Developer.URL)
+			Conf.Developer.Mappings.Each(each)
+			me.staticMappings(Conf.Developer.URL, Conf.Developer.Dir)
 		}
 		for _, v := range devs.ServeMux {
 			if v.ServeHTTP(w, r) {
@@ -46,7 +48,9 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	if Conf.Operation.Enable { // operationServeMux
 		if oprs.ServeMux == nil {
-			me.staticMappings(Conf.Operation.URL, Conf.Operation.Dir, Conf.Operation.Mappings)
+			each := me.staticMappingsEach(Conf.Operation.URL)
+			Conf.Operation.Mappings.Each(each)
+			me.staticMappings(Conf.Operation.URL, Conf.Operation.Dir)
 		}
 		for _, v := range oprs.ServeMux {
 			if v.ServeHTTP(w, r) {
@@ -84,18 +88,15 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (me *engine) staticMappings(url, dir string, mappings []xtype.Mapping) {
-	if mappings != nil && len(mappings) > 0 {
-		for _, v := range mappings {
-			path := url + v.Path
-			ssm := &staticServeMux{
-				urlPrefix: path,
-				static:    http.StripPrefix(path, http.FileServer(http.Dir(v.Dir))),
-			}
-			stas.ServeMux = append(stas.ServeMux, ssm)
-		}
+func (me *engine) staticMappingsEach(url string) func(path, dir string) error {
+	return func(path, dir string) error {
+		me.staticMappings(url+path, dir)
+		return nil
 	}
 
+}
+
+func (me *engine) staticMappings(url, dir string) {
 	ssm := &staticServeMux{
 		urlPrefix: url,
 		static:    http.StripPrefix(url, http.FileServer(http.Dir(dir))),

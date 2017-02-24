@@ -8,6 +8,7 @@ import (
 	"html/template"
 
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
+	"gopkg.in/goyy/goyy.v0/util/envs"
 	"gopkg.in/goyy/goyy.v0/util/templates"
 	"gopkg.in/goyy/goyy.v0/web/session"
 )
@@ -130,18 +131,53 @@ type apiOptions struct {
 	URL string // APIs URL prefix
 }
 
+type mappingOptions struct {
+	path string
+	dir  string
+}
+
+type mappingsOptions struct {
+	mappings []*mappingOptions
+}
+
+func (me *mappingsOptions) Len() int {
+	if me.mappings == nil {
+		return 0
+	}
+	return len(me.mappings)
+}
+
+func (me *mappingsOptions) Add(path, dir string) {
+	m := &mappingOptions{
+		path: path,
+		dir:  envs.ParseGOPATH(dir),
+	}
+	me.mappings = append(me.mappings, m)
+}
+
+func (me *mappingsOptions) Each(fn func(path, dir string) error) error {
+	if me.mappings != nil && len(me.mappings) > 0 && fn != nil {
+		for _, v := range me.mappings {
+			if err := fn(v.path, v.dir); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
 type staticOptions struct {
 	Enable   bool            // Whether service is enabled
 	Ver      string          // Static resource version
-	Dir      string          // Static resource directory
 	URL      string          // Static resource URL prefix
-	Mappings []xtype.Mapping // Directory and URL mapping
+	Dir      string          // Static resource directory
+	Mappings mappingsOptions // Path and URL mapping, support for using %GOPATH% environment variables
 }
 
 type uploadOptions struct {
 	Enable  bool   // Whether service is enabled
-	Dir     string // Upload directory
 	URL     string // Upload URL prefix
+	Dir     string // Upload directory
 	MaxSize int    // Max upload size
 }
 
@@ -160,10 +196,11 @@ type sensitiveOptions struct {
 }
 
 type htmlOptions struct {
-	Enable     bool     // Whether service is enabled
-	Dir        string   // Directory to load templates. Default is "templates"
-	Extensions []string // Extensions to parse template files from. Defaults to ["html"]
-	Reloaded   bool     // Reloaded sets up the template for each reload
+	Enable     bool            // Whether service is enabled
+	Dir        string          // Directory to load templates. Default is "templates"
+	Extensions []string        // Extensions to parse template files from. Defaults to ["html"]
+	Reloaded   bool            // Reloaded sets up the template for each reload
+	Mappings   mappingsOptions // Path and URL mapping, support for using %GOPATH% environment variables
 }
 
 type sessionOptions struct {
