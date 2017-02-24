@@ -85,11 +85,18 @@ type Api struct {
 	URL  string `xml:"url"`
 }
 
+// Mappings mappings.
+type Mappings struct {
+	Mapping []xtype.Mapping `xml:"mapping"`
+}
+
 // Static static.
 type Static struct {
-	Name     string         `xml:"name,attr"`
-	Enable   bool           `xml:"enable"`
-	Mappings xtype.Mappings `xml:"mappings"`
+	Name     string   `xml:"name,attr"`
+	Enable   bool     `xml:"enable"`
+	Dir      string   `xml:"dir"`
+	URL      string   `xml:"url"`
+	Mappings Mappings `xml:"mappings"`
 }
 
 // Upload upload.

@@ -49,7 +49,11 @@ func initAsset(envName string) {
 	if v, err := env.ParseAsset(envName); err == nil {
 		Conf.Asset.Enable = v.Enable
 		Conf.Asset.Ver = ver
-		Conf.Asset.Mappings = v.Mappings
+		Conf.Asset.URL = v.URL
+		Conf.Asset.Dir = v.Dir
+		if v.Mappings.Mapping != nil {
+			Conf.Asset.Mappings = v.Mappings.Mapping
+		}
 	} else {
 		log.Println(err.Error())
 	}
@@ -57,7 +61,11 @@ func initAsset(envName string) {
 	if v, err := env.ParseStatic(envName); err == nil {
 		Conf.Static.Enable = v.Enable
 		Conf.Static.Ver = ver
-		Conf.Static.Mappings = v.Mappings
+		Conf.Static.URL = v.URL
+		Conf.Static.Dir = v.Dir
+		if v.Mappings.Mapping != nil {
+			Conf.Static.Mappings = v.Mappings.Mapping
+		}
 	} else {
 		log.Println(err.Error())
 	}
@@ -65,7 +73,11 @@ func initAsset(envName string) {
 	if v, err := env.ParseDeveloper(envName); err == nil {
 		Conf.Developer.Enable = v.Enable
 		Conf.Developer.Ver = ver
-		Conf.Developer.Mappings = v.Mappings
+		Conf.Developer.URL = v.URL
+		Conf.Developer.Dir = v.Dir
+		if v.Mappings.Mapping != nil {
+			Conf.Developer.Mappings = v.Mappings.Mapping
+		}
 	} else {
 		log.Println(err.Error())
 	}
@@ -73,7 +85,11 @@ func initAsset(envName string) {
 	if v, err := env.ParseOperation(envName); err == nil {
 		Conf.Operation.Enable = v.Enable
 		Conf.Operation.Ver = ver
-		Conf.Operation.Mappings = v.Mappings
+		Conf.Operation.URL = v.URL
+		Conf.Operation.Dir = v.Dir
+		if v.Mappings.Mapping != nil {
+			Conf.Operation.Mappings = v.Mappings.Mapping
+		}
 	} else {
 		log.Println(err.Error())
 	}
@@ -117,10 +133,10 @@ func initTemplate(envName string) {
 		Conf.Template.Reloaded = v.Reloaded
 		if v.Enable {
 			templates.GetApis = func() string { return Conf.Api.URL }
-			templates.GetAssets = func() string { return Conf.Asset.Mappings.URL }
-			templates.GetDevelopers = func() string { return Conf.Developer.Mappings.URL }
-			templates.GetOperations = func() string { return Conf.Operation.Mappings.URL }
-			templates.GetStatics = func() string { return Conf.Static.Mappings.URL }
+			templates.GetAssets = func() string { return Conf.Asset.URL }
+			templates.GetDevelopers = func() string { return Conf.Developer.URL }
+			templates.GetOperations = func() string { return Conf.Operation.URL }
+			templates.GetStatics = func() string { return Conf.Static.URL }
 			templates.GetUploads = func() string { return Conf.Upload.URL }
 		}
 	} else {

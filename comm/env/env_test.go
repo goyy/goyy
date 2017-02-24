@@ -89,9 +89,9 @@ func TestParseStatic(t *testing.T) {
 	out3 := "static"
 	out4 := "/static"
 	v, _ := env.ParseStatic(in)
-	if v.Name != out1 || v.Enable != out2 || v.Mappings.Dir != out3 || v.Mappings.URL != out4 {
+	if v.Name != out1 || v.Enable != out2 || v.Dir != out3 || v.URL != out4 {
 		format := "env.ParseStatic(%s) = %s, %t, %s, %s; want %s, %t, %s, %s"
-		t.Errorf(format, in, v.Name, v.Enable, v.Mappings.Dir, v.Mappings.URL, out1, out2, out3, out4)
+		t.Errorf(format, in, v.Name, v.Enable, v.Dir, v.URL, out1, out2, out3, out4)
 	}
 }
 

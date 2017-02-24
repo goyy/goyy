@@ -4,13 +4,6 @@
 
 package xtype
 
-// Mappings mappings.
-type Mappings struct {
-	URL     string    `xml:"url,attr"`
-	Dir     string    `xml:"dir,attr"`
-	Mapping []Mapping `xml:"mapping"`
-}
-
 // Mapping mapping.
 type Mapping struct {
 	Path string `xml:"path,attr"`

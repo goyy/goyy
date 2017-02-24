@@ -27,34 +27,26 @@ var Conf = &conf{
 	Asset: &staticOptions{
 		Enable: false,
 		Ver:    "ver=1",
-		Mappings: xtype.Mappings{
-			URL: "/assets",
-			Dir: "/app/assets",
-		},
+		URL:    "/assets",
+		Dir:    "/app/assets",
 	},
 	Static: &staticOptions{
 		Enable: false,
 		Ver:    "ver=1",
-		Mappings: xtype.Mappings{
-			URL: "/static",
-			Dir: "static",
-		},
+		URL:    "/static",
+		Dir:    "static",
 	},
 	Developer: &staticOptions{
 		Enable: false,
 		Ver:    "ver=1",
-		Mappings: xtype.Mappings{
-			URL: "/gydev",
-			Dir: "/app/assets/gydev",
-		},
+		URL:    "/gydev",
+		Dir:    "/app/assets/gydev",
 	},
 	Operation: &staticOptions{
 		Enable: false,
 		Ver:    "ver=1",
-		Mappings: xtype.Mappings{
-			URL: "/gyopr",
-			Dir: "/app/assets/gyopr",
-		},
+		URL:    "/gyopr",
+		Dir:    "/app/assets/gyopr",
 	},
 	Upload: &uploadOptions{
 		Enable:  false,
@@ -139,9 +131,11 @@ type apiOptions struct {
 }
 
 type staticOptions struct {
-	Enable   bool           // Whether service is enabled
-	Ver      string         // Static resource version
-	Mappings xtype.Mappings // Directory and URL mapping
+	Enable   bool            // Whether service is enabled
+	Ver      string          // Static resource version
+	Dir      string          // Static resource directory
+	URL      string          // Static resource URL prefix
+	Mappings []xtype.Mapping // Directory and URL mapping
 }
 
 type uploadOptions struct {

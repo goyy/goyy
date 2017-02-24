@@ -11,55 +11,67 @@ var tmplNewProjAdmConfStatic = `<?xml version="1.0" encoding="UTF-8" ?>
 		<environment id="development">
 			<asset name="<%.NewProjName%>">
 				<enable>true</enable>
-				<mappings url="/assets" dir="/app/assets"/>
+				<dir>/app/assets</dir>
+				<url>/assets</url>
 			</asset>
 			<static name="<%.NewProjName%>">
 				<enable>true</enable>
-				<mappings url="/static" dir="static"/>
+				<dir>static</dir>
+				<url>/static</url>
 			</static>
 			<developer name="<%.NewProjName%>">
 				<enable>true</enable>
-				<mappings url="/<%.NewProjName%>dev" dir="/app/assets/<%.NewProjName%>dev"/>
+				<dir>/app/assets/<%.NewProjName%>dev</dir>
+				<url>/<%.NewProjName%>dev</url>
 			</developer>
 			<operation name="<%.NewProjName%>">
 				<enable>true</enable>
-				<mappings url="/<%.NewProjName%>opr" dir="/app/assets/<%.NewProjName%>opr"/>
+				<dir>/app/assets/<%.NewProjName%>opr</dir>
+				<url>/<%.NewProjName%>opr</url>
 			</operation>
 		</environment>
 		<environment id="test">
 			<asset name="<%.NewProjName%>">
 				<enable>false</enable>
-				<mappings url="http://assets.test.<%.NewProjHost%>" dir="/app/assets"/>
+				<dir>/app/assets</dir>
+				<url>http://assets.test.<%.NewProjHost%></url>
 			</asset>
 			<static name="<%.NewProjName%>">
 				<enable>false</enable>
-				<mappings url="http://assets.test.<%.NewProjHost%>/<%.NewProjName%>adm" dir="/app/assets/<%.NewProjName%>adm"/>
+				<dir>/app/assets/<%.NewProjName%>adm</dir>
+				<url>http://assets.test.<%.NewProjHost%>/<%.NewProjName%>adm</url>
 			</static>
 			<developer name="<%.NewProjName%>">
 				<enable>false</enable>
-				<mappings url="http://assets.test.<%.NewProjHost%>/<%.NewProjName%>dev" dir="/app/assets/<%.NewProjName%>dev"/>
+				<dir>/app/assets/<%.NewProjName%>dev</dir>
+				<url>http://assets.test.<%.NewProjHost%>/<%.NewProjName%>dev</url>
 			</developer>
 			<operation name="<%.NewProjName%>">
 				<enable>false</enable>
-				<mappings url="http://assets.test.<%.NewProjHost%>/<%.NewProjName%>opr" dir="/app/assets/<%.NewProjName%>opr"/>
+				<dir>/app/assets/<%.NewProjName%>opr</dir>
+				<url>http://assets.test.<%.NewProjHost%>/<%.NewProjName%>opr</url>
 			</operation>
 		</environment>
 		<environment id="production">
 			<asset name="<%.NewProjName%>">
 				<enable>false</enable>
-				<mappings url="http://assets.<%.NewProjHost%>" dir="/app/assets"/>
+				<dir>/app/assets</dir>
+				<url>http://assets.<%.NewProjHost%></url>
 			</asset>
 			<static name="<%.NewProjName%>">
 				<enable>false</enable>
-				<mappings url="http://assets.<%.NewProjHost%>/<%.NewProjName%>adm" dir="/app/assets/<%.NewProjName%>adm"/>
+				<dir>/app/assets/<%.NewProjName%>adm</dir>
+				<url>http://assets.<%.NewProjHost%>/<%.NewProjName%>adm</url>
 			</static>
 			<developer name="<%.NewProjName%>">
 				<enable>false</enable>
-				<mappings url="http://assets.<%.NewProjHost%>/<%.NewProjName%>dev" dir="/app/assets/<%.NewProjName%>dev"/>
+				<dir>/app/assets/<%.NewProjName%>dev</dir>
+				<url>http://assets.<%.NewProjHost%>/<%.NewProjName%>dev</url>
 			</developer>
 			<operation name="<%.NewProjName%>">
 				<enable>false</enable>
-				<mappings url="http://assets.<%.NewProjHost%>/<%.NewProjName%>opr" dir="/app/assets/<%.NewProjName%>opr"/>
+				<dir>/app/assets/<%.NewProjName%>opr</dir>
+				<url>http://assets.<%.NewProjHost%>/<%.NewProjName%>opr</url>
 			</operation>
 		</environment>
 	</environments>

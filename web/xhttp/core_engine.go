@@ -26,7 +26,7 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}()
 	if Conf.Static.Enable { // staticServeMux
 		if stas.ServeMux == nil {
-			me.staticMappings(&Conf.Static.Mappings)
+			me.staticMappings(Conf.Static.URL, Conf.Static.Dir, Conf.Static.Mappings)
 		}
 		for _, v := range stas.ServeMux {
 			if v.ServeHTTP(w, r) {
@@ -36,7 +36,7 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	if Conf.Developer.Enable { // developerServeMux
 		if devs.ServeMux == nil {
-			me.staticMappings(&Conf.Developer.Mappings)
+			me.staticMappings(Conf.Developer.URL, Conf.Developer.Dir, Conf.Developer.Mappings)
 		}
 		for _, v := range devs.ServeMux {
 			if v.ServeHTTP(w, r) {
@@ -46,7 +46,7 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	if Conf.Operation.Enable { // operationServeMux
 		if oprs.ServeMux == nil {
-			me.staticMappings(&Conf.Operation.Mappings)
+			me.staticMappings(Conf.Operation.URL, Conf.Operation.Dir, Conf.Operation.Mappings)
 		}
 		for _, v := range oprs.ServeMux {
 			if v.ServeHTTP(w, r) {
@@ -84,24 +84,21 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (me *engine) staticMappings(mappings *xtype.Mappings) {
-	u := mappings.URL
-	d := mappings.Dir
-	m := mappings.Mapping
-	if m != nil && len(m) > 0 {
-		for _, v := range m {
-			p := u + v.Path
+func (me *engine) staticMappings(url, dir string, mappings []xtype.Mapping) {
+	if mappings != nil && len(mappings) > 0 {
+		for _, v := range mappings {
+			path := url + v.Path
 			ssm := &staticServeMux{
-				urlPrefix: p,
-				static:    http.StripPrefix(p, http.FileServer(http.Dir(v.Dir))),
+				urlPrefix: path,
+				static:    http.StripPrefix(path, http.FileServer(http.Dir(v.Dir))),
 			}
 			stas.ServeMux = append(stas.ServeMux, ssm)
 		}
 	}
 
 	ssm := &staticServeMux{
-		urlPrefix: u,
-		static:    http.StripPrefix(u, http.FileServer(http.Dir(d))),
+		urlPrefix: url,
+		static:    http.StripPrefix(url, http.FileServer(http.Dir(dir))),
 	}
 	stas.ServeMux = append(stas.ServeMux, ssm)
 }
