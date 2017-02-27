@@ -155,10 +155,14 @@ func (me *mappingsOptions) Add(path, dir string) {
 	me.mappings = append(me.mappings, m)
 }
 
-func (me *mappingsOptions) Each(fn func(path, dir string) error) error {
+func (me *mappingsOptions) Each(fn func(path, dir string) (isbreak bool, err error)) error {
 	if me.mappings != nil && len(me.mappings) > 0 && fn != nil {
 		for _, v := range me.mappings {
-			if err := fn(v.path, v.dir); err != nil {
+			isbreak, err := fn(v.path, v.dir)
+			if isbreak {
+				break
+			}
+			if err != nil {
 				return err
 			}
 		}

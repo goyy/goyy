@@ -132,11 +132,11 @@ func (me *htmlServeMux) compile() error {
 		return err
 	}
 	if options.Mappings.Len() > 0 {
-		err := options.Mappings.Each(func(path, dir string) error {
+		err := options.Mappings.Each(func(path, dir string) (bool, error) {
 			if err := me.compileHtml(path, dir); err != nil {
-				return err
+				return false, err
 			}
-			return nil
+			return false, nil
 		})
 		if err != nil {
 			return err
@@ -196,23 +196,29 @@ func (me *htmlServeMux) compileHtml(path, dir string) error {
 
 func (me *htmlServeMux) parsePath(path string) string {
 	options := Conf.Html
-	filename := options.Dir + path
-	if files.IsExist(filename) {
-		return filename
-	}
+	var filename string
 	if options.Mappings.Len() > 0 {
 		isFindFile := false
-		options.Mappings.Each(func(epath, dir string) error {
-			filename = dir + epath + path
-			if files.IsExist(filename) {
-				isFindFile = true
-				return errors.New("File has been found to terminate the execution cycle")
+		options.Mappings.Each(func(epath, dir string) (isbreak bool, err error) {
+			if strings.IsBlank(epath) {
+				return false, errors.Newf("environments.environment.html.mappings.mapping[@path]: can not be empty!")
 			}
-			return nil
+			if strings.HasPrefix(path, epath) {
+				filename = dir + strings.After(path, epath)
+				if files.IsExist(filename) {
+					isFindFile = true
+					return true, nil
+				}
+			}
+			return false, nil
 		})
 		if isFindFile {
 			return filename
 		}
+	}
+	filename = options.Dir + path
+	if files.IsExist(filename) {
+		return filename
 	}
 	return ""
 }
@@ -242,6 +248,9 @@ func (me *htmlServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool {
 				} else {
 					w.Write([]byte(me.parseFile(w, r, c)))
 				}
+			} else {
+				me.err404(w, r)
+				return true
 			}
 		} else {
 			if ti, ok := me.templates[r.URL.Path]; ok {
@@ -249,11 +258,23 @@ func (me *htmlServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) bool {
 					return true
 				}
 				w.Write([]byte(ti.content))
+			} else {
+				me.err404(w, r)
+				return true
 			}
 		}
 		return true
 	}
 	return false
+}
+
+func (me *htmlServeMux) err404(w http.ResponseWriter, r *http.Request) {
+	if strings.IsNotBlank(Conf.Err.Err404) {
+		filename := me.parsePath(Conf.Err.Err404)
+		if files.IsExist(filename) {
+			http.Redirect(w, r, Conf.Err.Err404, http.StatusFound)
+		}
+	}
 }
 
 func (me *htmlServeMux) replaceAssets(content string) string {

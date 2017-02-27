@@ -88,10 +88,10 @@ func (me *engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (me *engine) staticMappingsEach(url string) func(path, dir string) error {
-	return func(path, dir string) error {
+func (me *engine) staticMappingsEach(url string) func(path, dir string) (isbreak bool, err error) {
+	return func(path, dir string) (bool, error) {
 		me.staticMappings(url+path, dir)
-		return nil
+		return false, nil
 	}
 
 }
