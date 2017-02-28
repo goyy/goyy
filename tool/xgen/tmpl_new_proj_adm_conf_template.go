@@ -12,6 +12,9 @@ var tmplNewProjAdmConfTemplate = `<?xml version="1.0" encoding="UTF-8" ?>
 			<html name="<%.NewProjName%>">
 				<enable>true</enable>
 				<reloaded>true</reloaded>
+				<mappings>
+					<mapping path="/example" dir="../<%.NewProjName%>-example/templates/adm"/>
+				</mappings>
 			</html>
 			<template name="<%.NewProjName%>">
 				<enable>true</enable>

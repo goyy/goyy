@@ -440,9 +440,9 @@ func (me factory) writeBy(typ, content string) error {
 		case mainAPI, xgenLogAPI:
 			dir = "../../api/" + me.PackageName
 		case mainHTML:
-			dir = admdir + "/templates/" + me.Project + "/" + name
+			dir = "../../templates/adm/" + name
 		case mainJs:
-			dir = admdir + "/static/js/" + me.Project + "/" + name
+			dir = "../../static/adm/js"
 		case xgenCtlReg:
 			dir = "../../"
 		}
@@ -567,9 +567,6 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".web.static.js.core":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/js/core/"
 			dstfile = "README.md"
-		case newProj + ".web.static.lib":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/lib/"
-			dstfile = "README.md"
 		case newProj + ".web.templates.comm":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-web/templates/comm/"
 			dstfile = "README.md"
@@ -636,56 +633,41 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".adm.internal.doc":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/internal/"
 			dstfile = "doc.go"
-		case newProj + ".adm.static.css.comm":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/css/comm/"
-			dstfile = "comm.css"
-		case newProj + ".adm.static.css.navbar":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/css/comm/"
-			dstfile = "navbar.css"
-		case newProj + ".adm.static.img.comm":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/images/comm/"
+		case newProj + ".adm.static.css":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/css/"
 			dstfile = "README.md"
-		case newProj + ".adm.static.img.core":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/images/core/"
+		case newProj + ".adm.static.img":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/images/"
 			dstfile = "README.md"
-		case newProj + ".adm.static.js.comm.form":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/comm/"
-			dstfile = "jquery.form.js"
-		case newProj + ".adm.static.js.comm.page":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/comm/"
-			dstfile = "jquery.page.js"
-		case newProj + ".adm.static.js.comm.util":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/comm/"
-			dstfile = "jquery.util.js"
 		case newProj + ".adm.static.js.sys.area":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/area/"
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
 			dstfile = "area.js"
 		case newProj + ".adm.static.js.sys.blacklist":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/blacklist/"
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
 			dstfile = "blacklist.js"
 		case newProj + ".adm.static.js.sys.cache":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/cache/"
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
 			dstfile = "cache.js"
 		case newProj + ".adm.static.js.sys.conf":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/conf/"
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
 			dstfile = "conf.js"
 		case newProj + ".adm.static.js.sys.dict":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/dict/"
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
 			dstfile = "dict.js"
 		case newProj + ".adm.static.js.sys.menu":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/menu/"
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
 			dstfile = "menu.js"
 		case newProj + ".adm.static.js.sys.org":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/org/"
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
 			dstfile = "org.js"
 		case newProj + ".adm.static.js.sys.post":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/post/"
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
 			dstfile = "post.js"
 		case newProj + ".adm.static.js.sys.role":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/role/"
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
 			dstfile = "role.js"
 		case newProj + ".adm.static.js.sys.user":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/sys/user/"
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
 			dstfile = "user.js"
 		case newProj + ".adm.static.js.home":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/"
@@ -694,8 +676,8 @@ func (me factory) writeBy(typ, content string) error {
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/"
 			dstfile = "login.js"
 		case newProj + ".adm.static.lib":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static"
-			zipfile := me.libzip()
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/dev"
+			zipfile := me.uizip()
 			if strings.IsNotBlank(zipfile) {
 				if err := files.Unzip(zipfile, dir); err != nil {
 					return err
@@ -933,9 +915,6 @@ func (me factory) writeNewProj() error {
 	if err := me.writeBy(newProj+".web.static.js.core", tmplNewProjWebStaticJSCore); err != nil {
 		return err
 	}
-	if err := me.writeBy(newProj+".web.static.lib", tmplNewProjWebStaticLib); err != nil {
-		return err
-	}
 	if err := me.writeBy(newProj+".web.templates.comm", tmplNewProjWebTemplatesComm); err != nil {
 		return err
 	}
@@ -1002,25 +981,10 @@ func (me factory) writeNewProj() error {
 	if err := me.writeBy(newProj+".adm.internal.doc", tmplNewProjAdmInternalDoc); err != nil {
 		return err
 	}
-	if err := me.writeBy(newProj+".adm.static.css.comm", tmplNewProjAdmStaticCssComm); err != nil {
+	if err := me.writeBy(newProj+".adm.static.css", tmplNewProjAdmStaticCss); err != nil {
 		return err
 	}
-	if err := me.writeBy(newProj+".adm.static.css.navbar", tmplNewProjAdmStaticCssNavbar); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.static.img.comm", tmplNewProjAdmStaticImgComm); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.static.img.core", tmplNewProjAdmStaticImgCore); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.static.js.comm.form", tmplNewProjAdmStaticJSCommForm); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.static.js.comm.page", tmplNewProjAdmStaticJSCommPage); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.static.js.comm.util", tmplNewProjAdmStaticJSCommUtil); err != nil {
+	if err := me.writeBy(newProj+".adm.static.img", tmplNewProjAdmStaticImg); err != nil {
 		return err
 	}
 	if err := me.writeBy(newProj+".adm.static.js.sys.area", tmplNewProjAdmStaticJSSysArea); err != nil {
@@ -1371,8 +1335,8 @@ func (me factory) printerType(e ast.Expr) string {
 	}
 }
 
-func (me *factory) libzip() string {
-	path := "%GOPATH%/src/gopkg.in/goyy/goyy.v0/tool/xgen/assets/lib.zip"
+func (me *factory) uizip() string {
+	path := "%GOPATH%/src/gopkg.in/goyy/goyy.v0/tool/xgen/assets/ui.zip"
 	zippath := envs.ParseGOPATH(path)
 	if files.IsExist(zippath) {
 		return zippath

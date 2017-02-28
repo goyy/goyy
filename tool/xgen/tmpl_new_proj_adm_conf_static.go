@@ -18,11 +18,17 @@ var tmplNewProjAdmConfStatic = `<?xml version="1.0" encoding="UTF-8" ?>
 				<enable>true</enable>
 				<dir>static</dir>
 				<url>/static</url>
+				<mappings>
+					<mapping path="/example" dir="../<%.NewProjName%>-example/static/adm"/>
+				</mappings>
 			</static>
 			<developer name="<%.NewProjName%>">
 				<enable>true</enable>
 				<dir>/app/assets/<%.NewProjName%>dev</dir>
 				<url>/<%.NewProjName%>dev</url>
+				<mappings>
+					<mapping path="/ui" dir="../<%.NewProjName%>-adm/static/dev/ui"/>
+				</mappings>
 			</developer>
 			<operation name="<%.NewProjName%>">
 				<enable>true</enable>

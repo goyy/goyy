@@ -4,5 +4,5 @@
 
 package main
 
-var tmplNewProjAdmStaticImgComm = `# common
+var tmplNewProjAdmStaticImg = `# global
 `

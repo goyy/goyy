@@ -18,11 +18,17 @@ var tmplNewProjWebConfStatic = `<?xml version="1.0" encoding="UTF-8" ?>
 				<enable>true</enable>
 				<dir>static</dir>
 				<url>/statics</url>
+				<mappings>
+					<mapping path="/example" dir="../<%.NewProjName%>-example/static/web"/>
+				</mappings>
 			</static>
 			<developer name="<%.NewProjName%>">
 				<enable>true</enable>
 				<dir>/app/assets/<%.NewProjName%>dev</dir>
 				<url>/<%.NewProjName%>dev</url>
+				<mappings>
+					<mapping path="/ui" dir="../<%.NewProjName%>-web/static/dev/ui"/>
+				</mappings>
 			</developer>
 			<operation name="<%.NewProjName%>">
 				<enable>true</enable>
