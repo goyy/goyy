@@ -491,7 +491,7 @@ func (me *htmlServeMux) parseIncludeFile(content string, settings map[string]str
 		filename := directives[i].attr[attrFile]
 		v, err := files.Read(filename)
 		if err != nil {
-			logger.Error(err.Error())
+			logger.Error(err.Error(), ":", filename)
 			continue
 		}
 		if modTime, err := files.ModTimeUnix(filename); err == nil {
@@ -643,7 +643,7 @@ func (me *htmlServeMux) buildDirectiveInfo(content, directive string, directives
 		if directive == drtInclude {
 			if v, ok := di.attr[attrFile]; ok {
 				if strings.IsNotBlank(v) {
-					f := Conf.Html.Dir + v
+					f := me.parsePath(v)
 					if files.IsExist(f) {
 						di.attr[attrFile] = f
 					} else {

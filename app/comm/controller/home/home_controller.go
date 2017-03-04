@@ -36,7 +36,7 @@ func (me *Controller) home(c xhttp.Context) {
 }
 
 func (me *Controller) favicon(c xhttp.Context) {
-	c.Redirect(xhttp.Conf.Asset.URL + "/favicon.ico")
+	c.Redirect(xhttp.Conf.Static.URL + "/favicon.ico")
 }
 
 type Controller struct {
