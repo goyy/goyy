@@ -549,29 +549,8 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".web.internal.doc":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-web/internal/"
 			dstfile = "doc.go"
-		case newProj + ".web.static.css.comm":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/css/comm/"
-			dstfile = "comm.css"
-		case newProj + ".web.static.css.core":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/css/core/"
-			dstfile = "global.css"
-		case newProj + ".web.static.img.comm":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/images/comm/"
-			dstfile = "README.md"
-		case newProj + ".web.static.img.core":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/images/core/"
-			dstfile = "README.md"
-		case newProj + ".web.static.js.comm":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/js/comm/"
-			dstfile = "README.md"
-		case newProj + ".web.static.js.core":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/js/core/"
-			dstfile = "README.md"
-		case newProj + ".web.templates.comm":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-web/templates/comm/"
-			dstfile = "README.md"
-		case newProj + ".web.templates.core":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-web/templates/core/"
+		case newProj + ".web.static.readme":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-web/static/"
 			dstfile = "README.md"
 		case newProj + ".web.templates.home":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-web/templates/"
@@ -633,57 +612,12 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".adm.internal.doc":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/internal/"
 			dstfile = "doc.go"
-		case newProj + ".adm.static.css":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/css/"
-			dstfile = "README.md"
-		case newProj + ".adm.static.img":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/images/"
-			dstfile = "README.md"
-		case newProj + ".adm.static.js.sys.area":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
-			dstfile = "area.js"
-		case newProj + ".adm.static.js.sys.blacklist":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
-			dstfile = "blacklist.js"
-		case newProj + ".adm.static.js.sys.cache":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
-			dstfile = "cache.js"
-		case newProj + ".adm.static.js.sys.conf":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
-			dstfile = "conf.js"
-		case newProj + ".adm.static.js.sys.dict":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
-			dstfile = "dict.js"
-		case newProj + ".adm.static.js.sys.menu":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
-			dstfile = "menu.js"
-		case newProj + ".adm.static.js.sys.org":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
-			dstfile = "org.js"
-		case newProj + ".adm.static.js.sys.post":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
-			dstfile = "post.js"
-		case newProj + ".adm.static.js.sys.role":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
-			dstfile = "role.js"
-		case newProj + ".adm.static.js.sys.user":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/sys/js/"
-			dstfile = "user.js"
 		case newProj + ".adm.static.js.home":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/"
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/home/js/"
 			dstfile = "home.js"
 		case newProj + ".adm.static.js.login":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/js/"
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/login/js/"
 			dstfile = "login.js"
-		case newProj + ".adm.static.lib":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/static/dev"
-			zipfile := me.uizip()
-			if strings.IsNotBlank(zipfile) {
-				if err := files.Unzip(zipfile, dir); err != nil {
-					return err
-				}
-			}
-			return nil
 		case newProj + ".adm.templates.home":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/"
 			dstfile = "home.html"
@@ -696,36 +630,6 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".adm.templates.ver":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/"
 			dstfile = "version.html"
-		case newProj + ".adm.templates.core.comm.action":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
-			dstfile = "action.html"
-		case newProj + ".adm.templates.core.comm.alert":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
-			dstfile = "alert.html"
-		case newProj + ".adm.templates.core.comm.breadcrumb":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
-			dstfile = "breadcrumb.html"
-		case newProj + ".adm.templates.core.comm.ckeditor":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
-			dstfile = "ckeditor.html"
-		case newProj + ".adm.templates.core.comm.dialog":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
-			dstfile = "dialog.html"
-		case newProj + ".adm.templates.core.comm.disable":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
-			dstfile = "disable.html"
-		case newProj + ".adm.templates.core.comm.formtree":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
-			dstfile = "formtree.html"
-		case newProj + ".adm.templates.core.comm.navtabs":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
-			dstfile = "navtabs.html"
-		case newProj + ".adm.templates.core.comm.navtabs.list":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
-			dstfile = "navtabs.list.html"
-		case newProj + ".adm.templates.core.comm.page":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/comm/"
-			dstfile = "page.html"
 		case newProj + ".adm.templates.core.include.footer":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/include/"
 			dstfile = "footer.html"
@@ -744,36 +648,6 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".adm.templates.err.500":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/err/"
 			dstfile = "500.html"
-		case newProj + ".adm.templates.sys.area":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/area/"
-			dstfile = "area.html"
-		case newProj + ".adm.templates.sys.blacklist":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/blacklist/"
-			dstfile = "blacklist.html"
-		case newProj + ".adm.templates.sys.cache":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/cache/"
-			dstfile = "cache.html"
-		case newProj + ".adm.templates.sys.conf":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/conf/"
-			dstfile = "conf.html"
-		case newProj + ".adm.templates.sys.dict":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/dict/"
-			dstfile = "dict.html"
-		case newProj + ".adm.templates.sys.menu":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/menu/"
-			dstfile = "menu.html"
-		case newProj + ".adm.templates.sys.org":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/org/"
-			dstfile = "org.html"
-		case newProj + ".adm.templates.sys.post":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/post/"
-			dstfile = "post.html"
-		case newProj + ".adm.templates.sys.role":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/role/"
-			dstfile = "role.html"
-		case newProj + ".adm.templates.sys.user":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/sys/user/"
-			dstfile = "user.html"
 		}
 		dstfile = filepath.Join(dir, dstfile)
 	}
@@ -897,28 +771,7 @@ func (me factory) writeNewProj() error {
 	if err := me.writeBy(newProj+".web.internal.doc", tmplNewProjWebInternalDoc); err != nil {
 		return err
 	}
-	if err := me.writeBy(newProj+".web.static.css.comm", tmplNewProjWebStaticCssComm); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".web.static.css.core", tmplNewProjWebStaticCssCore); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".web.static.img.comm", tmplNewProjWebStaticImgComm); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".web.static.img.core", tmplNewProjWebStaticImgCore); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".web.static.js.comm", tmplNewProjWebStaticJSComm); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".web.static.js.core", tmplNewProjWebStaticJSCore); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".web.templates.comm", tmplNewProjWebTemplatesComm); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".web.templates.core", tmplNewProjWebTemplatesCore); err != nil {
+	if err := me.writeBy(newProj+".web.static.readme", tmplNewProjWebStaticReadme); err != nil {
 		return err
 	}
 	if err := me.writeBy(newProj+".web.templates.home", tmplNewProjWebTemplatesHome); err != nil {
@@ -981,49 +834,10 @@ func (me factory) writeNewProj() error {
 	if err := me.writeBy(newProj+".adm.internal.doc", tmplNewProjAdmInternalDoc); err != nil {
 		return err
 	}
-	if err := me.writeBy(newProj+".adm.static.css", tmplNewProjAdmStaticCss); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.static.img", tmplNewProjAdmStaticImg); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.static.js.sys.area", tmplNewProjAdmStaticJSSysArea); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.static.js.sys.blacklist", tmplNewProjAdmStaticJSSysBlacklist); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.static.js.sys.cache", tmplNewProjAdmStaticJSSysCache); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.static.js.sys.conf", tmplNewProjAdmStaticJSSysConf); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.static.js.sys.dict", tmplNewProjAdmStaticJSSysDict); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.static.js.sys.menu", tmplNewProjAdmStaticJSSysMenu); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.static.js.sys.org", tmplNewProjAdmStaticJSSysOrg); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.static.js.sys.post", tmplNewProjAdmStaticJSSysPost); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.static.js.sys.role", tmplNewProjAdmStaticJSSysRole); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.static.js.sys.user", tmplNewProjAdmStaticJSSysUser); err != nil {
-		return err
-	}
 	if err := me.writeBy(newProj+".adm.static.js.home", tmplNewProjAdmStaticJSHome); err != nil {
 		return err
 	}
 	if err := me.writeBy(newProj+".adm.static.js.login", tmplNewProjAdmStaticJSLogin); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.static.lib", ""); err != nil {
 		return err
 	}
 	if err := me.writeBy(newProj+".adm.templates.home", tmplNewProjAdmTemplatesHome); err != nil {
@@ -1036,36 +850,6 @@ func (me factory) writeNewProj() error {
 		return err
 	}
 	if err := me.writeBy(newProj+".adm.templates.ver", tmplNewProjAdmTemplatesVer); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.core.comm.action", tmplNewProjAdmTemplatesCoreCommAction); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.core.comm.alert", tmplNewProjAdmTemplatesCoreCommAlert); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.core.comm.breadcrumb", tmplNewProjAdmTemplatesCoreCommBreadcrumb); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.core.comm.ckeditor", tmplNewProjAdmTemplatesCoreCommCkeditor); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.core.comm.dialog", tmplNewProjAdmTemplatesCoreCommDialog); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.core.comm.disable", tmplNewProjAdmTemplatesCoreCommDisable); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.core.comm.formtree", tmplNewProjAdmTemplatesCoreCommFormtree); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.core.comm.navtabs", tmplNewProjAdmTemplatesCoreCommNavtabs); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.core.comm.navtabs.list", tmplNewProjAdmTemplatesCoreCommNavtabsList); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.core.comm.page", tmplNewProjAdmTemplatesCoreCommPage); err != nil {
 		return err
 	}
 	if err := me.writeBy(newProj+".adm.templates.core.include.footer", tmplNewProjAdmTemplatesCoreIncludeFooter); err != nil {
@@ -1084,36 +868,6 @@ func (me factory) writeNewProj() error {
 		return err
 	}
 	if err := me.writeBy(newProj+".adm.templates.err.500", tmplNewProjAdmTemplatesErr500); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.sys.area", tmplNewProjAdmTemplatesSysArea); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.sys.blacklist", tmplNewProjAdmTemplatesSysBlacklist); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.sys.cache", tmplNewProjAdmTemplatesSysCache); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.sys.conf", tmplNewProjAdmTemplatesSysConf); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.sys.dict", tmplNewProjAdmTemplatesSysDict); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.sys.menu", tmplNewProjAdmTemplatesSysMenu); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.sys.org", tmplNewProjAdmTemplatesSysOrg); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.sys.post", tmplNewProjAdmTemplatesSysPost); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.sys.role", tmplNewProjAdmTemplatesSysRole); err != nil {
-		return err
-	}
-	if err := me.writeBy(newProj+".adm.templates.sys.user", tmplNewProjAdmTemplatesSysUser); err != nil {
 		return err
 	}
 	return nil

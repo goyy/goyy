@@ -1,2 +1,3 @@
 #!/bin/sh
-cd /app/adm/ && ./adm &
+cd /app/webapps/gyadm/
+nohup ./adm &

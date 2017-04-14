@@ -5,23 +5,30 @@
 		<environment id="development">
 			<asset name="goyy">
 				<enable>true</enable>
-				<url>/assets</url>
 				<dir>/app/assets</dir>
+				<url>/assets</url>
 			</asset>
 			<static name="goyy">
 				<enable>true</enable>
-				<url>/static</url>
 				<dir>static</dir>
+				<url>/static</url>
+				<mappings>
+					<mapping path="/sys" dir="../sys/static/adm"/>
+					<mapping path="/example" dir="../example/static/adm"/>
+				</mappings>
 			</static>
 			<developer name="goyy">
 				<enable>true</enable>
-				<url>/gydev</url>
 				<dir>/app/assets/gydev</dir>
+				<url>/gydev</url>
+				<mappings>
+					<mapping path="/ui" dir="../ui/static"/>
+				</mappings>
 			</developer>
 			<operation name="goyy">
 				<enable>true</enable>
-				<url>/gyopr</url>
 				<dir>/app/assets/gyopr</dir>
+				<url>/gyopr</url>
 			</operation>
 		</environment>
 		<environment id="test">

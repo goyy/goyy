@@ -6,6 +6,11 @@
 			<html name="goyy">
 				<enable>true</enable>
 				<reloaded>true</reloaded>
+				<mappings>
+					<mapping path="/sys" dir="../sys/templates/adm"/>
+					<mapping path="/example" dir="../example/templates/adm"/>
+					<mapping path="/ui" dir="../ui/templates"/>
+				</mappings>
 			</html>
 			<template name="goyy">
 				<enable>true</enable>

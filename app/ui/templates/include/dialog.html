@@ -1,0 +1,25 @@
+<script type="text/javascript">
+function msgAskDialog(callback, params, message) {
+	if(typeof(message)!="undefined"&&message!=""){
+		$("#_p_message_").html("<br/>" + message);
+	}
+	$("#msgAskDialog").dialog({
+		resizable: false,
+		modal: true,
+		buttons: {
+			"取消": function() {
+				$(this).dialog("close");
+			},
+			"确定": function() {
+				callback(params);
+				$(this).dialog("close");
+			}
+		}
+	});
+}
+</script>
+<div class="hidden">
+	<div id="msgAskDialog" title="系统提示">
+		<p id="_p_message_"><br/>&nbsp;</p>
+	</div>
+</div>

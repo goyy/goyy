@@ -16,6 +16,7 @@ import (
 	_ "gopkg.in/goyy/goyy.v0/app/comm/controller/captcha"
 	_ "gopkg.in/goyy/goyy.v0/app/comm/controller/home"
 	_ "gopkg.in/goyy/goyy.v0/app/comm/controller/login"
+	_ "gopkg.in/goyy/goyy.v0/app/example"
 	_ "gopkg.in/goyy/goyy.v0/app/sys"
 	"gopkg.in/goyy/goyy.v0/comm/log"
 	"gopkg.in/goyy/goyy.v0/web/xhttp"

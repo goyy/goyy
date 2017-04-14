@@ -37,7 +37,10 @@ func RegisterCache(field string, init func() []*xtype.Dict) {
 					logger.Errorln(err)
 				}
 			}
-			ifSetCache(field, true)
+			if profile.Accepts(profile.PROD) {
+				// Initialize the dictionary immediately when registering for the production environment
+				setCache(field)
+			}
 		})
 	}
 	c := &dictCache{init: init}
@@ -52,7 +55,7 @@ func HasCache(field string) bool {
 
 // Get cached data.
 func GetCache(field string) []*xtype.Dict {
-	ifSetCache(field, false)
+	setCache(field)
 	if val, ok := cacheDatas[field]; ok {
 		return val.data
 	} else {
@@ -62,7 +65,7 @@ func GetCache(field string) []*xtype.Dict {
 
 // Gets the cached data for the map type.
 func GetHashCache(field string) map[string]*xtype.Dict {
-	ifSetCache(field, false)
+	setCache(field)
 	if val, ok := cacheDatas[field]; ok {
 		return val.hash
 	} else {
@@ -85,7 +88,7 @@ func RefreshCache(field string) {
 	if v, err := cache.HGet(cacheKey, field); err == nil {
 		if ver, err := strconv.Atoi(v); err == nil {
 			if err = cache.HSet(cacheKey, field, strconv.Itoa(ver+1)); err == nil {
-				ifSetCache(field, true)
+				setCache(field)
 			} else {
 				logger.Errorln(err)
 			}
@@ -94,20 +97,6 @@ func RefreshCache(field string) {
 		}
 	} else {
 		logger.Errorln(err)
-	}
-}
-
-// Set cache data.
-func ifSetCache(field string, isPROD bool) {
-	// When the production environment starts and the cache is refreshed:
-	// the dictionary is initialized, which improves the running performance
-	// and reduces the service startup speed.
-	//
-	// Development and testing of the environment for the first time
-	// to obtain a dictionary to initialize the dictionary:
-	// to improve service startup speed, reduce the performance of the operation.
-	if profile.Accepts(profile.PROD) == isPROD {
-		setCache(field)
 	}
 }
 

@@ -1,0 +1,14 @@
+<ul id="{%.param%}NavTabs" class="nav nav-tabs dn" >
+	<li go:data-permissions="{%project%}:{%module%}:view" class="active">
+		<a href="#{%.param%}ListContent" go:data-state="list" onclick="{%.param%}Action(this,'')">{%title%}列表</a>
+	</li>
+	<li go:data-permissions="{%project%}:{%module%}:add">
+		<a href="#{%.param%}FormContent" go:data-state="add" go:data-url="{%apis%}/{%project%}/{%module%}/add" data-template="{%.param%}FormTemplate" 
+			onclick="{%.param%}Action(this,'',{%.param%}PostLoadForm)" >{%title%}<span id="{%.param%}TabTitle">添加</span></a>
+	</li>
+</ul>
+<script type="text/javascript">
+	$(function(){
+		$("#{%.param%}NavTabs").permission();
+	});
+</script>

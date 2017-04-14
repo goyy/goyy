@@ -14,7 +14,7 @@ var tmplNewProjAdmTemplatesLogin = `<!DOCTYPE html>
 <title go:title="/title.html">{%title%}</title>
 <!--#include file="/core/include/head.html"--><!--#endinclude-->
 
-<script type="text/javascript" go:src="{%statics%}/js/login.js?{%ver%}"></script>
+<script type="text/javascript" go:src="{%statics%}/login/js/login.js?{%ver%}"></script>
 </head>
 <body>
 <div class="container-fluid">

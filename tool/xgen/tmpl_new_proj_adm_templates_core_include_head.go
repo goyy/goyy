@@ -28,7 +28,7 @@ var tmplNewProjAdmTemplatesCoreIncludeHead = `<meta charset="utf-8">
 <script go:src="{%developers%}/ui/respond.js/respond.min.js?{%ver%}"></script>
 <![endif]-->
 
-<script type="text/javascript" go:src="{%developers%}/ui/jquery/jquery-1.11.3.min.js?{%ver%}"></script>
+<script type="text/javascript" go:src="{%developers%}/ui/jquery/jquery.min.js?{%ver%}"></script>
 <script type="text/javascript" go:src="{%developers%}/ui/jquery/jquery.ajaxSetup.js?{%ver%}"></script>
 <script type="text/javascript" go:src="{%developers%}/ui/bootstrap/js/bootstrap.min.js?{%ver%}"></script>
 <script type="text/javascript" go:src="{%developers%}/ui/bootstrap-fileinput/js/fileinput.min.js?{%ver%}"></script>

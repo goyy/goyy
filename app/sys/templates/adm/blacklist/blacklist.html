@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta name="description" content="">
+<meta name="author" content="">
+<!--#settings project="sys" module="blacklist" title="黑名单"--><!--#endsettings-->
+<!--#with prefix="e" --><!--#endwith-->
+<title go:title="/title.html">{%title%}</title>
+<!--#include file="/core/include/head.html"--><!--#endinclude-->
+
+<script type="text/javascript" go:src="{%statics%}/{%project%}/js/{%module%}.js?{%ver%}"></script>
+</head>
+<body>
+<!--#include file="/core/include/header.html" param="{%project%}"--><!--#endinclude-->
+<div class="container-fluid">
+<div class="content" class="row-fluid">
+	<!--#include file="/ui/include/page.html" param="{%.prefix%}"--><!--#endinclude-->
+	<!--#include file="/ui/include/action.html" param="{%.prefix%}"--><!--#endinclude-->
+	<!--#include file="/ui/include/disable.html" param="{%.prefix%}"--><!--#endinclude-->
+	<div class="tabbable">
+		<!--#include file="/ui/include/navtabs.html" param="{%.prefix%}"--><!--#endinclude-->
+		<div class="tab-content">
+			<div id="{%.prefix%}ListContent" class="tab-pane active">
+				<br/>
+				<div class="well well-sm">
+					<form id="{%.prefix%}ListSform" class="form-inline" method="post" go:action="{%apis%}/{%project%}/{%module%}/index">
+						<input type="hidden" id="sDeletionU0" name="sDeletionU0" value="0" />
+						<input type="hidden" id="sPageNoTR" name="sPageNoTR" value="1" />
+						<input type="hidden" id="sPageSizeTR" name="sPageSizeTR" value="" />
+						<div class="form-group">
+							<label class="control-label">序号</label>
+							<input class="form-control" id="sIdEQ" name="sIdEQ">
+						</div>
+						<button type="button" id="{%.prefix%}ListSbtn" class="btn btn-primary">查询</button>
+					</form>
+				</div>
+				<!--#include file="/ui/include/alert.html" param="{%.prefix%}List"--><!--#endinclude-->
+				<table class="table table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th class="f-w50">序号</th>
+							<th>名称</th>
+							<th>类型</th>
+							<th>是否可用</th>
+							<th class="f-w150">创建时间</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody id="{%.prefix%}ListData"></tbody>
+					<script id="{%.prefix%}ListTemplate" type="text/x-handlebars-template">
+					{{#each slice}}
+						<tr{{#if (divisible @index 2)}} class="active"{{/if}}>
+							<td title="{{id}}">{{abbr id 5}}</td>
+							<td>{{name}}</td>
+							<td>{{genre}}</td>
+							<td>{{usable}}</td>
+							<td>{{uyymdhms created}}</td>
+							<td>
+								<a href="#eFormContent" go:data-state="edit" go:data-template="{%.prefix%}FormTemplate" go:data-url="{%apis%}/{%project%}/{%module%}/edit" onclick="{%.prefix%}Action(this,'{{id}}',{%.prefix%}PostLoadForm)" go:data-permissions="{%project%}:{%module%}:edit">修改</a>
+								<a href="#disable" go:data-state="disable" go:data-url="{%apis%}/{%project%}/{%module%}/disable" onclick="disable(this,'{{id}}',{%.prefix%}Page)" go:data-permissions="{%project%}:{%module%}:disable">删除</a>
+							</td>
+						</tr>
+					{{/each}}
+					</script>
+				</table>
+				<ul id="{%.prefix%}ListPagination" class="pagination"></ul>
+			</div>
+			<div id="{%.prefix%}FormContent" class="tab-pane"></div>
+			<script id="{%.prefix%}FormTemplate" type="text/x-handlebars-template">
+				<form id="{%.prefix%}Form" method="post" go:action="{%apis%}/{%project%}/{%module%}/save">
+					<br/>
+					<!--#include file="/ui/include/alert.html" param="{%.prefix%}Form"--><!--#endinclude-->
+					<input type="hidden" id="id" name="id" value="{{id}}" />
+					<div class="form-group">
+						<label class="control-label">名称</label>
+						<div>
+							<input class="form-control required" id="name" name="name" value="{{name}}"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label">类型</label>
+						<div>
+							<input class="form-control required" id="genre" name="genre" value="{{genre}}"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label">是否可用</label>
+						<div>
+							<input class="form-control required" id="usable" name="usable" value="{{usable}}"/>
+						</div>
+					</div>
+					{{#if (ne state 'show')}}
+					<button type="submit" class="btn btn-primary" go:data-permissions="{%project%}:{%module%}:edit,{%project%}:{%module%}:add">保存</button>
+					{{/if}}
+				</form>
+			</script>
+		</div>
+	</div>
+</div>
+<!--#include file="/core/include/footer.html"--><!--#endinclude-->
+</div>
+</body>
+</html>

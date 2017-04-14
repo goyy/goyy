@@ -1,0 +1,4 @@
+
+function ePostLoadForm() {
+	$("#eForm").validate();
+}

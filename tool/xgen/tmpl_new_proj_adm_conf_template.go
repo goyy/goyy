@@ -13,7 +13,9 @@ var tmplNewProjAdmConfTemplate = `<?xml version="1.0" encoding="UTF-8" ?>
 				<enable>true</enable>
 				<reloaded>true</reloaded>
 				<mappings>
-					<mapping path="/example" dir="../<%.NewProjName%>-example/templates/adm"/>
+					<mapping path="/sys" dir="%GOPATH%/src/gopkg.in/goyy/goyy.v0/app/sys/templates/adm"/>
+					<mapping path="/example" dir="%GOPATH%/src/gopkg.in/goyy/goyy.v0/app/example/templates/adm"/>
+					<mapping path="/ui" dir="%GOPATH%/src/gopkg.in/goyy/goyy.v0/app/ui/templates"/>
 				</mappings>
 			</html>
 			<template name="<%.NewProjName%>">

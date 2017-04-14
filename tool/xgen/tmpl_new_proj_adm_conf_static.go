@@ -19,7 +19,8 @@ var tmplNewProjAdmConfStatic = `<?xml version="1.0" encoding="UTF-8" ?>
 				<dir>static</dir>
 				<url>/static</url>
 				<mappings>
-					<mapping path="/example" dir="../<%.NewProjName%>-example/static/adm"/>
+					<mapping path="/sys" dir="%GOPATH%/src/gopkg.in/goyy/goyy.v0/app/sys/static/adm"/>
+					<mapping path="/example" dir="%GOPATH%/src/gopkg.in/goyy/goyy.v0/app/example/static/adm"/>
 				</mappings>
 			</static>
 			<developer name="<%.NewProjName%>">
@@ -27,7 +28,7 @@ var tmplNewProjAdmConfStatic = `<?xml version="1.0" encoding="UTF-8" ?>
 				<dir>/app/assets/<%.NewProjName%>dev</dir>
 				<url>/<%.NewProjName%>dev</url>
 				<mappings>
-					<mapping path="/ui" dir="../<%.NewProjName%>-adm/static/dev/ui"/>
+					<mapping path="/ui" dir="%GOPATH%/src/gopkg.in/goyy/goyy.v0/app/ui/static"/>
 				</mappings>
 			</developer>
 			<operation name="<%.NewProjName%>">

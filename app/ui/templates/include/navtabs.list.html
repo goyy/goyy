@@ -1,0 +1,10 @@
+<ul id="{%.param%}NavTabs" class="nav nav-tabs dn" >
+	<li go:data-permissions="{%project%}:{%module%}:view" class="active">
+		<a href="#{%.param%}ListContent" go:data-state="list" onclick="{%.param%}action(this,'')">{%title%}列表</a>
+	</li>
+</ul>
+<script type="text/javascript">
+	$(function(){
+		$("#{%.param%}NavTabs").permission();
+	});
+</script>

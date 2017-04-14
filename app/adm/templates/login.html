@@ -3,10 +3,52 @@
 <head>
 <meta name="description" content="">
 <meta name="author" content="">
-<title go:title="/title.html">login</title>
+<!--#settings project="login" module="login" title="登录"--><!--#endsettings-->
+<!--#with prefix="e" --><!--#endwith-->
+<title go:title="/title.html">{%title%}</title>
 <!--#include file="/core/include/head.html"--><!--#endinclude-->
+
+<script type="text/javascript" go:src="{%statics%}/login/js/login.js?{%ver%}"></script>
 </head>
 <body>
-login
+<div class="container-fluid">
+<div class="content" class="row-fluid">
+	<br/><br/><br/><br/><br/><br/>
+	<div class="col-md-offset-4 col-md-4 col-md-offset-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">GOYY</div>
+			<div class="panel-body">
+				<form id="{%.prefix%}Form" role="form" action="/signin" method="post">
+					<input type="hidden" id="redirect" name="redirect" value=""/>
+					<div class="form-group">
+						<label class="control-label">登录名：</label>
+						<div class="form-group">
+							<input type="text" id="loginName" name="loginName" class="form-control required" value="">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label">密码：</label>
+						<div class="form-group">
+							<input type="password" id="passwd" name="passwd" class="form-control required">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label">验证码：</label>
+						<div class="form-group form-inline">
+							<input type="text" id="captcha" name="captcha" class="form-control required input-sm" />
+							<img id="captchaImg" go:src="/captcha/build" onclick="resetCaptcha();" width="90" height="30" />
+							<span>&nbsp;看不清&nbsp;&nbsp;<a href="javascript:resetCaptcha();">换一张</a></span>
+						</div>
+					</div>
+					<input class="btn btn-large btn-primary" type="submit" value="登 录" />
+				</form>
+			</div>
+			<div class="panel-footer">
+				Copyright &copy; 2016 <a href="http://www.goyy.org" target="_blank">goyy</a>
+			</div>
+		</div>
+	</div>
+</div>
+</div> <!-- /container -->
 </body>
 </html>

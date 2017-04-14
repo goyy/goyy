@@ -1,0 +1,22 @@
+<script type="text/javascript">
+	function disable(obj, id, callback) {
+		$("#disableAskDialog").dialog({
+			resizable: false,
+			modal: true,
+			buttons: {
+				"取消": function() {
+					$(this).dialog("close");
+				},
+				"确定": function() {
+					{%.param%}Action(obj, id, callback);
+					$(this).dialog("close");
+				}
+			}
+		});
+	}
+</script>
+<div class="hidden">
+	<div id="disableAskDialog" title="系统提示">
+		<p><br/>确认要删除该记录吗？</p>
+	</div>
+</div>

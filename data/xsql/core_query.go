@@ -191,6 +191,9 @@ func (me *query) Page(content entity.Interfaces, pageable domain.Pageable) (doma
 	queryCount := me.db.Query(dqlCount, me.args...)
 	totalElements, err := queryCount.Int()
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return domain.NewPage(pageable, content, totalElements), nil
+		}
 		return nil, err
 	}
 	d := dql.New(me.db.dialect)
