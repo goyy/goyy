@@ -1,5 +1,5 @@
 $(function(){
-	esAreaIdFormTreeInit();
+	$("#sAreaIdTree").tree();
 });
 
 var ePostLoadForm=function(){
@@ -11,8 +11,8 @@ var ePostLoadForm=function(){
 			}
 		}
 	});
-	eareaIdFormTreeInit();
-	eparentIdFormTreeInit();
+	$("#areaIdTree").tree();
+	$("#parentIdTree").tree();
 }
 
 function selectedArea(id, name) {

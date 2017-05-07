@@ -1,6 +1,6 @@
 $(function(){
-	esAreaIdFormTreeInit();
-	esOrgIdFormTreeInit();
+	$("#sAreaIdTree").tree();
+	$("#sOrgIdTree").tree();
 });
 
 
@@ -20,6 +20,6 @@ var ePostLoadForm=function(){
 			}
 		}
 	});
-	eareaIdFormTreeInit();
-	eorgIdFormTreeInit();
+	$("#areaIdTree").tree();
+	$("#orgIdTree").tree();
 }

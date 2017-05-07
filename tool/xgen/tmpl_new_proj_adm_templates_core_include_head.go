@@ -55,6 +55,7 @@ var tmplNewProjAdmTemplatesCoreIncludeHead = `<meta charset="utf-8">
 <script type="text/javascript" go:src="{%developers%}/ui/comm/js/jquery.form.js?{%ver%}"></script>
 <script type="text/javascript" go:src="{%developers%}/ui/comm/js/jquery.page.js?{%ver%}"></script>
 <script type="text/javascript" go:src="{%developers%}/ui/comm/js/jquery.util.js?{%ver%}"></script>
+<script type="text/javascript" go:src="{%developers%}/ui/comm/js/jquery.tree.js?{%ver%}"></script>
 <script go:type="text/javascript">
 	var profile = "{%profile%}";
 	var apis = "{%apis%}";

@@ -6,12 +6,12 @@
 <!--#settings project="sys" module="org" title="机构"--><!--#endsettings-->
 <!--#with prefix="e" --><!--#endwith-->
 <title go:title="/title.html">{%title%}</title>
-<!--#include file="/core/include/head.html"--><!--#endinclude-->
+<!--#include file="/layout/include/head.html"--><!--#endinclude-->
 
 <script type="text/javascript" go:src="{%statics%}/{%project%}/js/{%module%}.js?{%ver%}"></script>
 </head>
 <body>
-<!--#include file="/core/include/header.html" param="{%project%}"--><!--#endinclude-->
+<!--#include file="/layout/include/header.html" param="{%project%}"--><!--#endinclude-->
 <div class="container-fluid">
 <div class="content" class="row-fluid">
 <!--#include file="/ui/include/page.html" param="{%.prefix%}"--><!--#endinclude-->
@@ -23,7 +23,6 @@
 			<div id="{%.prefix%}ListContent" class="tab-pane active">
 				<br/>
 				<div class="well well-sm">
-					<!--#include file="/ui/include/formtree.html" param="{%.prefix%}" input="sAreaId" url="/sys/area/tree"--><!--#endinclude-->
 					<form id="{%.prefix%}ListSform" class="form-inline" method="post" go:action="{%apis%}/{%project%}/{%module%}/index">
 						<input type="hidden" id="sParentId" name="sParentId" value="root" />
 						<input type="hidden" id="sOrdinalOA" name="sOrdinalOA" value="10" />
@@ -31,7 +30,8 @@
 						<input type="hidden" id="sPageNoTR" name="sPageNoTR" value="1" />
 						<input type="hidden" id="sPageSizeTR" name="sPageSizeTR" value="" />
 						<label class="control-label">区域</label>
-						<div id="{%.prefix%}sAreaIdFormTree" class="form-group" data-val="">
+						<div class="form-group">
+							<div id="sAreaIdTree" class="form-inline" data-prefix="{%.prefix%}" data-input="sAreaId" data-reset="true" data-url="/sys/area/tree"></div>
 						</div>
 						<div class="form-group">
 							<label class="control-label text-right">名称</label>
@@ -89,8 +89,6 @@
 			<div id="{%.prefix%}FormContent" class="tab-pane">
 				
 			</div>
-			<!--#include file="/ui/include/formtree.html" param="{%.prefix%}" input="areaId" url="/sys/area/tree"--><!--#endinclude-->
-			<!--#include file="/ui/include/formtree.html" param="{%.prefix%}" input="parentId" url="/sys/org/tree"--><!--#endinclude-->
 			<script id="{%.prefix%}FormTemplate" type="text/x-handlebars-template">
 				<form id="{%.prefix%}Form" method="post" go:action="{%apis%}/{%project%}/{%module%}/save">
 					<br/>
@@ -104,14 +102,12 @@
 					<input type="hidden" id="parentNames" name="parentNames" value="{{parentNames}}" />
 					<div class="form-group">
 						<label class="control-label">*所属区域</label>
-						<div id="{%.prefix%}areaIdFormTree" class="form-inline" data-val="{{areaId}}">
-						</div>
+						<div id="areaIdTree" class="form-inline" data-prefix="{%.prefix%}" data-input="areaId" data-value="{{areaId}}" data-url="/sys/area/tree"></div>
 					</div>
 					{{#if (eq state 'edit')}}
 					<div class="form-group">
 						<label class="control-label">*上级</label>
-						<div id="{%.prefix%}parentIdFormTree" class="form-inline" data-val="{{parentId}}">
-						</div>
+						<div id="parentIdTree" class="form-inline" data-prefix="{%.prefix%}" data-input="parentId" data-value="{{parentId}}" data-url="/sys/org/tree"></div>
 					</div>
 					{{/if}}
 					<div class="form-group">
@@ -146,7 +142,7 @@
 		</div>
 	</div>
 </div>
-<!--#include file="/core/include/footer.html"--><!--#endinclude-->
+<!--#include file="/layout/include/footer.html"--><!--#endinclude-->
 </div>
 </body>
 </html>
