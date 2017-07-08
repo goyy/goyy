@@ -117,6 +117,16 @@ func Dir(file string) string {
 	return filepath.Dir(file)
 }
 
+func CurrentDir() (string, error) {
+	s, err := exec.LookPath(os.Args[0])
+	if err != nil {
+		return "", err
+	}
+	i := strings.IndexLast(s, "\\")
+	path := string(s[0 : i+1])
+	return path, nil
+}
+
 // Abs returns an absolute representation of path.
 // If the path is not absolute it will be joined with the current
 // working directory to turn it into an absolute path. The absolute

@@ -30,7 +30,7 @@ var tmplNewProjAdmTemplatesHome = `<!DOCTYPE html>
 			</li>
 		</ul>
 		<div class="tab-content">
-			<!--#include file="/core/comm/alert.html" param="{%.prefix%}-info"--><!--#endinclude-->
+			<!--#include file="/ui/include/alert.html" param="{%.prefix%}-info"--><!--#endinclude-->
 			<div id="{%.prefix%}-info" class="tab-pane active">
 			</div>
 			<script id="{%.prefix%}-info-template" type="text/x-handlebars-template">
@@ -57,7 +57,7 @@ var tmplNewProjAdmTemplatesHome = `<!DOCTYPE html>
 			<div id="{%.prefix%}-passwd" class="tab-pane">
 				<form id="eFormPasswd" role="form" method="post" go:action="{%apis%}/sys/user/repwd">
 					<br/>
-					<!--#include file="/core/comm/alert.html" param="{%.prefix%}Form"--><!--#endinclude-->
+					<!--#include file="/ui/include/alert.html" param="{%.prefix%}Form"--><!--#endinclude-->
 					<div class="form-group">
 						<label class="control-label"><%message "tmpl.home.form.oldpwd"%></label>
 						<div>

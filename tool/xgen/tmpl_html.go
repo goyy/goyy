@@ -20,11 +20,11 @@ var tmplHTMLMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 <!--#include file="/core/include/header.html" param="{%project%}"--><!--#endinclude-->
 <div class="container-fluid">
 <div class="content" class="row-fluid">
-	<!--#include file="/core/comm/page.html" param="{%.prefix%}"--><!--#endinclude-->
-	<!--#include file="/core/comm/action.html" param="{%.prefix%}"--><!--#endinclude-->
-	<!--#include file="/core/comm/disable.html" param="{%.prefix%}"--><!--#endinclude-->
+	<!--#include file="/ui/include/page.html" param="{%.prefix%}"--><!--#endinclude-->
+	<!--#include file="/ui/include/action.html" param="{%.prefix%}"--><!--#endinclude-->
+	<!--#include file="/ui/include/disable.html" param="{%.prefix%}"--><!--#endinclude-->
 	<div class="tabbable">
-		<!--#include file="/core/comm/navtabs.html" param="{%.prefix%}"--><!--#endinclude-->
+		<!--#include file="/ui/include/navtabs.html" param="{%.prefix%}"--><!--#endinclude-->
 		<div class="tab-content">
 			<div id="{%.prefix%}ListContent" class="tab-pane active">
 				<br/>
@@ -40,7 +40,7 @@ var tmplHTMLMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 						<button type="button" id="{%.prefix%}ListSbtn" class="btn btn-primary"><%message "html.list.sbtn"%></button>
 					</form>
 				</div>
-				<!--#include file="/core/comm/alert.html" param="{%.prefix%}List"--><!--#endinclude-->
+				<!--#include file="/ui/include/alert.html" param="{%.prefix%}List"--><!--#endinclude-->
 				<table class="table table-bordered table-condensed">
 					<thead>
 						<tr>
@@ -71,7 +71,7 @@ var tmplHTMLMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 			<script id="{%.prefix%}FormTemplate" type="text/x-handlebars-template">
 				<form id="{%.prefix%}Form" method="post" go:action="{%apis%}/{%project%}/{%module%}/save">
 					<br/>
-					<!--#include file="/core/comm/alert.html" param="{%.prefix%}Form"--><!--#endinclude-->
+					<!--#include file="/ui/include/alert.html" param="{%.prefix%}Form"--><!--#endinclude-->
 					<input type="hidden" id="id" name="id" value="{{id}}" /><%range $f := $e.Fields%>
 					<div class="form-group">
 						<label class="control-label"><%$f.Comment%></label>

@@ -7,7 +7,7 @@
     "go.buildTags": "",
     "go.buildFlags": [],
     "go.lintTool": "golint",
-    "go.lintFlags": ["--disable-all"],
+    "go.lintFlags": [],
     "go.vetFlags": [],
     "go.coverOnSave": false,
     "go.useCodeSnippetsOnFunctionSuggest": false,
