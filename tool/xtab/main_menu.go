@@ -23,7 +23,7 @@ func genMenu() {
 	// generate the header.html
 	for _, p := range conf.projects {
 		clidir := "../" + strings.AfterLast(p.Admpath(), "/")
-		dir := clidir + "/templates/core/include/"
+		dir := clidir + "/templates/layout/include/"
 		dstfile := dir + "header.html"
 		if !files.IsExist(dstfile) {
 			files.MkdirAll(dir, 0755)

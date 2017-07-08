@@ -12,12 +12,12 @@ var tmplNewProjAdmTemplatesHome = `<!DOCTYPE html>
 <!--#settings project="sys" module="user" title="<%message "tmpl.home.title"%>"--><!--#endsettings-->
 <!--#with prefix="e" --><!--#endwith-->
 <title go:title="/title.html">{%title%}</title>
-<!--#include file="/core/include/head.html"--><!--#endinclude-->
+<!--#include file="/layout/include/head.html"--><!--#endinclude-->
 
 <script type="text/javascript" go:src="{%statics%}/home/js/home.js?{%ver%}"></script>
 </head>
 <body>
-<!--#include file="/core/include/header.html" param="{%project%}"--><!--#endinclude-->
+<!--#include file="/layout/include/header.html" param="{%project%}"--><!--#endinclude-->
 <div class="container-fluid">
 <div class="content" class="row-fluid">
 	<div class="tabbable">
@@ -83,7 +83,7 @@ var tmplNewProjAdmTemplatesHome = `<!DOCTYPE html>
 		</div>
 	</div>
 </div>
-<!--#include file="/core/include/footer.html"--><!--#endinclude-->
+<!--#include file="/layout/include/footer.html"--><!--#endinclude-->
 </div>
 </body>
 </html>

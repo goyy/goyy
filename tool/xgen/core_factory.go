@@ -631,10 +631,10 @@ func (me factory) writeBy(typ, content string) error {
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/"
 			dstfile = "version.html"
 		case newProj + ".adm.templates.core.include.footer":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/include/"
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/layout/include/"
 			dstfile = "footer.html"
 		case newProj + ".adm.templates.core.include.head":
-			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/core/include/"
+			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/layout/include/"
 			dstfile = "head.html"
 		case newProj + ".adm.templates.err.401":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/err/"

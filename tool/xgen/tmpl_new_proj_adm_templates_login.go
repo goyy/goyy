@@ -12,7 +12,7 @@ var tmplNewProjAdmTemplatesLogin = `<!DOCTYPE html>
 <!--#settings project="login" module="login" title="<%message "tmpl.login.title"%>"--><!--#endsettings-->
 <!--#with prefix="e" --><!--#endwith-->
 <title go:title="/title.html">{%title%}</title>
-<!--#include file="/core/include/head.html"--><!--#endinclude-->
+<!--#include file="/layout/include/head.html"--><!--#endinclude-->
 
 <script type="text/javascript" go:src="{%statics%}/login/js/login.js?{%ver%}"></script>
 </head>

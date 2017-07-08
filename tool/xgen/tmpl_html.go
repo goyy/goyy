@@ -12,12 +12,12 @@ var tmplHTMLMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 <!--#settings project="<%$e.Project%>" module="<%$e.Module%>" title="<%$e.Comment%>"--><!--#endsettings-->
 <!--#with prefix="e" --><!--#endwith-->
 <title go:title="/title.html">{%title%}</title>
-<!--#include file="/core/include/head.html"--><!--#endinclude-->
+<!--#include file="/layout/include/head.html"--><!--#endinclude-->
 
 <script type="text/javascript" go:src="{%statics%}/{%project%}/js/{%module%}.js?{%ver%}"></script>
 </head>
 <body>
-<!--#include file="/core/include/header.html" param="{%project%}"--><!--#endinclude-->
+<!--#include file="/layout/include/header.html" param="{%project%}"--><!--#endinclude-->
 <div class="container-fluid">
 <div class="content" class="row-fluid">
 	<!--#include file="/ui/include/page.html" param="{%.prefix%}"--><!--#endinclude-->
@@ -87,7 +87,7 @@ var tmplHTMLMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 		</div>
 	</div>
 </div>
-<!--#include file="/core/include/footer.html"--><!--#endinclude-->
+<!--#include file="/layout/include/footer.html"--><!--#endinclude-->
 </div>
 </body>
 </html><%end%>

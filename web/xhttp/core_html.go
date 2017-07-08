@@ -491,7 +491,7 @@ func (me *htmlServeMux) parseIncludeFile(content string, settings map[string]str
 		filename := directives[i].attr[attrFile]
 		v, err := files.Read(filename)
 		if err != nil {
-			logger.Error(err.Error(), ":", filename)
+			logger.Error(err.Error(), " : ", directives[i].statement, " : ", filename)
 			continue
 		}
 		if modTime, err := files.ModTimeUnix(filename); err == nil {
