@@ -4,7 +4,7 @@
 
 package main
 
-var tmplNewProjAdmTemplatesCoreIncludeFooter = `<div class="footer">
+var tmplNewProjAdmTemplatesLayoutIncludeFooter = `<div class="footer">
 Copyright &copy; <%year%> <a href="http://www.<%.NewProjHost%>" target="_blank"><%.NewProjTitle%></a>
 </div>
 `

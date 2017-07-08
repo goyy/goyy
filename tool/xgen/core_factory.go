@@ -630,10 +630,10 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".adm.templates.ver":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/"
 			dstfile = "version.html"
-		case newProj + ".adm.templates.core.include.footer":
+		case newProj + ".adm.templates.layout.include.footer":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/layout/include/"
 			dstfile = "footer.html"
-		case newProj + ".adm.templates.core.include.head":
+		case newProj + ".adm.templates.layout.include.head":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-adm/templates/layout/include/"
 			dstfile = "head.html"
 		case newProj + ".adm.templates.err.401":
@@ -852,10 +852,10 @@ func (me factory) writeNewProj() error {
 	if err := me.writeBy(newProj+".adm.templates.ver", tmplNewProjAdmTemplatesVer); err != nil {
 		return err
 	}
-	if err := me.writeBy(newProj+".adm.templates.core.include.footer", tmplNewProjAdmTemplatesCoreIncludeFooter); err != nil {
+	if err := me.writeBy(newProj+".adm.templates.layout.include.footer", tmplNewProjAdmTemplatesLayoutIncludeFooter); err != nil {
 		return err
 	}
-	if err := me.writeBy(newProj+".adm.templates.core.include.head", tmplNewProjAdmTemplatesCoreIncludeHead); err != nil {
+	if err := me.writeBy(newProj+".adm.templates.layout.include.head", tmplNewProjAdmTemplatesLayoutIncludeHead); err != nil {
 		return err
 	}
 	if err := me.writeBy(newProj+".adm.templates.err.401", tmplNewProjAdmTemplatesErr401); err != nil {
