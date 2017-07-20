@@ -158,14 +158,14 @@ func addMenu(driverName, pid, mid, tid, xname, ordinal, genre string, parent *me
 		m.grade = "4"
 	}
 
-	csql := "SELECT count(1) FROM sys_menu WHERE code = ?"
+	csql := "SELECT count(1) FROM sys_menu WHERE fullname = ?"
 
 	sql := `INSERT INTO sys_menu
 	(id, href, target, icon, hidden, permission, code, name, fullname, genre, ordinal, parent_id, parent_ids, parent_codes, parent_names, leaf, grade, memo, creates, creater, created, modifier, modified, version, deletion, artifical, history)
 	VALUES
 	(?, ?, NULL, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL, ?, NULL, ?, 0, 0, 0, 0)`
 
-	count, err := db.Query(csql, m.code).Int()
+	count, err := db.Query(csql, m.fullname).Int()
 	if err != nil {
 		logger.Error(err)
 		return m
