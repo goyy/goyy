@@ -6,6 +6,7 @@ package main
 
 import (
 	"bytes"
+	"html/template"
 	"io/ioutil"
 	"strconv"
 
@@ -18,12 +19,16 @@ import (
 	"gopkg.in/goyy/goyy.v0/util/uuids"
 )
 
-func genMenu() {
+func genMenu(params string) {
 	xsql.SetPriority(log.Perror)
 	// generate the header.html
 	for _, p := range conf.projects {
 		clidir := "../" + strings.AfterLast(p.Admpath(), "/")
-		dir := clidir + "/templates/layout/include/"
+		javadir := ""
+		if params == "javayy" {
+			javadir = "/src/main/resources"
+		}
+		dir := clidir + javadir + "/templates/layout/include/"
 		dstfile := dir + "header.html"
 		if !files.IsExist(dstfile) {
 			files.MkdirAll(dir, 0755)
@@ -34,7 +39,12 @@ func genMenu() {
 			"Tables":  conf.tables,
 		}
 		buf := bytes.Buffer{}
-		tmpl := newTmpl(tmplMenu)
+		var tmpl *template.Template
+		if params == "goyy" {
+			tmpl = newTmpl(tmplMenu)
+		} else {
+			tmpl = newTmpl(tmplMenu2)
+		}
 		tmpl.Execute(&buf, data)
 		ioutil.WriteFile(dstfile, buf.Bytes(), 0755)
 	}

@@ -21,7 +21,7 @@
         },
         {
             "taskName": "install",
-            "args": ["install"]
+            "args": ["install", "-v"]
         },
         {
             "taskName": "run",

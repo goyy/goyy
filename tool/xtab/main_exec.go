@@ -24,6 +24,7 @@ func main() {
 
 	proj := flag.String("proj", "goyy", "project name")
 	pkg := flag.String("pkg", "", "path to package for new project")
+	params := flag.String("params", "goyy", "params")
 	flag.Parse()
 	if *isMerge {
 		logger.Println("Merging file : start")
@@ -44,12 +45,12 @@ func main() {
 	}
 	if *isMenu {
 		logger.Println("Generating menu : start")
-		genMenu()
+		genMenu(*params)
 		logger.Println("Generated menu : end")
 	}
 	if *isDB {
 		logger.Println("Initialize db : start")
-		expDB()
+		expDB(*params)
 		logger.Println("Initialize db : end")
 	}
 }

@@ -12,13 +12,13 @@ import (
 
 var dmlMap = map[string]string{}
 
-func expDB() {
+func expDB(params string) {
 	isRunMenu := true
 	for _, p := range conf.projects {
 		dbName := p.database.name
 		driverName := p.database.driverName
 		proj := p.ID()
-		params := map[string]string{
+		dbParams := map[string]string{
 			"driverName": driverName,
 		}
 		if isExistTable(driverName, proj) {
@@ -32,11 +32,11 @@ func expDB() {
 			return
 		}
 		if isRunMenu {
-			genMenu()
+			genMenu(params)
 			isRunMenu = false
 		}
 		if _, ok := dmlMap[dbName]; !ok {
-			err := expData2DB(driverName, proj, params)
+			err := expData2DB(driverName, proj, dbParams)
 			if err != nil {
 				logger.Errorln(err)
 				return
@@ -46,10 +46,10 @@ func expDB() {
 	}
 }
 
-func expData2DB(driverName, proj string, params map[string]string) error {
+func expData2DB(driverName, proj string, dbParams map[string]string) error {
 	for _, typ := range types {
 		tmpl := typ2tmpl("data." + typ)
-		content, err := parseTmpl(tmpl, params)
+		content, err := parseTmpl(tmpl, dbParams)
 		if err != nil {
 			return err
 		}
