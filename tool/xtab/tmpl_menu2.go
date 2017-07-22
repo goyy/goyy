@@ -29,11 +29,11 @@ var tmplMenu2 = `<script type="text/javascript">{{$ := .}}
 			</div>
 			<div class="navbar-collapse collapse">{{range $module := .Modules}}
 				<ul class="nav navbar-nav">
-					<li id="header_{{$module.ID}}" th:permissions="{{range $table := $.Tables}}{{if eq $table.Module.ID $module.ID}}{{if eq $table.Menu "true"}}{{if ne $table.ID "-"}}{{$table.Permissions}},{{end}}{{end}}{{end}}{{end}}" class="{%if eq .param '{{$module.ID}}'%}active {%end%}dropdown">
+					<li id="header_{{$module.ID}}" th:permissions="'{{range $table := $.Tables}}{{if eq $table.Module.ID $module.ID}}{{if eq $table.Menu "true"}}{{if ne $table.ID "-"}}{{$table.Permissions}},{{end}}{{end}}{{end}}{{end}}'" class="{%if eq .param '{{$module.ID}}'%}active {%end%}dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{$module.Name}}<b class="caret"></b></a>
 						<ul class="dropdown-menu">{{range $table := $.Tables}}{{if eq $table.Module.ID $module.ID}}{{if eq $table.Menu "true"}}{{if eq $table.ID "-"}}
-							<li th:permissions="{{$table.Permissions}}" class="divider"></li>{{else}}
-							<li th:permissions="{{$table.Permissions}}"><a th:href="{{$table.Href}}(ver=${#ver})">{{$table.Name}}{{message "tmpl.menu.manage"}}</a></li>{{end}}{{end}}{{end}}{{end}}
+							<li th:permissions="'{{$table.Permissions}}'" class="divider"></li>{{else}}
+							<li th:permissions="'{{$table.Permissions}}'"><a th:href="@{{html "{"}}{{$table.Href}}(ver=${#ver})}">{{$table.Name}}{{message "tmpl.menu.manage"}}</a></li>{{end}}{{end}}{{end}}{{end}}
 						</ul>
 					</li>
 				</ul>{{end}}
