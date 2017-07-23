@@ -19,7 +19,11 @@
 		<column id="mobile"       name="MOBILE"       domain="code"   comment="mobile"/>
 		<column id="tel"          name="TEL"          domain="code"   comment="telephone"/>
 		<column id="contact"      name="CONTACT"      domain="name"   comment="contact"/>
+		<column id="age"          name="AGE"          domain="int"    comment="age"/>
 		<column id="sex"          name="SEX"          domain="flag"   comment="sex"/>
+		<column id="birthday"     name="BIRTHDAY"     domain="long"   comment="birthday"/>
+		<column id="inc"          name="INC"          domain="name"   comment="inc"/>
+		<column id="position"     name="POSITION"     domain="name"   comment="position"/>
 		<column id="receiver"     name="RECEIVER"     domain="code"   comment="receiver"/>
 		<column id="address"      name="ADDRESS"      domain="memo"   comment="address"/>
 		<column id="zipcode"      name="ZIPCODE"      domain="code"   comment="zipcode"/>

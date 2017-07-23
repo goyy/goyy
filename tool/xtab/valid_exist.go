@@ -176,8 +176,11 @@ func (me *valids) IsExistColumns() bool {
 		<column id="mobile"       domain="code"   name="{{message "tmpl.col.mobile.name"}}" comment="{{message "tmpl.col.mobile.memo"}}"/>
 		<column id="tel"          domain="code"   name="{{message "tmpl.col.tel.name"}}" comment="{{message "tmpl.col.tel.memo"}}"/>
 		<column id="contact"      domain="name"   name="{{message "tmpl.col.contact.name"}}" comment="{{message "tmpl.col.contact.memo"}}"/>
+		<column id="age"          domain="int"    name="{{message "tmpl.col.age.name"}}" comment="{{message "tmpl.col.age.memo"}}"/>
 		<column id="sex"          domain="flag"   name="{{message "tmpl.col.sex.name"}}" comment="{{message "tmpl.col.sex.memo"}}"/>
 		<column id="birthday"     domain="long"   name="{{message "tmpl.col.birthday.name"}}" comment="{{message "tmpl.col.birthday.memo"}}"/>
+		<column id="inc"          domain="name"   name="{{message "tmpl.col.inc.name"}}" comment="{{message "tmpl.col.inc.memo"}}"/>
+		<column id="position"     domain="name"   name="{{message "tmpl.col.position.name"}}" comment="{{message "tmpl.col.position.memo"}}"/>
 		<column id="receiver"     domain="code"   name="{{message "tmpl.col.receiver.name"}}" comment="{{message "tmpl.col.receiver.memo"}}"/>
 		<column id="address"      domain="memo"   name="{{message "tmpl.col.address.name"}}" comment="{{message "tmpl.col.address.memo"}}"/>
 		<column id="zipcode"      domain="code"   name="{{message "tmpl.col.zipcode.name"}}" comment="{{message "tmpl.col.zipcode.memo"}}"/>
