@@ -98,7 +98,11 @@ func (me *mysqls) CreateTableColumn(c *column) (sql string) {
 	}
 	//========default=========
 	if strings.TrimSpace(c.Defaults()) != "" {
-		types += " default " + c.Defaults()
+		if c.Types() == "string" || c.Types() == "text" {
+			types += " default '" + c.Defaults() + "'"
+		} else {
+			types += " default " + c.Defaults()
+		}
 	}
 	//========not null=========
 	if c.ID() == "id" {
