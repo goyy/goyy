@@ -42,9 +42,9 @@
 			<column extends="mobile"/>
 			<column extends="area_id"/>
 			<column extends="org_id"/>
-			<column id="dimission" name="DIMISSION" domain="flag" comment="DIMISSION" default="0"/>
+			<column id="dimission" name="DIMISSION" domain="bool" comment="DIMISSION" default="0"/>
 			<column id="dimission_time" name="DIMISSION TIME" domain="long" comment="DIMISSION TIME" default="-62135596800"/>
-			<column id="freeze" name="FREEZE" domain="flag" comment="FREEZE" default="0"/>
+			<column id="freeze" name="FREEZE" domain="bool" comment="FREEZE" default="0"/>
 			<column id="freeze_time" name="FREEZE TIME" domain="long" comment="FREEZE TIME" default="-62135596800"/>
 			<column id="login_name" name="LOGIN NAME" domain="code" comment="LOGIN NAME"/>
 			<column id="login_ip" name="LOGIN IP" domain="code" comment="LOGIN IP"/>

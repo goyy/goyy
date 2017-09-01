@@ -51,7 +51,7 @@
 		<column id="parent_ids"   name="PARENT_IDS"   domain="memo"   comment="all the identity of the parent table"/>
 		<column id="parent_codes" name="PARENT_CODES" domain="memo"   comment="all the code of the parent table"/>
 		<column id="parent_names" name="PARENT_NAMES" domain="memo"   comment="all the name of the parent table"/>
-		<column id="leaf"         name="LEAF"         domain="int"    comment="whether is the leaf node of the tree"/>
+		<column id="leaf"         name="LEAF"         domain="bool"   comment="whether is the leaf node of the tree"/>
 		<column id="grade"        name="GRADE"        domain="int"    comment="The level of the tree node"/>
 		<column id="creates"      name="CREATES"      domain="id"     comment="created org"/>
 		<column id="creater"      name="CREATER"      domain="id"     comment="created user"/>
