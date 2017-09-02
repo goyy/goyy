@@ -40,7 +40,7 @@
 		$("#"+obj.args.alertId).hideAlert();
 		if(typeof({%.param%}PrePage)=="function"){
 			try{
-				{%.param%}PrePage;
+				{%.param%}PrePage();
 			}catch(e){
 				console.log("{%.param%}PrePage err:",e);
 			}

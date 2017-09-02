@@ -11,9 +11,7 @@
 				return;
 			}
 		}
-		if(window.state){
-			window.state=ste;
-		}
+		state=ste;
 		if(ste=="add"||ste=="edit"||ste=="show"||ste=="disable"){
 			$(contentId).html("");
 			if($.isNotBlank(url)){
@@ -66,7 +64,7 @@
 		}
 	}
 	//返回将要切换的tab是否已经选中
-	function {%.param%}TabsSwitch(id,state,tabsId){
+	function {%.param%}TabsSwitch(id,formState,tabsId){
 		if($.isBlank(tabsId)){
 			tabsId="#{%.param%}NavTabs";
 		}
@@ -81,14 +79,14 @@
 		if(a.parent().css("display")=="none"){
 			a.parent().show();
 		}
-		if(state=="list"){
+		if(formState=="list"){
 			$(tabsId).permission();
 		}
-		if($.isBlank(state)||state=="list"){
-			state="add";
+		if($.isBlank(formState)||formState=="list"){
+			formState="add";
 		}
 		var tabTitleMsg={add:"添加",edit:"修改",show:"查看"};
-		$("#{%.param%}TabTitle").html(tabTitleMsg[state]);
+		$("#{%.param%}TabTitle").html(tabTitleMsg[formState]);
 		return true;
 	}
 </script>
