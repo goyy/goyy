@@ -31,6 +31,7 @@
 									data[key]=winUrl.param()[key];
 								}
 								$(contentId).handlebars(template,data);
+								$(contentId).dict(); //查询字典
 							}
 							try{
 								if(typeof(callback) == "function"){
@@ -49,6 +50,7 @@
 					data[key]=winUrl.param()[key];
 				}
 				$(contentId).handlebars(template,data);
+				$(contentId).dict(); //查询字典
 				try{
 					if(typeof(callback) == "function"){
 						callback();

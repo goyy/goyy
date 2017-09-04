@@ -192,6 +192,13 @@
 	};
 	
 	// 字典显示
+    // data-id ：通常是ID，比如用户ID，对应字典的mkey
+    // data-dict ：对应字典的genre
+    // data-descr ：表示显示字典的descr，而不是字典的mval
+    // data-set：可选的，默认值html，value表示执行$obj.val(mval)，html表示把执行$obj.html(mval)
+    // 参数options.genre可以自定义data-dict的名称，比如options.genre=genre，那么data-dict就改为了data-genre
+    // 参数options.url可以自定义获取字典信息的请求的URL
+    // 参数options是可选的
 	$.fn.dict=function(options){
 		var $this = $(this);
 		var args = $.extend({
@@ -238,7 +245,13 @@
 								var dgenre = result.data[i].genre;
 								var dname = result.data[i].mval;
 								if ($.isNotBlank(dname)) {
-									$("[data-id='"+did+"'][data-"+args.genre+"='"+dgenre+"']").html(dname);
+									var $obj = $this.find("[data-id='" + did + "'][data-" + args.genre + "='" + dgenre + "']");
+									var $set = $obj.data("set");
+									if ($.isNotBlank($set) && $set == "value") {
+                                        $obj.val(dname);
+                                    } else {
+                                        $obj.html(dname);
+                                    }
 								}
 							}
 						}
