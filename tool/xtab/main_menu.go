@@ -23,6 +23,9 @@ func genMenu(params string) {
 	xsql.SetPriority(log.Perror)
 	// generate the header.html
 	for _, p := range conf.projects {
+		if params == "ignore" { // When params = ignore, ignore the generated header.html
+			continue
+		}
 		clidir := "../" + strings.AfterLast(p.Admpath(), "/")
 		javadir := ""
 		if params == "javayy" {
