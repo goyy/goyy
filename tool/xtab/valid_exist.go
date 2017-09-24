@@ -340,13 +340,18 @@ func (me *valids) IsExistProjectTables() bool {
 			<column id="freeze" name="{{message "tmpl.tab.sys.user.freeze.name"}}" domain="bool" comment="{{message "tmpl.tab.sys.user.freeze.memo"}}" default="0"/>
 			<column id="freeze_time" name="{{message "tmpl.tab.sys.user.freeze_time.name"}}" domain="long" comment="{{message "tmpl.tab.sys.user.freeze_time.memo"}}" default="-62135596800"/>
 			<column id="login_name" name="{{message "tmpl.tab.sys.user.login_name.name"}}" domain="code" comment="{{message "tmpl.tab.sys.user.login_name.memo"}}" unique="true"/>
-			<column id="login_ip" name="{{message "tmpl.tab.sys.user.login_ip.name"}}" domain="code" comment="{{message "tmpl.tab.sys.user.login_ip.memo"}}"/>
-			<column id="login_time" name="{{message "tmpl.tab.sys.user.login_time.name"}}" domain="long" comment="{{message "tmpl.tab.sys.user.login_time.memo"}}"/>
 		</table>
 		<table id="user_role" name="{{message "tmpl.tab.sys.user_role.name"}}" extends="sys" generate="true" menu="false" comment="{{message "tmpl.tab.sys.user_role.memo"}}" master="user" slave="role">
 			<column extends="user_id"/>
 			<column extends="role_id"/>
 		</table>
+        <table id="user_login" name="{{message "tmpl.tab.sys.user_login.name"}}" extends="sys" generate="true" comment="{{message "tmpl.tab.sys.user_login.memo"}}">
+            <column id="profiles" name="{{message "tmpl.tab.sys.user_login.profiles.name"}}" domain="code" comment="{{message "tmpl.tab.sys.user_login.profiles.memo"}}"/>
+            <column extends="user_id"/>
+			<column id="login_name" name="{{message "tmpl.tab.sys.user.login_name.name"}}" domain="code" comment="{{message "tmpl.tab.sys.user.login_name.memo"}}"/>
+			<column id="login_ip" name="{{message "tmpl.tab.sys.user.login_ip.name"}}" domain="code" comment="{{message "tmpl.tab.sys.user.login_ip.memo"}}"/>
+			<column id="login_time" name="{{message "tmpl.tab.sys.user.login_time.name"}}" domain="long" comment="{{message "tmpl.tab.sys.user.login_time.memo"}}"/>
+        </table>
 		<table id="-" name="-" generate="false" menu="true" permissions="sys:dict:view"/>
 		<table id="dict" name="{{message "tmpl.tab.sys.dict.name"}}" extends="sys" generate="true" comment="{{message "tmpl.tab.sys.dict.memo"}}">
 			<column extends="genre"/>
