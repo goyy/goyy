@@ -47,13 +47,18 @@
 			<column id="freeze" name="FREEZE" domain="bool" comment="FREEZE" default="0"/>
 			<column id="freeze_time" name="FREEZE TIME" domain="long" comment="FREEZE TIME" default="-62135596800"/>
 			<column id="login_name" name="LOGIN NAME" domain="code" comment="LOGIN NAME"/>
-			<column id="login_ip" name="LOGIN IP" domain="code" comment="LOGIN IP"/>
-			<column id="login_time" name="LOGIN TIME" domain="long" comment="LOGIN TIME"/>
 		</table>
 		<table id="user_role" name="USER ROLE" extends="sys" generate="true" menu="false" comment="USER ROLE" master="user" slave="role">
 			<column extends="user_id"/>
 			<column extends="role_id"/>
 		</table>
+        <table id="user_login" name="USER LOGIN" extends="sys" generate="true" comment="user login">
+            <column id="profiles" name="PROFILES" domain="code" comment="profiles"/>
+            <column extends="user_id"/>
+            <column id="login_name" name="LOGIN NAME" domain="code" comment="login name"/>
+            <column id="login_ip" name="LOGIN IP" domain="code" comment="login ip"/>
+            <column id="login_time" name="LOGIN TIME" domain="long" comment="login time"/>
+        </table>
 		<table id="-" name="-" generate="false" menu="true" permissions="sys:dict:view"/>
 		<table id="dict" name="DICT" extends="sys" generate="true" comment="DICT">
 			<column extends="genre"/>
