@@ -303,6 +303,7 @@ func (me *valids) IsExistProjectTables() bool {
 			<column id="permission" name="{{message "tmpl.tab.sys.menu.perm.name"}}" domain="memo" comment="{{message "tmpl.tab.sys.menu.perm.memo"}}"/>
 		</table>
 		<table id="post" name="{{message "tmpl.tab.sys.post.name"}}" extends="tree" generate="true" comment="{{message "tmpl.tab.sys.post.memo"}}">
+			<column id="is_admin" name="{{message "tmpl.tab.sys.post.is_admin.name"}}" domain="bool" comment="{{message "tmpl.tab.sys.post.is_admin.memo"}}" default="0"/>
 		</table>
 		<table id="post_menu" name="{{message "tmpl.tab.sys.post_menu.name"}}" extends="sys" generate="true" menu="false" comment="{{message "tmpl.tab.sys.post_menu.memo"}}" master="post" slave="menu">
 			<column extends="post_id"/>
@@ -311,6 +312,7 @@ func (me *valids) IsExistProjectTables() bool {
 		<table id="role" name="{{message "tmpl.tab.sys.role.name"}}" extends="sys" generate="true" comment="{{message "tmpl.tab.sys.role.memo"}}">
 			<column extends="name"/>
 			<column extends="code"/>
+			<column id="is_admin" name="{{message "tmpl.tab.sys.role.is_admin.name"}}" domain="bool" comment="{{message "tmpl.tab.sys.role.is_admin.memo"}}" default="0"/>
 			<column extends="genre" name="{{message "tmpl.tab.sys.role.genre.name"}}" comment="{{message "tmpl.tab.sys.role.genre.memo"}}"/>
 			<column extends="classify" name="{{message "tmpl.tab.sys.role.classify.name"}}" comment="{{message "tmpl.tab.sys.role.classify.memo"}}"/>
 			<column extends="ordinal"/>
