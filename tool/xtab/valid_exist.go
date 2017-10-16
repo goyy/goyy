@@ -164,6 +164,7 @@ func (me *valids) IsExistColumns() bool {
 		<column id="name"         domain="name"   name="{{message "tmpl.col.name.name"}}" comment="{{message "tmpl.col.name.memo"}}"/>
 		<column id="nickname"     domain="code"   name="{{message "tmpl.col.nickname.name"}}" comment="{{message "tmpl.col.nickname.memo"}}"/>
 		<column id="fullname"     domain="memo"   name="{{message "tmpl.col.fullname.name"}}" comment="{{message "tmpl.col.fullname.memo"}}"/>
+		<column id="kind"         domain="code"   name="{{message "tmpl.col.kind.name"}}" comment="{{message "tmpl.col.kind.memo"}}"/>
 		<column id="genre"        domain="code"   name="{{message "tmpl.col.genre.name"}}" comment="{{message "tmpl.col.genre.memo"}}"/>
 		<column id="classify"     domain="code"   name="{{message "tmpl.col.classify.name"}}" comment="{{message "tmpl.col.classify.memo"}}"/>
 		<column id="content"      domain="descr"  name="{{message "tmpl.col.content.name"}}" comment="{{message "tmpl.col.content.memo"}}"/>
