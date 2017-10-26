@@ -189,6 +189,22 @@ func addMenu(driverName, pid, mid, tid, xname, ordinal, genre string, parent *me
 			logger.Error(err)
 			return m
 		}
+	} else {
+		idsql := "SELECT id FROM sys_menu WHERE fullname = ?"
+		mid, err := db.Query(idsql, m.fullname).Str()
+		if err != nil {
+			logger.Error(err)
+			return m
+		}
+		m.id = mid
+		codesql := "SELECT code FROM sys_menu WHERE fullname = ?"
+		mcode, err := db.Query(codesql, m.fullname).Str()
+		if err != nil {
+			logger.Error(err)
+			return m
+		}
+		m.code = mcode
+		m.ordinal = mcode
 	}
 	return m
 }
