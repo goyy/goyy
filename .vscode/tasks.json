@@ -1,31 +1,43 @@
 {
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
-    "version": "0.1.0",
-    "command": "go",
-    "isShellCommand": true,
-    "showOutput": "always",
+    "version": "2.0.0",
+    "type": "shell",
     "echoCommand": true,
-    "suppressTaskName": true,
+    "presentation": {
+        "reveal": "always"
+    },
     "options": {
         "cwd": "${fileDirname}"
     },
     "tasks": [
         {
-            "taskName": "build",
-            "args": ["build", "-i"]
+            "label": "build",
+            "command": "go build -i",
+            "problemMatcher": [
+                "$go"
+            ]
         },
         {
-            "taskName": "test",
-            "args": ["test", "-v"]
+            "label": "test",
+            "command": "go test -v",
+            "problemMatcher": [
+                "$go"
+            ]
         },
         {
-            "taskName": "install",
-            "args": ["install", "-v"]
+            "label": "install",
+            "command": "go install -v",
+            "problemMatcher": [
+                "$go"
+            ]
         },
         {
-            "taskName": "run",
-            "args": ["run", "${file}"]
+            "label": "run",
+            "command": "go run ${file}",
+            "problemMatcher": [
+                "$go"
+            ]
         }
     ]
 }
