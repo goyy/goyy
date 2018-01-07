@@ -1,5 +1,6 @@
 // Place your settings in this file to overwrite default and user settings.
 {
     // code-runner
-    "code-runner.fileDirectoryAsCwd": true
+    "code-runner.fileDirectoryAsCwd": true,
+    "code-runner.customCommand": "cd $workspaceRoot/app/adm && go run adm.go"
 }
