@@ -23,6 +23,7 @@ type xColumn struct {
 	Dict     string `xml:"dict,attr"`
 	Defaults string `xml:"default,attr"`
 	Nullable string `xml:"nullable,attr"`
+	Display  string `xml:"display,attr"`
 }
 
 type column struct {
@@ -37,6 +38,7 @@ type column struct {
 	dict     string
 	defaults string
 	nullable string
+	display  string
 	field    string
 }
 
@@ -237,6 +239,24 @@ func (me *column) Nullable() string { // column.nullable: this -> parent -> doma
 
 func (me *column) SetNullable(value string) {
 	me.nullable = value
+}
+
+func (me *column) Display() string { // column.display: this -> parent
+	if strings.TrimSpace(me.display) == "" && me.parent != nil {
+		return me.parent.Display()
+	}
+	return me.display
+}
+
+func (me *column) SetDisplay(value string) {
+	me.display = value
+}
+
+func (me *column) IsDisplay() bool {
+	if me.Display() == "false" || me.Display() == "0" {
+		return false
+	}
+	return true
 }
 
 func (me *column) Field() string { // column.field: this -> parent

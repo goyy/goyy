@@ -44,8 +44,8 @@ var tmplHTMLMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 				<table class="table table-bordered table-condensed">
 					<thead>
 						<tr>
-							<th class="f-w50"><%message "html.list.sid"%></th><%range $f := $e.Fields%>
-							<th><%$f.Comment%></th><%end%>
+							<th class="f-w50"><%message "html.list.sid"%></th><%range $f := $e.Fields%><%if $f.IsDisplay%>
+							<th><%$f.Comment%></th><%end%><%end%>
 							<th class="f-w150"><%message "html.list.created"%></th>
 							<th><%message "html.list.opr"%></th>
 						</tr>
@@ -54,8 +54,8 @@ var tmplHTMLMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 					<script id="{%.prefix%}ListTemplate" type="text/x-handlebars-template">
 					{{#each slice}}
 						<tr{{#if (divisible @index 2)}} class="active"{{/if}}>
-							<td title="{{id}}">{{abbr id 5}}</td><%range $f := $e.Fields%>
-							<%if notblank $f.Dict%><td data-id="{{<%$f.Name%>}}" data-dict="<%$f.Dict%>">&nbsp;</td><%else%><td>{{<%$f.Name%>}}</td><%end%><%end%>
+							<td title="{{id}}">{{abbr id 5}}</td><%range $f := $e.Fields%><%if $f.IsDisplay%>
+							<%if notblank $f.Dict%><td data-id="{{<%$f.Name%>}}" data-dict="<%$f.Dict%>">&nbsp;</td><%else%><td>{{<%$f.Name%>}}</td><%end%><%end%><%end%>
 							<td>{{uyymdhms created}}</td>
 							<td>
 								<a href="#eFormContent" go:data-state="edit" go:data-template="{%.prefix%}FormTemplate" go:data-url="{%apis%}/{%project%}/{%module%}/edit" onclick="{%.prefix%}Action(this,'{{id}}',{%.prefix%}PostLoadForm)" go:data-permissions="{%project%}:{%module%}:edit"><%message "html.list.edit"%></a>
@@ -72,13 +72,13 @@ var tmplHTMLMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 				<form id="{%.prefix%}Form" method="post" go:action="{%apis%}/{%project%}/{%module%}/save">
 					<br/>
 					<!--#include file="/ui/include/alert.html" param="{%.prefix%}Form"--><!--#endinclude-->
-					<input type="hidden" id="id" name="id" value="{{id}}" /><%range $f := $e.Fields%>
+					<input type="hidden" id="id" name="id" value="{{id}}" /><%range $f := $e.Fields%><%if $f.IsDisplay%>
 					<div class="form-group">
 						<label class="control-label"><%$f.Comment%></label>
 						<div>
 						<%if notblank $f.Dict%><select class="form-control" id="<%$f.Name%>" name="<%$f.Name%>" data-val="{{<%$f.Name%>}}"></select><%else%><input class="form-control required" id="<%$f.Name%>" name="<%$f.Name%>" value="{{<%$f.Name%>}}"/><%end%>
 						</div>
-					</div><%end%>
+					</div><%end%><%end%>
 					{{#if (ne state 'show')}}
 					<button type="submit" class="btn btn-primary" go:data-permissions="{%project%}:{%module%}:edit,{%project%}:{%module%}:add"><%message "html.form.save"%></button>
 					{{/if}}

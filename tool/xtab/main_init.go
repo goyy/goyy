@@ -147,6 +147,7 @@ func (me *inits) Columns() {
 			dict:     xc.Dict,
 			defaults: xc.Defaults,
 			nullable: xc.Nullable,
+			display:  xc.Display,
 		}
 		c.field = strings.ToLowerFirst(strings.Camel(c.ID()))
 		conf.columns = append(conf.columns, c)
@@ -195,6 +196,7 @@ func (me *inits) Tables() {
 					dict:     xc.Dict,
 					defaults: xc.Defaults,
 					nullable: xc.Nullable,
+					display:  xc.Display,
 				}
 				c.field = strings.ToLowerFirst(strings.Camel(c.ID()))
 				t.columns = append(t.columns, c)
@@ -246,6 +248,7 @@ func (me *inits) ChildTables(xconf *xConfiguration, parent *table, filename stri
 					dict:     xc.Dict,
 					defaults: xc.Defaults,
 					nullable: xc.Nullable,
+					display:  xc.Display,
 				}
 				c.field = strings.ToLowerFirst(strings.Camel(c.ID()))
 				t.columns = append(t.columns, c)
@@ -337,6 +340,7 @@ func (me *inits) ProjectTables() {
 					dict:     xc.Dict,
 					defaults: xc.Defaults,
 					nullable: xc.Nullable,
+					display:  xc.Display,
 				}
 				c.field = strings.ToLowerFirst(strings.Camel(c.ID()))
 				t.columns = append(t.columns, c)
