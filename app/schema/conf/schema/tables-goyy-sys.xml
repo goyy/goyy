@@ -6,10 +6,13 @@
 			<column id="href" name="HREF" domain="memo" comment="HREF"/>
 			<column id="target" name="TARGET" domain="code" comment="TARGET"/>
 			<column id="icon" name="ICON" domain="code" comment="ICON"/>
-			<column id="hidden" name="HIDDEN" domain="bool" comment="HIDDEN"/>
+			<column id="hidden" name="HIDDEN" domain="bool" comment="HIDDEN" dict="1:yes,0:no"/>
 			<column id="permission" name="PERMISSION" domain="memo" comment="PERMISSION"/>
+			<column extends="genre" name="GENRE" comment="GENRE" dict="10:system,20:menu,30:action"/>
 		</table>
 		<table id="post" name="POST" extends="tree" generate="true" comment="POST">
+			<column id="is_admin" name="IS_ADMIN" domain="bool" comment="IS_ADMIN" dict="1:yes,0:no" default="0"/>
+			<column extends="genre" name="GENRE" comment="GENRE" dict="10:system,20:menu,30:action"/>
 		</table>
 		<table id="post_menu" name="POST MENU" extends="sys" generate="true" menu="false" comment="POST MENU" master="post" slave="menu">
 			<column extends="post_id"/>
@@ -18,7 +21,8 @@
 		<table id="role" name="ROLE" extends="sys" generate="true" comment="ROLE">
 			<column extends="name"/>
 			<column extends="code"/>
-			<column extends="genre"/>
+			<column id="is_admin" name="IS_ADMIN" domain="bool" comment="IS_ADMIN" dict="1:yes,0:no" default="0"/>
+			<column extends="genre" name="GENRE" comment="GENRE" dict="10:function,20:data"/>
 			<column extends="classify"/>
 			<column extends="ordinal"/>
 		</table>
@@ -36,15 +40,15 @@
 			<column extends="name"/>
 			<column extends="code"/>
 			<column extends="passwd"/>
-			<column extends="genre"/>
+			<column extends="genre" dict="10:admin,20:user"/>
 			<column extends="email"/>
 			<column extends="tel"/>
 			<column extends="mobile"/>
 			<column extends="area_id"/>
 			<column extends="org_id"/>
-			<column id="dimission" name="DIMISSION" domain="bool" comment="DIMISSION" default="0"/>
+			<column id="dimission" name="DIMISSION" domain="bool" comment="DIMISSION" dict="1:yes,0:no" default="0"/>
 			<column id="dimission_time" name="DIMISSION TIME" domain="long" comment="DIMISSION TIME" default="-62135596800"/>
-			<column id="freeze" name="FREEZE" domain="bool" comment="FREEZE" default="0"/>
+			<column id="freeze" name="FREEZE" domain="bool" comment="FREEZE" dict="1:yes,0:no" default="0"/>
 			<column id="freeze_time" name="FREEZE TIME" domain="long" comment="FREEZE TIME" default="-62135596800"/>
 			<column id="login_name" name="LOGIN NAME" domain="code" comment="LOGIN NAME"/>
 		</table>
