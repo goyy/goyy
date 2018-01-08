@@ -179,7 +179,7 @@ func (me *valids) IsExistColumns() bool {
 		<column id="tel"          domain="code"   name="{{message "tmpl.col.tel.name"}}" comment="{{message "tmpl.col.tel.memo"}}"/>
 		<column id="contact"      domain="name"   name="{{message "tmpl.col.contact.name"}}" comment="{{message "tmpl.col.contact.memo"}}"/>
 		<column id="age"          domain="int"    name="{{message "tmpl.col.age.name"}}" comment="{{message "tmpl.col.age.memo"}}"/>
-		<column id="sex"          domain="flag"   name="{{message "tmpl.col.sex.name"}}" comment="{{message "tmpl.col.sex.memo"}}"/>
+		<column id="sex"          domain="flag"   name="{{message "tmpl.col.sex.name"}}" comment="{{message "tmpl.col.sex.memo"}}" dict="{{message "tmpl.col.sex.dict"}}"/>
 		<column id="birthday"     domain="long"   name="{{message "tmpl.col.birthday.name"}}" comment="{{message "tmpl.col.birthday.memo"}}"/>
 		<column id="inc"          domain="name"   name="{{message "tmpl.col.inc.name"}}" comment="{{message "tmpl.col.inc.memo"}}"/>
 		<column id="position"     domain="name"   name="{{message "tmpl.col.position.name"}}" comment="{{message "tmpl.col.position.memo"}}"/>
@@ -300,11 +300,13 @@ func (me *valids) IsExistProjectTables() bool {
 			<column id="href" name="{{message "tmpl.tab.sys.menu.href.name"}}" domain="memo" comment="{{message "tmpl.tab.sys.menu.href.memo"}}"/>
 			<column id="target" name="{{message "tmpl.tab.sys.menu.target.name"}}" domain="code" comment="{{message "tmpl.tab.sys.menu.target.memo"}}"/>
 			<column id="icon" name="{{message "tmpl.tab.sys.menu.icon.name"}}" domain="code" comment="{{message "tmpl.tab.sys.menu.icon.memo"}}"/>
-			<column id="hidden" name="{{message "tmpl.tab.sys.menu.hidden.name"}}" domain="bool" comment="{{message "tmpl.tab.sys.menu.hidden.memo"}}"/>
+			<column id="hidden" name="{{message "tmpl.tab.sys.menu.hidden.name"}}" domain="bool" comment="{{message "tmpl.tab.sys.menu.hidden.memo"}}" dict="{{message "tmpl.tab.sys.menu.hidden.dict"}}"/>
 			<column id="permission" name="{{message "tmpl.tab.sys.menu.perm.name"}}" domain="memo" comment="{{message "tmpl.tab.sys.menu.perm.memo"}}"/>
+			<column extends="genre" name="{{message "tmpl.tab.sys.menu.genre.name"}}" comment="{{message "tmpl.tab.sys.menu.genre.memo"}}" dict="{{message "tmpl.tab.sys.menu.genre.dict"}}"/>
 		</table>
 		<table id="post" name="{{message "tmpl.tab.sys.post.name"}}" extends="tree" generate="true" comment="{{message "tmpl.tab.sys.post.memo"}}">
-			<column id="is_admin" name="{{message "tmpl.tab.sys.post.is_admin.name"}}" domain="bool" comment="{{message "tmpl.tab.sys.post.is_admin.memo"}}" default="0"/>
+			<column id="is_admin" name="{{message "tmpl.tab.sys.post.is_admin.name"}}" domain="bool" comment="{{message "tmpl.tab.sys.post.is_admin.memo"}}" dict="{{message "tmpl.tab.sys.post.is_admin.dict"}}" default="0"/>
+			<column extends="genre" name="{{message "tmpl.tab.sys.post.genre.name"}}" comment="{{message "tmpl.tab.sys.post.genre.memo"}}" dict="{{message "tmpl.tab.sys.post.genre.dict"}}"/>
 		</table>
 		<table id="post_menu" name="{{message "tmpl.tab.sys.post_menu.name"}}" extends="sys" generate="true" menu="false" comment="{{message "tmpl.tab.sys.post_menu.memo"}}" master="post" slave="menu">
 			<column extends="post_id"/>
@@ -313,8 +315,8 @@ func (me *valids) IsExistProjectTables() bool {
 		<table id="role" name="{{message "tmpl.tab.sys.role.name"}}" extends="sys" generate="true" comment="{{message "tmpl.tab.sys.role.memo"}}">
 			<column extends="name"/>
 			<column extends="code"/>
-			<column id="is_admin" name="{{message "tmpl.tab.sys.role.is_admin.name"}}" domain="bool" comment="{{message "tmpl.tab.sys.role.is_admin.memo"}}" default="0"/>
-			<column extends="genre" name="{{message "tmpl.tab.sys.role.genre.name"}}" comment="{{message "tmpl.tab.sys.role.genre.memo"}}"/>
+			<column id="is_admin" name="{{message "tmpl.tab.sys.role.is_admin.name"}}" domain="bool" comment="{{message "tmpl.tab.sys.role.is_admin.memo"}}" dict="{{message "tmpl.tab.sys.role.is_admin.dict"}}" default="0"/>
+			<column extends="genre" name="{{message "tmpl.tab.sys.role.genre.name"}}" comment="{{message "tmpl.tab.sys.role.genre.memo"}}" dict="{{message "tmpl.tab.sys.role.genre.dict"}}"/>
 			<column extends="classify" name="{{message "tmpl.tab.sys.role.classify.name"}}" comment="{{message "tmpl.tab.sys.role.classify.memo"}}"/>
 			<column extends="ordinal"/>
 		</table>
@@ -332,15 +334,15 @@ func (me *valids) IsExistProjectTables() bool {
 			<column extends="name" unique="true"/>
 			<column extends="code"/>
 			<column extends="passwd"/>
-			<column extends="genre"/>
+			<column extends="genre" dict="{{message "tmpl.tab.sys.user.genre.dict"}}"/>
 			<column extends="email"/>
 			<column extends="tel"/>
 			<column extends="mobile"/>
 			<column extends="area_id"/>
 			<column extends="org_id"/>
-			<column id="dimission" name="{{message "tmpl.tab.sys.user.dimission.name"}}" domain="bool" comment="{{message "tmpl.tab.sys.user.dimission.memo"}}" default="0"/>
+			<column id="dimission" name="{{message "tmpl.tab.sys.user.dimission.name"}}" domain="bool" comment="{{message "tmpl.tab.sys.user.dimission.memo"}}" dict="{{message "tmpl.tab.sys.user.dimission.dict"}}" default="0"/>
 			<column id="dimission_time" name="{{message "tmpl.tab.sys.user.dimission_time.name"}}" domain="long" comment="{{message "tmpl.tab.sys.user.dimission_time.memo"}}" default="-62135596800"/>
-			<column id="freeze" name="{{message "tmpl.tab.sys.user.freeze.name"}}" domain="bool" comment="{{message "tmpl.tab.sys.user.freeze.memo"}}" default="0"/>
+			<column id="freeze" name="{{message "tmpl.tab.sys.user.freeze.name"}}" domain="bool" comment="{{message "tmpl.tab.sys.user.freeze.memo"}}" dict="{{message "tmpl.tab.sys.user.freeze.dict"}}" default="0"/>
 			<column id="freeze_time" name="{{message "tmpl.tab.sys.user.freeze_time.name"}}" domain="long" comment="{{message "tmpl.tab.sys.user.freeze_time.memo"}}" default="-62135596800"/>
 			<column id="login_name" name="{{message "tmpl.tab.sys.user.login_name.name"}}" domain="code" comment="{{message "tmpl.tab.sys.user.login_name.memo"}}" unique="true"/>
 		</table>
