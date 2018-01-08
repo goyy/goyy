@@ -144,6 +144,7 @@ func (me *inits) Columns() {
 			index:    xc.Index,
 			unique:   xc.Unique,
 			comment:  xc.Comment,
+			dict:     xc.Dict,
 			defaults: xc.Defaults,
 			nullable: xc.Nullable,
 		}
@@ -190,6 +191,7 @@ func (me *inits) Tables() {
 					index:    xc.Index,
 					unique:   xc.Unique,
 					comment:  xc.Comment,
+					dict:     xc.Dict,
 					defaults: xc.Defaults,
 					nullable: xc.Nullable,
 				}
@@ -239,6 +241,7 @@ func (me *inits) ChildTables(xconf *xConfiguration, parent *table, filename stri
 					index:    xc.Index,
 					unique:   xc.Unique,
 					comment:  xc.Comment,
+					dict:     xc.Dict,
 					defaults: xc.Defaults,
 					nullable: xc.Nullable,
 				}
@@ -328,6 +331,7 @@ func (me *inits) ProjectTables() {
 					index:    xc.Index,
 					unique:   xc.Unique,
 					comment:  xc.Comment,
+					dict:     xc.Dict,
 					defaults: xc.Defaults,
 					nullable: xc.Nullable,
 				}

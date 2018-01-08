@@ -20,6 +20,7 @@ type xColumn struct {
 	Index    string `xml:"index,attr"`
 	Unique   string `xml:"unique,attr"`
 	Comment  string `xml:"comment,attr"`
+	Dict     string `xml:"dict,attr"`
 	Defaults string `xml:"default,attr"`
 	Nullable string `xml:"nullable,attr"`
 }
@@ -32,6 +33,7 @@ type column struct {
 	index    string
 	unique   string
 	comment  string
+	dict     string
 	defaults string
 	nullable string
 	field    string
@@ -174,6 +176,17 @@ func (me *column) Comment() string { // column.comment: this -> parent -> domain
 
 func (me *column) SetComment(value string) {
 	me.comment = value
+}
+
+func (me *column) Dict() string { // column.dict: this -> parent
+	if strings.TrimSpace(me.dict) == "" && me.parent != nil {
+		return me.parent.Dict()
+	}
+	return me.dict
+}
+
+func (me *column) SetDict(value string) {
+	me.dict = value
 }
 
 func (me *column) Defaults() string { // column.defaults: this -> parent -> domain

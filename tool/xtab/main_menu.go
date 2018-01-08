@@ -89,7 +89,7 @@ func insertRootMenu(driverName, pid string) {
 	sql := `INSERT INTO sys_menu
 	(id, href, target, icon, hidden, permission, code, name, fullname, genre, ordinal, parent_id, parent_ids, parent_codes, parent_names, leaf, grade, memo, creates, creater, created, modifier, modified, version, deletion, artifical, history)
 	VALUES
-	('root', null, null, null, 0, null, '00', ?, null, '00', '00', null, null, null, null, 0, 1, null, null, null, ?, null, ?, 0, 0, 0, 0);`
+	('root', '', '', '', 0, '', '00', ?, '', '00', '00', '', '', '', '', 0, 1, '', '', '', ?, '', ?, 0, 0, 0, 0);`
 
 	count, err := db.Query(csql, "root").Int()
 	if err != nil {
@@ -176,7 +176,7 @@ func addMenu(driverName, pid, mid, tid, xname, ordinal, genre string, parent *me
 	sql := `INSERT INTO sys_menu
 	(id, href, target, icon, hidden, permission, code, name, fullname, genre, ordinal, parent_id, parent_ids, parent_codes, parent_names, leaf, grade, memo, creates, creater, created, modifier, modified, version, deletion, artifical, history)
 	VALUES
-	(?, ?, NULL, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL, ?, NULL, ?, 0, 0, 0, 0)`
+	(?, ?, '', '', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', ?, '', ?, 0, 0, 0, 0)`
 
 	count, err := db.Query(csql, m.fullname).Int()
 	if err != nil {

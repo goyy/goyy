@@ -16,6 +16,7 @@ func main() {
 	isEntity := flag.Bool("entity", false, "is generated entity")
 	isSQL := flag.Bool("sql", false, "is generated SQL")
 	isMenu := flag.Bool("menu", false, "is generated menu")
+	isDict := flag.Bool("dict", false, "is generated dict")
 	isDB := flag.Bool("db", false, "is generated DB")
 
 	isMerge := flag.Bool("merge", false, "is merged file")
@@ -47,6 +48,11 @@ func main() {
 		logger.Println("Generating menu : start")
 		genMenu(*params)
 		logger.Println("Generated menu : end")
+	}
+	if *isDict {
+		logger.Println("Generating dict : start")
+		genDict(*params)
+		logger.Println("Generated dict : end")
 	}
 	if *isDB {
 		logger.Println("Initialize db : start")

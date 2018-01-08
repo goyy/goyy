@@ -483,6 +483,12 @@ func (me factory) writeBy(typ, content string) error {
 		case newProj + ".schema.bin.menu.bat":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/bin/"
 			dstfile = "exp-menu.bat"
+		case newProj + ".schema.bin.dict.sh":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/bin/"
+			dstfile = "exp-dict.sh"
+		case newProj + ".schema.bin.dict.bat":
+			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/bin/"
+			dstfile = "exp-dict.bat"
 		case newProj + ".schema.bin.entity.sh":
 			dir = me.NewProjPath + "/" + me.NewProjName + "-schema/bin/"
 			dstfile = "exp-entity.sh"
@@ -703,6 +709,12 @@ func (me factory) writeNewProj() error {
 		return err
 	}
 	if err := me.writeBy(newProj+".schema.bin.menu.bat", tmplNewProjSchemaBinMenuBat); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".schema.bin.dict.sh", tmplNewProjSchemaBinDictSh); err != nil {
+		return err
+	}
+	if err := me.writeBy(newProj+".schema.bin.dict.bat", tmplNewProjSchemaBinDictBat); err != nil {
 		return err
 	}
 	if err := me.writeBy(newProj+".schema.bin.entity.sh", tmplNewProjSchemaBinEntitySh); err != nil {
