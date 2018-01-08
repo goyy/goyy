@@ -23,7 +23,7 @@ func genDict(params string) {
 			if p.ID() == m.project.ID() {
 				for _, t := range conf.tables {
 					for _, c := range t.columns {
-						addDicts(p.database.driverName, p.ID(), t.IDs(), c.ID(), c.Comment(), c.Dict())
+						addDicts(p.database.driverName, p.ID(), c.Comment(), c.DictGenre(), c.Dict())
 					}
 				}
 			}
@@ -31,8 +31,7 @@ func genDict(params string) {
 	}
 }
 
-func addDicts(driverName, pid, table, column, comment, dict string) {
-	var genre = table + "." + column
+func addDicts(driverName, pid, comment, genre, dict string) {
 	var mkey, mval, filters, ordinal, memo string
 	if strings.IsNotBlank(dict) {
 		dicts := strings.Split(dict, ",")

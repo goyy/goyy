@@ -5,7 +5,15 @@
 package main
 
 var tmplJsMain = `
-function ePostLoadForm() {
+function ePostLoadForm() {<%range $i, $e := .Entities%><%range $f := $e.Fields%><%if notblank $f.Dict%>
+	var <%$f.Name%>=$("#<%$f.Name%>").val();
+	$("#<%$f.Name%>").combo({
+		genre: "<%$f.Dict%>",
+		val : <%$f.Name%>,
+		placeholder : "<%message "tmpl.form.combo.placeholder"%>",
+		required : true,
+		loadable : true
+	});<%end%><%end%><%end%>
 	$("#eForm").validate();
 }
 `

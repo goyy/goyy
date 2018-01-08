@@ -55,7 +55,7 @@ var tmplHTMLMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 					{{#each slice}}
 						<tr{{#if (divisible @index 2)}} class="active"{{/if}}>
 							<td title="{{id}}">{{abbr id 5}}</td><%range $f := $e.Fields%>
-							<td>{{<%$f.Name%>}}</td><%end%>
+							<%if notblank $f.Dict%><td data-id="{{<%$f.Name%>}}" data-dict="<%$f.Dict%>">&nbsp;</td><%else%><td>{{<%$f.Name%>}}</td><%end%><%end%>
 							<td>{{uyymdhms created}}</td>
 							<td>
 								<a href="#eFormContent" go:data-state="edit" go:data-template="{%.prefix%}FormTemplate" go:data-url="{%apis%}/{%project%}/{%module%}/edit" onclick="{%.prefix%}Action(this,'{{id}}',{%.prefix%}PostLoadForm)" go:data-permissions="{%project%}:{%module%}:edit"><%message "html.list.edit"%></a>
@@ -76,7 +76,7 @@ var tmplHTMLMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 					<div class="form-group">
 						<label class="control-label"><%$f.Comment%></label>
 						<div>
-							<input class="form-control required" id="<%$f.Name%>" name="<%$f.Name%>" value="{{<%$f.Name%>}}"/>
+						<%if notblank $f.Dict%><select class="form-control" id="<%$f.Name%>" name="<%$f.Name%>" data-val="{{<%$f.Name%>}}"></select><%else%><input class="form-control required" id="<%$f.Name%>" name="<%$f.Name%>" value="{{<%$f.Name%>}}"/><%end%>
 						</div>
 					</div><%end%>
 					{{#if (ne state 'show')}}

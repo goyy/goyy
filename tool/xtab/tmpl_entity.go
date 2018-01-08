@@ -18,6 +18,6 @@ import (
 type {{if notblank .Master}}{{camel .Slave}}{{end}}Entity struct {
 	{{if eq .Super "pk"}}entity.Pk{{end}}{{if eq .Super "sys"}}entity.Sys{{end}}{{if eq .Super "tree"}}entity.Tree{{end}}
 	{{padname "table" $.FieldMaxLen}} {{padname "schema.Table" $.TypeMaxLen}} ` + "`" + `db:"table={{.Module.Prefix}}_{{.ID}}&comment={{.Name}}"` + "`" + `{{range $column := .Columns}}{{if not (supercol $column.ID $.Super)}}
-	{{padname $column.Field $.FieldMaxLen}} {{padname $column.Etype $.TypeMaxLen}} ` + "`" + `db:"column={{$column.ID}}&comment={{$column.Name}}{{if notblank $column.Defaults}}&default={{$column.Defaults}}{{end}}"` + "`" + `{{end}}{{end}}
+	{{padname $column.Field $.FieldMaxLen}} {{padname $column.Etype $.TypeMaxLen}} ` + "`" + `db:"column={{$column.ID}}&comment={{$column.Name}}{{if notblank $column.DictGenre}}&dict={{$column.DictGenre}}{{end}}{{if notblank $column.Defaults}}&default={{$column.Defaults}}{{end}}"` + "`" + `{{end}}{{end}}
 }
 `

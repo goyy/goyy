@@ -26,6 +26,7 @@ type xColumn struct {
 }
 
 type column struct {
+	table    *table
 	parent   *column
 	id       string
 	name     string
@@ -187,6 +188,13 @@ func (me *column) Dict() string { // column.dict: this -> parent
 
 func (me *column) SetDict(value string) {
 	me.dict = value
+}
+
+func (me *column) DictGenre() string {
+	if strings.TrimSpace(me.Dict()) != "" && me.table != nil {
+		return me.table.IDs() + "." + me.ID()
+	}
+	return ""
 }
 
 func (me *column) Defaults() string { // column.defaults: this -> parent -> domain

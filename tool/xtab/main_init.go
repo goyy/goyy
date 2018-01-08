@@ -184,6 +184,7 @@ func (me *inits) Tables() {
 					}
 				}
 				c := &column{
+					table:    t,
 					parent:   ec,
 					id:       xc.ID,
 					name:     xc.Name,
@@ -234,6 +235,7 @@ func (me *inits) ChildTables(xconf *xConfiguration, parent *table, filename stri
 					}
 				}
 				c := &column{
+					table:    t,
 					parent:   ec,
 					id:       xc.ID,
 					name:     xc.Name,
@@ -324,6 +326,7 @@ func (me *inits) ProjectTables() {
 					}
 				}
 				c := &column{
+					table:    t,
 					parent:   ec,
 					id:       xc.ID,
 					name:     xc.Name,
