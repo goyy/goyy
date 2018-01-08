@@ -26,6 +26,7 @@ type field struct {
 	IsExcel     bool
 	IsJSON      bool
 	IsXML       bool
+	IsDisplay   bool
 	IsPrimary   bool
 	IsForeign   bool
 	IsVersion   bool
@@ -39,6 +40,7 @@ type field struct {
 
 // Init sets the fields.
 func (me *field) Init(name, typ, tag string) error {
+	me.IsDisplay = true
 	me.Name = name
 	me.Type = typ
 
@@ -67,6 +69,10 @@ func (me *field) Init(name, typ, tag string) error {
 			me.Dict = pair[1]
 		case "default":
 			me.Default = pair[1]
+		case "display":
+			if pair[1] == "false" || pair[1] == "0" {
+				me.IsDisplay = false
+			}
 		case "primary":
 			if pair[1] == "true" {
 				me.IsPrimary = true
