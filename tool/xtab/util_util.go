@@ -54,7 +54,7 @@ func (me *utils) Etype(in string) string {
 	case "float":
 		return "entity.Float64"
 	case "bool":
-		return "entity.Bool"
+		return "entity.Int"
 	case "time":
 		return "entity.Time"
 	default:

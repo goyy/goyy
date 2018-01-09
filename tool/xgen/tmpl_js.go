@@ -6,7 +6,7 @@ package main
 
 var tmplJsMain = `
 function ePostLoadForm() {<%range $i, $e := .Entities%><%range $f := $e.Fields%><%if notblank $f.Dict%><%if $f.IsDisplay%>
-	var <%$f.Name%>=$("#<%$f.Name%>").val();
+	var <%$f.Name%>=$("#<%$f.Name%>").attr("value");
 	$("#<%$f.Name%>").combo({
 		genre: "<%$f.Dict%>",
 		val : <%$f.Name%>,

@@ -27,4 +27,4 @@ _testmain.go
 .DS_Store
 .DS_Store/*
 debug
-adm
+app/adm/adm
