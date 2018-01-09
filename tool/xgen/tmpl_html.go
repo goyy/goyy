@@ -75,9 +75,7 @@ var tmplHTMLMain = `<%range $i, $e := .Entities%><!DOCTYPE html>
 					<input type="hidden" id="id" name="id" value="{{id}}" /><%range $f := $e.Fields%><%if $f.IsDisplay%>
 					<div class="form-group">
 						<label class="control-label"><%$f.Comment%></label>
-						<div>
 						<%if notblank $f.Dict%><select class="form-control" id="<%$f.Name%>" name="<%$f.Name%>" data-val="{{<%$f.Name%>}}"></select><%else%><input class="form-control required" id="<%$f.Name%>" name="<%$f.Name%>" value="{{<%$f.Name%>}}"/><%end%>
-						</div>
 					</div><%end%><%end%>
 					{{#if (ne state 'show')}}
 					<button type="submit" class="btn btn-primary" go:data-permissions="{%project%}:{%module%}:edit,{%project%}:{%module%}:add"><%message "html.form.save"%></button>
