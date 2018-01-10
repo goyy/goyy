@@ -11,10 +11,6 @@ func init() {
 }
 
 func (me *Controller) token(c xhttp.Context) {
-	if !c.Session().IsLogin() {
-		c.Redirect(xhttp.Conf.Secure.LoginUrl)
-		return
-	}
 	sessionId := c.Session().Id()
 	r := result.Result{Success: true, Token: sessionId}
 	c.JSON(xhttp.StatusOK, r)

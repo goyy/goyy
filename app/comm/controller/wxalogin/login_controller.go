@@ -32,8 +32,8 @@ func (me *Controller) login(c xhttp.Context) {
 			logger.Errorln("login.SetPrincipal err:", err)
 		}
 	}
-
-	err := c.JSON(xhttp.StatusOK, res{Success: true, Message: ""})
+	sid := c.Session().Id()
+	err := c.JSON(xhttp.StatusOK, res{Success: true, Message: "", Token: sid})
 	if err != nil {
 		logger.Errorln("response err:", err)
 	}
@@ -89,6 +89,7 @@ func getWxInfo(code string) *result {
 
 type res struct {
 	Success bool   `json:"success"`
+	Token   string `json:"token"`
 	Message string `json:"message"`
 }
 
