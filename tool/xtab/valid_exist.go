@@ -200,8 +200,8 @@ func (me *valids) IsExistColumns() bool {
 		<column id="mval"         domain="name"   name="{{message "tmpl.col.mval.name"}}" comment="{{message "tmpl.col.mval.memo"}}"/>
 		<column id="params"       domain="name"   name="{{message "tmpl.col.params.name"}}" comment="{{message "tmpl.col.params.memo"}}"/>
 		<column id="filters"      domain="name"   name="{{message "tmpl.col.filters.name"}}" comment="{{message "tmpl.col.filters.memo"}}"/>
-		<column id="begin_time"   domain="long"   name="{{message "tmpl.col.begin_time.name"}}" comment="{{message "tmpl.col.begin_time.memo"}}"/>
-		<column id="end_time"     domain="long"   name="{{message "tmpl.col.end_time.name"}}" comment="{{message "tmpl.col.end_time.memo"}}"/>
+		<column id="begin_time"   domain="long"   name="{{message "tmpl.col.begin_time.name"}}" comment="{{message "tmpl.col.begin_time.memo"}}" default="-62135596800"/>
+		<column id="end_time"     domain="long"   name="{{message "tmpl.col.end_time.name"}}" comment="{{message "tmpl.col.end_time.memo"}}" default="-62135596800"/>
 		<column id="area_id"      domain="id"     name="{{message "tmpl.col.area_id.name"}}" comment="{{message "tmpl.col.area_id.memo"}}"/>
 		<column id="org_id"       domain="id"     name="{{message "tmpl.col.org_id.name"}}" comment="{{message "tmpl.col.org_id.memo"}}"/>
 		<column id="user_id"      domain="id"     name="{{message "tmpl.col.user_id.name"}}" comment="{{message "tmpl.col.user_id.memo"}}"/>
@@ -212,13 +212,13 @@ func (me *valids) IsExistColumns() bool {
 		<column id="parent_ids"   domain="memo"   name="{{message "tmpl.col.parent_ids.name"}}" comment="{{message "tmpl.col.parent_ids.memo"}}"/>
 		<column id="parent_codes" domain="memo"   name="{{message "tmpl.col.parent_codes.name"}}" comment="{{message "tmpl.col.parent_codes.memo"}}"/>
 		<column id="parent_names" domain="memo"   name="{{message "tmpl.col.parent_names.name"}}" comment="{{message "tmpl.col.parent_names.memo"}}"/>
-		<column id="leaf"         domain="bool"   name="{{message "tmpl.col.leaf.name"}}" comment="{{message "tmpl.col.leaf.memo"}}"/>
-		<column id="grade"        domain="int"    name="{{message "tmpl.col.grade.name"}}" comment="{{message "tmpl.col.grade.memo"}}"/>
+		<column id="leaf"         domain="bool"   name="{{message "tmpl.col.leaf.name"}}" comment="{{message "tmpl.col.leaf.memo"}}" default="0"/>
+		<column id="grade"        domain="int"    name="{{message "tmpl.col.grade.name"}}" comment="{{message "tmpl.col.grade.memo"}}" default="0"/>
 		<column id="creates"      domain="id"     name="{{message "tmpl.col.creates.name"}}" comment="{{message "tmpl.col.creates.memo"}}"/>
 		<column id="creater"      domain="id"     name="{{message "tmpl.col.creater.name"}}" comment="{{message "tmpl.col.creater.memo"}}"/>
-		<column id="created"      domain="long"   name="{{message "tmpl.col.created.name"}}" comment="{{message "tmpl.col.created.memo"}}"/>
+		<column id="created"      domain="long"   name="{{message "tmpl.col.created.name"}}" comment="{{message "tmpl.col.created.memo"}}" default="-62135596800"/>
 		<column id="modifier"     domain="id"     name="{{message "tmpl.col.modifier.name"}}" comment="{{message "tmpl.col.modifier.memo"}}"/>
-		<column id="modified"     domain="long"   name="{{message "tmpl.col.modified.name"}}" comment="{{message "tmpl.col.modified.memo"}}"/>
+		<column id="modified"     domain="long"   name="{{message "tmpl.col.modified.name"}}" comment="{{message "tmpl.col.modified.memo"}}" default="-62135596800"/>
 		<column id="version"      domain="int"    name="{{message "tmpl.col.version.name"}}" comment="{{message "tmpl.col.version.memo"}}" default="0"/>
 		<column id="deletion"     domain="bool"   name="{{message "tmpl.col.deletion.name"}}" comment="{{message "tmpl.col.deletion.memo"}}" default="0"/>
 		<column id="artifical"    domain="bool"   name="{{message "tmpl.col.artifical.name"}}" comment="{{message "tmpl.col.artifical.memo"}}" default="0"/>
