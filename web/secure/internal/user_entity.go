@@ -15,6 +15,7 @@ import (
 type User struct {
 	table     schema.Table  `db:"table=sys_user"`
 	id        entity.String `db:"column=id&primary=true"`
+	code      entity.String `db:"column=code"`
 	name      entity.String `db:"column=name"`
 	loginName entity.String `db:"column=login_name"`
 }

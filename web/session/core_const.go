@@ -9,6 +9,8 @@ const (
 	cookieKey     string = "GSESSIONID"
 
 	principalId          = "_gsessionid_principal_id_"
+	principalCode        = "_gsessionid_principal_code_"
+	principalKey         = "_gsessionid_principal_key_"
 	principalName        = "_gsessionid_principal_name_"
 	principalLoginName   = "_gsessionid_principal_login_name_"
 	principalLoginTime   = "_gsessionid_principal_login_time_"

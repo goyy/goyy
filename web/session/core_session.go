@@ -116,6 +116,14 @@ func (me *session) Principal() (xtype.Principal, error) {
 	if err != nil {
 		return p, err
 	}
+	code, err := me.Get(principalCode)
+	if err != nil {
+		return p, err
+	}
+	key, err := me.Get(principalKey)
+	if err != nil {
+		return p, err
+	}
 	name, err := me.Get(principalName)
 	if err != nil {
 		return p, err
@@ -141,6 +149,8 @@ func (me *session) Principal() (xtype.Principal, error) {
 		return p, err
 	}
 	p.Id = id
+	p.Code = code
+	p.Key = key
 	p.Name = name
 	p.LoginName = loginName
 	p.LoginTime = loginTime
@@ -152,6 +162,12 @@ func (me *session) Principal() (xtype.Principal, error) {
 
 func (me *session) SetPrincipal(value xtype.Principal) error {
 	if err := me.Set(principalId, value.Id); err != nil {
+		return err
+	}
+	if err := me.Set(principalCode, value.Code); err != nil {
+		return err
+	}
+	if err := me.Set(principalKey, value.Key); err != nil {
 		return err
 	}
 	if err := me.Set(principalName, value.Name); err != nil {
@@ -177,6 +193,12 @@ func (me *session) SetPrincipal(value xtype.Principal) error {
 
 func (me *session) ResetPrincipal() error {
 	if err := me.Delete(principalId); err != nil {
+		return err
+	}
+	if err := me.Delete(principalCode); err != nil {
+		return err
+	}
+	if err := me.Delete(principalKey); err != nil {
 		return err
 	}
 	if err := me.Delete(principalName); err != nil {

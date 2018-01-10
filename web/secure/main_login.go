@@ -60,6 +60,7 @@ func Login(c xhttp.Context, loginName, passwd string) error {
 	}
 	p := xtype.Principal{
 		Id:          u.Id(),
+		Code:        u.Code(),
 		Name:        u.Name(),
 		LoginName:   u.LoginName(),
 		LoginTime:   times.NowUnixStr(),

@@ -7,6 +7,8 @@ package xtype
 // Principal the subject's principal
 type Principal struct {
 	Id          string
+	Code        string
+	Key         string
 	Name        string
 	LoginName   string
 	LoginTime   string

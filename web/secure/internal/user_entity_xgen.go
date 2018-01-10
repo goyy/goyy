@@ -13,6 +13,7 @@ import (
 var (
 	USER            = schema.TABLE("sys_user", "USER")
 	USER_ID         = USER.PRIMARY("id", "ID")
+	USER_CODE       = USER.COLUMN("code", "CODE")
 	USER_NAME       = USER.COLUMN("name", "NAME")
 	USER_LOGIN_NAME = USER.COLUMN("login_name", "LOGIN_NAME")
 )
@@ -29,6 +30,14 @@ func (me *User) Id() string {
 
 func (me *User) SetId(v string) {
 	me.id.SetValue(v)
+}
+
+func (me *User) Code() string {
+	return me.code.Value()
+}
+
+func (me *User) SetCode(v string) {
+	me.code.SetValue(v)
 }
 
 func (me *User) Name() string {
@@ -63,6 +72,7 @@ func (me *User) initSetDict() {
 
 func (me *User) initSetColumn() {
 	me.id.SetColumn(USER_ID)
+	me.code.SetColumn(USER_CODE)
 	me.name.SetColumn(USER_NAME)
 	me.loginName.SetColumn(USER_LOGIN_NAME)
 }
@@ -72,6 +82,7 @@ func (me *User) initSetDefault() {
 
 func (me *User) initSetField() {
 	me.id.SetField(entity.DefaultField())
+	me.code.SetField(entity.DefaultField())
 	me.name.SetField(entity.DefaultField())
 	me.loginName.SetField(entity.DefaultField())
 }
@@ -81,12 +92,14 @@ func (me *User) initSetExcel() {
 
 func (me *User) initSetJson() {
 	me.id.Field().SetJson(entity.NewJsonBy("id"))
+	me.code.Field().SetJson(entity.NewJsonBy("code"))
 	me.name.Field().SetJson(entity.NewJsonBy("name"))
 	me.loginName.Field().SetJson(entity.NewJsonBy("loginName"))
 }
 
 func (me *User) initSetXml() {
 	me.id.Field().SetXml(entity.NewXmlBy("id"))
+	me.code.Field().SetXml(entity.NewXmlBy("code"))
 	me.name.Field().SetXml(entity.NewXmlBy("name"))
 	me.loginName.Field().SetXml(entity.NewXmlBy("loginName"))
 }
@@ -99,6 +112,8 @@ func (me *User) Get(column string) interface{} {
 	switch column {
 	case USER_ID.Name():
 		return me.id.Value()
+	case USER_CODE.Name():
+		return me.code.Value()
 	case USER_NAME.Name():
 		return me.name.Value()
 	case USER_LOGIN_NAME.Name():
@@ -111,6 +126,8 @@ func (me *User) GetPtr(column string) interface{} {
 	switch column {
 	case USER_ID.Name():
 		return me.id.ValuePtr()
+	case USER_CODE.Name():
+		return me.code.ValuePtr()
 	case USER_NAME.Name():
 		return me.name.ValuePtr()
 	case USER_LOGIN_NAME.Name():
@@ -123,6 +140,8 @@ func (me *User) GetString(field string) string {
 	switch strings.ToLowerFirst(field) {
 	case "id":
 		return me.id.String()
+	case "code":
+		return me.code.String()
 	case "name":
 		return me.name.String()
 	case "loginName":
@@ -135,6 +154,8 @@ func (me *User) SetString(field, value string) error {
 	switch strings.ToLowerFirst(field) {
 	case "id":
 		return me.id.SetString(value)
+	case "code":
+		return me.code.SetString(value)
 	case "name":
 		return me.name.SetString(value)
 	case "loginName":
@@ -151,6 +172,8 @@ func (me *User) Type(column string) (entity.Type, bool) {
 	switch column {
 	case USER_ID.Name():
 		return &me.id, true
+	case USER_CODE.Name():
+		return &me.code, true
 	case USER_NAME.Name():
 		return &me.name, true
 	case USER_LOGIN_NAME.Name():
@@ -163,6 +186,8 @@ func (me *User) Column(field string) (schema.Column, bool) {
 	switch strings.ToLowerFirst(field) {
 	case "id":
 		return USER_ID, true
+	case "code":
+		return USER_CODE, true
 	case "name":
 		return USER_NAME, true
 	case "loginName":
@@ -174,6 +199,7 @@ func (me *User) Column(field string) (schema.Column, bool) {
 func (me *User) Columns() []schema.Column {
 	return []schema.Column{
 		USER_ID,
+		USER_CODE,
 		USER_NAME,
 		USER_LOGIN_NAME,
 	}
@@ -182,6 +208,7 @@ func (me *User) Columns() []schema.Column {
 func (me *User) Names() []string {
 	return []string{
 		"id",
+		"code",
 		"name",
 		"loginName",
 	}
@@ -199,6 +226,7 @@ func (me *User) JSON() string {
 	var b bytes.Buffer
 	b.WriteString("{")
 	b.WriteString(`,"id":"` + jsons.Format(me.GetString("id")) + `"`)
+	b.WriteString(`,"code":"` + jsons.Format(me.GetString("code")) + `"`)
 	b.WriteString(`,"name":"` + jsons.Format(me.GetString("name")) + `"`)
 	b.WriteString(`,"loginName":"` + jsons.Format(me.GetString("loginName")) + `"`)
 	b.WriteString("}")
