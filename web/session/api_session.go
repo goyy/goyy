@@ -24,6 +24,8 @@ type Options struct {
 
 // Interface stores the values and optional configuration for a session.
 type Interface interface {
+	// Id returns the ID of the session.
+	Id() string
 	// Get returns the session value associated to the given key.
 	Get(key string) (string, error)
 	// Set sets the session value associated to the given key.

@@ -46,6 +46,10 @@ type session struct {
 	request *http.Request
 }
 
+func (me *session) Id() string {
+	return me.id
+}
+
 func (me *session) Get(key string) (string, error) {
 	v, err := cache.HGet(me.key, key)
 	logger.Debugf("Get %v %v %v\r\n", me.key, key, err)
