@@ -12,15 +12,15 @@ var Wx2Principal func(openId, unionId, sessionKey string) *xtype.Principal
 var User = &user{
 	TableName: "sys_user",
 	Id:        "id",
+	Uid:       "uid",
 	Code:      "code",
-	Passwd:    "passwd",
-	LoginName: "login_name",
+	Genre:     "genre",
 }
 
 type user struct {
 	TableName string
 	Id        string
+	Uid       string
 	Code      string
-	Passwd    string
-	LoginName string
+	Genre     string
 }

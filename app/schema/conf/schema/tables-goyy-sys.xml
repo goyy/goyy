@@ -37,8 +37,9 @@
 			<column extends="area_id"/>
 		</table>
 		<table id="user" name="USER" extends="sys" generate="true" comment="USER">
-			<column extends="name"/>
+			<column extends="uid" unique="true"/>
 			<column extends="code"/>
+			<column extends="name"/>
 			<column extends="passwd"/>
 			<column extends="genre" dict="10:admin,20:user"/>
 			<column extends="email"/>
@@ -46,11 +47,11 @@
 			<column extends="mobile"/>
 			<column extends="area_id"/>
 			<column extends="org_id"/>
+			<column id="login_name" name="LOGIN NAME" domain="code" comment="LOGIN NAME"/>
 			<column id="dimission" name="DIMISSION" domain="bool" comment="DIMISSION" dict="1:yes,0:no" default="0"/>
 			<column id="dimission_time" name="DIMISSION TIME" domain="long" comment="DIMISSION TIME" default="-62135596800"/>
 			<column id="freeze" name="FREEZE" domain="bool" comment="FREEZE" dict="1:yes,0:no" default="0"/>
 			<column id="freeze_time" name="FREEZE TIME" domain="long" comment="FREEZE TIME" default="-62135596800"/>
-			<column id="login_name" name="LOGIN NAME" domain="code" comment="LOGIN NAME"/>
 		</table>
 		<table id="user_role" name="USER ROLE" extends="sys" generate="true" menu="false" comment="USER ROLE" master="user" slave="role">
 			<column extends="user_id"/>
