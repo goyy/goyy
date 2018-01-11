@@ -21,7 +21,7 @@ func init() {
 	xhttp.POST(ctl.ApiBy("repwd"), ctl.repwd)
 	xhttp.GET(ctl.ApiBy("name"), ctl.name)
 	// Gets the current login user has information
-	xhttp.GET(ctl.ApiBy("now/login/info"), ctl.nowLoginInfo)
+	xhttp.GET(ctl.ApiBy("principal"), ctl.principal)
 
 	ctl.PreAdd = preSetRoleIds
 	ctl.PreEdit = preSetRoleIds
@@ -32,7 +32,7 @@ func init() {
 }
 
 // Gets the current login user has information.
-func (me *Controller) nowLoginInfo(c xhttp.Context) {
+func (me *Controller) principal(c xhttp.Context) {
 	user, err := c.Session().Principal()
 	if err != nil {
 		c.JSON(xhttp.StatusOK, me.Fault(c, i18N.Message("pwd.get.err")))

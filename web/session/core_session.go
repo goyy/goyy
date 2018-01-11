@@ -18,7 +18,7 @@ import (
 func New(w http.ResponseWriter, r *http.Request, o *Options) Interface {
 	// ignore error -> http: named cookie not present
 	cookie, _ := r.Cookie(cookieKey)
-	if cookie == nil {
+	if cookie == nil || !valid(cookie.Value) {
 		sid := strings.Replace(uuid.NewV4().String(), "-", "", -1)
 		cookie = &http.Cookie{
 			Name:     cookieKey,
@@ -239,4 +239,10 @@ func (me *session) expire(second int) error {
 		return err
 	}
 	return nil
+}
+
+func valid(key string) bool {
+	v := cache.Exists(sessionPrefix + ":" + key)
+	logger.Debugf("has %v %v\r\n", key, v)
+	return v
 }

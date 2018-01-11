@@ -38,7 +38,7 @@ var tmplNewProjAdmStaticJSHome = `$(function(){
 	});
 	
 	// <%message "tmpl.note.user.get"%>
-	var url=apis+"/sys/user/now/login/info";
+	var url=apis+"/sys/user/principal";
 	$.get(url,{},function(result){
 		if (result.success) {
 			$("#e-info").handlebars("e-info-template",result.data);

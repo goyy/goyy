@@ -32,7 +32,7 @@ $(function(){
 	});
 	
 	//获取当前用户登录信息
-	var url=apis+"/sys/user/now/login/info";
+	var url=apis+"/sys/user/principal";
 	$.get(url,{},function(result){
 		if (result.success) {
 			$("#e-info").handlebars("e-info-template",result.data);
