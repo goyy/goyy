@@ -119,6 +119,12 @@ func (me *JSONController) FaultStatusMsgToken(c xhttp.Context, code, msg, token 
 	return me.result(c, false, code, msg, token, "", "", "", data)
 }
 
+// FaultLogin constructs a http.ResponseWriter parameter of the failure type.
+func (me *JSONController) FaultLogin(c xhttp.Context) result.Http {
+	msg := i18N.Message("msg.not.login")
+	return me.result(c, false, "4999", msg, "", "", "", "", nil)
+}
+
 // FaultResult constructs a http.ResponseWriter parameter of the failure type.
 func (me *JSONController) FaultResult(c xhttp.Context, r *result.Result) result.Http {
 	return me.result(c, false, r.Code, r.Message, r.Token, "", r.Memo, r.Tag, r.Data)
