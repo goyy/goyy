@@ -42,7 +42,7 @@ func (me *Controller) login(c xhttp.Context) {
 func getPrincipal(r *result) *xtype.Principal {
 	id, ok := getUserId(r.UnionId)
 	if !ok {
-		id = createUser(r.OpenId, r.UnionId, r.OpenId)
+		id = createUser(r.UnionId, r.OpenId)
 	}
 	p := &xtype.Principal{
 		Id:        id,
