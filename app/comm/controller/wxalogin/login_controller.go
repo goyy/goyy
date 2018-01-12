@@ -19,21 +19,27 @@ func init() {
 
 func (me *Controller) login(c xhttp.Context) {
 	code := c.Param("code")
-	r := getWxInfo(code)
-	if r.Success {
-		var p *xtype.Principal
-		if Wx2Principal != nil {
-			p = Wx2Principal(r.OpenId, r.UnionId, r.SessionKey)
-		} else {
-			p = getPrincipal(r)
-		}
-		err := c.Session().SetPrincipal(*p)
-		if err != nil {
-			logger.Errorln("login.SetPrincipal err:", err)
+	r := res{Success: true}
+	if strings.IsBlank(code) || code == "null" || code == "undefined" {
+		logger.Errorln("login.code err:", code)
+		r.Success = false
+	} else {
+		r := getWxInfo(code)
+		if r.Success {
+			var p *xtype.Principal
+			if Wx2Principal != nil {
+				p = Wx2Principal(r.OpenId, r.UnionId, r.SessionKey)
+			} else {
+				p = getPrincipal(r)
+			}
+			err := c.Session().SetPrincipal(*p)
+			if err != nil {
+				logger.Errorln("login.SetPrincipal err:", err)
+			}
 		}
 	}
-	sid := c.Session().Id()
-	err := c.JSON(xhttp.StatusOK, res{Success: true, Message: "", Token: sid})
+	r.Token = c.Session().Id()
+	err := c.JSON(xhttp.StatusOK, r)
 	if err != nil {
 		logger.Errorln("response err:", err)
 	}
