@@ -64,7 +64,6 @@ func getWxInfo(code string) *result {
 	// http request
 	url := "https://api.weixin.qq.com/sns/jscode2session"
 	query := fmt.Sprintf("?appid=%v&secret=%v&js_code=%v&grant_type=authorization_code", AppId, AppSecret, code)
-	fmt.Println(query)
 	resp, err := http.Get(url + query)
 	if err != nil {
 		logger.Errorln("getWxInfo.Get err:", err)
