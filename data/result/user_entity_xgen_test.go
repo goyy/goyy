@@ -26,14 +26,6 @@ func NewUser() *User {
 	return e
 }
 
-func (me *User) Id() string {
-	return me.id.Value()
-}
-
-func (me *User) SetId(v string) {
-	me.id.SetValue(v)
-}
-
 func (me *User) Name() string {
 	return me.name.Value()
 }
@@ -89,7 +81,9 @@ func (me *User) initSetDict() {
 }
 
 func (me *User) initSetColumn() {
-	me.id.SetColumn(USER_ID)
+	if t, ok := me.Pk.Type("id"); ok {
+		t.SetColumn(USER_ID)
+	}
 	me.name.SetColumn(USER_NAME)
 	me.passwd.SetColumn(USER_PASSWD)
 	me.age.SetColumn(USER_AGE)
@@ -101,7 +95,9 @@ func (me *User) initSetDefault() {
 }
 
 func (me *User) initSetField() {
-	me.id.SetField(entity.DefaultField())
+	if t, ok := me.Pk.Type("id"); ok {
+		t.SetField(entity.DefaultField())
+	}
 	me.name.SetField(entity.DefaultField())
 	me.passwd.SetField(entity.DefaultField())
 	me.age.SetField(entity.DefaultField())
@@ -113,7 +109,9 @@ func (me *User) initSetExcel() {
 }
 
 func (me *User) initSetJson() {
-	me.id.Field().SetJson(entity.NewJsonBy("id"))
+	if t, ok := me.Pk.Type("id"); ok {
+		t.Field().SetJson(entity.NewJsonBy("id"))
+	}
 	me.name.Field().SetJson(entity.NewJsonBy("name"))
 	me.passwd.Field().SetJson(entity.NewJsonBy("passwd"))
 	me.age.Field().SetJson(entity.NewJsonBy("age"))
@@ -122,7 +120,9 @@ func (me *User) initSetJson() {
 }
 
 func (me *User) initSetXml() {
-	me.id.Field().SetXml(entity.NewXmlBy("id"))
+	if t, ok := me.Pk.Type("id"); ok {
+		t.Field().SetXml(entity.NewXmlBy("id"))
+	}
 	me.name.Field().SetXml(entity.NewXmlBy("name"))
 	me.passwd.Field().SetXml(entity.NewXmlBy("passwd"))
 	me.age.Field().SetXml(entity.NewXmlBy("age"))
@@ -136,8 +136,6 @@ func (me User) New() entity.Interface {
 
 func (me *User) Get(column string) interface{} {
 	switch column {
-	case USER_ID.Name():
-		return me.id.Value()
 	case USER_NAME.Name():
 		return me.name.Value()
 	case USER_PASSWD.Name():
@@ -149,13 +147,11 @@ func (me *User) Get(column string) interface{} {
 	case USER_VERSION.Name():
 		return me.version.Value()
 	}
-	return nil
+	return me.Pk.Get(column)
 }
 
 func (me *User) GetPtr(column string) interface{} {
 	switch column {
-	case USER_ID.Name():
-		return me.id.ValuePtr()
 	case USER_NAME.Name():
 		return me.name.ValuePtr()
 	case USER_PASSWD.Name():
@@ -167,13 +163,11 @@ func (me *User) GetPtr(column string) interface{} {
 	case USER_VERSION.Name():
 		return me.version.ValuePtr()
 	}
-	return nil
+	return me.Pk.GetPtr(column)
 }
 
 func (me *User) GetString(field string) string {
 	switch strings.ToLowerFirst(field) {
-	case "id":
-		return me.id.String()
 	case "name":
 		return me.name.String()
 	case "passwd":
@@ -185,13 +179,11 @@ func (me *User) GetString(field string) string {
 	case "version":
 		return me.version.String()
 	}
-	return ""
+	return me.Pk.GetString(field)
 }
 
 func (me *User) SetString(field, value string) error {
 	switch strings.ToLowerFirst(field) {
-	case "id":
-		return me.id.SetString(value)
 	case "name":
 		return me.name.SetString(value)
 	case "passwd":
@@ -203,7 +195,7 @@ func (me *User) SetString(field, value string) error {
 	case "version":
 		return me.version.SetString(value)
 	}
-	return nil
+	return me.Pk.SetString(field, value)
 }
 
 func (me *User) Table() schema.Table {
@@ -212,8 +204,6 @@ func (me *User) Table() schema.Table {
 
 func (me *User) Type(column string) (entity.Type, bool) {
 	switch column {
-	case USER_ID.Name():
-		return &me.id, true
 	case USER_NAME.Name():
 		return &me.name, true
 	case USER_PASSWD.Name():
@@ -225,13 +215,11 @@ func (me *User) Type(column string) (entity.Type, bool) {
 	case USER_VERSION.Name():
 		return &me.version, true
 	}
-	return nil, false
+	return me.Pk.Type(column)
 }
 
 func (me *User) Column(field string) (schema.Column, bool) {
 	switch strings.ToLowerFirst(field) {
-	case "id":
-		return USER_ID, true
 	case "name":
 		return USER_NAME, true
 	case "passwd":
@@ -243,7 +231,7 @@ func (me *User) Column(field string) (schema.Column, bool) {
 	case "version":
 		return USER_VERSION, true
 	}
-	return nil, false
+	return me.Pk.Column(field)
 }
 
 func (me *User) Columns() []schema.Column {
@@ -279,7 +267,7 @@ func (me *User) Validate() error {
 func (me *User) JSON() string {
 	var b bytes.Buffer
 	b.WriteString("{")
-	b.WriteString(`,"id":"` + jsons.Format(me.GetString("id")) + `"`)
+	b.WriteString(`"id":"` + jsons.Format(me.GetString("id")) + `"`)
 	b.WriteString(`,"name":"` + jsons.Format(me.GetString("name")) + `"`)
 	b.WriteString(`,"passwd":"` + jsons.Format(me.GetString("passwd")) + `"`)
 	b.WriteString(`,"age":` + me.GetString("age"))

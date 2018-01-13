@@ -13,8 +13,8 @@ import (
 
 // @entity
 type User struct {
+	entity.Pk
 	table   schema.Table  `db:"table=sys_user"`
-	id      entity.String `db:"column=id&primary=true"`
 	name    entity.String `db:"column=name"`
 	passwd  entity.String `db:"column=passwd"`
 	age     entity.Int    `db:"column=age"`

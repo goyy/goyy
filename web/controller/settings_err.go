@@ -10,10 +10,10 @@ import (
 
 // PreError controller.PreError.
 type PreError struct {
-	Code    string
+	Code    int
 	Message string
 }
 
 func (me *PreError) Error() string {
-	return fmt.Sprintf("code:%s, message:%s", me.Code, me.Message)
+	return fmt.Sprintf("code:%v, message:%s", me.Code, me.Message)
 }

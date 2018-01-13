@@ -5,12 +5,13 @@
 package result_test
 
 import (
-	"gopkg.in/goyy/goyy.v0/data/result"
 	"testing"
+
+	"gopkg.in/goyy/goyy.v0/data/result"
 )
 
 func TestEntitiesJSON(t *testing.T) {
-	expected := `{"success":true,"token":"","code":"1","message":"ok","memo":"","tag":"","data":[{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0},{"id":"2","name":"sa","passwd":"3df69ku7h","age":20,"email":"sa@gmail.com","version":0}]}`
+	expected := `{"success":true,"token":"","code":1,"message":"ok","memo":"","tag":"","data":[{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0},{"id":"2","name":"sa","passwd":"3df69ku7h","age":20,"email":"sa@gmail.com","version":0}]}`
 	u1 := NewUser()
 	u1.SetId("1")
 	u1.SetName("admin")
@@ -28,7 +29,7 @@ func TestEntitiesJSON(t *testing.T) {
 	users.Append(u2)
 	r := result.Entities{
 		Success: true,
-		Code:    "1",
+		Code:    1,
 		Message: "ok",
 		Data:    users,
 	}
@@ -38,7 +39,7 @@ func TestEntitiesJSON(t *testing.T) {
 }
 
 func TestEntitiesParseJSON(t *testing.T) {
-	json := `{"success":true,"code":"1","message":"ok","memo":"","tag":"","data":[{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0},{"id":"2","name":"sa","passwd":"3df69ku7h","age":20,"email":"sa@gmail.com","version":0}]}`
+	json := `{"success":true,"code":1,"message":"ok","memo":"","tag":"","data":[{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0},{"id":"2","name":"sa","passwd":"3df69ku7h","age":20,"email":"sa@gmail.com","version":0}]}`
 	users := NewUserEntities(2)
 	r := result.Entities{Data: users}
 	if err := r.ParseJSON(json); err != nil {
@@ -48,11 +49,11 @@ func TestEntitiesParseJSON(t *testing.T) {
 	if out := r.Success; out != true {
 		t.Errorf(`ParseJSON->Success = "%v", want "%v"`, out, true)
 	}
-	expected := "1"
-	if out := r.Code; out != expected {
-		t.Errorf(`ParseJSON->Code = "%v", want "%v"`, out, expected)
+	want := 1
+	if out := r.Code; out != want {
+		t.Errorf(`ParseJSON->Code = "%v", want "%v"`, out, want)
 	}
-	expected = "ok"
+	expected := "ok"
 	if out := r.Message; out != expected {
 		t.Errorf(`ParseJSON->Message = "%v", want "%v"`, out, expected)
 	}

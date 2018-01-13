@@ -49,7 +49,7 @@ func (me *Controller) signin(c xhttp.Context) {
 	var err error
 	if !captcha.Verify(c, true) {
 		msg := i18N.Message("login.captcha.err")
-		err = c.JSON(xhttp.StatusOK, me.FaultStatusMsg(c, "-1", msg, ""))
+		err = c.JSON(xhttp.StatusOK, me.FaultStatusMsg(c, 4000, msg, ""))
 		if err != nil {
 			logger.Errorln("response err:", err)
 		}
@@ -58,7 +58,7 @@ func (me *Controller) signin(c xhttp.Context) {
 	err = secure.Login(c, c.Param("loginName"), c.Param("passwd"))
 	if err != nil {
 		msg := i18N.Message("login.user.err")
-		err = c.JSON(xhttp.StatusOK, me.FaultStatusMsg(c, "-100", msg, ""))
+		err = c.JSON(xhttp.StatusOK, me.FaultStatusMsg(c, 4001, msg, ""))
 		if err != nil {
 			logger.Errorln("response err:", err)
 		}

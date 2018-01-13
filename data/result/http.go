@@ -14,7 +14,7 @@ import (
 type Http struct {
 	Success bool              `json:"success"`
 	Token   string            `json:"token"`
-	Code    string            `json:"code"`    // view message code
+	Code    int               `json:"code"`    // view message code
 	Message string            `json:"message"` // view message content
 	State   string            `json:"state"`   // view display state
 	Memo    string            `json:"memo"`

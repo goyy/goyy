@@ -11,10 +11,10 @@ import (
 )
 
 func TestResultJSON(t *testing.T) {
-	json := `{"success":true,"token":"","code":"1","message":"ok","memo":"","tag":"","data":{"id":"1","name":"admin"}}`
+	json := `{"success":true,"token":"","code":1,"message":"ok","memo":"","tag":"","data":{"id":"1","name":"admin"}}`
 	r := &result.Result{
 		Success: true,
-		Code:    "1",
+		Code:    1,
 		Message: "ok",
 		Data: map[string]string{
 			"id":   "1",
@@ -27,7 +27,7 @@ func TestResultJSON(t *testing.T) {
 }
 
 func TestResultParseJSON(t *testing.T) {
-	json := `{"success":true,"token":"","code":"1","message":"ok","memo":"","tag":"","data":{"id":"1","name":"admin"}}`
+	json := `{"success":true,"token":"","code":1,"message":"ok","memo":"","tag":"","data":{"id":"1","name":"admin"}}`
 	r := &result.Result{Data: map[string]string{}}
 	if err := r.ParseJSON(json); err != nil {
 		t.Errorf(`ParseJSON->error:"%v"`, err.Error())
@@ -36,11 +36,11 @@ func TestResultParseJSON(t *testing.T) {
 	if out := r.Success; out != true {
 		t.Errorf(`ParseJSON->Success = "%v", want "%v"`, out, true)
 	}
-	expected := "1"
-	if out := r.Code; out != expected {
-		t.Errorf(`ParseJSON->Code = "%v", want "%v"`, out, expected)
+	want := 1
+	if out := r.Code; out != want {
+		t.Errorf(`ParseJSON->Code = "%v", want "%v"`, out, want)
 	}
-	expected = "ok"
+	expected := "ok"
 	if out := r.Message; out != expected {
 		t.Errorf(`ParseJSON->Message = "%v", want "%v"`, out, expected)
 	}

@@ -14,7 +14,7 @@ import (
 type Result struct {
 	Success bool        `json:"success"`
 	Token   string      `json:"token"`
-	Code    string      `json:"code"`
+	Code    int         `json:"code"`
 	Message string      `json:"message"`
 	Memo    string      `json:"memo"`
 	Tag     string      `json:"tag"`

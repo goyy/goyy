@@ -18,7 +18,7 @@ import (
 type Entity struct {
 	Success bool             `json:"success"`
 	Token   string           `json:"token"`
-	Code    string           `json:"code"`
+	Code    int              `json:"code"`
 	Message string           `json:"message"`
 	Memo    string           `json:"memo"`
 	Tag     string           `json:"tag"`
@@ -30,7 +30,7 @@ func (me *Entity) JSON() string {
 	var b bytes.Buffer
 	b.WriteString(`{"success":` + strconv.FormatBool(me.Success) + ",")
 	b.WriteString(`"token":"` + jsons.Format(me.Token) + `",`)
-	b.WriteString(`"code":"` + jsons.Format(me.Code) + `",`)
+	b.WriteString(`"code":` + strconv.Itoa(me.Code) + `,`)
 	b.WriteString(`"message":"` + jsons.Format(me.Message) + `",`)
 	b.WriteString(`"memo":"` + jsons.Format(me.Memo) + `",`)
 	b.WriteString(`"tag":"` + jsons.Format(me.Tag) + `",`)
@@ -55,7 +55,7 @@ func (me *Entity) ParseJSON(json string) error {
 		me.Success = true
 	}
 	content := jreplace(json)
-	me.Code = jparse(strings.Between(content, `"code":"`, `",`))
+	me.Code, _ = strconv.Atoi(strings.Between(content, `"code":`, `,`))
 	me.Message = jparse(strings.Between(content, `"message":"`, `",`))
 	me.Memo = jparse(strings.Between(content, `"memo":"`, `",`))
 	me.Tag = jparse(strings.Between(content, `"tag":"`, `",`))

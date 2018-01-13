@@ -107,7 +107,7 @@ func (me *<%$e.Name%>) initSetExcel() {<%range $f := $e.Fields%><%if $f.IsExcel%
 
 func (me *<%$e.Name%>) initSetJson() {<%if eq $e.Extend "pk"%>
 	if t, ok := me.Pk.Type("id"); ok {
-		t.Field().SetJson(entity.NewJsonBy(c))
+		t.Field().SetJson(entity.NewJsonBy("id"))
 	}<%else if eq $e.Extend "sys"%>
 	for _, c := range entity.SysColumns {
 		if t, ok := me.Sys.Type(c); ok {
@@ -124,7 +124,7 @@ func (me *<%$e.Name%>) initSetJson() {<%if eq $e.Extend "pk"%>
 
 func (me *<%$e.Name%>) initSetXml() {<%if eq $e.Extend "pk"%>
 	if t, ok := me.Pk.Type("id"); ok {
-		t.Field().SetXml(entity.NewXmlBy(c))
+		t.Field().SetXml(entity.NewXmlBy("id"))
 	}<%else if eq $e.Extend "sys"%>
 	for _, c := range entity.SysColumns {
 		if t, ok := me.Sys.Type(c); ok {

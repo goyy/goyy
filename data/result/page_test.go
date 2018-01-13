@@ -12,7 +12,7 @@ import (
 )
 
 func TestPageJSON(t *testing.T) {
-	expected := `{"success":true,"id":"","token":"","code":"1","message":"ok","memo":"","tag":"","data":{"pageNo":1,"pageSize":10,"pageFn":"page","totalPages":1,"totalElements":2,"length":8,"slider":1,"slice":[{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0},{"id":"2","name":"sa","passwd":"3df69ku7h","age":20,"email":"sa@gmail.com","version":0}]}}`
+	expected := `{"success":true,"id":"","token":"","code":1,"message":"ok","memo":"","tag":"","data":{"pageNo":1,"pageSize":10,"pageFn":"page","totalPages":1,"totalElements":2,"length":8,"slider":1,"slice":[{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0},{"id":"2","name":"sa","passwd":"3df69ku7h","age":20,"email":"sa@gmail.com","version":0}]}}`
 	u1 := NewUser()
 	u1.SetId("1")
 	u1.SetName("admin")
@@ -32,7 +32,7 @@ func TestPageJSON(t *testing.T) {
 	page := domain.NewPage(pageable, users, 2)
 	r := result.Page{
 		Success: true,
-		Code:    "1",
+		Code:    1,
 		Message: "ok",
 		Data:    page,
 	}
@@ -42,7 +42,7 @@ func TestPageJSON(t *testing.T) {
 }
 
 func TestPageParseJSON(t *testing.T) {
-	json := `{"success":true,"code":"1","message":"ok","memo":"","tag":"","data":{"pageNo":1,"pageSize":10,"totalElements":2,"function":"page","length":8,"slider":1,"slice":[{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0},{"id":"2","name":"sa","passwd":"3df69ku7h","age":20,"email":"sa@gmail.com","version":0}]}}`
+	json := `{"success":true,"code":1,"message":"ok","memo":"","tag":"","data":{"pageNo":1,"pageSize":10,"totalElements":2,"function":"page","length":8,"slider":1,"slice":[{"id":"1","name":"admin","passwd":"1ap93md","age":18,"email":"admin@gmail.com","version":0},{"id":"2","name":"sa","passwd":"3df69ku7h","age":20,"email":"sa@gmail.com","version":0}]}}`
 	users := NewUserEntities(2)
 	pageable := domain.NewPageable(1, 10)
 	page := domain.NewPage(pageable, users, 2)
@@ -54,11 +54,11 @@ func TestPageParseJSON(t *testing.T) {
 	if out := r.Success; out != true {
 		t.Errorf(`ParseJSON->Success = "%v", want "%v"`, out, true)
 	}
-	expected := "1"
-	if out := r.Code; out != expected {
-		t.Errorf(`ParseJSON->Code = "%v", want "%v"`, out, expected)
+	want := 1
+	if out := r.Code; out != want {
+		t.Errorf(`ParseJSON->Code = "%v", want "%v"`, out, want)
 	}
-	expected = "ok"
+	expected := "ok"
 	if out := r.Message; out != expected {
 		t.Errorf(`ParseJSON->Message = "%v", want "%v"`, out, expected)
 	}
