@@ -111,6 +111,11 @@ func NewSift(name, value string, prefix ...string) (Sift, bool) {
 	return s, true
 }
 
+// NewSiftDeletion returns the Sift: deletion = 0.
+func NewSiftDeletion() (Sift, bool) {
+	return NewSift("sDeletionEQ", "0")
+}
+
 // NewSifts returns the []Sift from url.Values and prefix.
 func NewSifts(values url.Values, prefix ...string) ([]Sift, error) {
 	ss := make([]Sift, 0)
