@@ -138,25 +138,25 @@ func (me *Validation) Alnumhanrod(field, input string) *Error {
 	return me.err(field, typAlnumhanrod, Alnumhanrod(input))
 }
 
-// Alhan returns error if the provided input is not an alphabetic or chinese (a-zA-Z0-9\p{Han})
+// Alhan returns error if the provided input is not an alphabetic or chinese (a-zA-Z\p{Han})
 // string, nil otherwise.
 func (me *Validation) Alhan(field, input string) *Error {
 	return me.err(field, typAlhan, Alhan(input))
 }
 
-// Alhanrod returns error if the provided input is not an alphabetic or chinese or rod (a-zA-Z0-9\p{Han}\-_)
+// Alhanrod returns error if the provided input is not an alphabetic or chinese or rod (a-zA-Z\p{Han}\-_)
 // string, nil otherwise.
 func (me *Validation) Alhanrod(field, input string) *Error {
 	return me.err(field, typAlhanrod, Alhanrod(input))
 }
 
-// Han returns error if the provided input is not an chinese (a-zA-Z0-9\p{Han})
+// Han returns error if the provided input is not an chinese (\p{Han})
 // string, nil otherwise.
 func (me *Validation) Han(field, input string) *Error {
 	return me.err(field, typHan, Han(input))
 }
 
-// Hanrod returns error if the provided input is not an chinese or rod (a-zA-Z0-9\p{Han}\-_)
+// Hanrod returns error if the provided input is not an chinese or rod (\p{Han}\-_)
 // string, nil otherwise.
 func (me *Validation) Hanrod(field, input string) *Error {
 	return me.err(field, typHanrod, Hanrod(input))
