@@ -12,11 +12,12 @@ import (
 
 // New returns the id string.
 func New() string {
-	id := uuid.NewV1()
+	id, _ := uuid.NewV1()
 	return strings.Replace(id.String(), "-", "", -1)
 }
 
 // NewV1 returns the id string.
 func NewV1() string {
-	return uuid.NewV1().String()
+	id, _ := uuid.NewV1()
+	return id.String()
 }

@@ -7,11 +7,11 @@ package session
 import (
 	"net/http"
 
-	"github.com/satori/go.uuid"
 	"gopkg.in/goyy/goyy.v0/comm/xtype"
 	"gopkg.in/goyy/goyy.v0/data/cache"
 	"gopkg.in/goyy/goyy.v0/util/errors"
 	"gopkg.in/goyy/goyy.v0/util/strings"
+	"gopkg.in/goyy/goyy.v0/util/uuids"
 )
 
 // New new session.Interface from http.ResponseWriter and http.Request.
@@ -19,7 +19,7 @@ func New(w http.ResponseWriter, r *http.Request, o *Options) Interface {
 	// ignore error -> http: named cookie not present
 	cookie, _ := r.Cookie(cookieKey)
 	if cookie == nil || !valid(cookie.Value) {
-		sid := strings.Replace(uuid.NewV4().String(), "-", "", -1)
+		sid := uuids.New()
 		cookie = &http.Cookie{
 			Name:     cookieKey,
 			Value:    sid,
